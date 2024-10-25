@@ -1,0 +1,133 @@
+.project-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .project-heading {
+    margin-top: 80px;
+  }
+  
+  .project-heading h2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 30px;
+  }
+  
+  .project-tags span{
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 5px;
+    margin-right: 10px;
+  }
+
+    /* Modal Background */
+    #create-project-modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1000; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  /* Modal Content */
+  #create-project-modal > div {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+  }
+
+  /* Modal Heading */
+  #create-project-modal h3 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+      text-align: center;
+  }
+
+  /* Form Styling */
+  #create-project-modal form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  }
+
+  /* Input Styling */
+  #create-project-modal label {
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 5px;
+  }
+
+  #create-project-modal input[type="text"],
+  #create-project-modal input[type="date"],
+  #create-project-modal select {
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+  }
+
+  /* Button Styling */
+  #create-project-modal button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+  }
+
+  #create-project-modal button[type="submit"] {
+      background-color: #28a745; /* Green for Submit */
+      color: white;
+  }
+
+  #create-project-modal button[type="submit"]:hover {
+      background-color: #218838;
+  }
+
+  #create-project-modal button[type="button"] {
+      background-color: #dc3545; /* Red for Cancel */
+      color: white;
+  }
+
+  #create-project-modal button[type="button"]:hover {
+      background-color: #c82333;
+  }
+
+  /* Responsive Modal */
+  @media (max-width: 768px) {
+      #create-project-modal > div {
+          width: 90%; /* Adjust the width for smaller screens */
+      }
+  }
+
+  .activity-card {
+    border: 1px solid #ccc; /* Border around each card */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Padding inside the card */
+    margin: 10px 0; /* Margin between cards */
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.activity-card p {
+    margin: 5px 0; /* Spacing between paragraphs */
+}
+
+
+  

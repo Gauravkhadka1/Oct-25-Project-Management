@@ -1,0 +1,45 @@
+.mytasks {
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 30px;
+}
+.current-tasks {
+    width: 80%;
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+.current-tasks h2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.current-tasks table {
+    /* background-color: blue; */
+    width: 80%;
+    margin-top: 10px;
+}
+.current-tasks table thead tr td {
+    margin-bottom: 15px; /* Adjust as needed */
+}
+.current-tasks span {
+    border: 2px solid gray;
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 10px;
+}
+.completed-tasks {
+    width: 40%;
+    background-color: #f5f5f5;
+}
+.completed-tasks h2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.current-tasks thead {
+    padding-bottom: 15px; /* Adjust as needed */
+}

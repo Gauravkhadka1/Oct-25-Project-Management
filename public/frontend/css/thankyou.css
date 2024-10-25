@@ -1,0 +1,49 @@
+.thankyoupage {
+    height: 100vh;
+    padding-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.succ {
+    font-size: 50px;
+    margin-bottom: 10px;
+    /* font-weight: bold; */
+}
+.thnk {
+    font-size: 30px;
+    margin-bottom: 10px;
+    /* font-weight: bold; */
+}
+.viewmr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 25px;
+    /* font-weight: bold; */
+}
+.thankyoupage button {
+    padding: 10px 15px;
+    background-color: #003366;
+    color: #fff;
+    border: 2px solid transparent;
+    border-radius: 20px;
+}
+.thankyoupage button:hover {
+    padding: 10px 15px;
+    background-color: #014a92;
+    color: #fff;
+    border: 2px solid transparent;
+}
+@media only screen and (max-width: 768px) {
+    .succ {
+        font-size: 30px;
+        margin-bottom: 10px;
+        /* font-weight: bold; */
+    }
+    .thnk {
+        font-size: 20px;
+        margin-bottom: 10px;
+        /* font-weight: bold; */
+    }
+}

@@ -1,0 +1,75 @@
+[09-Aug-2024 20:18:27 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:27 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:32 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:32 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:32 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:32 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:35 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:35 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:37 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:37 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:52 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:54 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:54 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:55 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:55 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:57 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:57 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:59 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:18:59 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:04 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:04 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:06 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:06 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:08 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:08 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:10 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:10 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:27 UTC] PHP Warning:  require(/home/comeonne/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/comeonne/public_html/index.php on line 34
+[09-Aug-2024 20:19:27 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/comeonne/public_html/../vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/comeonne/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/comeonne/public_html/index.php on line 34

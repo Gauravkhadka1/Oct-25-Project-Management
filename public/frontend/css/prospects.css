@@ -1,0 +1,368 @@
+.prospects-list {
+    margin-top: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.prospect-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    font-family: 'Arial', sans-serif;
+    text-align: left;
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: white;
+    font-weight: bold;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.styled-table select {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.create-prospect {
+    margin-top: 20px;
+}
+
+.btn-create {
+    background-color: #009879;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-create:hover {
+    background-color: #007f66; /* Darker shade on hover */
+}
+
+
+.modal-content h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content input[type="datetime-local"],
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-submit {
+    background-color: #009879;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-cancel {
+    background-color: #f44336; /* Cancel button background color */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-submit:hover,
+.btn-cancel:hover {
+    opacity: 0.9; /* Slightly transparent on hover */
+}
+
+
+/* For filter */
+
+.filter-dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 100;
+}
+
+.filter-dropdown select {
+    width: 100%;
+}
+
+
+.messagemodal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.messagemodal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 80%;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden; 
+    word-wrap: break-word; 
+    white-space: pre-wrap; 
+}
+
+.messagemodal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#full-message-content {
+
+    word-wrap: break-word; /* Ensures that long text doesn't cause horizontal scrolling */
+    white-space: pre-wrap; 
+}
+
+
+.details-modal {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7); /* Darker background for better contrast */
+    backdrop-filter: blur(5px); /* Adds a blur effect to the background */
+}
+
+.details-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 600px; /* Adjust width for better visibility */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    text-align: left; /* Align text to the left */
+}
+
+.details-modal h3 {
+    margin-bottom: 15px;
+    color: #333; /* Dark color for the heading */
+    font-size: 2rem; /* Increased font size for the heading */
+}
+
+.details-modal p {
+    margin: 10px 0; /* Margin for spacing */
+    color: #555; /* Slightly lighter color for text */
+    font-size: 1.25rem; /* Increased font size for paragraph text */
+    word-wrap: break-word; /* Ensures that long text doesn't cause horizontal scrolling */
+    white-space: pre-wrap;
+}
+
+.details-modal-buttons {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+.details-modal .btn-cancel {
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 12px 18px; /* Increased padding for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    font-size: 1.1rem; /* Increased font size for button */
+}
+
+.details-modal .btn-cancel:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.prospect-name {
+    font-size: 1.2rem; /* Increased font size for the name */
+    font-weight: 600; /* Semi-bold for emphasis */
+    color: #333; /* Darker text color for contrast */
+    margin-right: 10px; /* Spacing between name and button */
+}
+
+.btn-see-details {
+    background-color: #1b9237; /* Green background color */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Slightly rounded corners */
+    padding: 5px 10px; /* Adequate padding for the button */
+    margin-top: 5px;
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth background transition */
+    font-size: 1rem; /* Button font size */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.btn-see-details:hover {
+    background-color: #117426; /* Darker green on hover */
+}
+
+.btn-see-details:focus {
+    outline: none; /* Remove outline on focus */
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Focus shadow */
+}
+
+
+/* Center the modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+    justify-content: center;
+    align-items: center;
+    scroll-behavior: smooth;
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px; /* Set a maximum width for modals */
+    max-height: 100vh; 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    overflow-x: hidden; 
+    scroll-behavior: smooth;
+}
+
+/* Button styles */
+.btn-add-activity, .btn-view-activities, .btn-create, .btn-submit{
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 5px;
+}
+.btn-cancel {
+    background-color: #fa0830; /* Green */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 5px;
+}
+.btn-add-activity {
+margin-bottom: 5px;
+}
+
+.btn-add-activity:hover, .btn-view-activities:hover, .btn-create:hover, .btn-submit:hover {
+    background-color: #45a049; /* Darker green */
+}
+.btn-cancel:hover {
+    background-color: #be0808;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center; /* Center the buttons in the modal */
+    gap: 10px; /* Add space between buttons */
+}
+
+
+.activities-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.activities-table th, .activities-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.activities-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.activities-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.prospect-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
