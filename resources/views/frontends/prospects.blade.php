@@ -302,22 +302,27 @@
 </div>
 
 <!-- View Activities Modal -->
-<div id="view-activities-modal" class="modal">
-    <div class="modal-content">
-        <h3>Activities</h3>
-        <div id="activities-list">
-            <!-- Activities will be populated here -->
-        </div>
-        <div class="modal-buttons">
-            <button type="button" class="btn-cancel" onclick="closeViewActivitiesModal()">Close</button>
+    <div id="view-activities-modal" class="modal">
+        <div class="modal-content">
+            <h3>Activities</h3>
+            <div id="activities-list">
+                <!-- Activities will be populated here -->
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel" onclick="closeViewActivitiesModal()">Close</button>
+            </div>
         </div>
     </div>
-</div>
+
 
 
 
 
    <script>
+    // Get CSRF token from the meta tag
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+
        function openCreateProspectModal() {
            document.getElementById('create-prospect-modal').style.display = 'block';
        }
@@ -454,59 +459,135 @@
             document.getElementById('add-activity-modal').style.display = 'none';
         }
 
-       function viewActivities(prospectId) {
+        function viewActivities(prospectId) {
     // Fetch activities from the server for the given prospect
     fetch(`/prospects/${prospectId}/activities`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log(data); // Log the entire response
             const activitiesList = document.getElementById('activities-list');
             activitiesList.innerHTML = ''; // Clear previous activities
 
-            data.activities.forEach(activity => {
-                const utcDate = new Date(activity.created_at); // Get the date in UTC
+            if (data.activities && data.activities.length > 0) {
+                data.activities.forEach(activity => {
+                    const utcDate = new Date(activity.created_at); // Get the date in UTC
+                    const localTime = utcDate;
 
-                // JavaScript automatically handles local time conversion based on the browser's timezone
-                const localTime = utcDate;
+                    // Formatting options for day, date, and time
+                    const dateOptions = { 
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    };
+                    const timeOptions = { 
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    };
 
-                // Debugging logs to ensure correct times
-                console.log('UTC Time:', utcDate);
-                console.log('Local Time:', localTime);
+                    const formattedDate = localTime.toLocaleDateString('en-NP', dateOptions);
+                    const formattedTime = localTime.toLocaleTimeString('en-US', timeOptions).replace(/^0/, '');
 
-                // Formatting options for day, date, and time
-                const dateOptions = { 
-                    weekday: 'long',  // Add this to show the day of the week
-                    year: 'numeric', 
-                    month: '2-digit', 
-                    day: '2-digit' 
-                };
-                const timeOptions = { 
-                    hour: '2-digit', 
-                    minute: '2-digit', 
-                    hour12: true 
-                };
+                    // Use a fallback for undefined replies
+                    const replies = activity.replies || [];
 
-                const formattedDate = localTime.toLocaleDateString('en-NP', dateOptions); // Format date to include day
-                const formattedTime = localTime.toLocaleTimeString('en-US', timeOptions).replace(/^0/, ''); // Format time
+                    // Create a card-like structure for each activity with like and reply functionality
+                    const activityCard = document.createElement('div');
+                    activityCard.className = 'activity-card';
+                    activityCard.innerHTML = `
+                        <p>${formattedDate} ${formattedTime}</p>
+                        <p><strong>${activity.username}</strong>: ${activity.details}</p>
 
-                // More debugging logs for formatted date and time
-                console.log('Formatted Date:', formattedDate);
-                console.log('Formatted Time:', formattedTime);
+                        <!-- Like Button and Count -->
+                        <button onclick="likeActivity(${activity.id})">Like</button>
+                        <span id="like-count-${activity.id}">${activity.likes || 0} likes</span>
 
-                // Create a card-like structure for each activity, retaining your original format
-                const activityCard = document.createElement('div');
-                activityCard.className = 'activity-card'; // Add a class for styling
-                activityCard.innerHTML = `
-                    <p> ${formattedDate} ${formattedTime}</p>
-                    <p><strong>${activity.username}</strong>:  ${activity.details}</p>
-                    <hr> <!-- Optional: Add a separator line -->
-                `;
-                activitiesList.appendChild(activityCard); // Append the card to the list
-            });
+                        <!-- Reply Input -->
+                        <div>
+                            <input type="text" id="reply-input-${activity.id}" placeholder="Write a reply...">
+                            <button onclick="replyToActivity(${activity.id})">Reply</button>
+                        </div>
+
+                        <!-- Display Replies -->
+                        <div id="replies-${activity.id}">
+                            ${replies.map(reply => `<p><strong>${reply.username}</strong>: ${reply.reply}</p>`).join('')}
+                        </div>
+
+                        <hr> <!-- Optional: Add a separator line -->
+                    `;
+                    activitiesList.appendChild(activityCard); // Append the card to the list
+                });
+            } else {
+                activitiesList.innerHTML = '<p>No activities found.</p>'; // Message if no activities
+            }
 
             // Display the modal
             document.getElementById('view-activities-modal').style.display = 'block';
-        });
+        })
+        .catch(error => console.error('Error fetching activities:', error));
 }
+
+// Function to like an activity
+function likeActivity(activityId) {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch(`/activities/${activityId}/like`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': token,
+            'Accept': 'text/html'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text(); // Expecting HTML response
+    })
+    .then(html => {
+        document.getElementById(`like-count-${activityId}`).innerHTML = html;
+    })
+    .catch(error => console.error('Error liking activity:', error));
+}
+
+
+
+
+function replyToActivity(activityId) {
+    const replyInput = document.getElementById(`reply-input-${activityId}`);
+    const reply = replyInput.value;
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch(`/activities/${activityId}/reply`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': token,
+            'Accept': 'text/html',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            reply: reply
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text(); // Expecting HTML response
+    })
+    .then(html => {
+        document.getElementById(`replies-${activityId}`).innerHTML = html;
+        replyInput.value = ''; // Clear the reply input after success
+    })
+    .catch(error => console.error('Error replying to activity:', error));
+}
+
 
 
         function closeViewActivitiesModal() {

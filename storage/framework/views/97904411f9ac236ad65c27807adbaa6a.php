@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>Come on Nepal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    
@@ -12,8 +13,6 @@
     <link rel="stylesheet" href="<?php echo e(url('frontend/css/signup.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(url('frontend/css/dashboard.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(url('frontend/css/projects.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(url('frontend/css/contributors.css')); ?>">
-    <link rel="stylesheet" href="<?php echo e(url('frontend/css/updateprofile.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(url('frontend/css/forgotpassword.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(url('frontend/css/resetpassword.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(url('frontend/css/user-dashboard.css')); ?>">

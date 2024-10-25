@@ -63,6 +63,13 @@ Route::resource('tasks', TaskController::class);
 
 Route::get('/projects/{projectId}/tasks', [ProjectController::class, 'showTasks'])->name('projects.tasks');
 
+// routes/web.php or routes/api.php
+
+Route::post('/activities/{activity}/like', [ActivityController::class, 'likeActivity']);
+Route::post('/activities/{activity}/reply', [ActivityController::class, 'replyToActivity']);
+
+
+
 
 
 

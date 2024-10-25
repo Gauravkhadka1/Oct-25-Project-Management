@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Mail; // Import the Mail facade
 use App\Mail\ContactFormMail;
 use App\Models\Activity; //
 use App\Models\User;
+use App\Models\Reply;
+use App\Models\like;
+
+
 
 class ActivityController extends Controller
 {
@@ -50,6 +54,40 @@ class ActivityController extends Controller
 }
 
 
+public function likeActivity($activityId)
+{
+    try {
+        $activity = Activity::findOrFail($activityId);
+        $activity->likes += 1;
+        $activity->save();
+
+        // Assuming you want to return an updated HTML fragment
+        return view('partials.activity-likes', ['activity' => $activity]);
+    } catch (Exception $e) {
+        return response()->view('errors.custom-error', ['message' => 'Error liking activity'], 500);
+    }
+}
+
+
+
+
+public function replyToActivity(Request $request, $activityId)
+{
+    try {
+        $activity = Activity::findOrFail($activityId);
+
+        $reply = new Reply();
+        $reply->activity_id = $activityId;
+        $reply->user_id = auth()->id();
+        $reply->reply = $request->input('reply');
+        $reply->save();
+
+        // Assuming you want to return an updated HTML fragment for replies
+        return view('partials.activity-replies', ['activity' => $activity]);
+    } catch (Exception $e) {
+        return response()->view('errors.custom-error', ['message' => 'Error replying to activity'], 500);
+    }
+}
 
 
 
