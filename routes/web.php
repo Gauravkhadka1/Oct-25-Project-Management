@@ -68,6 +68,9 @@ Route::get('/projects/{projectId}/tasks', [ProjectController::class, 'showTasks'
 Route::post('/activities/{activity}/like', [ActivityController::class, 'likeActivity']);
 Route::post('/activities/{activity}/reply', [ActivityController::class, 'replyToActivity']);
 
+Route::get('/user-search', [UserController::class, 'searchUsernames']);
+
+
 
 
 

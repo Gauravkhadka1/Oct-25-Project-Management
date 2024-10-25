@@ -366,3 +366,12 @@ margin-bottom: 5px;
     align-items: center;
     justify-content: center;
 }
+
+.atwho-dropdown {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+}

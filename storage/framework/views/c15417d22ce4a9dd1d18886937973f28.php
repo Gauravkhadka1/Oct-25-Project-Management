@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('main-container'); ?>
 
 <main>
@@ -284,7 +282,7 @@
    
 
  <!-- Add Activity Modal -->
-<div id="add-activity-modal" class="modal">
+ <div id="add-activity-modal" class="modal">
     <div class="modal-content">
         <h3>Add Activity</h3>
         <form id="add-activity-form" action="<?php echo e(route('activities.store')); ?>" method="POST">
@@ -292,7 +290,8 @@
             <input type="hidden" name="prospect_id" id="activity-prospect-id">
             
             <label for="activity-details">Activity Details:</label>
-            <input type="text" name="details" id="activity-details" required><br>
+            <input type="text" name="details" id="activity-details" required>
+            <div id="mention-suggestions" style="display: none;"></div> <!-- For At.js suggestions -->
 
             <div class="modal-buttons">
                 <button type="submit" class="btn-submit">Add Activity</button>
@@ -301,6 +300,7 @@
         </form>
     </div>
 </div>
+
 
 <!-- View Activities Modal -->
     <div id="view-activities-modal" class="modal">

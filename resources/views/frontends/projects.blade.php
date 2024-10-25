@@ -180,34 +180,33 @@
         </div>
    </div>
 
-        <!-- Modal for Task Details -->
-        <div id="task-details-modal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close" onclick="closeTaskDetailsModal()">&times;</span>
-                <h3 id="project-name-modal">Project Tasks</h3>
-                
-                <!-- Add Task Button -->
-                <button class="btn-create" onclick="openAddTaskModal()">Add Task</button>
+       <!-- Modal for Task Details -->
+            <div id="task-details-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close" onclick="closeTaskDetailsModal()">&times;</span>
+                    <h3 id="project-name-modal">Project Tasks</h3>
+                    
+                    <!-- Add Task Button -->
+                    <button class="btn-create" onclick="openAddTaskModal(project.id)">Add Task</button>
 
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            <th>Task Name</th>
-                            <th>Assigned To</th>
-                            <th>Assigned By</th>
-                            <th>Start Date</th>
-                            <th>Due Date</th>
-                            <th>Priority</th>
-                            <th>Time Taken</th>
-                        </tr>
-                    </thead>
-                    <tbody id="task-details-body">
-                        <!-- Task details will be populated here dynamically -->
-        
-                    </tbody>
-                </table>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Task Name</th>
+                                <th>Assigned To</th>
+                                <th>Assigned By</th>
+                                <th>Start Date</th>
+                                <th>Due Date</th>
+                                <th>Priority</th>
+                                <th>Time Taken</th>
+                            </tr>
+                        </thead>
+                        <tbody id="task-details-body">
+                            <!-- Task details will be populated here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
         <!-- Modal for Adding New Task -->
         <div id="add-task-modal" class="modal" style="display: none;">
@@ -219,16 +218,21 @@
                     <input type="hidden" id="project-id" name="project_id">
 
                     <label for="task-name">Task Name:</label>
-                    <input type="text" name="name" id="task-name" >
+                    <input type="text" name="name" id="task-name">
 
                     <label for="assigned-to">Assigned To:</label>
-                    <input type="text" name="assigned_to" id="assigned-to" >
+                    <select name="assigned_to" id="assigned-to">
+                        <option value="">Select User</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->email }}">{{ $user->name }} ({{ $user->email }})</option>
+                        @endforeach
+                    </select>
 
                     <label for="start-date">Start Date:</label>
-                    <input type="date" name="start_date" id="start-date" >
+                    <input type="date" name="start_date" id="start-date">
 
                     <label for="due-date">Due Date:</label>
-                    <input type="date" name="due_date" id="due-date" >
+                    <input type="date" name="due_date" id="due-date">
 
                     <label for="priority">Priority:</label>
                     <select name="priority" id="priority">
@@ -244,7 +248,11 @@
         </div>
 
 
-   
+
+        <script>
+    var project = @json($project); // Pass project data as JSON
+</script>
+
 
         <script>
                 function openCreateProjectModal() {
@@ -342,17 +350,20 @@
                 document.getElementById('task-details-modal').style.display = 'none';
             }
 
-            function openAddTaskModal() {
-                document.getElementById('add-task-modal').style.display = 'block';
+            function openAddTaskModal(projectId) {
+                document.getElementById('project-id').value = projectId; // Set the hidden input with project ID
+                document.getElementById('add-task-modal').style.display = 'block'; // Show the modal
             }
+
 
             function closeAddTaskModal() {
                 document.getElementById('add-task-modal').style.display = 'none';
             }
 
+            console.log("Project ID:", project.id); // Check if this logs the correct ID
 
-
-        </script>     
+        </script>  
+        
 
     </main>
 

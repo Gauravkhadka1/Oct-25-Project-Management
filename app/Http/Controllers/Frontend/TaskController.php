@@ -3,35 +3,39 @@
 namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 
+use App\Mail\TaskAssigned;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Http\Request;
 use App\Models\Task;
 
 class TaskController extends Controller {
-        public function store(Request $request)
+    public function store(Request $request)
     {
-        // Validate the input
+        // Validate the request data
         $request->validate([
-            'name' => 'nullable|string|max:255',
-            'assigned_to' => 'nullable|string|max:255',
-            'start_date' => 'nullable|date',
-            'due_date' => 'nullable|date',
-            'priority' => 'nullable|string',
-            'project_id' => 'nullable|exists:projects,id',
+            'name' => 'required|string|max:255',
+            'assigned_to' => 'required|email', // Ensure it's a valid email
+            'project_id' => 'required|exists:projects,id', // Ensure the project exists
+            // Add other validations as necessary
         ]);
     
-        // Create a new task
-        Task::create([
-            'name' => $request->name,
-            'assigned_to' => $request->assigned_to,
-            'assigned_by' => auth()->user()->username, // Assuming the authenticated user assigns the task
-            'start_date' => $request->start_date,
-            'due_date' => $request->due_date,
-            'priority' => $request->priority,
-            'project_id' => $request->project_id,
+        // Create the task
+        $task = Task::create([
+            'name' => $request->input('name'),
+            'assigned_to' => $request->input('assigned_to'),
+            'project_id' => $request->input('project_id'),
+            // Add other fields as necessary
         ]);
     
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Task created successfully!');
+        // Send email notification to the assigned user
+        Mail::to($request->input('assigned_to'))->send(new TaskAssigned($task, $request->input('assigned_to')));
+    
+        // Redirect back to tasks index with a success message
+        return redirect(url('/projects'))->with('success', 'Task created successfully.');
     }
+    
+
+    
     
 }
