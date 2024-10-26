@@ -1,341 +1,153 @@
 .profile-page {
-    margin-top: 70px;
-    /* background-color: grey; */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f5f5f5;
+    text-align: center;
+    margin: 20px;
 }
-@media only screen and (max-width: 768px) {
-    .profile-page {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-      
-    }
-}
-.profile-info {
-    width: 40%;
-    padding: 10px 20px;
-   position: sticky;
-   top: 30px;
-   left: 20px;
-   align-self: flex-start;
-   margin-top: 20px;
-   background-color: #fff;
-   margin-left: 20px;
-}
-@media only screen and (max-width: 768px) {
-    .profile-info  {
-        width: 100%;
-        padding: 10px 20px;
-       position: relative;
-       top: 0px;
-       left: 0px;
-       align-self: flex-start;
-       margin-top: 0px;
-       background-color: #fff;
-       margin-left: 0px;
-    }
-}
-.profile-pic {
-    
-    border-radius: 50%;
-   
-    /* margin-left: 100px; */
-    margin-top: 20px;
-    margin-bottom: 20px;
-    /* overflow: hidden; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.profileimg {
-    height: 200px;
-    width: 200px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 50%;
-     border: 2px solid #003366;
-}
-
 
 .profile-name {
-    margin-bottom: 20px;
-    margin-top: 30px;
+    font-size: 2rem;
     font-weight: bold;
-    /* margin-left: 200px; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
+    color: #4a4a4a;
 }
-.numbers {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
+
+.mytasks {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
-.profile-donate {
-    margin-right: 20px;
-}
-.profile-donate p {
-    font-weight: bold;
-}
-.num {
-    padding-bottom: 5px;
-    color: blue;
-}
-.donation-number {
+
+.current-tasks h2 {
     text-align: center;
+    color: #333;
+    margin-bottom: 20px;
 }
-.donation-number p {
-    font-weight: bold;
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
 }
-.undp {
-    /* width: 430px; */
+
+.task-table {
     width: 100%;
+    border-collapse: collapse;
+    min-width: 900px; /* Sets a minimum width */
 }
-@media only screen and (max-width: 768px) {
-    .undp {
-        /* width: 430px; */
-        width: 100%;
-    }    
+
+.task-table th, .task-table td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.9rem;
 }
+
+.task-table th {
+    background-color: #f0f0f5;
+    color: #555;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.task-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.task-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Base styling for button */
+.btn-toggle {
+    padding: 8px 16px;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+/* Specific styles for each state */
+.btn-toggle.start {
+    background-color: #28a745; /* Green for Start/Resume */
+}
+
+.btn-toggle.pause {
+    background-color: #dc3545; /* Red for Pause */
+}
+
+
+select, textarea {
+    width: 100%;
+    padding: 4px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
 .edit-logout {
-    /* margin-left: 60px; */
-}
-
-.mes {
-    text-align: center;
-    margin-top: 10px;
-    color: #333;
-}
-
-.socialmedia {
     display: flex;
-    align-items: center;
     justify-content: center;
-    /* flex-direction: column; */
-    padding: 10px 20px;
-    margin-bottom: 5px;
-}
-
-.faceb {
-    color: #003366;
-    font-size: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: grid;
-    align-content: center;
-    justify-content: center;
-    border: 1px solid #003366;
-    margin-right: 10px;
-}
-.faceb:hover {
-    background:#1877F2; 
-    color: white;
-}
-
-.insta {
-    color: #003366;
-    font-size: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: grid;
-    align-content: center;
-    justify-content: center;
-    border: 1px solid #003366;
-    margin-right: 10px;
-}
-.insta:hover {
-    background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4); /* Instagram gradient colors */
-    background-size: 400% 400%; /* Ensures the gradient covers the whole background */
-    animation: gradient 5s ease infinite; /* Optional animation for a smooth gradient effect */
-    color: white;
-}
-
-@keyframes gradient {
-    0% { background-position: 0% 0%; }
-    50% { background-position: 100% 100%; }
-    100% { background-position: 0% 0%; }
-}
-
-.youtub{
-    color: #003366;
-    font-size: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: grid;
-    align-content: center;
-    justify-content: center;
-    border: 1px solid #003366;
-    margin-right: 10px;
-}
-
-.youtub:hover {
-    background: #CD201F; 
-    color: white;
-}
-
-.x-twittw {
-    color: #003366;
-    font-size: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: grid;
-    align-content: center;
-    justify-content: center;
-    border: 1px solid #003366;
-    margin-right: 10px;
-}
-.x-twittw:hover {
-    background: #000; 
-    color: white;
-}
-
-/* .edit-profile {
-    text-align: center;
-    margin-bottom: 10px;
-    margin-top: 15px;  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
-
-/* .edit-profile a {
-    background-color: #87ceeb;
-    border-radius: 10px;
-    border: 2px solid transparent;
-    height: 40px;
-    width: 100px;
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.edit-profile a:hover {
-    background-color: #b3e5fc;
-} */
-.logout {
-    text-align: center;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-/* .logout a {
-    text-decoration: none;
-    color: black;
-    height: 40px;
-    width: 100px;
-    background-color: white;
-    border-radius: 10px;
-    border: 2px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
-
-
-
-/*   details-start   */
-.wdetails {
-
-    /* width: 60%; */
-    padding-left: 60px;
-    margin-right: 170px; 
-    padding-top: 20px;
-    background-color: #f5f5f5;
-}
-@media only screen and (max-width: 768px) {
-    .wdetails {
-        width: 100%;
-        padding-left: 0px;
-        margin-right: 0px; 
-        padding-top: 0px;
-        width: 90%;
-        /* background-color: #fff; */
-    }
-}
-.und {
-    /* width: 500px; */
-    width: 100%;
-}
-.ddetails {
-    margin-bottom: 20px;
     margin-top: 20px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
 }
 
-
-.wcampaign {
-    width: 500px;
+.edit-profile a, .logout a {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 10px;
+    color: white;
+    background-color: #007bff;
+    border-radius: 4px;
     text-decoration: none;
 }
-.wcampaign img {
-    width: 500px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-}
-@media only screen and (max-width: 768px) {
-    .ddetails {
-        width: 90%;
-    }
-    .wcampaign {
-        width: 100%;
-        text-decoration: none;
-    }
-    .wcampaign img {
-        width: 100%;
-        margin-bottom: 20px;
-        border-radius: 10px;
-    }
-}
-.wcampaign h3 {
-    text-align: center;
-    padding-bottom: 20px;
-    color: #003366;
-    font-size: 23px;
-    text-decoration: none;
-}
-.wdetails hr {
-    width: 100%;
+
+.edit-profile a:hover, .logout a:hover {
+    background-color: #0056b3;
 }
 
-.profile-placeholder {
-    width: 200px; /* Adjust as needed */
-    height: 200px; /* Adjust as needed */
-    background-color: #f0f0f0; /* Background color for the placeholder */
-    color: #333; /* Text color */
-    font-size: 60px; /* Adjust font size as needed */
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%; /* Makes it a circle */
-    text-transform: uppercase;
+.myschedule {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
-.profile-placeholdern {
-    width: 50px; /* Adjust as needed */
-    height: 50px; /* Adjust as needed */
-    background-color: #f0f0f0; /* Background color for the placeholder */
-    color: #333; /* Text color */
-    font-size: 30px; /* Adjust font size as needed */
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%; /* Makes it a circle */
-    text-transform: uppercase;
+
+.schedule-heading h2 {
+    font-size: 24px;
+    color: #333; /* Darker text color */
+    margin-bottom: 15px;
+    text-align: center; /* Center the heading */
+}
+
+table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Collapsed borders */
+}
+
+th, td {
+    padding: 12px; /* Padding for table cells */
+    text-align: left; /* Left align text */
+    border-bottom: 1px solid #ddd; /* Subtle bottom border */
+}
+
+th {
+    background-color: #4CAF50; /* Header background color */
+    color: white; /* Header text color */
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Highlight on row hover */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row color */
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* White for odd rows */
 }

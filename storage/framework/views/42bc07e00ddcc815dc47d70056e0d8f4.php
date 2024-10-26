@@ -72,6 +72,7 @@
                             <td><?php echo e($key + 1); ?></td>
                             <td><a href="javascript:void(0);" onclick="openTaskDetailsModal(<?php echo e(json_encode($project)); ?>)"><?php echo e($project->name); ?></a></td>
 
+
                             <td><?php echo e($project->start_date); ?></td>
                             <td><?php echo e($project->due_date); ?></td>
                             <td><?php echo e($project->status); ?></td>
@@ -179,32 +180,32 @@
    </div>
 
        <!-- Modal for Task Details -->
-            <div id="task-details-modal" class="modal" style="display: none;">
-                <div class="modal-content">
-                    <span class="close" onclick="closeTaskDetailsModal()">&times;</span>
-                    <h3 id="project-name-modal">Project Tasks</h3>
-                    
-                    <!-- Add Task Button -->
-                    <button class="btn-create" onclick="openAddTaskModal(project.id)">Add Task</button>
+       <div id="task-details-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeTaskDetailsModal()">&times;</span>
+            <h3 id="project-name-modal">Project Tasks</h3>
+            
+            <!-- Add Task Button -->
+            <button class="btn-create" onclick="openAddTaskModal(project.id)">Add Task</button>
 
-                    <table class="styled-table-project">
-                        <thead>
-                            <tr>
-                                <th>Task Name</th>
-                                <th>Assigned To</th>
-                                <th>Assigned By</th>
-                                <th>Start Date</th>
-                                <th>Due Date</th>
-                                <th>Priority</th>
-                                <th>Time Taken</th>
-                            </tr>
-                        </thead>
-                        <tbody id="task-details-body">
-                            <!-- Task details will be populated here dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <table class="styled-table-project">
+                <thead>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Assigned To</th>
+                        <th>Assigned By</th>
+                        <th>Start Date</th>
+                        <th>Due Date</th>
+                        <th>Priority</th>
+                        <th>Time Taken</th>
+                    </tr>
+                </thead>
+                <tbody id="task-details-body">
+                    <!-- Task details will be populated here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
         <!-- Modal for Adding New Task -->
         <div id="add-task-modal" class="modal" style="display: none;">
@@ -244,12 +245,6 @@
                 </form>
             </div>
         </div>
-
-
-
-        <script>
-    var project = <?php echo json_encode($project, 15, 512) ?>; // Pass project data as JSON
-</script>
 
 
         <script>
@@ -308,89 +303,73 @@
                     }
                 }
 
-                let timers = {};
-    
-    function startTimer(taskId) {
-        if (!timers[taskId]) {
-            timers[taskId] = {
-                startTime: new Date().getTime(),
-                elapsedTime: 0,
-                running: true
-            };
-        } else {
-            timers[taskId].startTime = new Date().getTime() - timers[taskId].elapsedTime;
-            timers[taskId].running = true;
-        }
-        updateTimer(taskId);
+              
+                var project = <?php echo json_encode($project, 15, 512) ?>; // Pass project data as JSON
+    let timers = {};
+
+    function openTaskDetailsModal(project) {
+        console.log(project); // Log the entire project object
+
+        // Set project name in modal heading
+        document.getElementById('project-name-modal').innerText = project.name + " - Task Details";
+
+        // Get the task details (assumed to be loaded as part of the project object)
+        let tasks = project.tasks || []; // Ensure tasks is an array
+        console.log(tasks); // Check tasks array
+
+        let taskDetailsBody = document.getElementById('task-details-body');
+        taskDetailsBody.innerHTML = ''; // Clear previous content
+
+        // Loop through tasks and create table rows
+        tasks.forEach(task => {
+            // Check if task has necessary properties
+            if (task) {
+                let assignedToUsername = task.assigned_user ? task.assigned_user.username : 'N/A'; // Use the username instead of ID
+                let assignedByUsername = task.assigned_by ? task.assigned_by.username : 'N/A'; // If you want to display assigned by username as well
+
+                // Initialize timer for the task
+                if (!timers[task.id]) {
+                    timers[task.id] = {
+                        elapsedTime: task.elapsed_time * 1000 || 0, // Convert to milliseconds
+                        running: false
+                    };
+                }
+
+                // Create the row with a timer display
+                let row = `<tr>
+                    <td>${task.name || 'N/A'}</td>
+                    <td>${assignedToUsername}</td>
+                    <td>${assignedByUsername}</td>
+                    <td>${task.start_date ? new Date(task.start_date).toISOString().split('T')[0] : 'N/A'}</td>
+                    <td>${task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : 'N/A'}</td>
+                    <td>${task.priority || 'N/A'}</td>
+                    <td id="time-${task.id}">${formatTime(timers[task.id].elapsedTime)}</td>
+                </tr>`;
+                taskDetailsBody.innerHTML += row;
+
+                // Update the timer display for each task
+                updateTimerDisplay(task.id);
+            }
+        });
+        document.getElementById('task-details-modal').style.display = 'block';
+
     }
 
-    function pauseTimer(taskId) {
-        if (timers[taskId] && timers[taskId].running) {
-            timers[taskId].elapsedTime = new Date().getTime() - timers[taskId].startTime;
-            timers[taskId].running = false;
-        }
+    function formatTime(milliseconds) {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
-    function stopTimer(taskId) {
-        clearTimeout(timers[taskId]?.timeout);
-        timers[taskId] = null;
-        document.getElementById(`time-${taskId}`).innerText = '00:00:00';
-    }
-
-    function updateTimer(taskId) {
-        if (timers[taskId] && timers[taskId].running) {
-            let currentTime = new Date().getTime() - timers[taskId].startTime;
-            let hours = Math.floor(currentTime / (1000 * 60 * 60));
-            let minutes = Math.floor((currentTime % (1000 * 60 * 60)) / (1000 * 60));
-            let seconds = Math.floor((currentTime % (1000 * 60)) / 1000);
-            
-            document.getElementById(`time-${taskId}`).innerText = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            timers[taskId].timeout = setTimeout(() => updateTimer(taskId), 1000);
+    function updateTimerDisplay(taskId) {
+        const timer = timers[taskId];
+        if (timer) {
+            const totalSeconds = Math.floor(timer.elapsedTime / 1000);
+            document.getElementById(`time-${taskId}`).innerText = formatTime(timer.elapsedTime);
         }
     }
-
-        // show Task details models
-        function openTaskDetailsModal(project) {
-    console.log(project); // Log the entire project object
-
-
-    // Set project name in modal heading
-    document.getElementById('project-name-modal').innerText = project.name + " - Task Details";
-
-    // Get the task details (assumed to be loaded as part of the project object)
-    let tasks = project.tasks || []; // Ensure tasks is an array
-    console.log(tasks); // Check tasks array
-
-    let taskDetailsBody = document.getElementById('task-details-body');
-    taskDetailsBody.innerHTML = ''; // Clear previous content
-
-    // Loop through tasks and create table rows
-    tasks.forEach(task => {
-        // Check if task has necessary properties
-        if (task) {
-            let assignedToUsername = task.assigned_user ? task.assigned_user.username : 'N/A'; // Use the username instead of ID
-            let assignedByUsername = task.assigned_by ? task.assigned_by.username : 'N/A'; // If you want to display assigned by username as well
-
-            let row = `<tr>
-                <td>${task.name || 'N/A'}</td>
-                <td>${assignedToUsername}</td>
-                <td>${assignedByUsername}</td>
-                <td>${task.start_date ? new Date(task.start_date).toISOString().split('T')[0] : 'N/A'}</td>
-                <td>${task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : 'N/A'}</td>
-                <td>${task.priority || 'N/A'}</td>
-                <td>${task.time_taken || 0} hours</td>
-            </tr>`;
-            taskDetailsBody.innerHTML += row;
-        }
-    });
-
-    // Display the modal
-    document.getElementById('task-details-modal').style.display = 'block';
-}
-
-
             function closeTaskDetailsModal() {
                 document.getElementById('task-details-modal').style.display = 'none';
             }

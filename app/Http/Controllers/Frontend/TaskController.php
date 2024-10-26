@@ -50,6 +50,22 @@ public function store(Request $request)
 }
 
 
-    
+public function startTimer(Request $request, Task $task)
+{
+    // Save current elapsed time when starting the timer
+    $task->elapsed_time = $request->input('elapsed_time', 0);
+    $task->save();
+
+    return response()->json(['message' => 'Timer started', 'elapsed_time' => $task->elapsed_time]);
+}
+
+public function pauseTimer(Request $request, Task $task)
+{
+    // Update elapsed time when pausing
+    $task->elapsed_time = $request->input('elapsed_time');
+    $task->save();
+
+    return response()->json(['message' => 'Timer paused', 'elapsed_time' => $task->elapsed_time]);
+}  
     
 }
