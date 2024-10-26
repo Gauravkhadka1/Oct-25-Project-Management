@@ -13,7 +13,10 @@ class ProjectController extends Controller
     public function index()
     {
         // Fetch all projects with their tasks
-        $projects = Project::with('tasks')->get(); 
+        // $projects = Project::with('tasks')->get(); 
+        // In ProfileController or wherever you fetch projects
+    $projects = Project::with(['tasks.assignedUser'])->get();
+
         $users = User::all(); 
 
         // Initialize $project to null if there are no projects

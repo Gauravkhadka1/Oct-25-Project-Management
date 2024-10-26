@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Models\Task;
+use App\Models\Project;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
@@ -21,44 +23,32 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
 
-     public function dashboard () {
-        // return view ("frontends.welcome");
-   
-        $userEmail = auth()->user()->email;
-        $user = User::where('email', $userEmail)->firstOrFail();
-        $username = auth()->user()->username;
-        $address = auth() ->user()->address;
-       
-
-        // Assuming 'amount' is the donation column in 'campaign1' and 'campaign2'
-        $totalDonations = DB::table('campaign1')->where('email', $userEmail)->sum('amount') +
-                          DB::table('campaign2')->where('email', $userEmail)->sum('amount');
-    
-        // Assuming 'tip' is the tip column in 'campaign1' and 'campaign2'
-        $totalTips = DB::table('campaign1')->where('email', $userEmail)->sum('tip') +
-                     DB::table('campaign2')->where('email', $userEmail)->sum('tip');
-
-                     $totalDonationnum = DB::table('campaign1')->where('email', $userEmail)->count() +
-                     DB::table('campaign2')->where('email', $userEmail)->count();
-
-
-
-        $donations1 = DB::table('campaign1')->where('email', $userEmail)
-        ->orderBy('created_at', 'desc')
-        ->get(['created_at', 'amount', 'image', 'a', 'heading', 'total-raised', 'progress-percentage', 'raised-percentage']);
-
-                     // Retrieve donations from Campaign2
-        $donations2 = DB::table('campaign2')->where('email', $userEmail)
-        ->orderBy('created_at', 'desc')
-        ->get(['created_at', 'amount', 'image', 'a', 'heading', 'total-raised', 'progress-percentage', 'raised-percentage']);
-             
-                     // Combine donations
-                     $donations = $donations1->merge($donations2);
-
-                     $donations = $donations->sortByDesc('created_at');
- 
-        return view('frontends.dashboard', compact('totalDonations', 'totalTips', 'donations','username', 'totalDonationnum', 'address','userEmail', 'user'));
-    }
+     public function dashboard()
+     {
+         $user = auth()->user();
+         $userEmail = $user->email;
+         $username = $user->username;
+     
+         // Get tasks assigned only to the logged-in user, including the user who assigned them
+         $tasks = Task::with('assignedBy') // Eager load the assignedBy relationship
+             ->where('assigned_to', $user->id)
+             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
+             ->get();
+     
+         // Debugging: Log the tasks to see what's retrieved for this user
+         \Log::info("Tasks for user {$user->email}:", $tasks->toArray());
+     
+         // Retrieve projects and include only tasks assigned to the logged-in user
+         $projects = Project::with(['tasks' => function($query) use ($user) {
+             $query->where('assigned_to', $user->id);
+         }])->get();
+     
+         // Debugging: Log the projects with tasks to verify filtering
+         \Log::info("Projects for user {$user->email}:", $projects->toArray());
+     
+         return view('frontends.dashboard', compact('projects', 'username', 'userEmail', 'user', 'tasks'));
+     }
+     
 
 
 
@@ -100,48 +90,6 @@ class ProfileController extends Controller
 
 
     }
-
-
-    public function show($email)
-    {
-        $user = User::where('email', $email)->firstOrFail();
-        $userFirstName = $user->name;
-        $bio = $user->bio;
-        $address = $user->address;
-
-        $totalDonationnum = DB::table('campaign1')->where('email', $email)->count() +
-        DB::table('campaign2')->where('email', $email)->count();
-       
-
-        // Assuming 'amount' is the donation column in 'campaign1' and 'campaign2'
-        $totalDonations = DB::table('campaign1')->where('email', $email)->sum('amount') +
-                          DB::table('campaign2')->where('email', $email)->sum('amount');
-    
-        // Assuming 'tip' is the tip column in 'campaign1' and 'campaign2'
-        $totalTips = DB::table('campaign1')->where('email', $email)->sum('tip') +
-                     DB::table('campaign2')->where('email', $email)->sum('tip');
-
-
-    // Retrieve donations from Campaign1
-        $donations1 = DB::table('campaign1')->where('email', $email)
-        ->orderBy('created_at', 'desc')
-        ->get(['created_at', 'amount', 'image', 'a', 'heading', 'total-raised', 'progress-percentage', 'raised-percentage']);
-
-                     // Retrieve donations from Campaign2
-        $donations2 = DB::table('campaign2')->where('email', $email)
-        ->orderBy('created_at', 'desc')
-        ->get(['created_at', 'amount', 'image', 'a', 'heading', 'total-raised', 'progress-percentage', 'raised-percentage']);
-             
-                     // Combine donations
-                     $donations = $donations1->merge($donations2);
-                     $donations = $donations->sortByDesc('created_at');
-        return view('frontends.dashboard', compact('user', 'totalDonations', 'totalTips', 'donations','userFirstName', 'totalDonationnum', 'bio', 'address'));
-    }
-
-
-
-
-
 
     /**
      * Delete the user's account.

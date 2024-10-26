@@ -312,38 +312,42 @@
 
         // show Task details models
         function openTaskDetailsModal(project) {
-                    console.log(project); // Log the entire project object
+    console.log(project); // Log the entire project object
 
-                    // Set project name in modal heading
-                    document.getElementById('project-name-modal').innerText = project.name + " - Task Details";
 
-                    // Get the task details (assumed to be loaded as part of the project object)
-                    let tasks = project.tasks || []; // Ensure tasks is an array
-                    console.log(tasks); // Check tasks array
+    // Set project name in modal heading
+    document.getElementById('project-name-modal').innerText = project.name + " - Task Details";
 
-                    let taskDetailsBody = document.getElementById('task-details-body');
-                    taskDetailsBody.innerHTML = ''; // Clear previous content
+    // Get the task details (assumed to be loaded as part of the project object)
+    let tasks = project.tasks || []; // Ensure tasks is an array
+    console.log(tasks); // Check tasks array
 
-                    // Loop through tasks and create table rows
-                    tasks.forEach(task => {
-                        // Check if task has necessary properties
-                        if (task) {
-                            let row = `<tr>
-                                <td>${task.name || 'N/A'}</td>
-                                <td>${task.assigned_to || 'N/A'}</td>
-                                <td>${task.assigned_by || 'N/A'}</td>
-                                <td>${task.start_date ? new Date(task.start_date).toISOString().split('T')[0] : 'N/A'}</td>
-                                <td>${task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : 'N/A'}</td>
-                                <td>${task.priority || 'N/A'}</td>
-                                <td>${task.time_taken || 0} hours</td>
-                            </tr>`;
-                            taskDetailsBody.innerHTML += row;
-                        }
-                    });
+    let taskDetailsBody = document.getElementById('task-details-body');
+    taskDetailsBody.innerHTML = ''; // Clear previous content
 
-                    // Display the modal
-                    document.getElementById('task-details-modal').style.display = 'block';
-                }
+    // Loop through tasks and create table rows
+    tasks.forEach(task => {
+        // Check if task has necessary properties
+        if (task) {
+            let assignedToUsername = task.assigned_user ? task.assigned_user.username : 'N/A'; // Use the username instead of ID
+            let assignedByUsername = task.assigned_by ? task.assigned_by.username : 'N/A'; // If you want to display assigned by username as well
+
+            let row = `<tr>
+                <td>${task.name || 'N/A'}</td>
+                <td>${assignedToUsername}</td>
+                <td>${assignedByUsername}</td>
+                <td>${task.start_date ? new Date(task.start_date).toISOString().split('T')[0] : 'N/A'}</td>
+                <td>${task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : 'N/A'}</td>
+                <td>${task.priority || 'N/A'}</td>
+                <td>${task.time_taken || 0} hours</td>
+            </tr>`;
+            taskDetailsBody.innerHTML += row;
+        }
+    });
+
+    // Display the modal
+    document.getElementById('task-details-modal').style.display = 'block';
+}
 
 
             function closeTaskDetailsModal() {
