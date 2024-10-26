@@ -31,6 +31,9 @@
         </defs>
     </svg>
 
+    @php
+    $allowedEmails = ['gaurav@webtech.com.np', 'gauravkhadka111111@gmail.com'];
+@endphp
 
 </head>
 <body>
@@ -73,12 +76,16 @@
                         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
 
+                    @if(in_array(auth()->user()->email, $allowedEmails))
                     <li class="hideOnMobile"><a href="{{url('/payments')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Payments</a></li>
                     <li class="hideOnMobile"><a href="{{url('/prospects')}}" class="{{ Request::is('about') ? 'active' : '' }}">Prospects</a></li>
-                    <li class="hideOnMobile"><a href="{{url('/projects')}}" class="{{ Request::is('campaigns') ? 'active' : '' }}">Projects</a></li>
                     <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Renewals</a></li>
-                   
+                    @endif
 
+                  
+                    <li class="hideOnMobile"><a href="{{url('/projects')}}" class="{{ Request::is('campaigns') ? 'active' : '' }}">Projects</a></li>
+                   
+                  
                       @auth
                         <li class="hideOnMobile"><a href="{{route('dashboard')}}">
                         @if(auth()->user()->profilepic)

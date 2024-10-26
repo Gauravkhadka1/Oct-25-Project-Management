@@ -31,6 +31,9 @@
         </defs>
     </svg>
 
+    <?php
+    $allowedEmails = ['gaurav@webtech.com.np', 'gauravkhadka111111@gmail.com'];
+?>
 
 </head>
 <body>
@@ -73,12 +76,16 @@
                         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
 
+                    <?php if(in_array(auth()->user()->email, $allowedEmails)): ?>
                     <li class="hideOnMobile"><a href="<?php echo e(url('/payments')); ?>" class="<?php echo e(Request::is('contributors') ? 'active' : ''); ?>">Payments</a></li>
                     <li class="hideOnMobile"><a href="<?php echo e(url('/prospects')); ?>" class="<?php echo e(Request::is('about') ? 'active' : ''); ?>">Prospects</a></li>
-                    <li class="hideOnMobile"><a href="<?php echo e(url('/projects')); ?>" class="<?php echo e(Request::is('campaigns') ? 'active' : ''); ?>">Projects</a></li>
                     <li class="hideOnMobile"><a href="<?php echo e(url('/contributors')); ?>" class="<?php echo e(Request::is('contributors') ? 'active' : ''); ?>">Renewals</a></li>
-                   
+                    <?php endif; ?>
 
+                  
+                    <li class="hideOnMobile"><a href="<?php echo e(url('/projects')); ?>" class="<?php echo e(Request::is('campaigns') ? 'active' : ''); ?>">Projects</a></li>
+                   
+                  
                       <?php if(auth()->guard()->check()): ?>
                         <li class="hideOnMobile"><a href="<?php echo e(route('dashboard')); ?>">
                         <?php if(auth()->user()->profilepic): ?>
