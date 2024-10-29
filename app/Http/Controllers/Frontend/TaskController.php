@@ -14,6 +14,7 @@ class TaskController extends Controller {
    // In TaskController
 public function store(Request $request)
 {
+    \Log::info("Incoming project_id: " . $request->input('project_id'));
     // Validate the request data
     $request->validate([
         'name' => 'required|string|max:255',
@@ -44,7 +45,7 @@ public function store(Request $request)
     
 
     // Send email notification, etc.
-    // ...
+    // Mail::to($request->input('assigned_to'))->send(new TaskAssigned($task, $request->input('assigned_to')));
 
     return redirect(url('/projects'))->with('success', 'Task created successfully.');
 }
@@ -67,5 +68,35 @@ public function pauseTimer(Request $request, Task $task)
 
     return response()->json(['message' => 'Timer paused', 'elapsed_time' => $task->elapsed_time]);
 }  
-    
+
+public function getTasksForUsername(Request $request)
+{
+    $username = $request->query('username');
+    $user = User::where('username', $username)->first();
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    $tasks = Task::with(['assignedBy', 'project']) // Ensure to include the project relationship
+        ->where('assigned_to', $user->id)
+        ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority', 'project_id')
+        ->get();
+
+    // Map tasks to include the project name
+    $tasksWithProjectName = $tasks->map(function ($task) {
+        return [
+            'id' => $task->id,
+            'name' => $task->name,
+            'assignedBy' => $task->assignedBy,
+            'start_date' => $task->start_date,
+            'due_date' => $task->due_date,
+            'priority' => $task->priority,
+            'comment' => $task->comment,
+            'project_name' => $task->project ? $task->project->name : 'N/A', // Check if project exists
+        ];
+    });
+
+    return response()->json($tasksWithProjectName);
+}
 }

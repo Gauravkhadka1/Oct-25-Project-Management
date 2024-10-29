@@ -68,13 +68,13 @@
                 <ul>
                     <li><a href="<?php echo e(url('/')); ?>"> <img src="<?php echo e(url('frontend/images/wtn.png')); ?>" class="logo-img"></a></li>
 
-                    <form action="<?php echo e(route('search')); ?>" method="GET" class="searchbar">
+                    <!-- <form action="<?php echo e(route('search')); ?>" method="GET" class="searchbar">
                         <div class="filtericon">
                           <img src="frontend/images/filter.png" alt="">
                         </div>
                         <input type="text" name="query" placeholder="Search..." class="searchform">
                         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </form>
+                    </form> -->
 
                     <?php if(in_array(auth()->user()->email, $allowedEmails)): ?>
                     <li class="hideOnMobile"><a href="<?php echo e(url('/payments')); ?>" class="<?php echo e(Request::is('contributors') ? 'active' : ''); ?>">Payments</a></li>

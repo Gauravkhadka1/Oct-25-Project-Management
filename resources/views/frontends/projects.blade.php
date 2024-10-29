@@ -6,66 +6,101 @@
     use Carbon\Carbon;
 @endphp
 
-    <main>
-        <div class="project-page">
+<main>
+    <div class="project-page">
         <div class="project-heading">
              <h2>Projects</h2>
-           </div>
-        <!-- <div class="project-tags">
-            <span>Sabin M..</span>
-            <span>Anubhav M..</span>
-            <span>Lokendra GC</span>
-            <span>Denisha M..</span>
-            <span>Jeena M..</span>
-            <span>Muskaan T..</span>
-            <span>Sabita B..</span>
-            <span>Gaurav K..</span>
-            <span>Suraj Sir</span>
-            <span>Sudeep Sir</span>
-        </div> -->
-    <div class="projects">
-
-                <div class="mob-heading">
-                    <div class="mob-heading-recent" onclick="toggleTable('ongoing', this)">
-                        <h2>Ongoing</h2>
-                    </div>
-                    <div class="mob-heading-top" onclick="toggleTable('completed', this)">
-                        <h2>Completed</h2>
-                    </div>
-                    <div class="mob-heading-top" onclick="toggleTable('closed', this)">
-                        <h2>Closed</h2>
-                    </div>
-                </div>
-                <div class="ongoing-project" id="ongoing-project">
+        </div>
+        <div class="projects">
+            <div class="ongoing-project" id="ongoing-project">
                 <table class="styled-table">
                     <thead>
                         <tr>
-                            <th>SN</th>
-                            <th>Project</th>
-                            <th>Start Date</th>
-                            <th>Due Date</th>
+                            <th>SN</th>   
                             <th>
-                                Status
-                                <a href="#" onclick="toggleFilter('category-filter')">
-                                    <i class="fas fa-filter"></i> <!-- Filter Icon -->
+                                Projects
+                                <a href="#" onclick="toggleFilter('project-name-sort')">
+                                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
                                 </a>
-                                <div id="category-filter" class="filter-dropdown" style="display: none;">
-                                    <form action="{{ route('prospects.index') }}" method="GET">
-                                        <select name="filter_category" onchange="this.form.submit()">
-                                            <option value="">All Categories</option>
-                                            <option value="Ecommerce" {{ request('filter_category') == 'Design' ? 'selected' : '' }}>Design</option>
-                                            <option value="NGO/ INGO" {{ request('filter_category') == 'Development' ? 'selected' : '' }}>Development</option>
-                                            <option value="Tourism" {{ request('filter_category') == 'QA' ? 'selected' : '' }}>QA</option>
-                                            <option value="Education" {{ request('filter_category') == 'ContentFillup' ? 'selected' : '' }}>Content Fillup</option>
-                                            <option value="Education" {{ request('filter_category') == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                            <option value="Education" {{ request('filter_category') == 'Closed' ? 'selected' : '' }}>Closed</option>
-                                            <option value="Other" {{ request('filter_category') == 'Other' ? 'selected' : '' }}>Other</option>
+                                <div id="project-name-sort" class="filter-dropdown" style="display: none;">
+                                    <form action="{{ route('projects.index') }}" method="GET">
+                                        <select name="sort_project_name" onchange="this.form.submit()">
+                                            <option value="">Sort by Project Name</option>
+                                            <option value="a_to_z" {{ request('sort_project_name') == 'a_to_z' ? 'selected' : '' }}>A to Z</option>
+                                            <option value="z_to_a" {{ request('sort_project_name') == 'z_to_a' ? 'selected' : '' }}>Z to A</option>
                                         </select>
                                     </form>
                                 </div>
                             </th>
-                            <th>Time left</th>
-                            <th>Edit</th>
+                            <th>
+                                Start Date
+                                <a href="#" onclick="toggleFilter('date-filter')">
+                                 <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                                </a>
+                                <div id="date-filter" class="filter-dropdown" style="display: none;">
+                                    <form action="{{ route('projects.index') }}" method="GET">
+                                        <select name="sort_start_date" onchange="this.form.submit()">
+                                            <option value="">Sort by Start Date</option>
+                                            <option value="recent" {{ request('sort_start_date') == 'recent' ? 'selected' : '' }}>Most Recent</option>
+                                            <option value="oldest" {{ request('sort_start_date') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </th>
+                            <th>
+                                Due Date
+                                <a href="#" onclick="toggleFilter('due-date-sort')">
+                                 <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                                </a>
+                                <div id="due-date-sort" class="filter-dropdown" style="display: none;">
+                                    <form action="{{ route('projects.index') }}" method="GET">
+                                        <select name="sort_due_date" onchange="this.form.submit()">
+                                            <option value="">Sort by Due Date</option>
+                                            <option value="more_time" {{ request('sort_due_date') == 'more_time' ? 'selected' : '' }}>Less Time</option>
+                                            <option value="less_time" {{ request('sort_due_date') == 'less_time' ? 'selected' : '' }}>More Time</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </th>
+                            <th>
+                                Status
+                                <a href="#" onclick="toggleFilter('status-filter')">
+                                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                                </a>
+                                <div id="status-filter" class="filter-dropdown" style="display: none;">
+                                    <form action="{{ route('projects.index') }}" method="GET">
+                                        <select name="filter_status" onchange="this.form.submit()">
+                                            <option value="">All Status</option>
+                                            <option value="Design" {{ request('filter_status') == 'Design' ? 'selected' : '' }}>Design</option>
+                                            <option value="Development" {{ request('filter_status') == 'Development' ? 'selected' : '' }}>Development</option>
+                                            <option value="QA" {{ request('filter_status') == 'QA' ? 'selected' : '' }}>QA</option>
+                                            <option value="Content Fillup" {{ request('filter_status') == 'ContentFillup' ? 'selected' : '' }}>Content Fillup</option>
+                                            <option value="Completed" {{ request('filter_status') == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                            <option value="Closed" {{ request('filter_status') == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                            <option value="Other" {{ request('filter_status') == 'Other' ? 'selected' : '' }}>Other</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </th>
+
+                            <th>
+                                Time Left
+                                <a href="#" onclick="toggleFilter('time-left-sort')">
+                                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                                </a>
+                                <div id="time-left-sort" class="filter-dropdown" style="display: none;">
+                                    <form action="{{ route('projects.index') }}" method="GET">
+                                        <select name="sort_time_left" onchange="this.form.submit()">
+                                            <option value="">Sort by Time Left</option>
+                                            <option value="time_left_asc" {{ request('sort_time_left') == 'time_left_asc' ? 'selected' : '' }}>Less Days Left</option>
+                                            <option value="time_left_desc" {{ request('sort_time_left') == 'time_left_desc' ? 'selected' : '' }}>More Days Left</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </th>
+
+
+                                <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,34 +114,35 @@
                             <td>{{ $project->due_date }}</td>
                             <td>{{ $project->status }}</td>
                             <td>
-                                @php
-                                    // Parse the dates with Carbon
-                                    $startDate = \Carbon\Carbon::parse($project->start_date);
-                                    $dueDate = \Carbon\Carbon::parse($project->due_date);
-                                    $currentDate = \Carbon\Carbon::now(); // Get the current date
-                                    
-                                    // Calculate the number of full days left from current date to the due date
-                                    $daysLeft = $currentDate->startOfDay()->diffInDays($dueDate, false); // false allows negative values (for overdue)
-                                @endphp
-
-                                {{-- Displaying the remaining days --}}
-                                @if($daysLeft > 0)
-                                    {{ $daysLeft }} days left
-                                @elseif($daysLeft === 0)
-                                    Due today
+                                @if(is_null($project->start_date) || is_null($project->due_date))
+                                    N/A
                                 @else
-                                    Overdue by {{ abs($daysLeft) }} days
+                                    @php
+                                        $startDate = \Carbon\Carbon::parse($project->start_date);
+                                        $dueDate = \Carbon\Carbon::parse($project->due_date);
+                                        $currentDate = \Carbon\Carbon::now();
+                                        $daysLeft = $currentDate->startOfDay()->diffInDays($dueDate, false);
+                                    @endphp
+
+                                    @if($daysLeft > 0)
+                                        {{ $daysLeft }} days left
+                                    @elseif($daysLeft === 0)
+                                        Due today
+                                    @else
+                                        Overdue by {{ abs($daysLeft) }} days
+                                    @endif
                                 @endif
                             </td>
+                            <!-- Add a button to add tasks for each project -->
                             <td>
-                                <button class="btn-create" onclick="openEditProjectModal({{ json_encode($project) }})">Edit</button>
-                                <form action="{{ route('project.destroy', $project->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-cancel">Delete</button>
-                                </form>
-                            </td>
-
+                                <button class="btn-create" onclick="openAddTaskModal({{ $project->id }})">Add Task</button>
+                                <button class="btn-edit" onclick="openEditProjectModal({{ json_encode($project) }})">Edit</button>
+                                    <!-- <form action="{{ route('project.destroy', $project->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this project?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-cancel">Delete</button>
+                                    </form> -->
+                                </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -114,7 +150,7 @@
                 <div class="create-project">
                     <button onclick="openCreateProjectModal()">Create Project</button>
                 </div>
-    </div>
+            </div>
         </div>
 
         <!-- Modal for Creating New Project -->
@@ -150,7 +186,7 @@
         <!-- Modal for Editing Project -->
 
         <div id="edit-project-modal" class="modal" style="display: none;">
-        <div class="modal-content">
+         <div class="modal-content">
             <h3>Edit Prospect</h3>
             <form id="edit-project-form" action="{{ route('projects.update', '') }}" method="POST">
                 @csrf
@@ -188,7 +224,7 @@
             <h3 id="project-name-modal">Project Tasks</h3>
             
             <!-- Add Task Button -->
-            <button class="btn-create" onclick="openAddTaskModal(project.id)">Add Task</button>
+            
 
             <table class="styled-table-project">
                 <thead>
@@ -210,55 +246,48 @@
     </div>
 
         <!-- Modal for Adding New Task -->
-        <div id="add-task-modal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close" onclick="closeAddTaskModal()">&times;</span>
-                <h3>Add New Task</h3>
-                <form action="{{ route('tasks.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" id="project-id" name="project_id">
+    <div id="add-task-modal" class="custom-modal" style="display: none;">
+         <div class="custom-modal-content">
+        <span class="custom-close" onclick="closeAddTaskModal()">&times;</span>
+        <h3 class="custom-modal-title">Add New Task</h3>
+        <form action="{{ route('tasks.store') }}" method="POST" class="custom-form">
+            @csrf
+            <input type="hidden" id="project-id" name="project_id" value="">
 
-                    <label for="task-name">Task Name:</label>
-                    <input type="text" name="name" id="task-name">
+            <label for="task-name" class="custom-label">Task Name:</label>
+            <input type="text" name="name" id="task-name" class="custom-input" required>
 
-                    <label for="assigned-to">Assigned To:</label>
-                    <select name="assigned_to" id="assigned-to">
-                        <option value="">Select User</option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->email }}">{{ $user->name }} ({{ $user->email }})</option>
-                        @endforeach
-                    </select>
+            <label for="assigned-to" class="custom-label">Assigned To:</label>
+            <select name="assigned_to" id="assigned-to" class="custom-select" required>
+                <option value="">Select User</option>
+                @foreach ($users as $user)
+                    <option value="{{ $user->email }}">{{ $user->name }} ({{ $user->email }})</option>
+                @endforeach
+            </select>
 
-                    <label for="start-date">Start Date:</label>
-                    <input type="date" name="start_date" id="start-date">
+            <label for="start-date" class="custom-label">Start Date:</label>
+            <input type="date" name="start_date" id="start-date" class="custom-input">
 
-                    <label for="due-date">Due Date:</label>
-                    <input type="date" name="due_date" id="due-date">
+            <label for="due-date" class="custom-label">Due Date:</label>
+            <input type="date" name="due_date" id="due-date" class="custom-input">
 
-                    <label for="priority">Priority:</label>
-                    <select name="priority" id="priority">
-                        <option value="Normal">Normal</option>
-                        <option value="High">High</option>
-                        <option value="Urgent">Urgent</option>
-                    </select>
+            <label for="priority" class="custom-label">Priority:</label>
+            <select name="priority" id="priority" class="custom-select">
+                <option value="Normal">Normal</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+            </select>
 
-                    <button type="submit">Add Task</button>
-                    <button type="button" onclick="closeAddTaskModal()">Cancel</button>
-                </form>
-            </div>
-        </div>
+            <button type="submit" class="custom-submit-button">Add Task</button>
+            <button type="button" class="custom-cancel-button" onclick="closeAddTaskModal()">Cancel</button>
+        </form>
+    </div>
+ </div>
 
-
-        <script>
-                function openCreateProjectModal() {
-                    document.getElementById('create-project-modal').style.display = 'block';
-                }
-
-                function closeCreateProjectModal() {
-                    document.getElementById('create-project-modal').style.display = 'none';
-                }
-
-                function openEditProjectModal(project) {
+    <script>
+        function openCreateProjectModal() {document.getElementById('create-project-modal').style.display = 'block';}
+        function closeCreateProjectModal() {document.getElementById('create-project-modal').style.display = 'none';}
+        function openEditProjectModal(project) {
                     document.getElementById('edit-project-name').value = project.name;
                     document.getElementById('edit-start_date').value = project.start_date; // Fixed the ID
                     document.getElementById('edit-due_date').value = project.due_date; // Fixed the ID
@@ -275,52 +304,27 @@
             function closeEditProjectModal() {
                 document.getElementById('edit-project-modal').style.display = 'none';
             }
-
-
-                // for filter
-                function toggleFilter(id) {
-                    // Close other filters first
-                    document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-                        if (dropdown.id !== id) {
-                            dropdown.style.display = 'none';
-                        }
-                    });
-
-                    // Toggle the selected filter dropdown
-                    var element = document.getElementById(id);
-                    if (element.style.display === 'none' || element.style.display === '') {
-                        element.style.display = 'block';
-                    } else {
-                        element.style.display = 'none';
-                    }
-                }
-
-                // Close the dropdowns if clicked outside, but ignore clicks inside the dropdown
-                window.onclick = function(event) {
-                    // Check if the click is inside the dropdown or on the filter icon
-                    if (!event.target.closest('.filter-dropdown') && !event.target.matches('.fas')) {
-                        document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-                            dropdown.style.display = 'none';
-                        });
-                    }
-                }
-
-              
+            function openAddTaskModal(projectId) {
+                // Set the hidden input for project ID
+                document.getElementById('project-id').value = projectId; 
+                console.log('Opening modal for project ID:', projectId); 
+                document.getElementById('add-task-modal').style.display = 'block';
+            }
                 var project = @json($project); // Pass project data as JSON
-    let timers = {};
+        let timers = {};
 
-    function openTaskDetailsModal(project) {
-        console.log(project); // Log the entire project object
+        function openTaskDetailsModal(project) {
+            console.log(project); // Log the entire project object
 
-        // Set project name in modal heading
-        document.getElementById('project-name-modal').innerText = project.name + " - Task Details";
+            // Set project name in modal heading
+            document.getElementById('project-name-modal').innerText = project.name + " - Task Details";
 
-        // Get the task details (assumed to be loaded as part of the project object)
-        let tasks = project.tasks || []; // Ensure tasks is an array
-        console.log(tasks); // Check tasks array
+            // Get the task details (assumed to be loaded as part of the project object)
+            let tasks = project.tasks || []; // Ensure tasks is an array
+            console.log(tasks); // Check tasks array
 
-        let taskDetailsBody = document.getElementById('task-details-body');
-        taskDetailsBody.innerHTML = ''; // Clear previous content
+            let taskDetailsBody = document.getElementById('task-details-body');
+            taskDetailsBody.innerHTML = ''; // Clear previous content
 
         // Loop through tasks and create table rows
         tasks.forEach(task => {
@@ -355,40 +359,57 @@
         });
         document.getElementById('task-details-modal').style.display = 'block';
 
-    }
-
-    function formatTime(milliseconds) {
-        const totalSeconds = Math.floor(milliseconds / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }
-
-    function updateTimerDisplay(taskId) {
-        const timer = timers[taskId];
-        if (timer) {
-            const totalSeconds = Math.floor(timer.elapsedTime / 1000);
-            document.getElementById(`time-${taskId}`).innerText = formatTime(timer.elapsedTime);
         }
-    }
-            function closeTaskDetailsModal() {
+
+        function formatTime(milliseconds) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay(taskId) {
+            const timer = timers[taskId];
+            if (timer) {
+                const totalSeconds = Math.floor(timer.elapsedTime / 1000);
+                document.getElementById(`time-${taskId}`).innerText = formatTime(timer.elapsedTime);
+            }
+        }
+        function closeTaskDetailsModal() {
                 document.getElementById('task-details-modal').style.display = 'none';
             }
-
-            function openAddTaskModal(projectId) {
-                document.getElementById('project-id').value = projectId; // Set the hidden input with project ID
-                document.getElementById('add-task-modal').style.display = 'block'; // Show the modal
-            }
-
 
             function closeAddTaskModal() {
                 document.getElementById('add-task-modal').style.display = 'none';
             }
 
-            console.log("Project ID:", project.id); // Check if this logs the correct ID
+            function toggleFilter(filterId) {
+    // Close all other filters first
+    document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+        if (dropdown.id !== filterId) {
+            dropdown.style.display = 'none';
+        }
+    });
 
-        </script>  
+    // Toggle the selected filter dropdown
+    const element = document.getElementById(filterId);
+    if (element) {
+        element.style.display = (element.style.display === 'none' || element.style.display === '') ? 'block' : 'none';
+    }
+}
+
+// Close dropdowns when clicking outside
+window.onclick = function(event) {
+    if (!event.target.matches('.barfilter') && !event.target.closest('.filter-dropdown')) {
+        document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+            dropdown.style.display = 'none';
+        });
+    }
+};
+
+    
+    </script>  
         
 
     </main>

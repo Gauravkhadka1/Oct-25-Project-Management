@@ -41,7 +41,7 @@ nav.scrolled .nav-list a {
     color: black;
 }
 .logo-img {
-    height: 70px;
+    height: 90px;
     /* margin-top: 10px; */
   
     /* width: 100%; */
@@ -128,16 +128,32 @@ nav li a:hover {
     }
 
 
- .userpic {
+ /* .userpic {
     position: relative;
     height: 50px;
     width: 50px;
     border-radius: 50%;
-    /* border: 1.7px solid blue; */
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #fff; 
+} */
+
+.profile-header a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+.profile-header img {
+    margin-bottom: 5px;
+width: 60px;
+}
+.fa-user {
+    font-size: 40px;
+    color: rgb(168, 163, 163);
 }
 
 .sidebar {

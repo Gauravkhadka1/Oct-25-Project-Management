@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Prospect;
 
-class ProspectController extends Controller
+class ProspectController g extends Controller
 {
     // Change this method name from 'prospects' to 'index'
     public function index(Request $request)
@@ -49,8 +49,9 @@ class ProspectController extends Controller
     {
         // Validate and save project
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255',
             'category' => 'nullable|string|max:255',
+            'contact_person' => 'nullable|string|max:255',
             'inquirydate' => 'nullable|date', 
             'probability' => 'nullable|numeric',
             'activities' => 'nullable|string',
@@ -79,8 +80,9 @@ class ProspectController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'name' => 'nullable|string|max:255',
+            'company_name' => 'nullable|string|max:255',
             'category' => 'nullable|string|max:255',
+            'contact_person' => 'nullable|string|max:255',
             'probability' => 'nullable|numeric|min:0|max:100',
             'inquirydate' => 'nullable|date',
             'activities' => 'nullable|string|max:255',
@@ -95,8 +97,9 @@ class ProspectController extends Controller
         $prospect = Prospect::findOrFail($id);
 
         // Update the prospect's attributes
-        $prospect->name = $request->input('name');
+        $prospect->company_name = $request->input('company_name');
         $prospect->category = $request->input('category');
+        $prospect->contact_person = $request->input('contact_person');
         $prospect->phone_number = $request->input('phone_number');
         $prospect->email = $request->input('email');
         $prospect->message = $request->input('message');

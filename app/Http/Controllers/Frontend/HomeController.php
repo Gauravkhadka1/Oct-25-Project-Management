@@ -37,11 +37,4 @@ class HomeController extends Controller
     {
         return view('frontends.prospects');
     }
-
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-        $results = Campaign1::where('heading', 'LIKE', "%$query%")->get();
-        return view('search-results', compact('results'));
-    }
 }

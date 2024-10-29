@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Come on Nepal</title>
+    <title>Project Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    
 
@@ -32,8 +32,13 @@
     </svg>
 
     @php
-    $allowedEmails = ['gaurav@webtech.com.np', 'gauravkhadka111111@gmail.com'];
+    $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
+    $user = auth()->user();
+         $userEmail = $user->email;
+         $username = $user->username;
 @endphp
+
+     
 
 </head>
 <body>
@@ -57,10 +62,10 @@
 
                  
                       @endauth
-                      <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Payments</a></li>
-                      <li class="hideOnMobile"><a href="{{url('/about')}}" class="{{ Request::is('about') ? 'active' : '' }}">Prospects</a></li>
+                      <!-- <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Payments</a></li> -->
+                      <!-- <li class="hideOnMobile"><a href="{{url('/about')}}" class="{{ Request::is('about') ? 'active' : '' }}">Prospects</a></li> -->
                     <li class="hideOnMobile"><a href="{{url('/campaigns')}}" class="{{ Request::is('campaigns') ? 'active' : '' }}">Projects</a></li>
-                    <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Renewals</a></li>
+                    <!-- <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Renewals</a></li> -->
                       
                 </ul>
                 
@@ -68,31 +73,33 @@
                 <ul>
                     <li><a href="{{url('/')}}"> <img src="{{url('frontend/images/wtn.png')}}" class="logo-img"></a></li>
 
-                    <form action="{{ route('search') }}" method="GET" class="searchbar">
+                    <!-- <form action="{{ route('search') }}" method="GET" class="searchbar">
                         <div class="filtericon">
                           <img src="frontend/images/filter.png" alt="">
                         </div>
                         <input type="text" name="query" placeholder="Search..." class="searchform">
                         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </form>
+                    </form> -->
 
-                    @if(in_array(auth()->user()->email, $allowedEmails))
-                    <li class="hideOnMobile"><a href="{{url('/payments')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Payments</a></li>
-                    <li class="hideOnMobile"><a href="{{url('/prospects')}}" class="{{ Request::is('about') ? 'active' : '' }}">Prospects</a></li>
-                    <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Renewals</a></li>
-                    @endif
+                    @if(auth()->check() && in_array(auth()->user()->email, $allowedEmails))
+                      <!-- <li class="hideOnMobile"><a href="{{url('/payments')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Payments</a></li>
+                      <li class="hideOnMobile"><a href="{{url('/prospects')}}" class="{{ Request::is('about') ? 'active' : '' }}">Prospects</a></li>
+                      <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Renewals</a></li> -->
+                  @endif
+
 
                   
                     <li class="hideOnMobile"><a href="{{url('/projects')}}" class="{{ Request::is('campaigns') ? 'active' : '' }}">Projects</a></li>
                    
                   
                       @auth
-                        <li class="hideOnMobile"><a href="{{route('dashboard')}}">
-                        @if(auth()->user()->profilepic)
-                        <img src="{{ asset('storage/' . auth()->user()->profilepic) }}" alt="Profile Picture" class="userpic">
-                        @else
-                      <img src="{{url('frontend/images/defaultuserpic.png')}}" class="userpic"></a></li>
-                        @endif
+                      <div class="profile-header">
+                        <a href="{{url('/dashboard')}}">
+                        <i class="fa-solid fa-user"></i>
+                          <div class="name">{{ $username }}</div>
+                        </a>
+                       </div>
+                        
 
                         
                       @endauth

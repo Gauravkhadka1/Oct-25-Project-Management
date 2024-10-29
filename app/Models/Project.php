@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Project extends Model
 {
@@ -19,4 +20,13 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function calculateTimeLeft()
+{
+    $dueDate = Carbon::parse($this->due_date);
+    $currentDate = Carbon::now();
+    $this->time_left = $dueDate->diffInDays($currentDate, false); // false ensures accurate positive/negative values
+    $this->save();
+}
+
 }

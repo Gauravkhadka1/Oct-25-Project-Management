@@ -10,8 +10,9 @@ class Prospect extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'company_name',
         'category',
+        'contact_person',
         'phone_number',
         'email',
         'message',

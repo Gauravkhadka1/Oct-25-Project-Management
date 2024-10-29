@@ -2,190 +2,202 @@
 
 @section('main-container')
 <main>
-    <div class="profile-page"> 
-        <div class="profile-name">
-            Good Morning, <br>{{ $username }}
-        </div>  
-    </div>
-    <div class="mytasks">
-        <div class="current-tasks">
-            <h2>Current Tasks</h2>
+    <div class="profile-page">
+    <div class="users-tasks">
             @php
-                $hasTasks = false; // Flag to check if there are any tasks
+                $loggedInUser = Auth::user()->username; // Get the logged-in user's username
             @endphp
 
-            @forelse($projects as $project)
-                @if(!$project->tasks->isEmpty())
-                    @if (!$hasTasks) 
-                        <table class="task-table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Task</th>
-                                    <th>Project</th>
-                                    <th>Assigned by</th>
-                                    <th>Start date</th>
-                                    <th>Due date</th>
-                                    <th>Priority</th>
-                                    <th>Actions</th>
-                                    <th>Timestamp</th>
-                                    <th>Status</th>
-                                    <th>Comment</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    @endif
-                    
-                    @foreach($project->tasks as $index => $task)
-                        @php $hasTasks = true; @endphp
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $task->name }}</td>
-                            <td>{{ $project->name }}</td>
-                            <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
-                            <td>{{ $task->start_date }}</td>
-                            <td>{{ $task->due_date }}</td>
-                            <td>{{ $task->priority }}</td>
-                            <td>
-                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
-                            </td>
-                            <td id="time-{{ $task->id }}">00:00:00</td>
-                            <td>
-                                <select name="status">
-                                    <option>Set Status</option>
-                                    <!-- Add more options here -->
-                                </select>
-                            </td>
-                            <td><textarea>{{ $task->comment }}</textarea></td>
-                        </tr>
-                    @endforeach
-
-                    @if (!$hasTasks) 
-                        </tbody>
-                        </table>
-                    @endif
-                @endif
-            @empty
-                <p>No projects available.</p>
-            @endforelse
-
-            @if ($hasTasks)
-                </tbody>
-                </table>
-            @endif
-
+            @foreach(['Sabin', 'Anubhav', 'Lokendra', 'Denisha', 'Muskaan', 'Jeena', 'Sabita', 'Gaurav', 'Sudeep Sir', 'Suraj Sir'] as $username)
+                <span class="user-span {{ $username === $loggedInUser ? 'active' : '' }}" data-username="{{ $username }}">
+                    {{ $username }}
+                </span>
+            @endforeach
         </div>
-        @if(Auth::check() && Auth::user()->email == $user->email)
+
+
+        <div class="mytasks">
+            <div class="current-tasks">
+            <h2>{{ $loggedInUser }} Tasks</h2> 
+                @php
+                    $hasTasks = false; // Flag to check if there are any tasks
+                    $serialNo = 1;
+                @endphp
+
+                @forelse($projects as $project)
+                    @if(!$project->tasks->isEmpty())
+                        @if (!$hasTasks) 
+                            <table class="task-table">
+                                <thead>
+                                    <tr>
+                                        <th>S.N</th>
+                                        <th>Task</th>
+                                        <th>Project</th>
+                                        <th>Assigned by</th>
+                                        <th>Start date</th>
+                                        <th>Due date</th>
+                                        <th>Priority</th>
+                                        <th>Actions</th>
+                                        <th>Timestamp</th>
+                                        <th>Status</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        @endif
+                        
+                        @foreach($project->tasks as $index => $task)
+                            @php $hasTasks = true; @endphp
+                            <tr>
+                                <td>{{ $serialNo++ }}</td> 
+                                <td>{{ $task->name }}</td>
+                                <td>{{ $project->name }}</td>
+                                <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
+                                <td>{{ $task->start_date }}</td>
+                                <td>{{ $task->due_date }}</td>
+                                <td>{{ $task->priority }}</td>
+                                <td>
+                                    <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
+                                </td>
+                                <td id="time-{{ $task->id }}">00:00:00</td>
+                                <td>
+                                    <select name="status">
+                                        <option>To Do</option>
+                                        <option>In Progress</option>
+                                        <option>QA</option>
+                                        <option>Completed</option>
+                                    </select>
+                                </td>
+                                <td><textarea>{{ $task->comment }}</textarea></td>
+                            </tr>
+                        @endforeach
+
+                        @if (!$hasTasks) 
+                            </tbody>
+                            </table>
+                        @endif
+                    @endif
+                @empty
+                    <p>No projects available.</p>
+                @endforelse
+
+                @if ($hasTasks)
+                    </tbody>
+                    </table>
+                @endif
+
+            </div>
+        
+        </div>
+    </div>
+   
+
+    <!-- ----- My Schedule  ----  -->
+    <!-- <div class="myschedule"> 
+    <!--    <div class="schedule-heading">-->
+    <!--        <h2>October 15</h2>-->
+    <!--    </div>-->
+    <!--    <table>-->
+    <!--        <thead>-->
+    <!--            <tr>-->
+    <!--                <th>Time</th>-->
+    <!--                <th>Task</th>-->
+    <!--                <th>Min</th>-->
+    <!--            </tr>-->
+    <!--        </thead>-->
+    <!--        <tbody>-->
+    <!--            <tr>-->
+    <!--                <td>10:00 - 10:30 AM</td>-->
+    <!--                <td>Design</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>10:30 - 11:00 AM</td>-->
+    <!--                <td>Development</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>11:00 - 11:30 AM</td>-->
+    <!--                <td>Testing</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>11:30 - 12:00 PM</td>-->
+    <!--                <td>Code Review</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>12:00 - 12:30 PM</td>-->
+    <!--                <td>Meeting</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>12:30 - 1:00 PM</td>-->
+    <!--                <td>Documentation</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>1:00 - 1:30 PM</td>-->
+    <!--                <td>Lunch Break</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>1:30 - 2:00 PM</td>-->
+    <!--                <td>Design Review</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>2:00 - 2:30 PM</td>-->
+    <!--                <td>Client Call</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>2:30 - 3:00 PM</td>-->
+    <!--                <td>Feature Development</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>3:00 - 3:30 PM</td>-->
+    <!--                <td>Bug Fixing</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>3:30 - 4:00 PM</td>-->
+    <!--                <td>Testing</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>4:00 - 4:30 PM</td>-->
+    <!--                <td>Refactoring Code</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>4:30 - 5:00 PM</td>-->
+    <!--                <td>Prepare Presentation</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>5:00 - 5:30 PM</td>-->
+    <!--                <td>Team Sync</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--            <tr>-->
+    <!--                <td>5:30 - 6:00 PM</td>-->
+    <!--                <td>Wrap Up Tasks</td>-->
+    <!--                <td>30 min</td>-->
+    <!--            </tr>-->
+    <!--        </tbody>-->
+    <!--    </table>-->
+    <!--</div> -->-->
+
+    @if(Auth::check() && Auth::user()->email == $user->email)
             <div class="edit-logout">
-                <div class="edit-profile">
-                    <a href="{{ route('profile.edit') }}">Edit Profile</a>
-                </div>
+                
                 <div class="logout">
                     <a href="{{ route('logout') }}">Logout</a>
                 </div>
             </div>
         @endif
-    </div>
-
-    <!-- ----- My Schedule  ----  -->
-    <div class="myschedule"> 
-        <div class="schedule-heading">
-            <h2>My Today Schedule</h2>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Task</th>
-                    <th>Min</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>10:00 - 10:30 AM</td>
-                    <td>Design</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>10:30 - 11:00 AM</td>
-                    <td>Development</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>11:00 - 11:30 AM</td>
-                    <td>Testing</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>11:30 - 12:00 PM</td>
-                    <td>Code Review</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>12:00 - 12:30 PM</td>
-                    <td>Meeting</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>12:30 - 1:00 PM</td>
-                    <td>Documentation</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>1:00 - 1:30 PM</td>
-                    <td>Lunch Break</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>1:30 - 2:00 PM</td>
-                    <td>Design Review</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>2:00 - 2:30 PM</td>
-                    <td>Client Call</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>2:30 - 3:00 PM</td>
-                    <td>Feature Development</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>3:00 - 3:30 PM</td>
-                    <td>Bug Fixing</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>3:30 - 4:00 PM</td>
-                    <td>Testing</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>4:00 - 4:30 PM</td>
-                    <td>Refactoring Code</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>4:30 - 5:00 PM</td>
-                    <td>Prepare Presentation</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>5:00 - 5:30 PM</td>
-                    <td>Team Sync</td>
-                    <td>30 min</td>
-                </tr>
-                <tr>
-                    <td>5:30 - 6:00 PM</td>
-                    <td>Wrap Up Tasks</td>
-                    <td>30 min</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-
 
 
     <script>
@@ -293,6 +305,92 @@
             .then(data => console.log(`Timer updated: ${data.message}`))
             .catch(error => console.error('Error updating timer:', error));
         }
+
+
+       
+        document.addEventListener("DOMContentLoaded", function() {
+    const userSpans = document.querySelectorAll('.user-span');
+
+    userSpans.forEach(span => {
+        span.addEventListener('click', function() {
+            // Remove 'active' class from all spans
+            userSpans.forEach(s => s.classList.remove('active'));
+            
+            // Add 'active' class to the clicked span
+            this.classList.add('active');
+
+            const selectedUsername = this.dataset.username;
+            showTasksForUser(selectedUsername);
+        });
+    });
+
+        function showTasksForUser(username) {
+            // Here you would typically make an AJAX call to fetch tasks for the selected user
+            fetch(`/tasks?username=${username}`)
+                .then(response => response.json())
+                .then(tasks => {
+                    updateTaskDetails(tasks, username);
+                })
+                .catch(error => console.error('Error fetching tasks:', error));
+        }
+
+        function updateTaskDetails(tasks, username) {
+            const tasksContainer = document.querySelector('.current-tasks');
+            tasksContainer.innerHTML = `<h2>${username} Tasks</h2>`; // Update the header with the selected username
+
+            if (tasks.length > 0) {
+                let tableHtml = `<table class="task-table">
+                    <thead>
+                        <tr>
+                            <th>S.N</th>
+                            <th>Task</th>
+                            <th>Project</th>
+                            <th>Assigned by</th>
+                            <th>Start date</th>
+                            <th>Due date</th>
+                            <th>Priority</th>
+                            <th>Actions</th>
+                            <th>Timestamp</th>
+                            <th>Status</th>
+                            <th>Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+                tasks.forEach((task, index) => {
+                    tableHtml += `<tr>
+                        <td>${index + 1}</td>
+                        <td>${task.name}</td>
+                        <td>${task.project_name}</td>
+                        <td>${task.assignedBy ? task.assignedBy.username : 'N/A'}</td>
+                        <td>${task.start_date}</td>
+                        <td>${task.due_date}</td>
+                        <td>${task.priority}</td>
+                        <td>
+                            <button class="btn-toggle start" id="toggle-${task.id}" onclick="toggleTimer(${task.id})">Start</button>
+                        </td>
+                        <td id="time-${task.id}">00:00:00</td>
+                        <td>
+                            <select name="status">
+                                <option>To Do</option>
+                                <option>In Progress</option>
+                                <option>QA</option>
+                                <option>Completed</option>
+                            </select>
+                        </td>
+                        <td><textarea>${task.comment}</textarea></td>
+                    </tr>`;
+                });
+
+                tableHtml += `</tbody></table>`;
+                tasksContainer.innerHTML += tableHtml; // Append the table to the tasks container
+            } else {
+                tasksContainer.innerHTML += `<p>No tasks available for ${username}.</p>`;
+            }
+        }
+    });
+
+
     </script>
 </main>
 @endsection

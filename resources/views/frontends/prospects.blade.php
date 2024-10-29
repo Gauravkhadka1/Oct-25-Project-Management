@@ -52,6 +52,7 @@
                         <option value="NGO/ INGO" {{ request('filter_category') == 'NGO/ INGO' ? 'selected' : '' }}>NGO/ INGO</option>
                         <option value="Tourism" {{ request('filter_category') == 'Tourism' ? 'selected' : '' }}>Tourism</option>
                         <option value="Education" {{ request('filter_category') == 'Education' ? 'selected' : '' }}>Education</option>
+                        <option value="Microsoft" {{ request('filter_category') == 'Microsoft' ? 'selected' : '' }}>Microsoft</option>
                         <option value="Other" {{ request('filter_category') == 'Other' ? 'selected' : '' }}>Other</option>
                     </select>
                 </form>
@@ -114,8 +115,8 @@
                 <tr>
                     <td>{{ $key + 1 }}</td>
                     <td>
-                        <span class="prospect-name">{{ $prospect->name }}</span>
-                        <button class="btn-see-details" data-phone="{{ $prospect->phone_number }}" data-email="{{ $prospect->email }}" data-message="{{ $prospect->message }}">
+                        <span class="prospect-name">{{ $prospect->company_name }}</span>
+                        <button class="btn-see-details" data-contact_person="{{ $prospect->contact_person }}"  data-phone="{{ $prospect->phone_number }}" data-email="{{ $prospect->email }}" data-message="{{ $prospect->message }}">
                             See Details
                         </button>
                     </td>
@@ -154,6 +155,7 @@
         <div id="details-modal" class="details-modal" style="display: none;">
         <div class="details-modal-content">
             <h3>Prospect Details</h3>
+            <p><strong>Contact person:</strong> <span id="modal-contact_person"></span></p>
             <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
             <p><strong>Email:</strong> <span id="modal-email"></span></p>
             <p><strong>Message:</strong> <span id="modal-message"></span></p>
@@ -183,8 +185,8 @@
             <h3>Create New Prospect</h3>
             <form action="{{ route('prospects.store') }}" method="POST">
                 @csrf
-                <label for="prospect-name">Prospect Name:</label>
-                <input type="text" name="name" id="prospect-name" required><br>
+                <label for="prospect-company_name">Prospect Name:</label>
+                <input type="text" name="company_name" id="prospect-company_name" required><br>
 
                 <label for="category">Category</label>
                 <select name="category" id="category">
@@ -192,9 +194,13 @@
                     <option value="NGO/ INGO">NGO/ INGO</option>
                     <option value="Tourism">Tourism</option>
                     <option value="Education">Education</option>
+                    <option value="Microsoft">Microsoft</option>
                     <option value="Other">Other</option>
                 </select><br>
 
+                <label for="prospect-contact_person">Contact Person:</label>
+                <input type="text" name="contact_person" id="prospect-contact_person"><br>
+                
                 <label for="phone_number">Phone Number:</label>
                 <input type="text" name="phone_number" id="phone_number"><br>
 
@@ -236,8 +242,8 @@
             <form id="edit-prospect-form" action="{{ route('prospects.update', '') }}" method="POST">
                 @csrf
                 @method('PUT')
-                <label for="edit-prospect-name">Prospect Name:</label>
-                <input type="text" name="name" id="edit-prospect-name"><br>
+                <label for="edit-prospect-name">Company Name:</label>
+                <input type="text" name="company_name" id="edit-prospect-name"><br>
 
                 <label for="edit-category">Category</label>
                 <select name="category" id="edit-category">
@@ -245,8 +251,12 @@
                     <option value="NGO/ INGO">NGO/ INGO</option>
                     <option value="Tourism">Tourism</option>
                     <option value="Education">Education</option>
+                    <option value="Microsoft">Microsoft</option>
                 </select><br>
 
+                <label for="edit-contact_person">Contact Person:</label>
+                <input type="text" name="contact_person" id="edit-contact_person"><br>
+                
                 <label for="edit-phone_number">Phone Number:</label>
                 <input type="text" name="phone_number" id="edit-phone_number"><br>
 
@@ -317,9 +327,6 @@
     </div>
 
 
-
-
-
    <script>
     // Get CSRF token from the meta tag
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -338,6 +345,7 @@
        function openEditProspectModal(prospect) {
             document.getElementById('edit-prospect-name').value = prospect.name;
             document.getElementById('edit-category').value = prospect.category;
+            document.getElementById('edit-contact_person').value = prospect.contact_person;
             document.getElementById('edit-phone_number').value = prospect.phone_number;
             document.getElementById('edit-email').value = prospect.email;
             document.getElementById('edit-message').value = prospect.message;
@@ -424,7 +432,8 @@
 
         // to show the details in name
         // Function to show the details modal
-        function showDetailsModal(phone, email, message) {
+        function showDetailsModal(contact_person, phone, email, message) {
+            document.getElementById('modal-contact_person').textContent = contact_person;
             document.getElementById('modal-phone').textContent = phone;
             document.getElementById('modal-email').textContent = email;
             document.getElementById('modal-message').textContent = message;
@@ -442,10 +451,11 @@
         // Add event listeners to all "See Details" buttons
         document.querySelectorAll('.btn-see-details').forEach(button => {
             button.addEventListener('click', function () {
+                const contact_person = this.getAttribute('data-contact_person');
                 const phone = this.getAttribute('data-phone');
                 const email = this.getAttribute('data-email');
                 const message = this.getAttribute('data-message');
-                showDetailsModal(phone, email, message);
+                showDetailsModal(contact_person, phone, email, message);
             });
         });
 

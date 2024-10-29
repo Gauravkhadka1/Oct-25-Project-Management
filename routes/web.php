@@ -9,6 +9,7 @@ use App\Http\Controllers\Frontend\TimerController;
 use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\Frontend\HomeController; 
 use App\Http\Controllers\ContactFormController; 
+use App\Http\Controllers\Auth\RegisteredUserController; 
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class, 'index']);
@@ -27,11 +28,11 @@ require __DIR__.'/auth.php';
 
 Route::post('/postmessage',[ContactFormController::class, 'postmessage']);
 
-Route::get('/payments',[HomeController::class, 'payments']);
+// Route::get('/payments',[HomeController::class, 'payments']);
 Route::get('/projects', [ProjectController::class, 'projects'])->name('projects.index'); 
 Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store'); 
-Route::get('/prospects', [ProspectController::class, 'prospects'])->name('prospects'); 
-Route::post('/prospects', [ProspectController::class, 'prospectstore'])->name('prospects.store');
+// Route::get('/prospects', [ProspectController::class, 'prospects'])->name('prospects'); 
+// Route::post('/prospects', [ProspectController::class, 'prospectstore'])->name('prospects.store');
 
 Route::resource('prospects', ProspectController::class);
 Route::resource('projects', ProjectController::class);
@@ -77,6 +78,11 @@ Route::post('/tasks/{task}/pause-timer', [TaskController::class, 'pauseTimer']);
 
 
 
+// Route::middleware('guest')->group(function () {
+//     Route::get('register', [RegisteredUserController::class, 'create'])
+//                 ->name('register');
+//     Route::post('register', [RegisteredUserController::class, 'store']);
+// });
 
 
 
@@ -87,6 +93,7 @@ Route::get('/storage-link',function(){
     symlink($targetFolder,$linkFolder);
 });
 
+Route::get('/tasks', [TaskController::class, 'getTasksForUsername']);
 
 
 

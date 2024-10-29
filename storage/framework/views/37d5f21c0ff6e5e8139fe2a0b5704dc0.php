@@ -19,7 +19,7 @@
                         <table class="task-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>S.N</th>
                                     <th>Task</th>
                                     <th>Project</th>
                                     <th>Assigned by</th>
@@ -51,8 +51,10 @@
                             <td id="time-<?php echo e($task->id); ?>">00:00:00</td>
                             <td>
                                 <select name="status">
-                                    <option>Set Status</option>
-                                    <!-- Add more options here -->
+                                    <option>To Do</option>
+                                    <option>In Progress</option>
+                                    <option>QA</option>
+                                    <option>Completed</option>
                                 </select>
                             </td>
                             <td><textarea><?php echo e($task->comment); ?></textarea></td>
@@ -74,22 +76,13 @@
             <?php endif; ?>
 
         </div>
-        <?php if(Auth::check() && Auth::user()->email == $user->email): ?>
-            <div class="edit-logout">
-                <div class="edit-profile">
-                    <a href="<?php echo e(route('profile.edit')); ?>">Edit Profile</a>
-                </div>
-                <div class="logout">
-                    <a href="<?php echo e(route('logout')); ?>">Logout</a>
-                </div>
-            </div>
-        <?php endif; ?>
+       
     </div>
 
     <!-- ----- My Schedule  ----  -->
     <div class="myschedule"> 
         <div class="schedule-heading">
-            <h2>My Today Schedule</h2>
+            <h2>October 15</h2>
         </div>
         <table>
             <thead>
@@ -184,7 +177,14 @@
         </table>
     </div>
 
-
+    <?php if(Auth::check() && Auth::user()->email == $user->email): ?>
+            <div class="edit-logout">
+                
+                <div class="logout">
+                    <a href="<?php echo e(route('logout')); ?>">Logout</a>
+                </div>
+            </div>
+        <?php endif; ?>
 
 
     <script>
