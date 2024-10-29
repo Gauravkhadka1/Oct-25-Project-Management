@@ -18,6 +18,9 @@
 <!-- Your custom At.js initialization file -->
 <script src="{{ url('frontend/js/at.js') }}"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ url('frontend/js/usernamemention.js') }}"></script>
+
 
 </body>
 </html>

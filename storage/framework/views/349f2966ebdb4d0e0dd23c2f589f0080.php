@@ -82,9 +82,9 @@
                     </form> -->
 
                     <?php if(auth()->check() && in_array(auth()->user()->email, $allowedEmails)): ?>
-                      <!-- <li class="hideOnMobile"><a href="<?php echo e(url('/payments')); ?>" class="<?php echo e(Request::is('contributors') ? 'active' : ''); ?>">Payments</a></li>
+                      <!-- <li class="hideOnMobile"><a href="<?php echo e(url('/payments')); ?>" class="<?php echo e(Request::is('contributors') ? 'active' : ''); ?>">Payments</a></li> -->
                       <li class="hideOnMobile"><a href="<?php echo e(url('/prospects')); ?>" class="<?php echo e(Request::is('about') ? 'active' : ''); ?>">Prospects</a></li>
-                      <li class="hideOnMobile"><a href="<?php echo e(url('/contributors')); ?>" class="<?php echo e(Request::is('contributors') ? 'active' : ''); ?>">Renewals</a></li> -->
+                      <!-- <li class="hideOnMobile"><a href="<?php echo e(url('/contributors')); ?>" class="<?php echo e(Request::is('contributors') ? 'active' : ''); ?>">Renewals</a></li> -->
                   <?php endif; ?>
 
 
@@ -95,7 +95,9 @@
                       <?php if(auth()->guard()->check()): ?>
                       <div class="profile-header">
                         <a href="<?php echo e(url('/dashboard')); ?>">
-                        <i class="fa-solid fa-user"></i>
+                        <div class="user-icon">
+                          <img src="<?php echo e(url('frontend/images/user.png')); ?>" alt="">
+                        </div>
                           <div class="name"><?php echo e($username); ?></div>
                         </a>
                        </div>

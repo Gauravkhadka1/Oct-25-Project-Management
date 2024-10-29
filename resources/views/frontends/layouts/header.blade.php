@@ -82,9 +82,9 @@
                     </form> -->
 
                     @if(auth()->check() && in_array(auth()->user()->email, $allowedEmails))
-                      <!-- <li class="hideOnMobile"><a href="{{url('/payments')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Payments</a></li>
+                      <!-- <li class="hideOnMobile"><a href="{{url('/payments')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Payments</a></li> -->
                       <li class="hideOnMobile"><a href="{{url('/prospects')}}" class="{{ Request::is('about') ? 'active' : '' }}">Prospects</a></li>
-                      <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Renewals</a></li> -->
+                      <!-- <li class="hideOnMobile"><a href="{{url('/contributors')}}" class="{{ Request::is('contributors') ? 'active' : '' }}">Renewals</a></li> -->
                   @endif
 
 
@@ -95,7 +95,9 @@
                       @auth
                       <div class="profile-header">
                         <a href="{{url('/dashboard')}}">
-                        <i class="fa-solid fa-user"></i>
+                        <div class="user-icon">
+                          <img src="{{url('frontend/images/user.png')}}" alt="">
+                        </div>
                           <div class="name">{{ $username }}</div>
                         </a>
                        </div>

@@ -156,6 +156,11 @@ width: 60px;
     color: rgb(168, 163, 163);
 }
 
+.user-icon img {
+    width: 40px;
+    margin-bottom: -5px;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
