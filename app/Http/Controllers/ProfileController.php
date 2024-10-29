@@ -118,5 +118,23 @@ class ProfileController extends Controller
     return view('frontends.layouts.header', compact('user'));
 }
 
+public function getUsernames(Request $request)
+{
+    // Validate the incoming request
+    $request->validate([
+        'query' => 'required|string|min:1',
+    ]);
+
+    // Get the search query from the request
+    $searchQuery = $request->input('query');
+
+    // Retrieve usernames that start with the search query
+    $usernames = User::where('username', 'LIKE', "{$searchQuery}%")
+        ->pluck('username'); // Retrieve usernames only
+
+    return response()->json($usernames);
+}
+
+
 }
 

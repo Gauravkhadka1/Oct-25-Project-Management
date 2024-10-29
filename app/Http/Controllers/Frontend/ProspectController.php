@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Prospect;
 
-class ProspectController g extends Controller
+class ProspectController extends Controller
 {
     // Change this method name from 'prospects' to 'index'
     public function index(Request $request)

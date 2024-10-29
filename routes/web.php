@@ -5,14 +5,17 @@ use App\Http\Controllers\Frontend\ProjectController;
 use App\Http\Controllers\Frontend\TaskController;
 use App\Http\Controllers\Frontend\ProspectController;
 use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\Frontend\TimerController;
+use App\Http\Controllers\Frontend\TimeController;
 use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\Frontend\HomeController; 
 use App\Http\Controllers\ContactFormController; 
+use App\Http\Controllers\UserController; 
 use App\Http\Controllers\Auth\RegisteredUserController; 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MessageController;
 
 Route::get('/',[HomeController::class, 'index']);
+Route::get('/mention',[HomeController::class, 'mention']);
 
 Route::get('/dashboard', [ProfileController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -43,9 +46,9 @@ Route::get('/admin', [HomeController::class, 'admin'])->name('admin');
 Route::get('/user-dashboard', [HomeController::class, 'user'])->name('user');
 Route::get('/admin-dashboard', [HomeController::class, 'admindashboard'])->name('admindashboard');
 
-Route::post('/timer/start', [TimerController::class, 'start'])->name('timer.start');
-Route::post('/timer/pause', [TimerController::class, 'pause'])->name('timer.pause');
-Route::post('/timer/stop', [TimerController::class, 'stop'])->name('timer.stop');
+Route::post('/timer/start', [TimeController::class, 'start'])->name('timer.start');
+Route::post('/timer/pause', [TimeController::class, 'pause'])->name('timer.pause');
+Route::post('/timer/stop', [TimeController::class, 'stop'])->name('timer.stop');
 
 // routes/web.php
 Route::post('/activities', [ActivityController::class, 'store'])->name('activities.store');
@@ -95,6 +98,18 @@ Route::get('/storage-link',function(){
 
 Route::get('/tasks', [TaskController::class, 'getTasksForUsername']);
 
+
+
+
+
+Route::get('/api/users/search', [UserController::class, 'search']);
+// routes/web.php
+
+
+
+Route::post('/api/notify-mention', [UserController::class, 'notifyMention']);
+
+Route::post('/submit-message', [MessageController::class, 'submitMessage']);
 
 
 

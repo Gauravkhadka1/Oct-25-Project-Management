@@ -180,3 +180,11 @@ tbody tr:nth-child(even) {
 tbody tr:nth-child(odd) {
     background-color: #ffffff; /* White for odd rows */
 }
+.mention-page {
+    /* height: 1000px;
+    background-color: red; */
+}
+
+.mention-page form {
+    margin-top: 100px;
+}

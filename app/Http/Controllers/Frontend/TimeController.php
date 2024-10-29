@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TimerController extends Controller
+class TimeController extends Controller
 {
     public function start(Request $request)
     {

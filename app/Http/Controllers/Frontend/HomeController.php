@@ -12,6 +12,10 @@ class HomeController extends Controller
     {
         return view('auth.login');
     }
+    public function mention()
+    {
+        return view('frontends.mention');
+    }
 
     public function admin()
     {
@@ -30,7 +34,7 @@ class HomeController extends Controller
 
     public function user()
     {
-        return view('frontends.user-dashboard');
+        return view('frontends.dashboard');
     }
 
     public function prospects()
