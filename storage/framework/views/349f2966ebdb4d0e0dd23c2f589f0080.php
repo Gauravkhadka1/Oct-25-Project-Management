@@ -29,7 +29,9 @@
             <div class="h-menu">
               <img src="<?php echo e(url('frontend/images/hamburger.png')); ?>" class="menu-icon" onclick="toggleSidebar()">
             </div>
-            <div class="greetings">Good Morning, <?php echo e($username); ?></div>
+            <div class="greetings">
+              <p>Good Morning, <?php echo e($username); ?></p>
+            </div>
           </div>
           <div class="end">
             <div class="notification">
