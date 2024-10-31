@@ -29,7 +29,9 @@
             <div class="h-menu">
               <img src="{{url('frontend/images/hamburger.png')}}" class="menu-icon" onclick="toggleSidebar()">
             </div>
-            <div class="greetings">Good Morning, {{ $username }}</div>
+            <div class="greetings">
+              <p>Good Morning, {{ $username }}</p>
+            </div>
           </div>
           <div class="end">
             <div class="notification">
@@ -60,6 +62,7 @@
       </ul>
     </div>
   </div>
+
 
   <script>
     function toggleSidebar() {

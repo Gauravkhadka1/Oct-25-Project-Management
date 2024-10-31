@@ -89,108 +89,7 @@
             </div>
         
         </div>
-    </div>
-   
-
-    <!-- ----- My Schedule  ----  -->
-    <!-- <div class="myschedule"> 
-    <!--    <div class="schedule-heading">-->
-    <!--        <h2>October 15</h2>-->
-    <!--    </div>-->
-    <!--    <table>-->
-    <!--        <thead>-->
-    <!--            <tr>-->
-    <!--                <th>Time</th>-->
-    <!--                <th>Task</th>-->
-    <!--                <th>Min</th>-->
-    <!--            </tr>-->
-    <!--        </thead>-->
-    <!--        <tbody>-->
-    <!--            <tr>-->
-    <!--                <td>10:00 - 10:30 AM</td>-->
-    <!--                <td>Design</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>10:30 - 11:00 AM</td>-->
-    <!--                <td>Development</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>11:00 - 11:30 AM</td>-->
-    <!--                <td>Testing</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>11:30 - 12:00 PM</td>-->
-    <!--                <td>Code Review</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>12:00 - 12:30 PM</td>-->
-    <!--                <td>Meeting</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>12:30 - 1:00 PM</td>-->
-    <!--                <td>Documentation</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>1:00 - 1:30 PM</td>-->
-    <!--                <td>Lunch Break</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>1:30 - 2:00 PM</td>-->
-    <!--                <td>Design Review</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>2:00 - 2:30 PM</td>-->
-    <!--                <td>Client Call</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>2:30 - 3:00 PM</td>-->
-    <!--                <td>Feature Development</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>3:00 - 3:30 PM</td>-->
-    <!--                <td>Bug Fixing</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>3:30 - 4:00 PM</td>-->
-    <!--                <td>Testing</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>4:00 - 4:30 PM</td>-->
-    <!--                <td>Refactoring Code</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>4:30 - 5:00 PM</td>-->
-    <!--                <td>Prepare Presentation</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>5:00 - 5:30 PM</td>-->
-    <!--                <td>Team Sync</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--                <td>5:30 - 6:00 PM</td>-->
-    <!--                <td>Wrap Up Tasks</td>-->
-    <!--                <td>30 min</td>-->
-    <!--            </tr>-->
-    <!--        </tbody>-->
-    <!--    </table>-->
-    <!--</div> -->-->
-
-    @if(Auth::check() && Auth::user()->email == $user->email)
+        @if(Auth::check() && Auth::user()->email == $user->email)
             <div class="edit-logout">
                 
                 <div class="logout">
@@ -198,7 +97,7 @@
                 </div>
             </div>
         @endif
-
+    </div>
 
     <script>
         let timers = {};
