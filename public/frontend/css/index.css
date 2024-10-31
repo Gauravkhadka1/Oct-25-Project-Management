@@ -1,19 +1,19 @@
-  * {
+* {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     box-sizing: border-box;
   }
-
+  
   body {
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
-
+  
   html {
     scroll-behavior: smooth;
   }
-
+  
   /* Navigation styling */
   nav {
     display: flex;
@@ -22,32 +22,47 @@
     padding: 10px;
     background-color: #fff;
     color: #111;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
-
+  
   .horizontal-menu {
     display: flex;
     justify-content: space-between;
+    /* align-items: center; */
     width: 100%;
     padding: 0;
     list-style-type: none;
     margin: 0;
-  }
+   
 
+  }
+  
+  .h-menu {
+    padding: 10px;
+    margin-right: 10px;
+  }
+  .h-menu  img {
+    width: 20px;
+  }
   .start {
     display: flex;
     align-items: center;
   }
-
+  
   .end {
     display: flex;
     align-items: center;
+    padding-right: 15px;
   }
-
+  
   .menu-icon {
     width: 30px;
     cursor: pointer;
   }
-
+  
   /* Sidebar styling */
   .sidebar {
     position: fixed;
@@ -57,27 +72,51 @@
     height: 100%;
     background-color: #fff;
     color: black;
-    padding-top: 20px;
+    padding: 0 20px;
+    padding-right: 10px;
+    padding-right: 17px; 
     transition: transform 0.3s ease;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; 
+    scroll-behavior: smooth; 
   }
+  .sidebar::-webkit-scrollbar {
+    width: 0; /* Change this value to adjust the width of the scrollbar */
+}
 
+.sidebar:hover::-webkit-scrollbar {
+    width: 7px; /* Show scrollbar on hover */
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the scrollbar track */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #bbb; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Optional: makes the scrollbar thumb rounded */
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color when hovering over the scrollbar thumb */
+}
+  
   .sidebar ul {
     list-style: none;
-    padding: 0;
+    /* position: fixed; */
   }
-
+  
   .sidebar ul li {
     padding: 15px;
-    text-align: center;
+    text-align: left;
   }
-
+  
   .sidebar ul li a {
     color: black;
     text-decoration: none;
     display: block;
   }
-
+  
   /* Header */
   header nav {
     display: flex;
@@ -86,63 +125,160 @@
     padding: 10px;
     background-color: #fff;
     color: #111;
-    /* margin-left: 250px; */
     transition: margin-left 0.3s ease;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    
   }
-
-  header .name {
-    color: #111;
-  }
-
+  
   .profile-header .user-icon img {
     width: 30px;
     border-radius: 50%;
   }
-
+  
   /* When sidebar is hidden */
   .sidebar-hidden .sidebar {
     transform: translateX(-250px);
   }
-
+  
   .sidebar-hidden header nav {
     margin-left: 0;
   }
-
+  
   .logo-img {
     width: 80px;
   }
-
+  
   .profile-header a {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .profile-header img {
-    margin-bottom: 5px;
-    width: 60px;
-  }
-
-  .user-icon img {
-    width: 40px;
-    margin-bottom: -5px;
-  }
-
-  .notification img {
-    width: 40px;
-  }
-
-  .main-container {
-    margin-left: 250px; /* Width of the sidebar */
-    transition: margin-left 0.3s ease; /* Smooth transition */
-    /* padding: 20px; */
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
   }
   
-  /* Adjust main container width when sidebar is hidden */
+  .user-icon img {
+    width: 40px;
+    margin-left: 20px;
+  }
+  .name {
+    margin-left: 10px;
+  }
+  
+  .dropdown-icon {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #333;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .dropdown-menu.show {
+    display: block;
+  }
+  .dropdown-menu img {
+    width: 15px;
+    margin-right: 6px;
+  }
+  .dropdown-menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .dropdown-menu a:hover {
+    background: #f2f2f2;
+  }
+  .dropdown-icon img {
+    width: 10px;
+  }
+  
+  .notification img {
+    width: 25px;
+  }
+  
+  .main-container {
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+  }
+  
   .sidebar-hidden .main-container {
-    margin-left: 0; /* Reset margin when sidebar is hidden */
+    margin-left: 0;
   }
+  
   .greetings p {
-    color: red;
+    font-family: "Public Sans", sans-serif;
+    font-size: 17.5px;
+    font-weight: 500;
   }
+ 
+
+/* Tasks Dropdown styling */
+
+.dropdown img {
+    width: 20px;
+}
+.dropdown .task-dropdown {
+    display: none;
+    list-style-type: none;
+    padding-left: 20px;
+    margin-top: 5px;
+    /* margin-left: 5px; */
+    transition: opacity 0.2s ease; 
+  }
+  
+  .dropdown .task-dropdown li {
+    padding: 10px 0;
+    margin-left: 5px
+  }
+  
+  .dropdown .task-dropdown.show {
+    display: block;
+  }
+  
+  .dropdown-arrow {
+    margin-left: 100px; 
+    /* float: right; */
+    transition: transform 0.3s ease; /* Transition for rotation */
+  }
+  
+  .dropdown-arrow.rotate {
+    transform: rotate(90deg);
+  }
+  .fa-tasks {
+    margin-right: 5px;
+  }
+  .task-toggle {
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdown a.task-toggle {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    text-align: center; /* Center text */
+    padding: 10px; /* Add some padding */
+  }
+  
+  .dropdown a.task-toggle img {
+    margin-right: 8px; /* Space between image and text */
+  }
+  
+  
+  
+
+  
+  
+  

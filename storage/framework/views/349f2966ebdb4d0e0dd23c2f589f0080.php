@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,9 +16,9 @@
   <?php
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
-  $userEmail = $user->email;
   $username = $user->username;
   ?>
+
 </head>
 
 <body>
@@ -30,20 +31,27 @@
               <img src="<?php echo e(url('frontend/images/hamburger.png')); ?>" class="menu-icon" onclick="toggleSidebar()">
             </div>
             <div class="greetings">
-              <p>Good Morning, <?php echo e($username); ?></p>
+              <p id="greeting"></p>
             </div>
           </div>
           <div class="end">
             <div class="notification">
               <img src="<?php echo e(url('frontend/images/notification.png')); ?>" alt="" class="notification-icon">
             </div>
-            <div class="profile-header">
-              <a href="<?php echo e(url('/dashboard')); ?>">
+            <div class="profile-header" style="position: relative;">
+              <a href="javascript:void(0);" onclick="toggleDropdown(event)">
                 <div class="user-icon">
-                  <img src="<?php echo e(url('frontend/images/user.png')); ?>" alt="">
+                  <img src="<?php echo e(url('frontend/images/user.png')); ?>" alt="User Icon">
                 </div>
-                <div class="name"><?php echo e($username); ?></div>
+                <div class="name">
+                  <p><?php echo e($username); ?></p>
+                </div>
+                <div class="dropdown-icon"><img src="<?php echo e(url('frontend/images/dropdown.png')); ?>" alt=""></div>
               </a>
+              <div id="dropdownMenu" class="dropdown-menu">
+                <a href="<?php echo e(route('dashboard')); ?>"><img src="<?php echo e(url('frontend/images/dashboard.png')); ?>" alt=""> Dashboard</a>
+                <a href="<?php echo e(route('logout')); ?>"><img src="<?php echo e(url('frontend/images/exit.png')); ?>" alt="">Logout</a>
+              </div>
             </div>
           </div>
         </ul>
@@ -54,23 +62,142 @@
     <div id="sidebar" class="sidebar">
       <ul>
         <li><a href="<?php echo e(url('/dashboard')); ?>"> <img src="<?php echo e(url('frontend/images/wtn.png')); ?>" class="logo-img"></a></li>
-        <li><a href="<?php echo e(url('/projects')); ?>">Payments</a></li>
-        <li><a href="<?php echo e(url('/projects')); ?>">Renewals</a></li>
-        <li><a href="<?php echo e(url('/projects')); ?>">Projects</a></li>
-        <li><a href="<?php echo e(url('/projects')); ?>">Tasks</a></li>
-        <li><a href="<?php echo e(url('/projects')); ?>">Clients</a></li>
+        <?php if(auth()->check() && in_array(auth()->user()->email, $allowedEmails)): ?>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <img src="<?php echo e(url('frontend/images/time.png')); ?>" alt=""> Payments
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </a>
+          <ul class="task-dropdown">
+            <li><a href="<?php echo e(url('/tasks/all')); ?>">All Payments</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">Website Dues</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">Hosting Dues</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">Recent Payments</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <img src="<?php echo e(url('frontend/images/renewable.png')); ?>" alt=""> Renewals
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </a>
+          <ul class="task-dropdown">
+            <li><a href="<?php echo e(url('/tasks/all')); ?>">All</a></li>
+            <li><a href="<?php echo e(url('/tasks/all')); ?>">35 days left</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">30 days</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">15 days</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">7 days</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">3 days</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">Expired</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <img src="<?php echo e(url('frontend/images/customer.png')); ?>" alt=""> Clients
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </a>
+          <ul class="task-dropdown">
+            <li><a href="<?php echo e(url('/tasks/all')); ?>">Website</a></li>
+            <li><a href="<?php echo e(url('/tasks/my')); ?>">Microsoft</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <img src="<?php echo e(url('frontend/images/group.png')); ?>" alt=""> Prospects
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </a>
+          <ul class="task-dropdown">
+            <li><a href="<?php echo e(url('/prospects')); ?>">All </a></li>
+          </ul>
+        </li>
+        <?php endif; ?>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <img src="<?php echo e(url('frontend/images/blueprint.png')); ?>" alt=""> Projects
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </a>
+          <ul class="task-dropdown">
+            <li><a href="<?php echo e(url('/projects')); ?>">All</a></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <img src="<?php echo e(url('frontend/images/clipboard.png')); ?>" alt=""> Tasks
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </a>
+          <ul class="task-dropdown">
+            <li><a href="<?php echo e(url('/tasks/all')); ?>">All Tasks</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
 
-
   <script>
     function toggleSidebar() {
-      document.body.classList.toggle("sidebar-hidden");
+        document.body.classList.toggle("sidebar-hidden");
     }
-  </script>
+
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        dropdownMenu.classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        if (dropdownMenu.classList.contains("show") && !event.target.closest('.profile-header')) {
+            dropdownMenu.classList.remove("show");
+        }
+    };
+
+    function toggleTaskDropdown(event) {
+        event.preventDefault();
+        const dropdown = event.target.closest('.dropdown');
+        const taskDropdown = dropdown.querySelector('.task-dropdown');
+        const dropdownArrow = dropdown.querySelector('.dropdown-arrow');
+
+        taskDropdown.classList.toggle("show");
+        dropdownArrow.classList.toggle("rotate");
+    }
+
+    function updateGreeting() {
+        // Get the current time in Nepal using Intl.DateTimeFormat
+        const options = {
+            timeZone: "Asia/Kathmandu", // Specify the timezone
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: false
+        };
+
+        const formatter = new Intl.DateTimeFormat([], options);
+        const [hour, minute] = formatter.format(new Date()).split(':').map(Number); // Extract hours and minutes
+
+        let greeting;
+
+        // Log the current Nepal time for debugging
+        console.log(`Current Nepal Time: ${hour}:${minute}`); 
+
+        // Determine the greeting based on the hour
+        if (hour < 12) {
+            greeting = "Good Morning, ";
+        } else if (hour < 18) {
+            greeting = "Good Afternoon, ";
+        } else {
+            greeting = "Good Evening, ";
+        }
+
+        // Display the greeting with username
+        const username = "<?php echo e($username); ?>"; // Using Laravel variable
+        document.getElementById("greeting").innerText = greeting + username; // Combine greeting with username
+    }
+
+    // Call updateGreeting on page load
+    window.onload = updateGreeting; 
+</script>
+
 </body>
-</html>
 
-
-<?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/layouts/header.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/layouts/header.blade.php ENDPATH**/ ?>

@@ -88,15 +88,9 @@
             </div>
         
         </div>
-        <?php if(Auth::check() && Auth::user()->email == $user->email): ?>
-            <div class="edit-logout">
-                
-                <div class="logout">
-                    <a href="<?php echo e(route('logout')); ?>">Logout</a>
-                </div>
-            </div>
-        <?php endif; ?>
+    
     </div>
+
 
     <script>
         let timers = {};

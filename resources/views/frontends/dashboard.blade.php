@@ -89,15 +89,9 @@
             </div>
         
         </div>
-        @if(Auth::check() && Auth::user()->email == $user->email)
-            <div class="edit-logout">
-                
-                <div class="logout">
-                    <a href="{{ route('logout') }}">Logout</a>
-                </div>
-            </div>
-        @endif
+    
     </div>
+
 
     <script>
         let timers = {};
