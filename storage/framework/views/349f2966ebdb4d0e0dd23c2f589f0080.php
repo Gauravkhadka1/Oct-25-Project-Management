@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/prospects.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/projects.css')); ?>">
 
+
   <?php
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
@@ -46,7 +47,7 @@
                 <div class="name">
                   <p><?php echo e($username); ?></p>
                 </div>
-                <div class="dropdown-icon"><img src="<?php echo e(url('frontend/images/dropdown.png')); ?>" alt=""></div>
+                <div class="dropdown-icon"><img src="<?php echo e(url('frontend/images/dropdown-arrow.png')); ?>" alt=""></div>
               </a>
               <div id="dropdownMenu" class="dropdown-menu">
                 <a href="<?php echo e(route('dashboard')); ?>"><img src="<?php echo e(url('frontend/images/dashboard.png')); ?>" alt=""> Dashboard</a>
