@@ -21,9 +21,52 @@
         <thead>
             <tr>
                 <th>SN</th>
-                <th>Company Name</th>
-                <th>Category</th>
-                <th>Amount</th>
+                <th>
+                    Company Name
+                    <a href="#" onclick="toggleFilter('company_name_sort')">
+                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                    </a>
+                    <div id="company_name_sort" class="filter-dropdown" style="display: none;">
+                        <form action="{{ route('payments.index') }}" method="GET">
+                            <select name="sort_payments_name" onchange="this.form.submit()">
+                                <option value="">Sort by Company Name</option>
+                                <option value="a_to_z" {{ request('sort_payments_name') == 'a_to_z' ? 'selected' : '' }}>A to Z</option>
+                                <option value="z_to_a" {{ request('sort_payments_name') == 'z_to_a' ? 'selected' : '' }}>Z to A</option>
+                            </select>
+                        </form>
+                    </div>
+                </th>
+                <th>
+                    Category
+                    <a href="#" onclick="toggleFilter('category-filter')">
+                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                    </a>
+                    <div id="category-filter" class="filter-dropdown" style="display: none;">
+                        <form action="{{ route('payments.index') }}" method="GET">
+                            <select name="filter_category" onchange="this.form.submit()">
+                                <option value="">All Category</option>
+                                <option value="Website" {{ request('filter_category') == 'Website' ? 'selected' : '' }}>Website</option>
+                                <option value="Renewal" {{ request('filter_category') == 'Renewal' ? 'selected' : '' }}>Renewal</option>
+                            </select>
+                        </form>
+                    </div>
+                </th>
+                <th>
+                    Amount
+                    <a href="#" onclick="toggleFilter('amount_sort')">
+                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                    </a>
+                    <div id="amount_sort" class="filter-dropdown" style="display: none;">
+                        <form action="{{ route('payments.index') }}" method="GET">
+                            <select name="sort_amount" onchange="this.form.submit()">
+                                <option value="">Sort by Amount</option>
+                                <option value="high_to_low" {{ request('sort_amount') == 'high_to_low' ? 'selected' : '' }}>High to Low</option>
+                                <option value="low_to_high" {{ request('sort_amount') == 'low_to_high' ? 'selected' : '' }}>Low to High</option>
+                            </select>
+                        </form>
+                    </div>
+                </th>
+
                 <th>Activities</th>
                 <th>Edit</th>
             </tr>
@@ -357,6 +400,31 @@
                 }, 1500);
             }
         });
+
+        // Filter
+        function toggleFilter(filterId) {
+            // Close all other filters first
+            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                if (dropdown.id !== filterId) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // Toggle the selected filter dropdown
+            const element = document.getElementById(filterId);
+            if (element) {
+                element.style.display = (element.style.display === 'none' || element.style.display === '') ? 'block' : 'none';
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.barfilter') && !event.target.closest('.filter-dropdown')) {
+                document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        };
     </script>
 
 </div>
