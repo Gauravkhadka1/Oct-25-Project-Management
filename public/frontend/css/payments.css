@@ -1,0 +1,131 @@
+.payments-page {
+    padding: 20px;
+}
+
+.payments-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0 0 20px;
+}
+.create-payments {
+    margin: 10px 0;
+}
+.create-payments button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.create-payments img{
+    width: 20px;
+    margin-right: 10px;
+}
+.btn-create {
+    background-color: #4CAF50;;
+}
+.btn-see-details {
+    background-color: transparent;
+    border: none;
+    padding: 0; /* Removes padding that might misalign the button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+}
+.btn-see-details img {
+    width: 30px; 
+}
+
+/* table css starts */
+.modern-payments-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.modern-payments-table thead {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.modern-payments-table th,
+.modern-payments-table td {
+    padding: 15px;
+    text-align: left;
+}
+.modern-payments-table th {
+    background-color: #F0F0F5;
+    color: #555;
+}
+.modern-payments-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.modern-payments-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.modern-payments-table .btn-see-details,
+.modern-payments-table .btn-add-activity,
+.modern-payments-table .btn-view-activities,
+.modern-payments-table .btn-create,
+.modern-payments-table .btn-cancel {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+
+.modern-payments-table .btn-add-activity,
+.modern-payments-table .btn-view-activities {
+    background-color: transparent;
+}
+
+.btn-add-activity img, .btn-view-activities img {
+    width: 30px;
+}
+.modern-payments-table .btn-add-activity:hover,
+.modern-payments-table .btn-view-activities:hover {
+    background-color: #d4881c;
+}
+
+.modern-payments-table .btn-create {
+    background-color: transparent;
+}
+
+.modern-payments-table .btn-create:hover {
+    background-color: #3cbfa1;
+}
+
+.modern-payments-table .btn-cancel {
+    background-color: transparent
+}
+
+.modern-payments-table .btn-cancel:hover {
+    background-color: #a50015;
+}
+
+.company-name-td {
+    display: flex;
+    align-items: center;
+    height: 97.5px;
+    /* background-color: red; */
+}
+.btn-create img, .btn-cancel img {
+    width: 30px;
+}
+.btn-see-detail-img {
+    background-color: transparent;
+    height: 50px;
+    display: flex;
+    align-items: center;
+
+}

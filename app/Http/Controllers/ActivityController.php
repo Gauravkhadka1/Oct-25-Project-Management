@@ -37,8 +37,6 @@ class ActivityController extends Controller
         $activities = Activity::where('prospect_id', $id)->orderBy('date', 'desc')->get();
         return response()->json(['activities' => $activities]);
     }
-    
-
 
     public function getActivitiesByProspect($prospectId)
 {
@@ -52,44 +50,4 @@ class ActivityController extends Controller
         'activities' => $activities,
     ]);
 }
-
-
-public function likeActivity($activityId)
-{
-    try {
-        $activity = Activity::findOrFail($activityId);
-        $activity->likes += 1;
-        $activity->save();
-
-        // Assuming you want to return an updated HTML fragment
-        return view('partials.activity-likes', ['activity' => $activity]);
-    } catch (Exception $e) {
-        return response()->view('errors.custom-error', ['message' => 'Error liking activity'], 500);
-    }
-}
-
-
-
-
-public function replyToActivity(Request $request, $activityId)
-{
-    try {
-        $activity = Activity::findOrFail($activityId);
-
-        $reply = new Reply();
-        $reply->activity_id = $activityId;
-        $reply->user_id = auth()->id();
-        $reply->reply = $request->input('reply');
-        $reply->save();
-
-        // Assuming you want to return an updated HTML fragment for replies
-        return view('partials.activity-replies', ['activity' => $activity]);
-    } catch (Exception $e) {
-        return response()->view('errors.custom-error', ['message' => 'Error replying to activity'], 500);
-    }
-}
-
-
-
-
 }

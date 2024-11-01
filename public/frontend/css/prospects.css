@@ -22,10 +22,11 @@
 }
 
 .styled-table thead tr {
-    background-color: #009879;
+    background-color: #92A33F;
     color: white;
     font-weight: bold;
 }
+
 
 .styled-table th, .styled-table td {
     padding: 12px 15px;
@@ -309,25 +310,12 @@
 }
 
 .btn-see-details {
-    background-color: #1b9237; /* Green background color */
-    color: white; /* White text color */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Slightly rounded corners */
-    padding: 5px 10px; /* Adequate padding for the button */
-    margin-top: 5px;
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth background transition */
-    font-size: 1rem; /* Button font size */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    background-color: transparent;
+    width: 30px;
+    border: none;
 }
-
-.btn-see-details:hover {
-    background-color: #117426; /* Darker green on hover */
-}
-
-.btn-see-details:focus {
-    outline: none; /* Remove outline on focus */
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Focus shadow */
+.btn-see-details img {
+    width: 30px;
 }
 
 

@@ -24,7 +24,7 @@ class ProspectController extends Controller
             $query->where('category', $request->filter_category);
         }
 
-   
+
 
         // Apply date range filter if both dates are provided
         if ($request->has('from_date') && $request->has('to_date') && $request->sort_inquirydate === 'range') {
@@ -76,6 +76,7 @@ class ProspectController extends Controller
         return redirect(url('/prospects'))->with('success', 'Prospect created successfully.');
     }
 
+    // delete prospects 
     public function destroy($id)
     {
         $prospect = Prospect::findOrFail($id); // Find the prospect or fail
@@ -84,8 +85,7 @@ class ProspectController extends Controller
         return redirect()->route('prospects.index')->with('success', 'Prospect deleted successfully.');
     }
 
-
-
+    // update prospects 
     public function update(Request $request, $id)
     {
         // Validate the request data

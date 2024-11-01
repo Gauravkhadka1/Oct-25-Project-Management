@@ -58,7 +58,7 @@
                             </form>
                         </div>
                     </th>
-                   <th>
+                    <th>
                         Inquiry Date
                         <a href="#" onclick="toggleFilter('inquirydate-filter')">
                             <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
@@ -163,7 +163,6 @@
 
     </div>
 
-
     <!-- details modals -->
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
@@ -178,8 +177,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- see more message modal -->
     <div id="message-modal" class="messagemodal" style="display: none;">
@@ -356,7 +353,6 @@
         }
 
         //    edit prospect model
-
         function openEditProspectModal(prospect) {
             document.getElementById('edit-company_name').value = prospect.company_name;
             document.getElementById('edit-category').value = prospect.category;
@@ -389,10 +385,7 @@
             document.getElementById('edit-prospect-modal').style.display = 'none';
         }
 
-
-
         //    For filter
-
         function toggleFilter(id) {
             // Close other filters first
             document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
@@ -429,9 +422,7 @@
             }
         }
 
-
-        // to show message
-        // Function to show the modal with the full message
+        // to show message Function to show the modal with the full message
         function showMessageModal(message) {
             const modal = document.getElementById('message-modal');
             const messageContent = document.getElementById('full-message-content');
@@ -455,7 +446,6 @@
 
 
         // to show the details in name
-        // Function to show the details modal
         function showDetailsModal(contact_person, phone, email, message) {
             document.getElementById('modal-contact_person').textContent = contact_person;
             document.getElementById('modal-phone').textContent = phone;
@@ -483,18 +473,18 @@
             });
         });
 
-
         // activities model
-
         function openAddActivityModal(prospectId) {
             document.getElementById('activity-prospect-id').value = prospectId;
             document.getElementById('add-activity-modal').style.display = 'block';
         }
 
+        // close add activity
         function closeAddActivityModal() {
             document.getElementById('add-activity-modal').style.display = 'none';
         }
 
+        // view activities
         function viewActivities(prospectId) {
             // Fetch activities from the server for the given prospect
             fetch(`/prospects/${prospectId}/activities`)
@@ -580,9 +570,7 @@
                 .catch(error => console.error('Error liking activity:', error));
         }
 
-
-
-
+        // reply to activities
         function replyToActivity(activityId) {
             const replyInput = document.getElementById(`reply-input-${activityId}`);
             const reply = replyInput.value;
@@ -613,11 +601,12 @@
         }
 
 
-
+        // close view activities
         function closeViewActivitiesModal() {
             document.getElementById('view-activities-modal').style.display = 'none';
         }
 
+        // delete prospects
         function deleteProspect(id) {
             if (confirm('Are you sure you want to delete this prospect?')) {
                 // Send a DELETE request to the server
@@ -653,8 +642,8 @@
                 }, 1500);
             }
         });
-        
-         function handleFilterChange(select) {
+
+        function handleFilterChange(select) {
             const dateRangeFields = document.getElementById('date-range-fields');
             const dateRangeSubmit = document.getElementById('date-range-submit');
 
