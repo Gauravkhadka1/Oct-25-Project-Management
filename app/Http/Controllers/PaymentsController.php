@@ -12,7 +12,9 @@ class PaymentsController extends Controller
     {
         // Fetch all payments from the database
         $query = Payments::query();
-        $payments = Payments::all();
+
+        // Initialize the total dues text
+        $totalDuesText = 'Total Due:';
 
         // Apply sorting based on project name if provided
         if ($request->has('sort_payments_name') && $request->sort_payments_name != '') {
@@ -27,6 +29,17 @@ class PaymentsController extends Controller
             $query->where('category', $request->filter_category);
         }
 
+
+        // Update the total dues text based on the selected category
+        if ($request->filter_category == 'Renewal') {
+            $totalDuesText = 'Total Renewal Dues:';
+        } elseif ($request->filter_category == 'Website') {
+            $totalDuesText = 'Total Website Dues:';
+        } elseif ($request->filter_category == '') {
+            $totalDuesText = 'Total Dues from All Categories:';
+        }
+    
+
         // Apply sorting based on amount if provided
         if ($request->has('sort_amount') && $request->sort_amount != '') {
             if ($request->sort_amount == 'high_to_low') {
@@ -38,8 +51,10 @@ class PaymentsController extends Controller
 
 
         $payments = $query->get();
+        // Calculate total amount based on filtered results
+        $filteredTotalAmount = $payments->sum('amount');
 
-        return view('frontends.payments', compact('payments'));
+        return view('frontends.payments', compact('payments','filteredTotalAmount','totalDuesText'));
     }
 
     // payments store
@@ -49,7 +64,7 @@ class PaymentsController extends Controller
         $validatedData = $request->validate([
             'company_name' => 'required|string|max:255',
             'contact_person' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:40',
             'email' => 'nullable|email|max:255',
             'category' => 'nullable|string|max:255',
             'amount' => 'nullable|numeric|min:0',
@@ -77,7 +92,7 @@ class PaymentsController extends Controller
         $request->validate([
             'company_name' => 'nullable|string|max:255',
             'contact_person' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:40',
             'email' => 'nullable|email|max:255',
             'category' => 'nullable|string|max:255',
             'amount' => 'nullable|numeric|min:0',

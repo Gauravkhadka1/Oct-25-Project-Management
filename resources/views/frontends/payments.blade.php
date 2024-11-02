@@ -14,7 +14,7 @@
         <h1>Due Payments Data</h1>
     </div>
     <div class="create-payments">
-        <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="{{url ('frontend/images/add.png')}}" alt=""> Due Payments</button>
+        <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="{{url ('/frontend/images/add.png')}}" alt=""> Due Payments</button>
     </div>
 
     <table class="modern-payments-table">
@@ -24,7 +24,7 @@
                 <th>
                     Company Name
                     <a href="#" onclick="toggleFilter('company_name_sort')">
-                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="{{url('/frontend/images/bars-filter.png')}}" alt="" class="barfilter">
                     </a>
                     <div id="company_name_sort" class="filter-dropdown" style="display: none;">
                         <form action="{{ route('payments.index') }}" method="GET">
@@ -36,15 +36,15 @@
                         </form>
                     </div>
                 </th>
-                <th>
+               <th>
                     Category
                     <a href="#" onclick="toggleFilter('category-filter')">
-                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="/frontend/images/bars-filter.png" alt="" class="barfilter">
                     </a>
                     <div id="category-filter" class="filter-dropdown" style="display: none;">
                         <form action="{{ route('payments.index') }}" method="GET">
                             <select name="filter_category" onchange="this.form.submit()">
-                                <option value="">All Category</option>
+                                <option value="">All Category</option> <!-- Change this value to empty string -->
                                 <option value="Website" {{ request('filter_category') == 'Website' ? 'selected' : '' }}>Website</option>
                                 <option value="Renewal" {{ request('filter_category') == 'Renewal' ? 'selected' : '' }}>Renewal</option>
                             </select>
@@ -54,7 +54,7 @@
                 <th>
                     Amount
                     <a href="#" onclick="toggleFilter('amount_sort')">
-                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="/frontend/images/bars-filter.png" alt="" class="barfilter">
                     </a>
                     <div id="amount_sort" class="filter-dropdown" style="display: none;">
                         <form action="{{ route('payments.index') }}" method="GET">
@@ -79,27 +79,35 @@
                     <span class="payments-name">{{ $payments->company_name }}</span>
                     <button class="btn-see-details" data-contact_person="{{ $payments->contact_person }}" data-phone="{{ $payments->phone }}" data-email="{{ $payments->email }}">
                         <div class="btn-see-detail-img">
-                            <img src="{{url ('frontend/images/info.png')}}" alt="">
+                            <img src="{{url ('/frontend/images/info.png')}}" alt="">
                         </div>
                     </button>
                 </td>
                 <td>{{ $payments->category }}</td>
                 <td>{{ $payments->amount }}</td>
                 <td>
-                    <button class="btn-add-activity" onclick="openAddActivityModal({{ $payments->id }})"><img src="{{url ('frontend/images/plus.png')}}" alt=""></button>
-                    <button class="btn-view-activities" onclick="viewActivities({{ $payments->id }})"><img src="{{url ('frontend/images/view.png')}}" alt=""></button>
+                    <button class="btn-add-activity" onclick="openAddActivityModal({{ $payments->id }})"><img src="{{url ('/frontend/images/plus.png')}}" alt=""></button>
+                    <button class="btn-view-activities" onclick="viewActivities({{ $payments->id }})"><img src="{{url ('/frontend/images/view.png')}}" alt=""></button>
                 </td>
                 <td>
-                    <button class="btn-create" onclick="openEditPaymentsModal({{ json_encode($payments) }})"><img src="{{url ('frontend/images/edit.png')}}" alt=""></button>
+                    <button class="btn-create" onclick="openEditPaymentsModal({{ json_encode($payments) }})"><img src="{{url ('/frontend/images/edit.png')}}" alt=""></button>
                     <form action="{{ route('payments.destroy', $payments->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this payment?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn-cancel"><img src="{{url ('frontend/images/delete.png')}}" alt=""></button>
+                        <button type="submit" class="btn-cancel"><img src="{{url ('/frontend/images/delete.png')}}" alt=""></button>
                     </form>
                 </td>
             </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" style="text-align: right; font-weight: bold;">{{ $totalDuesText }}</td>
+                <td colspan="3" style="font-weight: bold;">
+                    {{ number_format($filteredTotalAmount) }}
+                </td>
+            </tr>
+        </tfoot>
     </table>
 
 
@@ -128,7 +136,7 @@
                 <input type="text" name="contact_person" id="payments-contact_person"><br>
 
                 <label for="phone_number">Phone Number:</label>
-                <input type="tel" name="phone" id="phone"><br>
+                <input type="text" name="phone" id="phone"><br>
 
                 <label for="email">Email:</label>
                 <input type="email" name="email" id="email"><br>
@@ -143,9 +151,6 @@
 
                 <label for="amount">Amount:</label>
                 <input type="number" name="amount" id="amount"><br>
-
-                <label for="activities">Activities</label>
-                <input type="text" name="activities" id="activities"><br>
 
                 </select><br>
 
@@ -171,7 +176,7 @@
                 <input type="text" name="contact_person" id="edit-contact_person"><br>
 
                 <label for="edit-phone">Phone Number:</label>
-                <input type="tel" name="phone" id="edit-phone"><br>
+                <input type="text" name="phone" id="edit-phone"><br>
 
                 <label for="edit-email">Email:</label>
                 <input type="email" name="email" id="edit-email"><br>
@@ -186,9 +191,6 @@
 
                 <label for="amount">Amount:</label>
                 <input type="number" name="amount" id="edit-amount"><br>
-
-                <label for="edit-activities">Activities</label>
-                <input type="text" name="activities" id="edit-activities"><br>
 
                 <div class="modal-buttons">
                     <button type="submit" class="btn-submit">Update Payments</button>
@@ -250,7 +252,6 @@
             document.getElementById('edit-email').value = payments.email;
             document.getElementById('edit-category').value = payments.category;
             document.getElementById('edit-amount').value = payments.amount;
-            document.getElementById('edit-activities').value = payments.activities;
 
             // Set the form action to include the prospect ID
             const form = document.getElementById('edit-payments-form');
