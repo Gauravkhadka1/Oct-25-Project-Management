@@ -88,7 +88,7 @@
                     <button class="btn-add-activity" onclick="openAddActivityModal(<?php echo e($payments->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""></button>
                     <button class="btn-view-activities" onclick="viewActivities(<?php echo e($payments->id); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt=""></button>
                 </td>
-                <td>
+                <td class="payment-edit-delete">
                     <button class="btn-create" onclick="openEditPaymentsModal(<?php echo e(json_encode($payments)); ?>)"><img src="<?php echo e(url ('/frontend/images/edit.png')); ?>" alt=""></button>
                     <form action="<?php echo e(route('payments.destroy', $payments->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this payment?');">
                         <?php echo csrf_field(); ?>

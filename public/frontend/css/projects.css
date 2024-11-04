@@ -137,7 +137,7 @@
     width: 100%;
     border-collapse: collapse;
     margin: 25px 0;
-    font-size: 12px;
+    font-size: 15px;
     font-family: 'Arial', sans-serif;
     text-align: left;
 }
@@ -183,7 +183,7 @@
     border-radius: 5px;
     color: white;
     font-size: 15px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
 }
 .close {
     font-size: 35px;
@@ -299,4 +299,58 @@
 }
 .btn-see-details img {
     width: 30px;
+}
+.create-project button {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.create-project img {
+    width: 30px;
+    margin-right: 5px;
+}
+.btn-edit {
+    background-color: transparent;
+}
+.btn-edit:hover {
+    background-color: #3CBFA1;
+}
+.btn-edit img {
+    width: 30px;
+}
+.btn-create {
+    color: black;
+}
+#task-create {
+    color: black;
+}
+
+.projects-name-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+.btn-view-activities-p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black !important;
+    border: none;
+    background-color: transparent;
+    margin: 5px 0 0 0;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+.btn-view-activities-p:hover {
+    background-color: #36BFA1;
+}
+.btn-view-activities-p img {
+    margin-right: 5px;
+    width: 25px;
+}
+
+.modal-content {
+    max-width: 100%;
+    /* background-color: red; */
 }

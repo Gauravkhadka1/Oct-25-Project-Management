@@ -1,8 +1,8 @@
 .prospects-list {
-    display: flex;
+    /* display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: column; */
     padding: 30px;
 }
 
@@ -120,7 +120,7 @@
 
 
 .create-prospect {
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 .btn-create {
@@ -429,3 +429,29 @@ margin-bottom: 5px;
 /* Filter style starts */
 
 /* Dropdown and filter styling */
+
+.btn-cancel, .btn-create {
+background-color: transparent;
+}
+
+.btn-cancel img, .btn-create img {
+    width: 20px;
+    }
+.btn-add-activity,
+.btn-view-activities {
+    background-color: transparent;
+}
+.btn-create {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-create img {
+    margin-right: 5px;
+}
+.create-prospect {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}

@@ -14,17 +14,16 @@
             <div class="prospect-heading">
                 <h2>Prospects</h2>
             </div>
-            <div class="create-prospect">
-                <button class="btn-create" onclick="openCreateProspectModal()">Create Prospect</button>
-            </div>
         </div>
-
-        <table class="styled-table">
+        <div class="create-prospect">
+                <button class="btn-create" onclick="openCreateProspectModal()"><img src="<?php echo e(url ('/frontend/images/add.png')); ?>" alt=""> Prospect</button>
+            </div>
+        <table class="modern-payments-table">
             <thead>
                 <tr>
                     <th>SN</th>
                     <th>
-                        Name
+                        Company Name
                         <a href="#" onclick="toggleFilter('name-filter')">
                             <!-- <i class="fas fa-filter"></i>  -->
                             <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
@@ -130,8 +129,10 @@
                     <td><?php echo e($key + 1); ?></td>
                     <td>
                         <span class="prospect-name"><?php echo e($prospect->company_name); ?></span>
-                        <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-message="<?php echo e($prospect->message); ?>">
-                            See Details
+                        <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-address="<?php echo e($prospect->address); ?>" data-message="<?php echo e($prospect->message); ?>">
+                        <div class="btn-see-detail-img">
+                            <img src="<?php echo e(url ('/frontend/images/info.png')); ?>" alt="">
+                        </div>
                         </button>
                     </td>
 
@@ -141,18 +142,18 @@
                     <td><?php echo e($prospect->inquirydate ? $prospect->inquirydate->format('Y-m-d h:i A') : 'N/A'); ?></td>
                     <td><?php echo e($prospect->probability); ?>%</td>
                     <td>
-                        <button class="btn-add-activity" onclick="openAddActivityModal(<?php echo e($prospect->id); ?>)">Add Activity</button>
-                        <button class="btn-view-activities" onclick="viewActivities(<?php echo e($prospect->id); ?>)">View Activities</button>
+                        <button class="btn-add-activity" onclick="openAddActivityModal(<?php echo e($prospect->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""></button>
+                        <button class="btn-view-activities" onclick="viewActivities(<?php echo e($prospect->id); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt=""></button>
                     </td>
 
 
                     <td><?php echo e($prospect->status); ?></td>
                     <td>
-                        <button class="btn-create" onclick="openEditProspectModal(<?php echo e(json_encode($prospect)); ?>)">Edit</button>
+                        <button class="btn-create" onclick="openEditProspectModal(<?php echo e(json_encode($prospect)); ?>)"><img src="<?php echo e(url ('/frontend/images/edit.png')); ?>" alt=""></button>
                         <form action="<?php echo e(route('prospects.destroy', $prospect->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this prospect?');">
                             <?php echo csrf_field(); ?>
                             <?php echo method_field('DELETE'); ?>
-                            <button type="submit" class="btn-cancel">Delete</button>
+                            <button type="submit" class="btn-cancel"><img src="<?php echo e(url ('/frontend/images/delete.png')); ?>" alt=""></button>
                         </form>
                     </td>
 
@@ -171,6 +172,7 @@
             <p><strong>Contact person:</strong> <span id="modal-contact_person"></span></p>
             <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
             <p><strong>Email:</strong> <span id="modal-email"></span></p>
+            <p><strong>Address:</strong> <span id="modal-address"></span></p>
             <p><strong>Message:</strong> <span id="modal-message"></span></p>
             <div class="details-modal-buttons">
                 <button type="button" class="btn-cancel" onclick="closeDetailsModal()">Close</button>
@@ -196,7 +198,7 @@
             <h3>Create New Prospect</h3>
             <form action="<?php echo e(route('prospects.store')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
-                <label for="prospect-company_name">Prospect Name:</label>
+                <label for="prospect-company_name">Company Name:</label>
                 <input type="text" name="company_name" id="prospect-company_name" required><br>
 
                 <label for="category">Category</label>
@@ -204,6 +206,7 @@
                     <option value="Ecommerce">Ecommerce</option>
                     <option value="NGO/ INGO">NGO/ INGO</option>
                     <option value="Tourism">Tourism</option>
+                    <option value="Tourism">Informative</option>
                     <option value="Education">Education</option>
                     <option value="Microsoft">Microsoft</option>
                     <option value="Other">Other</option>
@@ -217,6 +220,9 @@
 
                 <label for="email">Email:</label>
                 <input type="email" name="email" id="email"><br>
+
+                <label for="email">Address:</label>
+                <input type="text" name="address" id="address"><br>
 
                 <label for="message">Message:</label>
                 <textarea name="message" id="message"></textarea><br>
@@ -274,6 +280,9 @@
 
                 <label for="edit-email">Email:</label>
                 <input type="email" name="email" id="edit-email"><br>
+
+                <label for="edit-email">Address:</label>
+                <input type="text" name="address" id="edit-address"><br>
 
                 <label for="edit-message">Message:</label>
                 <textarea name="message" id="edit-message"></textarea><br>
@@ -359,6 +368,7 @@
             document.getElementById('edit-contact_person').value = prospect.contact_person;
             document.getElementById('edit-phone_number').value = prospect.phone_number;
             document.getElementById('edit-email').value = prospect.email;
+            document.getElementById('edit-address').value = prospect.address;
             document.getElementById('edit-message').value = prospect.message;
             document.getElementById('edit-probability').value = prospect.probability;
             document.getElementById('edit-activities').value = prospect.activities;
@@ -446,10 +456,11 @@
 
 
         // to show the details in name
-        function showDetailsModal(contact_person, phone, email, message) {
+        function showDetailsModal(contact_person, phone, email, address, message) {
             document.getElementById('modal-contact_person').textContent = contact_person;
             document.getElementById('modal-phone').textContent = phone;
             document.getElementById('modal-email').textContent = email;
+            document.getElementById('modal-address').textContent = address;
             document.getElementById('modal-message').textContent = message;
 
             const modal = document.getElementById('details-modal');
@@ -468,6 +479,7 @@
                 const contact_person = this.getAttribute('data-contact_person');
                 const phone = this.getAttribute('data-phone');
                 const email = this.getAttribute('data-email');
+                const address = this.getAttribute('data-address');
                 const message = this.getAttribute('data-message');
                 showDetailsModal(contact_person, phone, email, message);
             });

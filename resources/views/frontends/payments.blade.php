@@ -89,7 +89,7 @@
                     <button class="btn-add-activity" onclick="openAddActivityModal({{ $payments->id }})"><img src="{{url ('/frontend/images/plus.png')}}" alt=""></button>
                     <button class="btn-view-activities" onclick="viewActivities({{ $payments->id }})"><img src="{{url ('/frontend/images/view.png')}}" alt=""></button>
                 </td>
-                <td>
+                <td class="payment-edit-delete">
                     <button class="btn-create" onclick="openEditPaymentsModal({{ json_encode($payments) }})"><img src="{{url ('/frontend/images/edit.png')}}" alt=""></button>
                     <form action="{{ route('payments.destroy', $payments->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this payment?');">
                         @csrf

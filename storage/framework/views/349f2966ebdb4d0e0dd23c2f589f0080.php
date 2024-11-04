@@ -63,12 +63,16 @@
     <!-- Sidebar Menu -->
     <div id="sidebar" class="sidebar">
       <ul>
-        <li><a href="<?php echo e(url('/dashboard')); ?>"> <img src="<?php echo e(url('frontend/images/wtn.png')); ?>" class="logo-img"></a></li>
+        <li><a href="<?php echo e(url('/dashboard')); ?>"> <img src="<?php echo e(url('frontend/images/wtn-logo-black.svg')); ?>" class="logo-img"></a></li>
         <?php if(auth()->check() && in_array(auth()->user()->email, $allowedEmails)): ?>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <div class="icon-text">
               <img src="<?php echo e(url('frontend/images/time.png')); ?>" alt=""> Payments
+            </div>
+            <div class="dropdown-arrow-div">
               <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/payments')); ?>">All Payments</a></li>
@@ -77,8 +81,13 @@
 
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <div class="icon-text">
               <img src="<?php echo e(url('frontend/images/renewable.png')); ?>" alt=""> Renewals
+            </div>
+            <div class="dropdown-arrow-div">
               <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
+
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/tasks/all')); ?>">All</a></li>
@@ -92,8 +101,12 @@
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-              <img src="<?php echo e(url('frontend/images/customer.png')); ?>" alt=""> Clients
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
+          <div class="icon-text">
+            <img src="<?php echo e(url('frontend/images/customer.png')); ?>" alt=""> Clients
+          </div>
+          <div class="dropdown-arrow-div">
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/tasks/all')); ?>">Website</a></li>
@@ -102,8 +115,12 @@
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+          <div class="icon-text">
             <img src="<?php echo e(url('frontend/images/group.png')); ?>" alt=""> Prospects
+          </div>
+          <div class="dropdown-arrow-div">
             <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/prospects')); ?>">All </a></li>
@@ -112,8 +129,12 @@
         <?php endif; ?>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+          <div class="icon-text">
             <img src="<?php echo e(url('frontend/images/blueprint.png')); ?>" alt=""> Projects
+          </div>
+          <div class="dropdown-arrow-div">
             <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/projects')); ?>">All</a></li>
@@ -122,8 +143,12 @@
 
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+          <div class="icon-text">
             <img src="<?php echo e(url('frontend/images/clipboard.png')); ?>" alt=""> Tasks
+          </div>
+          <div class="dropdown-arrow-div">
             <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(route('dashboard')); ?>">All Tasks</a></li>

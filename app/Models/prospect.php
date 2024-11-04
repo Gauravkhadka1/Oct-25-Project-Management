@@ -15,6 +15,7 @@ class Prospect extends Model
         'contact_person',
         'phone_number',
         'email',
+        'address',
         'message',
         'inquirydate',
         'probability',

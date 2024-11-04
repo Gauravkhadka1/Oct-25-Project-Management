@@ -69,6 +69,7 @@ class ProspectController extends Controller
             'phone_number' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
             'message' => 'nullable|string',
+            'address' => 'nullable|string',
         ]);
 
         Prospect::create($validatedData);
@@ -99,6 +100,7 @@ class ProspectController extends Controller
             'status' => 'nullable|string',
             'phone_number' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
+            'address' => 'nullable|string',
             'message' => 'nullable|string',
         ]);
 
@@ -112,6 +114,7 @@ class ProspectController extends Controller
         $prospect->contact_person = $request->input('contact_person');
         $prospect->phone_number = $request->input('phone_number');
         $prospect->email = $request->input('email');
+        $prospect->address = $request->input('address');
         $prospect->message = $request->input('message');
         $prospect->probability = $request->input('probability');
         $prospect->inquirydate = $request->input('inquirydate');

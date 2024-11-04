@@ -90,7 +90,7 @@
 }
 
 .btn-add-activity img, .btn-view-activities img {
-    width: 30px;
+    width: 25px;
 }
 .modern-payments-table .btn-add-activity:hover,
 .modern-payments-table .btn-view-activities:hover {
@@ -99,6 +99,7 @@
 
 .modern-payments-table .btn-create {
     background-color: transparent;
+    /* color: black; */
 }
 
 .modern-payments-table .btn-create:hover {
@@ -106,7 +107,7 @@
 }
 
 .modern-payments-table .btn-cancel {
-    background-color: transparent
+    background-color: transparent;
 }
 
 .modern-payments-table .btn-cancel:hover {
@@ -120,12 +121,24 @@
     /* background-color: red; */
 }
 .btn-create img, .btn-cancel img {
-    width: 30px;
+    width: 25px;
 }
 .btn-see-detail-img {
     background-color: transparent;
-    height: 50px;
+    /* background-color: red; */
+    height: 70px;
     display: flex;
     align-items: center;
-
+}
+.payment-edit-delete {
+    display: flex;
+}
+.payment-edit-delete button {
+    margin: 19px 0;
+}
+.btn-cancel {
+    background-color: red;
+}
+.payment-activity-edit-view {
+    display: flex;
 }

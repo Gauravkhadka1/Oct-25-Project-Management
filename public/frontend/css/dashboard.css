@@ -183,3 +183,7 @@ tbody tr:nth-child(even) {
 tbody tr:nth-child(odd) {
     background-color: #ffffff; /* White for odd rows */
 }
+
+.btn-add-comments img, .btn-view-comments img {
+    width: 20px;
+}
