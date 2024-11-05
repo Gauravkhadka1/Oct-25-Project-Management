@@ -455,3 +455,82 @@ background-color: transparent;
     align-items: center;
     justify-content: flex-start;
 }
+.create-filter-search {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+.filter-prospects {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-left: 10px;
+}
+.filter-prospects img {
+    margin-right: 10px;
+}
+
+.filter-options {
+    position: absolute; /* Adjusts positioning if needed */
+    background-color: white; /* Background color of the options */
+    border: 1px solid #ccc; /* Border for the options */
+    padding: 10px; /* Padding inside the options */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+    z-index: 1000; /* Make sure it appears above other elements */
+}
+
+.filter-item {
+    margin-bottom: 10px; /* Space between filter items */
+}
+
+.filter-item label {
+    display: block; /* Ensure label is above the select */
+    margin-bottom: 5px; /* Space between label and select */
+}
+
+.filter-select {
+    width: 100%; /* Full width for the select */
+    padding: 8px; /* Padding for the select */
+    border: 1px solid #ccc; /* Border for the select */
+    border-radius: 4px; /* Rounded corners */
+}
+
+button {
+    padding: 10px 15px; /* Padding for the button */
+    background-color: #007bff; /* Button color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.date-range-picker {
+    display: flex; /* Flex display for layout */
+    flex-direction: column; /* Stack inputs vertically */
+    margin-top: 10px; /* Space between select and date range picker */
+}
+
+.date-range-picker label {
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+.date-range-picker input {
+    padding: 8px; /* Padding for the inputs */
+    border: 1px solid #ccc; /* Border for the inputs */
+    border-radius: 4px; /* Rounded corners */
+}
+.filter-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.filter-count {
+    margin-right: 5px;
+}

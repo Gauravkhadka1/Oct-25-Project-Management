@@ -14,44 +14,44 @@ class ProspectController extends Controller
         // Query builder to fetch prospects
         $query = Prospect::query();
 
-        // Sorting by Name A-Z or Z-A
-        if ($request->has('sort_name') && in_array($request->sort_name, ['asc', 'desc'])) {
-            $query->orderBy('company_name', $request->sort_name);
+        // Initialize a filter count
+        $filterCount = 0;
+
+        // Filtering by Inquiry Date
+        if ($request->has('inquiry_date') && $request->inquiry_date != '') {
+            $filterCount++; // Increment filter count
+            switch ($request->inquiry_date) {
+                case 'recent':
+                    $query->orderBy('inquirydate', 'desc');
+                    break;
+                case 'oldest':
+                    $query->orderBy('inquirydate', 'asc');
+                    break;
+                case 'date-range':
+                    if ($request->has('from_date') && $request->has('to_date')) {
+                        $query->whereBetween('inquirydate', [$request->from_date, $request->to_date]);
+                        $filterCount++; // Increment filter count for date range
+                    }
+                    break;
+            }
         }
 
         // Filtering by Category
-        if ($request->has('filter_category') && $request->filter_category != '') {
-            $query->where('category', $request->filter_category);
-        }
-
-
-
-        // Apply date range filter if both dates are provided
-        if ($request->has('from_date') && $request->has('to_date') && $request->sort_inquirydate === 'range') {
-            $query->whereBetween('inquirydate', [$request->from_date, $request->to_date]);
-        }
-
-        // Apply sorting if sort_inquirydate is set to 'asc' or 'desc', regardless of date range
-        if ($request->has('sort_inquirydate') && in_array($request->sort_inquirydate, ['asc', 'desc'])) {
-            $query->orderBy('inquirydate', $request->sort_inquirydate);
-        }
-
-
-
-        // Sorting by Probability (Higher to Lower or Lower to Higher)
-        if ($request->has('sort_probability') && in_array($request->sort_probability, ['asc', 'desc'])) {
-            $query->orderBy('probability', $request->sort_probability);
+        if ($request->has('category') && $request->category != '') {
+            $query->where('category', $request->category);
+            $filterCount++; // Increment filter count
         }
 
         // Filtering by Status
-        if ($request->has('sort_status') && $request->sort_status != '') {
-            $query->where('status', $request->sort_status);
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+            $filterCount++; // Increment filter count
         }
 
         // Fetch the sorted and filtered data
         $prospects = $query->get();
 
-        return view('frontends.prospects', compact('prospects'));
+        return view('frontends.prospects', compact('prospects', 'filterCount'));
     }
 
 

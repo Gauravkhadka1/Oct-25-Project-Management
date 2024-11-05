@@ -15,9 +15,65 @@
                 <h2>Prospects</h2>
             </div>
         </div>
-        <div class="create-prospect">
+        <div class="create-filter-search">
+            <div class="create-prospect">
                 <button class="btn-create" onclick="openCreateProspectModal()"><img src="<?php echo e(url ('/frontend/images/add.png')); ?>" alt=""> Prospect</button>
             </div>
+            <div class="filter-section">
+                <div class="filter-prospects" onclick="toggleFilterList()">
+                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                    <div class="filter-count">
+                        <?php if($filterCount > 0): ?>
+                        <p><?php echo e($filterCount); ?></p>
+                        <?php endif; ?>
+                    </div>
+                    Filter
+                </div>
+                <div class="filter-options" style="display: none;">
+                    <div class="filter-item">
+                        <label for="inquiry-date">Inquiry Date:</label>
+                        <select id="inquiry-date" class="filter-select" onchange="handleDateRange(this)">
+                            <option value="">Select Options</option>
+                            <option value="recent" <?php echo e(request('inquiry-date') === 'recent' ? 'selected' : ''); ?>>Recent</option>
+                            <option value="oldest" <?php echo e(request('inquiry-date') === 'oldest' ? 'selected' : ''); ?>>Oldest</option>
+                            <option value="date-range" <?php echo e(request('inquiry-date') === 'date-range' ? 'selected' : ''); ?>>Choose Date Range</option>
+                        </select>
+                        <div id="date-range-picker" class="date-range-picker" style="display: <?php echo e(request('inquiry-date') === 'date-range' ? 'block' : 'none'); ?>">
+                            <label for="from-date">From:</label>
+                            <input type="date" id="from-date" value="<?php echo e(request('from_date')); ?>">
+                            <label for="to-date">To:</label>
+                            <input type="date" id="to-date" value="<?php echo e(request('to_date')); ?>">
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label for="category">Category:</label>
+                        <select id="category" class="filter-select">
+                            <option value="">Select Options</option>
+                            <option value="website" <?php echo e(request('filter_category') === 'website' ? 'selected' : ''); ?>>Website</option>
+                            <option value="microsoft" <?php echo e(request('filter_category') === 'microsoft' ? 'selected' : ''); ?>>Microsoft</option>
+                            <option value="other" <?php echo e(request('filter_category') === 'other' ? 'selected' : ''); ?>>Other</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="status">Status:</label>
+                        <select id="status" class="filter-select">
+                            <option value="">Select Options</option>
+                            <option value="Not Responded" <?php echo e(request('sort_status') === 'Not Responded' ? 'selected' : ''); ?>>Not Responded</option>
+                            <option value="dealing" <?php echo e(request('sort_status') === 'dealing' ? 'selected' : ''); ?>>Dealing</option>
+                            <option value="converted" <?php echo e(request('sort_status') === 'converted' ? 'selected' : ''); ?>>Converted</option>
+                        </select>
+                    </div>
+                    <button onclick="applyFilter()">Apply Filter</button>
+                </div>
+            </div>
+
+
+
+
+
+
+
+        </div>
         <table class="modern-payments-table">
             <thead>
                 <tr>
@@ -111,7 +167,7 @@
                             <form action="<?php echo e(route('prospects.index')); ?>" method="GET">
                                 <select name="sort_status" onchange="this.form.submit()">
                                     <option value="">All Statuses</option>
-                                    <option value="Not Responded" <?php echo e(request('sort_status') == 'Not Responded' ? 'selected' : ''); ?>>Not Responded</option>
+                                    <option value="Not Responded" <?php echo e(request('sort_status') == 'Not_Responded' ? 'selected' : ''); ?>>Not Responded</option>
                                     <option value="Dealing" <?php echo e(request('sort_status') == 'Dealing' ? 'selected' : ''); ?>>Dealing</option>
                                     <option value="Converted" <?php echo e(request('sort_status') == 'Converted' ? 'selected' : ''); ?>>Converted</option>
                                     <option value="Missed" <?php echo e(request('sort_status') == 'Missed' ? 'selected' : ''); ?>>Missed</option>
@@ -130,9 +186,9 @@
                     <td>
                         <span class="prospect-name"><?php echo e($prospect->company_name); ?></span>
                         <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-address="<?php echo e($prospect->address); ?>" data-message="<?php echo e($prospect->message); ?>">
-                        <div class="btn-see-detail-img">
-                            <img src="<?php echo e(url ('/frontend/images/info.png')); ?>" alt="">
-                        </div>
+                            <div class="btn-see-detail-img">
+                                <img src="<?php echo e(url ('/frontend/images/info.png')); ?>" alt="">
+                            </div>
                         </button>
                     </td>
 
@@ -395,42 +451,7 @@
             document.getElementById('edit-prospect-modal').style.display = 'none';
         }
 
-        //    For filter
-        function toggleFilter(id) {
-            // Close other filters first
-            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-                if (dropdown.id !== id) {
-                    dropdown.style.display = 'none';
-                }
-            });
 
-            // Toggle the selected filter dropdown
-            var element = document.getElementById(id);
-            if (element.style.display === 'none' || element.style.display === '') {
-                element.style.display = 'block';
-            } else {
-                element.style.display = 'none';
-            }
-        }
-
-        // Close the dropdowns if clicked outside, but ignore clicks inside the dropdown
-        window.onclick = function(event) {
-            // Check if the click is inside the dropdown or on the filter icon
-            if (!event.target.closest('.filter-dropdown') && !event.target.matches('.barfilter')) {
-                document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-                    dropdown.style.display = 'none';
-                });
-            }
-        }
-
-        function toggleDateRange(value) {
-            const dateRangeFields = document.getElementById('date-range-fields');
-            if (value === 'range') {
-                dateRangeFields.style.display = 'block';
-            } else {
-                dateRangeFields.style.display = 'none';
-            }
-        }
 
         // to show message Function to show the modal with the full message
         function showMessageModal(message) {
@@ -655,19 +676,76 @@
             }
         });
 
-        function handleFilterChange(select) {
-            const dateRangeFields = document.getElementById('date-range-fields');
-            const dateRangeSubmit = document.getElementById('date-range-submit');
 
-            if (select.value === 'range') {
-                dateRangeFields.style.display = 'block';
-                dateRangeSubmit.style.display = 'inline-block';
-            } else {
-                dateRangeFields.style.display = 'none';
-                dateRangeSubmit.style.display = 'none';
-                select.form.submit(); // Auto-submit for recent/oldest options
-            }
-        }
+
+        function toggleFilterList() {
+    const filterOptions = document.querySelector('.filter-options');
+    filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
+
+    // Populate the select options with the current selected values only if the options are shown
+    if (filterOptions.style.display === 'block') {
+        populateSelectedFilters();
+    }
+}
+
+function populateSelectedFilters() {
+    const inquiryDateSelect = document.getElementById('inquiry-date');
+    const categorySelect = document.getElementById('category');
+    const statusSelect = document.getElementById('status');
+
+    // Get the selected values from the current state
+    const selectedInquiryDate = inquiryDateSelect.value;
+    const selectedCategory = categorySelect.value;
+    const selectedStatus = statusSelect.value;
+
+    // Update the display of the inquiry date select to show the selected value
+    if (selectedInquiryDate === 'date-range') {
+        document.getElementById('date-range-picker').style.display = 'block';
+    } else {
+        document.getElementById('date-range-picker').style.display = 'none';
+    }
+
+    inquiryDateSelect.value = selectedInquiryDate;
+    categorySelect.value = selectedCategory;
+    statusSelect.value = selectedStatus;
+}
+
+// Optional: Close the filter options if clicking outside of them
+document.addEventListener('click', function(event) {
+    const filterDiv = document.querySelector('.filter-prospects');
+    const filterOptions = document.querySelector('.filter-options');
+    if (!filterDiv.contains(event.target) && !filterOptions.contains(event.target)) {
+        filterOptions.style.display = 'none';
+        document.getElementById('date-range-picker').style.display = 'none';
+    }
+});
+
+function handleDateRange(selectElement) {
+    const dateRangePicker = document.getElementById('date-range-picker');
+    dateRangePicker.style.display = selectElement.value === 'date-range' ? 'flex' : 'none';
+}
+
+function applyFilter() {
+    const inquiryDate = document.getElementById('inquiry-date').value;
+    const category = document.getElementById('category').value;
+    const status = document.getElementById('status').value;
+    const fromDate = document.getElementById('from-date').value;
+    const toDate = document.getElementById('to-date').value;
+
+    // Build the URL with query parameters
+    const url = new URL(window.location.href);
+    url.searchParams.set('inquiry_date', inquiryDate);
+    url.searchParams.set('category', category);
+    url.searchParams.set('status', status);
+    if (inquiryDate === 'date-range') {
+        url.searchParams.set('from_date', fromDate);
+        url.searchParams.set('to_date', toDate);
+    }
+
+    // Redirect to the filtered URL
+    window.location.href = url.toString();
+}
+
     </script>
 </main>
 
