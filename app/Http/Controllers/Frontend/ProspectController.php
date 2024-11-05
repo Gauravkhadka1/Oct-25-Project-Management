@@ -11,15 +11,12 @@ class ProspectController extends Controller
     // Change this method name from 'prospects' to 'index'
     public function index(Request $request)
     {
-        // Query builder to fetch prospects
         $query = Prospect::query();
-
-        // Initialize a filter count
         $filterCount = 0;
-
+    
         // Filtering by Inquiry Date
-        if ($request->has('inquiry_date') && $request->inquiry_date != '') {
-            $filterCount++; // Increment filter count
+        if ($request->filled('inquiry_date')) {
+            $filterCount++;
             switch ($request->inquiry_date) {
                 case 'recent':
                     $query->orderBy('inquirydate', 'desc');
@@ -28,31 +25,32 @@ class ProspectController extends Controller
                     $query->orderBy('inquirydate', 'asc');
                     break;
                 case 'date-range':
-                    if ($request->has('from_date') && $request->has('to_date')) {
+                    if ($request->filled('from_date') && $request->filled('to_date')) {
                         $query->whereBetween('inquirydate', [$request->from_date, $request->to_date]);
-                        $filterCount++; // Increment filter count for date range
+                        $filterCount++;
                     }
                     break;
             }
         }
-
+    
         // Filtering by Category
-        if ($request->has('category') && $request->category != '') {
-            $query->where('category', $request->category);
-            $filterCount++; // Increment filter count
+        if ($request->filled('filter_category')) {
+            $query->where('category', $request->filter_category);
+            $filterCount++;
         }
-
+    
         // Filtering by Status
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-            $filterCount++; // Increment filter count
+        if ($request->filled('sort_status')) {
+            $query->where('status', $request->sort_status);
+            $filterCount++;
         }
-
+    
         // Fetch the sorted and filtered data
         $prospects = $query->get();
-
+    
         return view('frontends.prospects', compact('prospects', 'filterCount'));
     }
+    
 
 
     public function store(Request $request)

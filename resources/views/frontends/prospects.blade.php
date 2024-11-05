@@ -31,41 +31,50 @@
                     Filter
                 </div>
                 <div class="filter-options" style="display: none;">
-                    <div class="filter-item">
-                        <label for="inquiry-date">Inquiry Date:</label>
-                        <select id="inquiry-date" class="filter-select" onchange="handleDateRange(this)">
-                            <option value="">Select Options</option>
-                            <option value="recent" {{ request('inquiry-date') === 'recent' ? 'selected' : '' }}>Recent</option>
-                            <option value="oldest" {{ request('inquiry-date') === 'oldest' ? 'selected' : '' }}>Oldest</option>
-                            <option value="date-range" {{ request('inquiry-date') === 'date-range' ? 'selected' : '' }}>Choose Date Range</option>
-                        </select>
-                        <div id="date-range-picker" class="date-range-picker" style="display: {{ request('inquiry-date') === 'date-range' ? 'block' : 'none' }}">
-                            <label for="from-date">From:</label>
-                            <input type="date" id="from-date" value="{{ request('from_date') }}">
-                            <label for="to-date">To:</label>
-                            <input type="date" id="to-date" value="{{ request('to_date') }}">
+                    <form action="{{ route('prospects.index') }}" method="GET">
+                        <!-- Inquiry Date Filter -->
+                        <div class="filter-item">
+                            <label for="inquiry-date">Inquiry Date:</label>
+                            <select id="inquiry-date" name="inquiry_date" class="filter-select" onchange="handleDateRange(this)">
+                                <option value="">Select Options</option>
+                                <option value="recent" {{ request('inquiry_date') == 'recent' ? 'selected' : '' }}>Recent</option>
+                                <option value="oldest" {{ request('inquiry_date') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+                                <option value="date-range" {{ request('inquiry_date') == 'date-range' ? 'selected' : '' }}>Choose Date Range</option>
+                            </select>
+                            <div id="date-range-picker" class="date-range-picker" style="display: {{ request('inquiry-date') == 'date-range' ? 'block' : 'none' }}">
+                                <label for="from-date">From:</label>
+                                <input type="date" id="from-date" name="from_date" value="{{ request('from_date') }}">
+                                <label for="to-date">To:</label>
+                                <input type="date" id="to-date" name="to_date" value="{{ request('to_date') }}">
+                            </div>
                         </div>
-                    </div>
-                    <div class="filter-item">
-                        <label for="category">Category:</label>
-                        <select id="category" class="filter-select">
-                            <option value="">Select Options</option>
-                            <option value="website" {{ request('filter_category') === 'website' ? 'selected' : '' }}>Website</option>
-                            <option value="microsoft" {{ request('filter_category') === 'microsoft' ? 'selected' : '' }}>Microsoft</option>
-                            <option value="other" {{ request('filter_category') === 'other' ? 'selected' : '' }}>Other</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label for="status">Status:</label>
-                        <select id="status" class="filter-select">
-                            <option value="">Select Options</option>
-                            <option value="Not Responded" {{ request('sort_status') === 'Not Responded' ? 'selected' : '' }}>Not Responded</option>
-                            <option value="dealing" {{ request('sort_status') === 'dealing' ? 'selected' : '' }}>Dealing</option>
-                            <option value="converted" {{ request('sort_status') === 'converted' ? 'selected' : '' }}>Converted</option>
-                        </select>
-                    </div>
-                    <button onclick="applyFilter()">Apply Filter</button>
+
+                        <!-- Category Filter -->
+                        <div class="filter-item">
+                            <label for="category">Category:</label>
+                            <select id="category" name="filter_category" class="filter-select">
+                                <option value="">Select Options</option>
+                                <option value="website" {{ request('filter_category') == 'website' ? 'selected' : '' }}>Website</option>
+                                <option value="microsoft" {{ request('filter_category') == 'microsoft' ? 'selected' : '' }}>Microsoft</option>
+                                <option value="other" {{ request('filter_category') == 'other' ? 'selected' : '' }}>Other</option>
+                            </select>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div class="filter-item">
+                            <label for="status">Status:</label>
+                            <select id="status" name="sort_status" class="filter-select">
+                                <option value="">Select Options</option>
+                                <option value="Not Responded" {{ request('sort_status') == 'Not Responded' ? 'selected' : '' }}>Not Responded</option>
+                                <option value="dealing" {{ request('sort_status') == 'dealing' ? 'selected' : '' }}>Dealing</option>
+                                <option value="converted" {{ request('sort_status') == 'converted' ? 'selected' : '' }}>Converted</option>
+                            </select>
+                        </div>
+
+                        <button type="submit">Apply Filter</button>
+                    </form>
                 </div>
+
             </div>
 
 
@@ -680,70 +689,69 @@
 
 
         function toggleFilterList() {
-    const filterOptions = document.querySelector('.filter-options');
-    filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
+            const filterOptions = document.querySelector('.filter-options');
+            filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
 
-    // Populate the select options with the current selected values only if the options are shown
-    if (filterOptions.style.display === 'block') {
-        populateSelectedFilters();
-    }
-}
+            // Populate the select options with the current selected values only if the options are shown
+            if (filterOptions.style.display === 'block') {
+                populateSelectedFilters();
+            }
+        }
 
-function populateSelectedFilters() {
-    const inquiryDateSelect = document.getElementById('inquiry-date');
-    const categorySelect = document.getElementById('category');
-    const statusSelect = document.getElementById('status');
+        function populateSelectedFilters() {
+            const inquiryDateSelect = document.getElementById('inquiry-date');
+            const categorySelect = document.getElementById('category');
+            const statusSelect = document.getElementById('status');
 
-    // Get the selected values from the current state
-    const selectedInquiryDate = inquiryDateSelect.value;
-    const selectedCategory = categorySelect.value;
-    const selectedStatus = statusSelect.value;
+            // Get the selected values from the current state
+            const selectedInquiryDate = inquiryDateSelect.value;
+            const selectedCategory = categorySelect.value;
+            const selectedStatus = statusSelect.value;
 
-    // Update the display of the inquiry date select to show the selected value
-    if (selectedInquiryDate === 'date-range') {
-        document.getElementById('date-range-picker').style.display = 'block';
-    } else {
-        document.getElementById('date-range-picker').style.display = 'none';
-    }
+            // Update the display of the inquiry date select to show the selected value
+            if (selectedInquiryDate === 'date-range') {
+                document.getElementById('date-range-picker').style.display = 'block';
+            } else {
+                document.getElementById('date-range-picker').style.display = 'none';
+            }
 
-    inquiryDateSelect.value = selectedInquiryDate;
-    categorySelect.value = selectedCategory;
-    statusSelect.value = selectedStatus;
-}
+            inquiryDateSelect.value = selectedInquiryDate;
+            categorySelect.value = selectedCategory;
+            statusSelect.value = selectedStatus;
+        }
 
-// Optional: Close the filter options if clicking outside of them
-document.addEventListener('click', function(event) {
-    const filterDiv = document.querySelector('.filter-prospects');
-    const filterOptions = document.querySelector('.filter-options');
-    if (!filterDiv.contains(event.target) && !filterOptions.contains(event.target)) {
-        filterOptions.style.display = 'none';
-        document.getElementById('date-range-picker').style.display = 'none';
-    }
-});
+        // Optional: Close the filter options if clicking outside of them
+        document.addEventListener('click', function(event) {
+            const filterDiv = document.querySelector('.filter-prospects');
+            const filterOptions = document.querySelector('.filter-options');
+            if (!filterDiv.contains(event.target) && !filterOptions.contains(event.target)) {
+                filterOptions.style.display = 'none';
+                document.getElementById('date-range-picker').style.display = 'none';
+            }
+        });
 
-function handleDateRange(selectElement) {
-    const dateRangePicker = document.getElementById('date-range-picker');
-    dateRangePicker.style.display = selectElement.value === 'date-range' ? 'flex' : 'none';
-}
+        function handleDateRange(selectElement) {
+            const dateRangePicker = document.getElementById('date-range-picker');
+            dateRangePicker.style.display = selectElement.value === 'date-range' ? 'flex' : 'none';
+        }
 
-function applyFilter() {
+        function applyFilter() {
     const inquiryDate = document.getElementById('inquiry-date').value;
     const category = document.getElementById('category').value;
     const status = document.getElementById('status').value;
     const fromDate = document.getElementById('from-date').value;
     const toDate = document.getElementById('to-date').value;
 
-    // Build the URL with query parameters
     const url = new URL(window.location.href);
     url.searchParams.set('inquiry_date', inquiryDate);
-    url.searchParams.set('category', category);
-    url.searchParams.set('status', status);
+    url.searchParams.set('filter_category', category);
+    url.searchParams.set('sort_status', status);
+
     if (inquiryDate === 'date-range') {
         url.searchParams.set('from_date', fromDate);
         url.searchParams.set('to_date', toDate);
     }
 
-    // Redirect to the filtered URL
     window.location.href = url.toString();
 }
 
