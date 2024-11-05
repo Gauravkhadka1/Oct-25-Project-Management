@@ -14,15 +14,23 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $query = Project::query();
-          // Debugging: Log the request data
+               // Debugging: Log the request data
     \Log::info('Request Data:', $request->all());
-        // Start a query for projects
-        $query = Project::with(['tasks.assignedUser', 'tasks.assignedBy']); // Load related tasks and users
+         // Start a query for projects
+         $query = Project::with(['tasks.assignedUser', 'tasks.assignedBy']); // Load related tasks and users
+         
+   
     
         // Apply filter if 'filter_status' is provided in the request
         if ($request->has('filter_status') && $request->filter_status != '') {
             $query->where('status', $request->filter_status);
         }
+
+         // Search functionality
+    if ($request->has('search') && !empty($request->search)) {
+        $searchTerm = $request->search;
+        $query->where('name', 'like', "%{$searchTerm}%"); // Search by project name
+    }
 
         // Apply sorting based on start date if provided
         if ($request->has('sort_start_date') && $request->sort_start_date != '') {

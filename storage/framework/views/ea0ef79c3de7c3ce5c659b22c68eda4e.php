@@ -11,8 +11,24 @@ use Carbon\Carbon;
         </div>
         <div class="projects">
             <div class="ongoing-project" id="ongoing-project">
-                <div class="create-project">
-                    <button onclick="openCreateProjectModal()"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""> Project</button>
+                <div class="create-search-project">
+                    <div class="create-project">
+                        <button onclick="openCreateProjectModal()"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""> Project</button>
+                    </div>
+                    <div class="search-projects">
+                        <div class="filter-icon">
+                            <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        </div>
+                        <form action="<?php echo e(route('projects.index')); ?>" method="GET" id="search-form">
+                            <div class="search-text-area">
+                                <input type="text" name="search" placeholder="search" value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
+                            </div>
+                            <div class="search-icon">
+                                <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
                 <table class="modern-payments-table">
                     <thead>
