@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Middleware\CheckAllowedEmails;
 
 Route::get('/',[HomeController::class, 'index']);
 Route::get('/mention',[HomeController::class, 'mention']);
@@ -40,10 +41,20 @@ Route::post('/projects', [ProjectController::class, 'store'])->name('projects.st
 // Route::get('/prospects', [ProspectController::class, 'prospects'])->name('prospects'); 
 // Route::post('/prospects', [ProspectController::class, 'prospectstore'])->name('prospects.store');
 
-Route::resource('prospects', ProspectController::class);
+
 Route::resource('projects', ProjectController::class);
 
-Route::resource('payments', PaymentsController::class);
+Route::middleware([CheckAllowedEmails::class])->group(function () {
+    Route::resource('payments', PaymentsController::class);
+    Route::resource('prospects', ProspectController::class);
+    Route::post('/payments-activities', [PaymentsActivityController::class, 'store'])->name('payments-activities.store');
+Route::get('/prospects/{id}/activities', [ActivityController::class, 'showActivities']);
+Route::get('/payments/{Id}/activities', [PaymentsActivityController::class, 'showActivities']);
+Route::get('/prospects/{prospectId}/activities', [ActivityController::class, 'getActivitiesByProspect']);
+Route::get('/payments/{paymentsId}/activities', [PaymentsActivityController::class, 'getActivitiesByProspect']);
+Route::delete('/prospects/{id}', [ProspectController::class, 'destroy'])->name('prospects.destroy');
+});
+
 
 
 Route::get('/search', [HomeController::class, 'search'])->name('search');
@@ -57,17 +68,14 @@ Route::post('/timer/stop', [TimeController::class, 'stop'])->name('timer.stop');
 
 // routes/web.php
 Route::post('/activities', [ActivityController::class, 'store'])->name('activities.store');
-Route::post('/payments-activities', [PaymentsActivityController::class, 'store'])->name('payments-activities.store');
-Route::get('/prospects/{id}/activities', [ActivityController::class, 'showActivities']);
-Route::get('/payments/{Id}/activities', [PaymentsActivityController::class, 'showActivities']);
 
-Route::get('/prospects/{prospectId}/activities', [ActivityController::class, 'getActivitiesByProspect']);
-Route::get('/payments/{paymentsId}/activities', [PaymentsActivityController::class, 'getActivitiesByProspect']);
+
+
 // Route::get('/prospects/{prospectId}/activities', [ActivityController::class, 'getActivities']);
 
 
 
-Route::delete('/prospects/{id}', [ProspectController::class, 'destroy'])->name('prospects.destroy');
+
 Route::delete('/projects/{id}', [ProjectController::class, 'destroy'])->name('project.destroy');
 
 Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
