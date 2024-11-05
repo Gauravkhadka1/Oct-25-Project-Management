@@ -76,12 +76,16 @@
                 </div>
 
             </div>
-
-
-
-
-
-
+            <div class="search-prospects">
+                <div class="search-icon">
+                    <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                </div>
+                <form action="{{ route('prospects.index') }}" method="GET" id="search-form">
+                    <div class="search-text-area">
+                        <input type="text" name="search" placeholder="search..." value="{{ request('search') }}" oninput="this.form.submit()">
+                    </div>
+                </form>
+            </div>
 
         </div>
         <table class="modern-payments-table">
@@ -90,100 +94,19 @@
                     <th>SN</th>
                     <th>
                         Company Name
-                        <a href="#" onclick="toggleFilter('name-filter')">
-                            <!-- <i class="fas fa-filter"></i>  -->
-                            <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                        </a>
-                        <div id="name-filter" class="filter-dropdown" style="display: none;">
-                            <form action="{{ route('prospects.index') }}" method="GET">
-                                <select name="sort_name" onchange="this.form.submit()">
-                                    <option value="">Select</option>
-                                    <option value="asc" {{ request('sort_name') == 'asc' ? 'selected' : '' }}>A-Z</option>
-                                    <option value="desc" {{ request('sort_name') == 'desc' ? 'selected' : '' }}>Z-A</option>
-                                </select>
-                            </form>
-                        </div>
                     </th>
                     <th>
                         Category
-                        <a href="#" onclick="toggleFilter('category-filter')">
-                            <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                        </a>
-                        <div id="category-filter" class="filter-dropdown" style="display: none;">
-                            <form action="{{ route('prospects.index') }}" method="GET">
-                                <select name="filter_category" onchange="this.form.submit()">
-                                    <option value="">All Categories</option>
-                                    <option value="Ecommerce" {{ request('filter_category') == 'Ecommerce' ? 'selected' : '' }}>Ecommerce</option>
-                                    <option value="NGO/ INGO" {{ request('filter_category') == 'NGO/ INGO' ? 'selected' : '' }}>NGO/ INGO</option>
-                                    <option value="Tourism" {{ request('filter_category') == 'Tourism' ? 'selected' : '' }}>Tourism</option>
-                                    <option value="Education" {{ request('filter_category') == 'Education' ? 'selected' : '' }}>Education</option>
-                                    <option value="Microsoft" {{ request('filter_category') == 'Microsoft' ? 'selected' : '' }}>Microsoft</option>
-                                    <option value="Other" {{ request('filter_category') == 'Other' ? 'selected' : '' }}>Other</option>
-                                </select>
-                            </form>
-                        </div>
                     </th>
                     <th>
                         Inquiry Date
-                        <a href="#" onclick="toggleFilter('inquirydate-filter')">
-                            <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                        </a>
-                        <div id="inquirydate-filter" class="filter-dropdown" style="display: none;">
-                            <form action="{{ route('prospects.index') }}" method="GET">
-                                <select name="sort_inquirydate" id="sort_inquirydate" onchange="handleFilterChange(this)">
-                                    <option value="">Select</option>
-                                    <option value="desc" {{ request('sort_inquirydate') == 'desc' ? 'selected' : '' }}>Most Recent</option>
-                                    <option value="asc" {{ request('sort_inquirydate') == 'asc' ? 'selected' : '' }}>Oldest</option>
-                                    <option value="range">Choose Date Range</option>
-                                </select>
-
-                                <!-- Date range input fields (initially hidden) -->
-                                <div id="date-range-fields" style="display: none;">
-                                    <label for="from_date">From:</label>
-                                    <input type="date" name="from_date" value="{{ request('from_date') }}">
-
-                                    <label for="to_date">To:</label>
-                                    <input type="date" name="to_date" value="{{ request('to_date') }}">
-                                </div>
-
-                                <button type="submit" id="date-range-submit" style="display: none;">Filter</button>
-                            </form>
-                        </div>
                     </th>
-
-
                     <th>
                         Probability
-                        <a href="#" onclick="toggleFilter('probability-filter')">
-                            <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                        </a>
-                        <div id="probability-filter" class="filter-dropdown" style="display: none;">
-                            <form action="{{ route('prospects.index') }}" method="GET">
-                                <select name="sort_probability" onchange="this.form.submit()">
-                                    <option value="">Select</option>
-                                    <option value="desc" {{ request('sort_probability') == 'desc' ? 'selected' : '' }}>Higher to Lower</option>
-                                    <option value="asc" {{ request('sort_probability') == 'asc' ? 'selected' : '' }}>Lower to Higher</option>
-                                </select>
-                            </form>
-                        </div>
                     </th>
                     <th>Activities</th>
                     <th>
                         Status
-                        <a href="#" onclick="toggleFilter('status-filter')">
-                            <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                        </a>
-                        <div id="status-filter" class="filter-dropdown" style="display: none;">
-                            <form action="{{ route('prospects.index') }}" method="GET">
-                                <select name="sort_status" onchange="this.form.submit()">
-                                    <option value="">All Statuses</option>
-                                    <option value="Not Responded" {{ request('sort_status') == 'Not_Responded' ? 'selected' : '' }}>Not Responded</option>
-                                    <option value="Dealing" {{ request('sort_status') == 'Dealing' ? 'selected' : '' }}>Dealing</option>
-                                    <option value="Converted" {{ request('sort_status') == 'Converted' ? 'selected' : '' }}>Converted</option>
-                                    <option value="Missed" {{ request('sort_status') == 'Missed' ? 'selected' : '' }}>Missed</option>
-                                </select>
-                            </form>
-                        </div>
                     </th>
                     <th>Edit</th>
                 </tr>
@@ -736,25 +659,24 @@
         }
 
         function applyFilter() {
-    const inquiryDate = document.getElementById('inquiry-date').value;
-    const category = document.getElementById('category').value;
-    const status = document.getElementById('status').value;
-    const fromDate = document.getElementById('from-date').value;
-    const toDate = document.getElementById('to-date').value;
+            const inquiryDate = document.getElementById('inquiry-date').value;
+            const category = document.getElementById('category').value;
+            const status = document.getElementById('status').value;
+            const fromDate = document.getElementById('from-date').value;
+            const toDate = document.getElementById('to-date').value;
 
-    const url = new URL(window.location.href);
-    url.searchParams.set('inquiry_date', inquiryDate);
-    url.searchParams.set('filter_category', category);
-    url.searchParams.set('sort_status', status);
+            const url = new URL(window.location.href);
+            url.searchParams.set('inquiry_date', inquiryDate);
+            url.searchParams.set('filter_category', category);
+            url.searchParams.set('sort_status', status);
 
-    if (inquiryDate === 'date-range') {
-        url.searchParams.set('from_date', fromDate);
-        url.searchParams.set('to_date', toDate);
-    }
+            if (inquiryDate === 'date-range') {
+                url.searchParams.set('from_date', fromDate);
+                url.searchParams.set('to_date', toDate);
+            }
 
-    window.location.href = url.toString();
-}
-
+            window.location.href = url.toString();
+        }
     </script>
 </main>
 

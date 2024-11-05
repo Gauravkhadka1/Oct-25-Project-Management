@@ -13,20 +13,83 @@ use Carbon\Carbon;
         </div>
         <div class="projects">
             <div class="ongoing-project" id="ongoing-project">
-                <div class="create-search-project">
+                <div class="create-filter-search-project">
                     <div class="create-project">
                         <button onclick="openCreateProjectModal()"><img src="{{url ('/frontend/images/plus.png')}}" alt=""> Project</button>
                     </div>
-                    <div class="search-projects">
-                        <div class="filter-icon">
+                    <div class="filter-section">
+                        <div class="filter-projects" onclick="toggleFilterList()">
                             <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                            <div class="filter-count">
+                                @if($filterCount > 0)
+                                <p>{{ $filterCount }}</p>
+                                @endif
+                            </div>
+                            Filter
+                        </div>
+                        <div class="filter-options" style="display: none;">
+                            <form action="{{ route('projects.index') }}" method="GET">
+                                <!-- Inquiry Date Filter -->
+                                <div class="filter-item">
+                                    <label for="start-date">Start Date:</label>
+                                    <select id="start-date" name="start_date" class="filter-select" onchange="handleDateRange(this)">
+                                        <option value="">Select Options</option>
+                                        <option value="recent" {{ request('start_date') == 'recent' ? 'selected' : '' }}>Recent</option>
+                                        <option value="oldest" {{ request('start_date') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+                                        <option value="date-range" {{ request('start_date') == 'date-range' ? 'selected' : '' }}>Choose Date Range</option>
+                                    </select>
+                                    <div id="date-range-picker" class="date-range-picker" style="display: {{ request('inquiry-date') == 'date-range' ? 'block' : 'none' }}">
+                                        <label for="from-date">From:</label>
+                                        <input type="date" id="from-date" name="from_date" value="{{ request('from_date') }}">
+                                        <label for="to-date">To:</label>
+                                        <input type="date" id="to-date" name="to_date" value="{{ request('to_date') }}">
+                                    </div>
+                                </div>
+
+                                <div class="filter-item">
+                                    <label for="due-date">Due Date:</label>
+                                    <select id="due-date" name="due_date" class="filter-select" onchange="handleDateRange(this)">
+                                        <option value="">Select Options</option>
+                                        <option value="Less-Time" {{ request('due_date') == 'Less-Time' ? 'selected' : '' }}>Less Time</option>
+                                        <option value="More-Time" {{ request('due_date') == 'More-Time' ? 'selected' : '' }}>More Time</option>
+                                        <option value="date-range" {{ request('due_date') == 'date-range' ? 'selected' : '' }}>Choose Date Range</option>
+                                    </select>
+                                    <div id="date-range-picker" class="date-range-picker" style="display: {{ request('inquiry-date') == 'date-range' ? 'block' : 'none' }}">
+                                        <label for="from-date">From:</label>
+                                        <input type="date" id="from-date" name="from_date" value="{{ request('from_date') }}">
+                                        <label for="to-date">To:</label>
+                                        <input type="date" id="to-date" name="to_date" value="{{ request('to_date') }}">
+                                    </div>
+                                </div>
+
+                                <!-- Status Filter -->
+                                <div class="filter-item">
+                                    <label for="status">Status:</label>
+                                    <select id="status" name="sort_status" class="filter-select">
+                                        <option value="">Select Options</option>
+                                        <option value="Design" {{ request('sort_status') == 'Design' ? 'selected' : '' }}>Design</option>
+                                        <option value="Development" {{ request('sort_status') == 'Development' ? 'selected' : '' }}>Development</option>
+                                        <option value="QA" {{ request('sort_status') == 'QA' ? 'selected' : '' }}>QA</option>
+                                        <option value="Content Fillup" {{ request('sort_status') == 'Content Fillup' ? 'selected' : '' }}>Content Fillup</option>
+                                        <option value="Completed" {{ request('sort_status') == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                        <option value="Closed" {{ request('sort_status') == 'Closed' ? 'selected' : '' }}>Closed</option>
+                                        <option value="Other" {{ request('sort_status') == 'Other' ? 'selected' : '' }}>Other</option>
+
+                                    </select>
+                                </div>
+
+                                <button type="submit">Apply Filter</button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="search-projects">
+                        <div class="search-icon">
+                            <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
                         </div>
                         <form action="{{ route('projects.index') }}" method="GET" id="search-form">
                             <div class="search-text-area">
-                                <input type="text" name="search" placeholder="search" value="{{ request('search') }}" oninput="this.form.submit()">
-                            </div>
-                            <div class="search-icon">
-                                <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                                <input type="text" name="search" placeholder="search projects" value="{{ request('search') }}" oninput="this.form.submit()">
                             </div>
                         </form>
                     </div>
@@ -38,87 +101,18 @@ use Carbon\Carbon;
                             <th>SN</th>
                             <th>
                                 Projects
-                                <a href="#" onclick="toggleFilter('project-name-sort')">
-                                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                                </a>
-                                <div id="project-name-sort" class="filter-dropdown" style="display: none;">
-                                    <form action="{{ route('projects.index') }}" method="GET">
-                                        <select name="sort_project_name" onchange="this.form.submit()">
-                                            <option value="">Sort by Project Name</option>
-                                            <option value="a_to_z" {{ request('sort_project_name') == 'a_to_z' ? 'selected' : '' }}>A to Z</option>
-                                            <option value="z_to_a" {{ request('sort_project_name') == 'z_to_a' ? 'selected' : '' }}>Z to A</option>
-                                        </select>
-                                    </form>
-                                </div>
                             </th>
                             <th>
                                 Start Date
-                                <a href="#" onclick="toggleFilter('date-filter')">
-                                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                                </a>
-                                <div id="date-filter" class="filter-dropdown" style="display: none;">
-                                    <form action="{{ route('projects.index') }}" method="GET">
-                                        <select name="sort_start_date" onchange="this.form.submit()">
-                                            <option value="">Sort by Start Date</option>
-                                            <option value="recent" {{ request('sort_start_date') == 'recent' ? 'selected' : '' }}>Most Recent</option>
-                                            <option value="oldest" {{ request('sort_start_date') == 'oldest' ? 'selected' : '' }}>Oldest</option>
-                                        </select>
-                                    </form>
-                                </div>
                             </th>
                             <th>
                                 Due Date
-                                <a href="#" onclick="toggleFilter('due-date-sort')">
-                                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                                </a>
-                                <div id="due-date-sort" class="filter-dropdown" style="display: none;">
-                                    <form action="{{ route('projects.index') }}" method="GET">
-                                        <select name="sort_due_date" onchange="this.form.submit()">
-                                            <option value="">Sort by Due Date</option>
-                                            <option value="more_time" {{ request('sort_due_date') == 'more_time' ? 'selected' : '' }}>Less Time</option>
-                                            <option value="less_time" {{ request('sort_due_date') == 'less_time' ? 'selected' : '' }}>More Time</option>
-                                        </select>
-                                    </form>
-                                </div>
                             </th>
                             <th>
                                 Status
-                                <a href="#" onclick="toggleFilter('status-filter')">
-                                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                                </a>
-                                <div id="status-filter" class="filter-dropdown" style="display: none;">
-                                    <form action="{{ route('projects.index') }}" method="GET">
-                                        <select name="filter_status" onchange="this.form.submit()">
-                                            <option value="">All Status</option>
-                                            <option value="Design" {{ request('filter_status') == 'Design' ? 'selected' : '' }}>Design</option>
-                                            <option value="Development" {{ request('filter_status') == 'Development' ? 'selected' : '' }}>Development</option>
-                                            <option value="QA" {{ request('filter_status') == 'QA' ? 'selected' : '' }}>QA</option>
-                                            <option value="Content Fillup" {{ request('filter_status') == 'ContentFillup' ? 'selected' : '' }}>Content Fillup</option>
-                                            <option value="Completed" {{ request('filter_status') == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                            <option value="Closed" {{ request('filter_status') == 'Closed' ? 'selected' : '' }}>Closed</option>
-                                            <option value="Other" {{ request('filter_status') == 'Other' ? 'selected' : '' }}>Other</option>
-                                        </select>
-                                    </form>
-                                </div>
-                            </th>
-
                             <th>
                                 Time Left
-                                <a href="#" onclick="toggleFilter('time-left-sort')">
-                                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                                </a>
-                                <div id="time-left-sort" class="filter-dropdown" style="display: none;">
-                                    <form action="{{ route('projects.index') }}" method="GET">
-                                        <select name="sort_time_left" onchange="this.form.submit()">
-                                            <option value="">Sort by Time Left</option>
-                                            <option value="time_left_asc" {{ request('sort_time_left') == 'time_left_asc' ? 'selected' : '' }}>Less Days Left</option>
-                                            <option value="time_left_desc" {{ request('sort_time_left') == 'time_left_desc' ? 'selected' : '' }}>More Days Left</option>
-                                        </select>
-                                    </form>
-                                </div>
                             </th>
-
-
                             <th>Edit</th>
                         </tr>
                     </thead>
@@ -413,29 +407,76 @@ use Carbon\Carbon;
                 document.getElementById('add-task-modal').style.display = 'none';
             }
 
-            function toggleFilter(filterId) {
-                // Close all other filters first
-                document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-                    if (dropdown.id !== filterId) {
-                        dropdown.style.display = 'none';
-                    }
-                });
+            function toggleFilterList() {
+                const filterOptions = document.querySelector('.filter-options');
+                filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
 
-                // Toggle the selected filter dropdown
-                const element = document.getElementById(filterId);
-                if (element) {
-                    element.style.display = (element.style.display === 'none' || element.style.display === '') ? 'block' : 'none';
+                // Populate the select options with the current selected values only if the options are shown
+                if (filterOptions.style.display === 'block') {
+                    populateSelectedFilters();
                 }
             }
 
-            // Close dropdowns when clicking outside
-            window.onclick = function(event) {
-                if (!event.target.matches('.barfilter') && !event.target.closest('.filter-dropdown')) {
-                    document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-                        dropdown.style.display = 'none';
-                    });
+            function populateSelectedFilters() {
+                const startDateSelect = document.getElementById('start-date');
+                const dueDateSelect = document.getElementById('due-date');
+                const statusSelect = document.getElementById('status');
+
+                // Get the selected values from the current state
+                const selectedStartDate = startDateSelect.value;
+                const selectedDueDate = dueDateSelect.value;
+                const selectedStatus = statusSelect.value;
+
+                // Update the display of the inquiry date select to show the selected value
+                if (selectedInquiryDate === 'date-range') {
+                    document.getElementById('date-range-picker').style.display = 'block';
+                } else {
+                    document.getElementById('date-range-picker').style.display = 'none';
                 }
-            };
+
+                startDateSelect.value = selectedStartDate;
+                dueDateSelect.value = selectedDueDate;
+                statusSelect.value = selectedStatus;
+            }
+
+            // Optional: Close the filter options if clicking outside of them
+            document.addEventListener('click', function(event) {
+                const filterDiv = document.querySelector('.filter-projects');
+                const filterOptions = document.querySelector('.filter-options');
+                if (!filterDiv.contains(event.target) && !filterOptions.contains(event.target)) {
+                    filterOptions.style.display = 'none';
+                    document.getElementById('date-range-picker').style.display = 'none';
+                }
+            });
+
+            function handleDateRange(selectElement) {
+                const dateRangePicker = document.getElementById('date-range-picker');
+                dateRangePicker.style.display = selectElement.value === 'date-range' ? 'flex' : 'none';
+            }
+
+            function applyFilter() {
+                const startDate = document.getElementById('start-date').value;
+                const dueDate = document.getElementById('due-date').value;
+                const status = document.getElementById('status').value;
+                const fromDate = document.getElementById('from-date').value;
+                const toDate = document.getElementById('to-date').value;
+
+                const url = new URL(window.location.href);
+                url.searchParams.set('start_date', startDate);
+                url.searchParams.set('due_date', dueDate);
+                url.searchParams.set('sort_status', status);
+
+                if (startDate === 'date-range') {
+                    url.searchParams.set('from_date', fromDate);
+                    url.searchParams.set('to_date', toDate);
+                }
+                if (dueDate === 'date-range') {
+                    url.searchParams.set('from_date', fromDate);
+                    url.searchParams.set('to_date', toDate);
+                }
+
+                window.location.href = url.toString();
+            }
         </script>
 
 

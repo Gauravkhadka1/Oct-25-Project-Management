@@ -13,7 +13,7 @@ class ProspectController extends Controller
     {
         $query = Prospect::query();
         $filterCount = 0;
-    
+
         // Filtering by Inquiry Date
         if ($request->filled('inquiry_date')) {
             $filterCount++;
@@ -32,25 +32,30 @@ class ProspectController extends Controller
                     break;
             }
         }
-    
+
         // Filtering by Category
         if ($request->filled('filter_category')) {
             $query->where('category', $request->filter_category);
             $filterCount++;
         }
-    
+
         // Filtering by Status
         if ($request->filled('sort_status')) {
             $query->where('status', $request->sort_status);
             $filterCount++;
         }
-    
-        // Fetch the sorted and filtered data
-        $prospects = $query->get();
-    
+
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where('company_name', 'like', "%{$searchTerm}%"); // Search by project name
+        }
+          // Fetch the sorted and filtered data
+          $prospects = $query->get();
+
         return view('frontends.prospects', compact('prospects', 'filterCount'));
     }
-    
+
 
 
     public function store(Request $request)

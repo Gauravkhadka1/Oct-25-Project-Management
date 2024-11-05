@@ -125,12 +125,13 @@
 
 .btn-create {
     background-color: #009879;
-    color: white;
-    padding: 10px 15px;
+    color: white !important;
+    padding: 8px 15px !important;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px !important;
     cursor: pointer;
     font-size: 16px;
+    margin: 0 !important;
 }
 
 .btn-create:hover {
@@ -464,10 +465,10 @@ background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid gray;
+    border: 1px solid gray;
     border-radius: 10px;
-    padding: 8px 10px;
-    margin-left: 10px;
+    padding: 9px 10px;
+    margin-left: 15px;
 }
 .filter-prospects img {
     margin-right: 10px;
@@ -533,4 +534,30 @@ button:hover {
 }
 .filter-count {
     margin-right: 5px;
+}
+
+/* search prospects style  */
+
+.search-prospects {
+    display: flex;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 8px;
+    margin-left: 20px;
+}
+.search-prospects img {
+    width: 20px;
+    margin-right: 10px;
+}
+.search-prospects form {
+    display: flex;
+}
+.search-text-area input {
+    border: none;
+    font-size: 20px;
+    padding-left: 10px;
+}
+.search-text-area input:focus {
+    border: none; 
+    outline: none; 
 }
