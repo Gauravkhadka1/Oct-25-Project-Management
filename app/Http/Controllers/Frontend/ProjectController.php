@@ -16,6 +16,10 @@ class ProjectController extends Controller
         $query = Project::query();
         $filterCount = 0;
 
+         // Start a query for projects
+         $query = Project::with(['tasks.assignedUser', 'tasks.assignedBy']); // Load related tasks and users
+    
+
         // Filtering by Start Date
         if ($request->filled('start_date')) {
             $filterCount++;
