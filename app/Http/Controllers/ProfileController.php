@@ -11,7 +11,9 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Task;
+use App\Models\ProspectTask;
 use App\Models\Project;
+use App\Models\Prospect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
@@ -34,6 +36,11 @@ class ProfileController extends Controller
              ->where('assigned_to', $user->id)
              ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
              ->get();
+         // Get tasks assigned only to the logged-in user, including the user who assigned them
+         $prospectTasks = ProspectTask::with('assignedBy') // Eager load the assignedBy relationship
+             ->where('assigned_to', $user->id)
+             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
+             ->get();
      
          // Debugging: Log the tasks to see what's retrieved for this user
          \Log::info("Tasks for user {$user->email}:", $tasks->toArray());
@@ -42,11 +49,15 @@ class ProfileController extends Controller
          $projects = Project::with(['tasks' => function($query) use ($user) {
              $query->where('assigned_to', $user->id);
          }])->get();
+         // Retrieve projects and include only tasks assigned to the logged-in user
+         $prospects = Prospect::with(['prospect_tasks' => function($query) use ($user) {
+             $query->where('assigned_to', $user->id);
+         }])->get();
      
          // Debugging: Log the projects with tasks to verify filtering
          \Log::info("Projects for user {$user->email}:", $projects->toArray());
      
-         return view('frontends.dashboard', compact('projects', 'username', 'userEmail', 'user', 'tasks'));
+         return view('frontends.dashboard', compact('projects', 'prospects', 'username', 'userEmail', 'user', 'tasks', 'prospectTasks'));
      }
      
 

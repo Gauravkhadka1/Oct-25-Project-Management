@@ -109,6 +109,7 @@
           </div>
           </a>
           <ul class="task-dropdown">
+            <li><a href="<?php echo e(url('/all-clients')); ?>">All Clients</a></li>
             <li><a href="<?php echo e(url('/tasks/all')); ?>">Website</a></li>
             <li><a href="<?php echo e(url('/tasks/my')); ?>">Microsoft</a></li>
           </ul>

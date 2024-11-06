@@ -103,6 +103,7 @@
                     <th>
                         Probability
                     </th>
+                    <th>Tasks</th>
                     <th>Activities</th>
                     <th>
                         Status
@@ -129,6 +130,10 @@
 
                     <td><?php echo e($prospect->inquirydate ? $prospect->inquirydate->format('Y-m-d h:i A') : 'N/A'); ?></td>
                     <td><?php echo e($prospect->probability); ?>%</td>
+                    <td>
+                        <button class="btn-create" id="task-create" onclick="openAddTaskModal(<?php echo e($prospect->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""> Task</button>
+                        <button class="btn-view-activities-p" onclick="openTaskDetailsModal(<?php echo e(json_encode($prospect)); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt="">Tasks</button>
+                    </td>
                     <td>
                         <button class="btn-add-activity" onclick="openAddActivityModal(<?php echo e($prospect->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""></button>
                         <button class="btn-view-activities" onclick="viewActivities(<?php echo e($prospect->id); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt=""></button>
@@ -165,6 +170,73 @@
             <div class="details-modal-buttons">
                 <button type="button" class="btn-cancel" onclick="closeDetailsModal()">Close</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal for Task Details -->
+    <div id="task-details-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeTaskDetailsModal()">&times;</span>
+            <h3 id="prospect-name-modal">Prospects Tasks</h3>
+
+            <!-- Add Task Button -->
+
+
+            <table class="styled-table-project">
+                <thead>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Assigned To</th>
+                        <th>Assigned By</th>
+                        <th>Start Date</th>
+                        <th>Due Date</th>
+                        <th>Priority</th>
+                        <th>Time Taken</th>
+                    </tr>
+                </thead>
+                <tbody id="task-details-body">
+                    <!-- Task details will be populated here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal for Adding New Task -->
+    <div id="add-task-modal" class="custom-modal" style="display: none;">
+        <div class="custom-modal-content">
+            <span class="custom-close" onclick="closeAddTaskModal()">&times;</span>
+            <h3 class="custom-modal-title">Add New Task</h3>
+            <form action="<?php echo e(route('prospectstasks.store')); ?>" method="POST" class="custom-form">
+                <?php echo csrf_field(); ?>
+                <input type="hidden" id="prospect-id" name="prospect_id" value="">
+
+                <label for="task-name" class="custom-label">Task Name:</label>
+                <input type="text" name="name" id="task-name" class="custom-input" required>
+
+                <label for="assigned-to" class="custom-label">Assigned To:</label>
+                <select name="assigned_to" id="assigned-to" class="custom-select" required>
+                    <option value="">Select User</option>
+                    <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($user->email); ?>"><?php echo e($user->username); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
+
+                <label for="start-date" class="custom-label">Start Date:</label>
+                <input type="date" name="start_date" id="start-date" class="custom-input">
+
+                <label for="due-date" class="custom-label">Due Date:</label>
+                <input type="date" name="due_date" id="due-date" class="custom-input">
+
+                <label for="priority" class="custom-label">Priority:</label>
+                <select name="priority" id="priority" class="custom-select">
+                    <option value="Normal">Normal</option>
+                    <option value="High">High</option>
+                    <option value="Urgent">Urgent</option>
+                </select>
+
+                <button type="submit" class="custom-submit-button">Add Task</button>
+                <button type="button" class="custom-cancel-button" onclick="closeAddTaskModal()">Cancel</button>
+            </form>
         </div>
     </div>
 
@@ -675,6 +747,17 @@
             }
 
             window.location.href = url.toString();
+        }
+
+        function openAddTaskModal(prospectId) {
+            // Set the hidden input for prospect ID
+            document.getElementById('prospect-id').value = prospectId;
+            console.log('Opening modal for prospect ID:', prospectId);
+            document.getElementById('add-task-modal').style.display = 'block';
+        }
+
+        function closeAddTaskModal() {
+            document.getElementById('add-task-modal').style.display = 'none';
         }
     </script>
 </main>

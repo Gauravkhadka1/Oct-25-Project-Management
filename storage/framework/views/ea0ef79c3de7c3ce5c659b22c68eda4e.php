@@ -275,7 +275,7 @@ use Carbon\Carbon;
                     <select name="assigned_to" id="assigned-to" class="custom-select" required>
                         <option value="">Select User</option>
                         <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <option value="<?php echo e($user->email); ?>"><?php echo e($user->name); ?> (<?php echo e($user->email); ?>)</option>
+                        <option value="<?php echo e($user->email); ?>"><?php echo e($user->username); ?></option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
 

@@ -109,6 +109,7 @@
           </div>
           </a>
           <ul class="task-dropdown">
+            <li><a href="{{url('/all-clients')}}">All Clients</a></li>
             <li><a href="{{url('/tasks/all')}}">Website</a></li>
             <li><a href="{{url('/tasks/my')}}">Microsoft</a></li>
           </ul>

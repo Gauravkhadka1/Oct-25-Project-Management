@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Prospect;
+use App\Models\User;
 
 class ProspectController extends Controller
 {
@@ -50,10 +51,13 @@ class ProspectController extends Controller
             $searchTerm = $request->search;
             $query->where('company_name', 'like', "%{$searchTerm}%"); // Search by project name
         }
-          // Fetch the sorted and filtered data
-          $prospects = $query->get();
+        // Fetch the sorted and filtered data
+        $prospects = $query->get();
 
-        return view('frontends.prospects', compact('prospects', 'filterCount'));
+        // Fetch all users
+        $users = User::all();
+
+        return view('frontends.prospects', compact('users', 'prospects', 'filterCount'));
     }
 
 

@@ -42,8 +42,6 @@ public function store(Request $request)
         'priority' => $request->input('priority'),
     ]);
 
-    
-
     // Send email notification, etc.
     // Mail::to($request->input('assigned_to'))->send(new TaskAssigned($task, $request->input('assigned_to')));
 
@@ -51,16 +49,16 @@ public function store(Request $request)
 }
 
 
-public function startTimer(Request $request, Task $task)
+public function startProjectTaskTimer(Request $request, Task $task)
 {
     // Save current elapsed time when starting the timer
     $task->elapsed_time = $request->input('elapsed_time', 0);
     $task->save();
 
-    return response()->json(['message' => 'Timer started', 'elapsed_time' => $task->elapsed_time]);
+    return response()->json(['message' => 'Project Task Timer started', 'elapsed_time' => $task->elapsed_time]);
 }
 
-public function pauseTimer(Request $request, Task $task)
+public function pauseProjectTaskTimer(Request $request, Task $task)
 {
     // Update elapsed time when pausing
     $task->elapsed_time = $request->input('elapsed_time');

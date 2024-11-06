@@ -3,8 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Frontend\ProjectController;
 use App\Http\Controllers\Frontend\TaskController;
+use App\Http\Controllers\ProspectTaskController;
 use App\Http\Controllers\Frontend\ProspectController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\PaymentsActivityController;
 use App\Http\Controllers\Frontend\TimeController;
 use App\Http\Controllers\EsewaController;
@@ -47,6 +49,7 @@ Route::resource('projects', ProjectController::class);
 Route::middleware([CheckAllowedEmails::class])->group(function () {
     Route::resource('payments', PaymentsController::class);
     Route::resource('prospects', ProspectController::class);
+    Route::resource('all-clients', ClientsController::class);
     Route::post('/payments-activities', [PaymentsActivityController::class, 'store'])->name('payments-activities.store');
 Route::get('/prospects/{id}/activities', [ActivityController::class, 'showActivities']);
 Route::get('/payments/{Id}/activities', [PaymentsActivityController::class, 'showActivities']);
@@ -81,6 +84,7 @@ Route::delete('/projects/{id}', [ProjectController::class, 'destroy'])->name('pr
 Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
 
 Route::resource('tasks', TaskController::class);
+Route::resource('prospectstasks', ProspectTaskController::class);
 
 Route::get('/projects/{projectId}/tasks', [ProjectController::class, 'showTasks'])->name('projects.tasks');
 
@@ -92,8 +96,12 @@ Route::post('/activities/{activity}/reply', [ActivityController::class, 'replyTo
 Route::get('/user-search', [UserController::class, 'searchUsernames']);
 
 // web.php
-Route::post('/tasks/{task}/start-timer', [TaskController::class, 'startTimer']);
-Route::post('/tasks/{task}/pause-timer', [TaskController::class, 'pauseTimer']);
+Route::post('/tasks/{task}/start-timer', [TaskController::class, 'startProjectTaskTimer']);
+Route::post('/tasks/{task}/pause-timer', [TaskController::class, 'pauseProjectTaskTimer']);
+
+Route::post('/prospect_tasks/{prospect_task}/start-timer', [ProspectTaskController::class, 'startProspectTaskTimer']);
+Route::post('/prospect_tasks/{prospect_task}/pause-timer', [ProspectTaskController::class, 'pauseProspectTaskTimer']);
+
 
 
 

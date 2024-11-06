@@ -26,4 +26,8 @@ class Prospect extends Model
     protected $casts = [
         'inquirydate' => 'datetime', // Cast inquirydate to Carbon instance
     ];
+    public function prospect_tasks()
+{
+    return $this->hasMany(ProspectTask::class);
+}
 }

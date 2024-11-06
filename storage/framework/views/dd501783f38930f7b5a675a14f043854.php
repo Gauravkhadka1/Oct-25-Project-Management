@@ -64,7 +64,7 @@
                                 <td><?php echo e($task->due_date); ?></td>
                                 <td><?php echo e($task->priority); ?></td>
                                 <td>
-                                    <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>)">Start</button>
+                                    <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleProjectTaskTimer(<?php echo e($task->id); ?>)">Start</button>
                                 </td>
                                 <td id="time-<?php echo e($task->id); ?>">00:00:00</td>
                                 <td>
@@ -96,12 +96,91 @@
             </div>
         
         </div>
+        <div class="mytasks">
+            <div class="current-tasks">
+            <h2><?php echo e($loggedInUser); ?> Tasks Related to Prospects</h2> 
+                <?php
+                    $hasTasks = false; // Flag to check if there are any tasks
+                    $serialNo = 1;
+                ?>
+
+                <?php $__empty_1 = true; $__currentLoopData = $prospects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php if(!$prospect->prospect_tasks->isEmpty()): ?>
+                        <?php if(!$hasTasks): ?> 
+                            <table class="task-table">
+                                <thead>
+                                    <tr>
+                                        <th>S.N</th>
+                                        <th>Task</th>
+                                        <th>Prospect</th>
+                                        <th>Assigned by</th>
+                                        <th>Start date</th>
+                                        <th>Due date</th>
+                                        <th>Priority</th>
+                                        <th>Actions</th>
+                                        <th>Timestamp</th>
+                                        <th>Status</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        <?php endif; ?>
+                        
+                        <?php $__currentLoopData = $prospect->prospect_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $hasTasks = true; ?>
+                            <tr>
+                                <td><?php echo e($serialNo++); ?></td> 
+                                <td><?php echo e($task->name); ?></td>
+                                <td><?php echo e($prospect->company_name); ?></td>
+                                <td><?php echo e($task->assignedBy ? $task->assignedBy->username : 'N/A'); ?></td>
+                                <td><?php echo e($task->start_date); ?></td>
+                                <td><?php echo e($task->due_date); ?></td>
+                                <td><?php echo e($task->priority); ?></td>
+                                <td> 
+                                    
+                                </td>
+                                <td></td>
+                                <td>
+                                    <select name="status">
+                                        <option>To Do</option>
+                                        <option>In Progress</option>
+                                        <option>QA</option>
+                                        <option>Completed</option>
+                                    </select>
+                                </td>
+                                <td><textarea><?php echo e($task->comment); ?></textarea></td>
+                            </tr>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                        <?php if(!$hasTasks): ?> 
+                            </tbody>
+                            </table>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <p>No task available.</p>
+                <?php endif; ?>
+
+                <?php if($hasTasks): ?>
+                    </tbody>
+                    </table>
+                <?php endif; ?>
+
+            </div>
+        
+        </div>
     
     </div>
 
 
     <script>
+        
+
         let timers = {};
+        const projectTaskTimers = {};
+
+
+        // Project Tasks Timer Starts 
 
         // Load the saved time from the database when the page loads
         window.addEventListener("load", () => {
@@ -114,25 +193,25 @@
                     };
                 }
                 console.log("Timer initialized for task ID:", <?php echo e($task->id); ?>);
-                updateTimerDisplay(<?php echo e($task->id); ?>);
+                updateProjectTaskTimerDisplay(<?php echo e($task->id); ?>);
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         });
 
-        function toggleTimer(taskId) {
+        function toggleProjectTaskTimer(taskId) {
             const timer = timers[taskId];
             const button = document.getElementById(`toggle-${taskId}`);
             
             if (timer) {
                 if (timer.running) {
                     // If timer is running, pause it
-                    pauseTimer(taskId);
+                    pauseProjectTaskTimer(taskId);
                     button.innerText = "Resume";
                     button.classList.remove("pause");
                     button.classList.add("start");
                 } else {
                     // If timer is paused or not started, start/resume it
-                    startTimer(taskId);
+                    startProjectTaskTimer(taskId);
                     button.innerText = "Pause";
                     button.classList.remove("start");
                     button.classList.add("pause");
@@ -142,20 +221,20 @@
             }
         }
 
-        function startTimer(taskId) {
+        function startProjectTaskTimer(taskId) {
             const timer = timers[taskId];
             if (timer) {
                 timer.startTime = new Date().getTime() - timer.elapsedTime;
                 timer.running = true;
                 
                 console.log(`Starting/resuming timer for task ID: ${taskId}`);
-                sendTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/start-timer`);
+                sendProjectTaskTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/start-timer`);
                 
-                updateTimer(taskId);
+                updateProjectTaskTimer(taskId);
             }
         }
 
-        function pauseTimer(taskId) {
+        function pauseProjectTaskTimer(taskId) {
             const timer = timers[taskId];
             if (timer && timer.running) {
                 timer.elapsedTime = new Date().getTime() - timer.startTime;
@@ -163,23 +242,23 @@
                 
                 console.log(`Pausing timer for task ${taskId}, elapsed time: ${timer.elapsedTime}`);
                 
-                sendTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/pause-timer`);
+                sendProjectTaskTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/pause-timer`);
             }
         }
 
-        function updateTimer(taskId) {
+        function updateProjectTaskTimer(taskId) {
             const timer = timers[taskId];
             if (timer && timer.running) {
                 const currentTime = new Date().getTime() - timer.startTime;
                 timer.elapsedTime = currentTime;
                 
-                updateTimerDisplay(taskId);
+                updateProjectTaskTimerDisplay(taskId);
                 
-                setTimeout(() => updateTimer(taskId), 1000);
+                setTimeout(() => updateProjectTaskTimer(taskId), 1000);
             }
         }
 
-        function updateTimerDisplay(taskId) {
+        function updateProjectTaskTimerDisplay(taskId) {
             const timer = timers[taskId];
             if (timer) {
                 const totalSeconds = Math.floor(timer.elapsedTime / 1000);
@@ -192,7 +271,7 @@
             }
         }
 
-        function sendTimerUpdate(taskId, elapsedTime, url) {
+        function sendProjectTaskTimerUpdate(taskId, elapsedTime, url) {
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -206,7 +285,86 @@
             .catch(error => console.error('Error updating timer:', error));
         }
 
+   // Project Task Timer Ends 
+//Prospect Task Timer Starts
+let prospectTaskTimers = {};
+function toggleProspectTaskTimer(prospectTaskId) {
+    const timer = prospectTaskTimers[prospectTaskId];
+    const button = document.getElementById(`toggle-prospect-${prospectTaskId}`);
+    
+    if (timer) {
+        if (timer.running) {
+            pauseProspectTaskTimer(prospectTaskId);
+            button.innerText = "Resume";
+            button.classList.remove("pause");
+            button.classList.add("start");
+        } else {
+            startProspectTaskTimer(prospectTaskId);
+            button.innerText = "Pause";
+            button.classList.remove("start");
+            button.classList.add("pause");
+        }
+    } else {
+        console.error(`Timer not found for prospect task ID: ${prospectTaskId}`);
+    }
+}
 
+function startProspectTaskTimer(prospectTaskId) {
+    const timer = prospectTaskTimers[prospectTaskId] || { elapsedTime: 0, running: false };
+    timer.startTime = new Date().getTime() - timer.elapsedTime;
+    timer.running = true;
+    prospectTaskTimers[prospectTaskId] = timer;
+    sendProspectTaskTimerUpdate(prospectTaskId, timer.elapsedTime / 1000, `/prospect_tasks/${prospectTaskId}/start-timer`);
+    updateProspectTaskTimer(prospectTaskId);
+}
+
+function pauseProspectTaskTimer(prospectTaskId) {
+    const timer = prospectTaskTimers[prospectTaskId];
+    if (timer && timer.running) {
+        timer.elapsedTime = new Date().getTime() - timer.startTime;
+        timer.running = false;
+        sendProspectTaskTimerUpdate(prospectTaskId, timer.elapsedTime / 1000, `/prospect_tasks/${prospectTaskId}/pause-timer`);
+    }
+}
+
+function updateProspectTaskTimer(prospectTaskId) {
+    const timer = prospectTaskTimers[prospectTaskId];
+    if (timer && timer.running) {
+        timer.elapsedTime = new Date().getTime() - timer.startTime;
+        updateProspectTaskTimerDisplay(prospectTaskId);
+        setTimeout(() => updateProspectTaskTimer(prospectTaskId), 1000);
+    }
+}
+
+function updateProspectTaskTimerDisplay(prospectTaskId) {
+    const timer = prospectTaskTimers[prospectTaskId];
+    if (timer) {
+        const totalSeconds = Math.floor(timer.elapsedTime / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        document.getElementById(`prospect-time-${prospectTaskId}`).innerText = 
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+}
+
+function sendProspectTaskTimerUpdate(prospectTaskId, elapsedTime, url) {
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+        },
+        body: JSON.stringify({ elapsed_time: elapsedTime })
+    })
+    .then(response => response.json())
+    .then(data => console.log(`Prospect Task timer updated: ${data.message}`))
+    .catch(error => console.error('Error updating prospect task timer:', error));
+}
+
+
+      
+   // Prospect Task Timer Ends 
        
         document.addEventListener("DOMContentLoaded", function() {
     const userSpans = document.querySelectorAll('.user-span');

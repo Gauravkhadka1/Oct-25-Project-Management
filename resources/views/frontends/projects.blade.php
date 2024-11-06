@@ -276,7 +276,7 @@ use Carbon\Carbon;
                     <select name="assigned_to" id="assigned-to" class="custom-select" required>
                         <option value="">Select User</option>
                         @foreach ($users as $user)
-                        <option value="{{ $user->email }}">{{ $user->name }} ({{ $user->email }})</option>
+                        <option value="{{ $user->email }}">{{ $user->username }}</option>
                         @endforeach
                     </select>
 
