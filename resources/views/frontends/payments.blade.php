@@ -13,8 +13,57 @@
     <div class="payments-heading">
         <h1>Due Payments Data</h1>
     </div>
-    <div class="create-payments">
-        <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="{{url ('/frontend/images/add.png')}}" alt=""> Due Payments</button>
+    <div class="create-filter-search">
+        <div class="create-payments">
+            <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="{{url ('/frontend/images/add.png')}}" alt=""> Due Payments</button>
+        </div>
+        <div class="filter-section">
+            <div class="filter-payments" onclick="toggleFilterList()">
+                <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                <div class="filter-count">
+                    @if($filterCount > 0)
+                    <p>{{ $filterCount }}</p>
+                    @endif
+                </div>
+                Filter
+            </div>
+            <div class="filter-options" style="display: none;">
+                <form action="{{ route('payments.index') }}" method="GET">
+                    <!-- Category Filter -->
+                    <div class="filter-item">
+                        <label for="category">Category:</label>
+                        <select id="category" name="filter_category" class="filter-select">
+                            <option value="">Select Options</option>
+                            <option value="website" {{ request('filter_category') == 'website' ? 'selected' : '' }}>Website</option>
+                            <option value="renewal" {{ request('filter_category') == 'renewal' ? 'selected' : '' }}>Renewal</option>
+                            <option value="other" {{ request('filter_category') == 'other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Amount Filter -->
+                    <div class="filter-item">
+                        <label for="amount">Amount:</label>
+                        <select id="amount" name="amount" class="filter-select" onchange="handleDateRange(this)">
+                            <option value="">Select Options</option>
+                            <option value="high-to-low" {{ request('amount') == 'high-to-low' ? 'selected' : '' }}>High to low</option>
+                            <option value="low-to-high" {{ request('amount') == 'low-to-high' ? 'selected' : '' }}>Low to High</option>
+                        </select>
+                    </div>
+                    <button type="submit">Apply Filter</button>
+                </form>
+            </div>
+
+        </div>
+        <div class="search-payments">
+            <div class="search-icon">
+                <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+            </div>
+            <form action="{{ route('payments.index') }}" method="GET" id="search-form">
+                <div class="search-text-area">
+                    <input type="text" name="search" placeholder="search payments..." value="{{ request('search') }}" oninput="this.form.submit()">
+                </div>
+            </form>
+        </div>
     </div>
 
     <table class="modern-payments-table">
@@ -23,50 +72,13 @@
                 <th>SN</th>
                 <th>
                     Company Name
-                    <a href="#" onclick="toggleFilter('company_name_sort')">
-                        <img src="{{url('/frontend/images/bars-filter.png')}}" alt="" class="barfilter">
-                    </a>
-                    <div id="company_name_sort" class="filter-dropdown" style="display: none;">
-                        <form action="{{ route('payments.index') }}" method="GET">
-                            <select name="sort_payments_name" onchange="this.form.submit()">
-                                <option value="">Sort by Company Name</option>
-                                <option value="a_to_z" {{ request('sort_payments_name') == 'a_to_z' ? 'selected' : '' }}>A to Z</option>
-                                <option value="z_to_a" {{ request('sort_payments_name') == 'z_to_a' ? 'selected' : '' }}>Z to A</option>
-                            </select>
-                        </form>
-                    </div>
                 </th>
-               <th>
+                <th>
                     Category
-                    <a href="#" onclick="toggleFilter('category-filter')">
-                        <img src="/frontend/images/bars-filter.png" alt="" class="barfilter">
-                    </a>
-                    <div id="category-filter" class="filter-dropdown" style="display: none;">
-                        <form action="{{ route('payments.index') }}" method="GET">
-                            <select name="filter_category" onchange="this.form.submit()">
-                                <option value="">All Category</option> <!-- Change this value to empty string -->
-                                <option value="Website" {{ request('filter_category') == 'Website' ? 'selected' : '' }}>Website</option>
-                                <option value="Renewal" {{ request('filter_category') == 'Renewal' ? 'selected' : '' }}>Renewal</option>
-                            </select>
-                        </form>
-                    </div>
                 </th>
                 <th>
                     Amount
-                    <a href="#" onclick="toggleFilter('amount_sort')">
-                        <img src="/frontend/images/bars-filter.png" alt="" class="barfilter">
-                    </a>
-                    <div id="amount_sort" class="filter-dropdown" style="display: none;">
-                        <form action="{{ route('payments.index') }}" method="GET">
-                            <select name="sort_amount" onchange="this.form.submit()">
-                                <option value="">Sort by Amount</option>
-                                <option value="high_to_low" {{ request('sort_amount') == 'high_to_low' ? 'selected' : '' }}>High to Low</option>
-                                <option value="low_to_high" {{ request('sort_amount') == 'low_to_high' ? 'selected' : '' }}>Low to High</option>
-                            </select>
-                        </form>
-                    </div>
                 </th>
-
                 <th>Activities</th>
                 <th>Edit</th>
             </tr>
@@ -402,30 +414,45 @@
             }
         });
 
-        // Filter
-        function toggleFilter(filterId) {
-            // Close all other filters first
-            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-                if (dropdown.id !== filterId) {
-                    dropdown.style.display = 'none';
-                }
-            });
+        function toggleFilterList() {
+            const filterOptions = document.querySelector('.filter-options');
+            filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
 
-            // Toggle the selected filter dropdown
-            const element = document.getElementById(filterId);
-            if (element) {
-                element.style.display = (element.style.display === 'none' || element.style.display === '') ? 'block' : 'none';
+            // Populate the select options with the current selected values only if the options are shown
+            if (filterOptions.style.display === 'block') {
+                populateSelectedFilters();
             }
         }
 
-        // Close dropdowns when clicking outside
-        window.onclick = function(event) {
-            if (!event.target.matches('.barfilter') && !event.target.closest('.filter-dropdown')) {
-                document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
-                    dropdown.style.display = 'none';
-                });
+        function populateSelectedFilters() {
+            const categorySelect = document.getElementById('category');
+            const amountSelect = document.getElementById('amount');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            categorySelect.value = urlParams.get('filter_category') || '';
+            amountSelect.value = urlParams.get('amount') || '';
+        }
+
+        // Optional: Close the filter options if clicking outside of them
+        document.addEventListener('click', function(event) {
+            const filterDiv = document.querySelector('.filter-payments');
+            const filterOptions = document.querySelector('.filter-options');
+            if (!filterDiv.contains(event.target) && !filterOptions.contains(event.target)) {
+                filterOptions.style.display = 'none';
             }
-        };
+        });
+
+        function applyFilter() {
+            const category = document.getElementById('category').value;
+            const amount = document.getElementById('amount').value;
+
+            const url = new URL(window.location.href);
+            url.searchParams.set('filter_category', category);
+            url.searchParams.set('amount', amount);
+
+
+            window.location.href = url.toString();
+        }
     </script>
 
 </div>

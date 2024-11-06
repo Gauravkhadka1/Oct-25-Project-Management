@@ -12,49 +12,40 @@ class PaymentsController extends Controller
     {
         // Fetch all payments from the database
         $query = Payments::query();
+        $filterCount = 0;
 
         // Initialize the total dues text
         $totalDuesText = 'Total Due:';
 
-        // Apply sorting based on project name if provided
-        if ($request->has('sort_payments_name') && $request->sort_payments_name != '') {
-            if ($request->sort_payments_name == 'a_to_z') {
-                $query->orderBy('company_name', 'asc'); // Sort by project name A to Z
-            } elseif ($request->sort_payments_name == 'z_to_a') {
-                $query->orderBy('company_name', 'desc'); // Sort by project name Z to A
-            }
-        }
-        // Apply filter if 'filter_status' is provided in the request
-        if ($request->has('filter_category') && $request->filter_category != '') {
+
+        // Filtering by Category
+        if ($request->filled('filter_category')) {
             $query->where('category', $request->filter_category);
+            $filterCount++;
         }
 
-
-        // Update the total dues text based on the selected category
-        if ($request->filter_category == 'Renewal') {
-            $totalDuesText = 'Total Renewal Dues:';
-        } elseif ($request->filter_category == 'Website') {
-            $totalDuesText = 'Total Website Dues:';
-        } elseif ($request->filter_category == '') {
-            $totalDuesText = 'Total Dues from All Categories:';
-        }
-    
-
-        // Apply sorting based on amount if provided
-        if ($request->has('sort_amount') && $request->sort_amount != '') {
-            if ($request->sort_amount == 'high_to_low') {
-                $query->orderBy('amount', 'desc'); // Sort by Amount High to Low
-            } elseif ($request->sort_amount == 'low_to_high') {
-                $query->orderBy('amount', 'asc'); // Sort by Amount Low to High
+        // Filtering by Amount Date
+        if ($request->filled('amount')) {
+            $filterCount++;
+            if ($request->amount == 'high-to-low') {
+                $query->orderBy('amount', 'desc');
+            } elseif ($request->amount == 'low-to-high') {
+                $query->orderBy('amount', 'asc');
             }
         }
 
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where('company_name', 'like', "%{$searchTerm}%"); // Search by project name
+        }
 
+        // Get filtered payments and calculate total due
         $payments = $query->get();
-        // Calculate total amount based on filtered results
         $filteredTotalAmount = $payments->sum('amount');
+        $totalDuesText = $request->filled('filter_category') ? "Total {$request->filter_category} Dues:" : 'Total Dues from All Categories:';
 
-        return view('frontends.payments', compact('payments','filteredTotalAmount','totalDuesText'));
+        return view('frontends.payments', compact('payments', 'filteredTotalAmount', 'totalDuesText', 'filterCount'));
     }
 
     // payments store
