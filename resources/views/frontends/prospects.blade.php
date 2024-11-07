@@ -223,10 +223,10 @@
                 </select>
 
                 <label for="start-date" class="custom-label">Start Date:</label>
-                <input type="date" name="start_date" id="start-date" class="custom-input">
+                <input type="datetime-local" name="start_date" id="start-date" class="custom-input">
 
                 <label for="due-date" class="custom-label">Due Date:</label>
-                <input type="date" name="due_date" id="due-date" class="custom-input">
+                <input type="datetime-local" name="due_date" id="due-date" class="custom-input">
 
                 <label for="priority" class="custom-label">Priority:</label>
                 <select name="priority" id="priority" class="custom-select">

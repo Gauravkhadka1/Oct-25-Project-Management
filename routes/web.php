@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Frontend\ProjectController;
 use App\Http\Controllers\Frontend\TaskController;
 use App\Http\Controllers\ProspectTaskController;
+use App\Http\Controllers\PaymentTaskController;
 use App\Http\Controllers\Frontend\ProspectController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ClientsController;
@@ -85,6 +86,7 @@ Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('p
 
 Route::resource('tasks', TaskController::class);
 Route::resource('prospectstasks', ProspectTaskController::class);
+Route::resource('paymentstasks', PaymentTaskController::class);
 
 Route::get('/projects/{projectId}/tasks', [ProjectController::class, 'showTasks'])->name('projects.tasks');
 

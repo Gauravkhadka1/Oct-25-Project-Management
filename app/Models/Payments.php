@@ -20,4 +20,8 @@ class Payments extends Model
     protected $casts = [
         'amount' => 'float',
     ];
+    public function payment_tasks()
+    {
+        return $this->hasMany(PaymentTask::class);
+    }
 }

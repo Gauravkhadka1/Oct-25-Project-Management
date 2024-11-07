@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Payments;
+use App\Models\User;
 
 class PaymentsController extends Controller
 {
@@ -45,7 +46,13 @@ class PaymentsController extends Controller
         $filteredTotalAmount = $payments->sum('amount');
         $totalDuesText = $request->filled('filter_category') ? "Total {$request->filter_category} Dues:" : 'Total Dues from All Categories:';
 
-        return view('frontends.payments', compact('payments', 'filteredTotalAmount', 'totalDuesText', 'filterCount'));
+        // Fetch the sorted and filtered data
+        $payments = $query->get();
+
+        // Fetch all users
+        $users = User::all();
+
+        return view('frontends.payments', compact('payments', 'users', 'filteredTotalAmount', 'totalDuesText', 'filterCount'));
     }
 
     // payments store

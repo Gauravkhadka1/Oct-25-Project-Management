@@ -32,5 +32,8 @@ public function assignedBy()
 {
     return $this->belongsTo(User::class, 'assigned_by', 'id');
 }
+protected $casts = [
+    'start_date', 'due_date' => 'datetime', // Cast inquirydate to Carbon instance
+];
 
 }

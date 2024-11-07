@@ -16,9 +16,9 @@ class ProjectController extends Controller
         $query = Project::query();
         $filterCount = 0;
 
-         // Start a query for projects
-         $query = Project::with(['tasks.assignedUser', 'tasks.assignedBy']); // Load related tasks and users
-    
+        // Start a query for projects
+        $query = Project::with(['tasks.assignedUser', 'tasks.assignedBy']); // Load related tasks and users
+
 
         // Filtering by Start Date
         if ($request->filled('start_date')) {
@@ -39,8 +39,8 @@ class ProjectController extends Controller
             }
         }
 
-         // Filtering by Due Date
-         if ($request->filled('due_date')) {
+        // Filtering by Due Date
+        if ($request->filled('due_date')) {
             $filterCount++;
             switch ($request->due_date) {
                 case 'More-Time':

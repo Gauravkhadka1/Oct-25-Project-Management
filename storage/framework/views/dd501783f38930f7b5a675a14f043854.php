@@ -96,6 +96,83 @@
             </div>
         
         </div>
+        <?php if(auth()->check() && in_array(auth()->user()->email, $allowedEmails)): ?>
+
+         <!-- Payment Related Task  -->
+         <div class="mytasks">
+            <div class="current-tasks">
+            <h2><?php echo e($loggedInUser); ?> Tasks Related to Payments</h2> 
+                <?php
+                    $hasTasks = false; // Flag to check if there are any tasks
+                    $serialNo = 1;
+                ?>
+
+                <?php $__empty_1 = true; $__currentLoopData = $payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php if(!$payment->payment_tasks->isEmpty()): ?>
+                        <?php if(!$hasTasks): ?> 
+                            <table class="task-table">
+                                <thead>
+                                    <tr>
+                                        <th>S.N</th>
+                                        <th>Task</th>
+                                        <th>Payment</th>
+                                        <th>Assigned by</th>
+                                        <th>Start date</th>
+                                        <th>Due date</th>
+                                        <th>Priority</th>
+                                        <th>Actions</th>
+                                        <th>Timestamp</th>
+                                        <th>Status</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        <?php endif; ?>
+                        
+                        <?php $__currentLoopData = $payment->payment_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $hasTasks = true; ?>
+                            <tr>
+                                <td><?php echo e($serialNo++); ?></td> 
+                                <td><?php echo e($task->name); ?></td>
+                                <td><?php echo e($payment->company_name); ?></td>
+                                <td><?php echo e($task->assignedBy ? $task->assignedBy->username : 'N/A'); ?></td>
+                                <td><?php echo e($task->start_date); ?></td>
+                                <td><?php echo e($task->due_date); ?></td>
+                                <td><?php echo e($task->priority); ?></td>
+                                <td> 
+                                    
+                                </td>
+                                <td></td>
+                                <td>
+                                    <select name="status">
+                                        <option>To Do</option>
+                                        <option>In Progress</option>
+                                        <option>QA</option>
+                                        <option>Completed</option>
+                                    </select>
+                                </td>
+                                <td><textarea><?php echo e($task->comment); ?></textarea></td>
+                            </tr>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                        <?php if(!$hasTasks): ?> 
+                            </tbody>
+                            </table>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <p>No task available.</p>
+                <?php endif; ?>
+
+                <?php if($hasTasks): ?>
+                    </tbody>
+                    </table>
+                <?php endif; ?>
+
+            </div>
+        
+        </div>
+
         <div class="mytasks">
             <div class="current-tasks">
             <h2><?php echo e($loggedInUser); ?> Tasks Related to Prospects</h2> 
@@ -169,6 +246,7 @@
             </div>
         
         </div>
+        <?php endif; ?>
     
     </div>
 

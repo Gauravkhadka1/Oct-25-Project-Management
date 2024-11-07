@@ -97,6 +97,83 @@
             </div>
         
         </div>
+        @if(auth()->check() && in_array(auth()->user()->email, $allowedEmails))
+
+         <!-- Payment Related Task  -->
+         <div class="mytasks">
+            <div class="current-tasks">
+            <h2>{{ $loggedInUser }} Tasks Related to Payments</h2> 
+                @php
+                    $hasTasks = false; // Flag to check if there are any tasks
+                    $serialNo = 1;
+                @endphp
+
+                @forelse($payments as $payment)
+                    @if(!$payment->payment_tasks->isEmpty())
+                        @if (!$hasTasks) 
+                            <table class="task-table">
+                                <thead>
+                                    <tr>
+                                        <th>S.N</th>
+                                        <th>Task</th>
+                                        <th>Payment</th>
+                                        <th>Assigned by</th>
+                                        <th>Start date</th>
+                                        <th>Due date</th>
+                                        <th>Priority</th>
+                                        <th>Actions</th>
+                                        <th>Timestamp</th>
+                                        <th>Status</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        @endif
+                        
+                        @foreach($payment->payment_tasks as $index => $task)
+                            @php $hasTasks = true; @endphp
+                            <tr>
+                                <td>{{ $serialNo++ }}</td> 
+                                <td>{{ $task->name }}</td>
+                                <td>{{ $payment->company_name }}</td>
+                                <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
+                                <td>{{ $task->start_date }}</td>
+                                <td>{{ $task->due_date }}</td>
+                                <td>{{ $task->priority }}</td>
+                                <td> 
+                                    
+                                </td>
+                                <td></td>
+                                <td>
+                                    <select name="status">
+                                        <option>To Do</option>
+                                        <option>In Progress</option>
+                                        <option>QA</option>
+                                        <option>Completed</option>
+                                    </select>
+                                </td>
+                                <td><textarea>{{ $task->comment }}</textarea></td>
+                            </tr>
+                        @endforeach
+
+                        @if (!$hasTasks) 
+                            </tbody>
+                            </table>
+                        @endif
+                    @endif
+                @empty
+                    <p>No task available.</p>
+                @endforelse
+
+                @if ($hasTasks)
+                    </tbody>
+                    </table>
+                @endif
+
+            </div>
+        
+        </div>
+
         <div class="mytasks">
             <div class="current-tasks">
             <h2>{{ $loggedInUser }} Tasks Related to Prospects</h2> 
@@ -170,6 +247,7 @@
             </div>
         
         </div>
+        @endif
     
     </div>
 
