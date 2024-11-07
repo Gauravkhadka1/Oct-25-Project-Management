@@ -25,229 +25,97 @@
 
 
         <div class="mytasks">
-            <div class="current-tasks">
-            <h2>{{ $loggedInUser }} Tasks</h2> 
-                @php
-                    $hasTasks = false; // Flag to check if there are any tasks
-                    $serialNo = 1;
-                @endphp
+    <div class="current-tasks">
+        <h2>{{ $loggedInUser }} Tasks</h2> 
+        @php
+            $tasks = collect(); // Create an empty collection to hold all tasks
 
-                @forelse($projects as $project)
-                    @if(!$project->tasks->isEmpty())
-                        @if (!$hasTasks) 
-                            <table class="task-table">
-                                <thead>
-                                    <tr>
-                                        <th>S.N</th>
-                                        <th>Task</th>
-                                        <th>Project</th>
-                                        <th>Assigned by</th>
-                                        <th>Start date</th>
-                                        <th>Due date</th>
-                                        <th>Priority</th>
-                                        <th>Actions</th>
-                                        <th>Timestamp</th>
-                                        <th>Status</th>
-                                        <th>Comment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                        @endif
-                        
-                        @foreach($project->tasks as $index => $task)
-                            @php $hasTasks = true; @endphp
-                            <tr>
-                                <td>{{ $serialNo++ }}</td> 
-                                <td>{{ $task->name }}</td>
-                                <td>{{ $project->name }}</td>
-                                <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
-                                <td>{{ $task->start_date }}</td>
-                                <td>{{ $task->due_date }}</td>
-                                <td>{{ $task->priority }}</td>
-                                <td>
-                                    <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleProjectTaskTimer({{ $task->id }})">Start</button>
-                                </td>
-                                <td id="time-{{ $task->id }}">00:00:00</td>
-                                <td>
-                                    <select name="status">
-                                        <option>To Do</option>
-                                        <option>In Progress</option>
-                                        <option>QA</option>
-                                        <option>Completed</option>
-                                    </select>
-                                </td>
-                                <td><textarea>{{ $task->comment }}</textarea></td>
-                            </tr>
-                        @endforeach
+            // Add tasks from payments first
+            foreach ($payments as $payment) {
+                foreach ($payment->payment_tasks as $task) {
+                    $task->category = 'Payment';
+                    $task->category_name = $payment->company_name; // Store payment company name in 'category_name'
+                    $tasks->push($task); // Add payment tasks to the collection
+                }
+            }
 
-                        @if (!$hasTasks) 
-                            </tbody>
-                            </table>
-                        @endif
-                    @endif
-                @empty
-                    <p>No projects available.</p>
-                @endforelse
+            // Add tasks from projects second
+            foreach ($projects as $project) {
+                foreach ($project->tasks as $task) {
+                    $task->category = 'Project';
+                    $task->category_name = $project->name; // Store project name in 'category_name'
+                    $tasks->push($task); // Add project tasks to the collection
+                }
+            }
 
-                @if ($hasTasks)
-                    </tbody>
-                    </table>
-                @endif
+            // Add tasks from prospects third
+            foreach ($prospects as $prospect) {
+                foreach ($prospect->prospect_tasks as $task) {
+                    $task->category = 'Prospect';
+                    $task->category_name = $prospect->company_name; // Store prospect company name in 'category_name'
+                    $tasks->push($task); // Add prospect tasks to the collection
+                }
+            }
 
-            </div>
-        
-        </div>
-        @if(auth()->check() && in_array(auth()->user()->email, $allowedEmails))
+            // Flag to check if there are any tasks
+            $hasTasks = $tasks->isNotEmpty(); 
+            $serialNo = 1;
+        @endphp
 
-         <!-- Payment Related Task  -->
-         <div class="mytasks">
-            <div class="current-tasks">
-            <h2>{{ $loggedInUser }} Tasks Related to Payments</h2> 
-                @php
-                    $hasTasks = false; // Flag to check if there are any tasks
-                    $serialNo = 1;
-                @endphp
-
-                @forelse($payments as $payment)
-                    @if(!$payment->payment_tasks->isEmpty())
-                        @if (!$hasTasks) 
-                            <table class="task-table">
-                                <thead>
-                                    <tr>
-                                        <th>S.N</th>
-                                        <th>Task</th>
-                                        <th>Payment</th>
-                                        <th>Assigned by</th>
-                                        <th>Start date</th>
-                                        <th>Due date</th>
-                                        <th>Priority</th>
-                                        <th>Actions</th>
-                                        <th>Timestamp</th>
-                                        <th>Status</th>
-                                        <th>Comment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                        @endif
-                        
-                        @foreach($payment->payment_tasks as $index => $task)
-                            @php $hasTasks = true; @endphp
-                            <tr>
-                                <td>{{ $serialNo++ }}</td> 
-                                <td>{{ $task->name }}</td>
-                                <td>{{ $payment->company_name }}</td>
-                                <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
-                                <td>{{ $task->start_date }}</td>
-                                <td>{{ $task->due_date }}</td>
-                                <td>{{ $task->priority }}</td>
-                                <td> 
-                                    
-                                </td>
-                                <td></td>
-                                <td>
-                                    <select name="status">
-                                        <option>To Do</option>
-                                        <option>In Progress</option>
-                                        <option>QA</option>
-                                        <option>Completed</option>
-                                    </select>
-                                </td>
-                                <td><textarea>{{ $task->comment }}</textarea></td>
-                            </tr>
-                        @endforeach
-
-                        @if (!$hasTasks) 
-                            </tbody>
-                            </table>
-                        @endif
-                    @endif
-                @empty
-                    <p>No task available.</p>
-                @endforelse
-
-                @if ($hasTasks)
-                    </tbody>
-                    </table>
-                @endif
-
-            </div>
-        
-        </div>
-
-        <div class="mytasks">
-            <div class="current-tasks">
-            <h2>{{ $loggedInUser }} Tasks Related to Prospects</h2> 
-                @php
-                    $hasTasks = false; // Flag to check if there are any tasks
-                    $serialNo = 1;
-                @endphp
-
-                @forelse($prospects as $prospect)
-                    @if(!$prospect->prospect_tasks->isEmpty())
-                        @if (!$hasTasks) 
-                            <table class="task-table">
-                                <thead>
-                                    <tr>
-                                        <th>S.N</th>
-                                        <th>Task</th>
-                                        <th>Prospect</th>
-                                        <th>Assigned by</th>
-                                        <th>Start date</th>
-                                        <th>Due date</th>
-                                        <th>Priority</th>
-                                        <th>Actions</th>
-                                        <th>Timestamp</th>
-                                        <th>Status</th>
-                                        <th>Comment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                        @endif
-                        
-                        @foreach($prospect->prospect_tasks as $index => $task)
-                            @php $hasTasks = true; @endphp
-                            <tr>
-                                <td>{{ $serialNo++ }}</td> 
-                                <td>{{ $task->name }}</td>
-                                <td>{{ $prospect->company_name }}</td>
-                                <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
-                                <td>{{ $task->start_date }}</td>
-                                <td>{{ $task->due_date }}</td>
-                                <td>{{ $task->priority }}</td>
-                                <td> 
-                                    
-                                </td>
-                                <td></td>
-                                <td>
-                                    <select name="status">
-                                        <option>To Do</option>
-                                        <option>In Progress</option>
-                                        <option>QA</option>
-                                        <option>Completed</option>
-                                    </select>
-                                </td>
-                                <td><textarea>{{ $task->comment }}</textarea></td>
-                            </tr>
-                        @endforeach
-
-                        @if (!$hasTasks) 
-                            </tbody>
-                            </table>
-                        @endif
-                    @endif
-                @empty
-                    <p>No task available.</p>
-                @endforelse
-
-                @if ($hasTasks)
-                    </tbody>
-                    </table>
-                @endif
-
-            </div>
-        
-        </div>
+        @if ($hasTasks)
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Task</th>
+                        <th>Category Name</th> <!-- New column for Category Name -->
+                        <th>Category</th> <!-- New column for Category Type -->
+                        <th>Assigned by</th>
+                        <th>Start date</th>
+                        <th>Due date</th>
+                        <th>Priority</th>
+                        <th>Actions</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($tasks as $task)
+                        <tr>
+                            <td>{{ $serialNo++ }}</td>
+                            <td>{{ $task->name }}</td>
+                            <td>{{ $task->category_name }}</td> <!-- Category Name -->
+                            <td>{{ $task->category }}</td> <!-- Category Type (Project/Payment/Prospect) -->
+                            <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
+                            <td>{{ $task->start_date }}</td>
+                            <td>{{ $task->due_date }}</td>
+                            <td>{{ $task->priority }}</td>
+                            <td>
+                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTaskTimer({{ $task->id }})">Start</button>
+                            </td>
+                            <td id="time-{{ $task->id }}">00:00:00</td>
+                            <td>
+                                <select name="status">
+                                    <option>To Do</option>
+                                    <option>In Progress</option>
+                                    <option>QA</option>
+                                    <option>Completed</option>
+                                </select>
+                            </td>
+                            <td><textarea>{{ $task->comment }}</textarea></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p>No tasks available.</p>
         @endif
+    </div>
+</div>
+
+
+    
     
     </div>
 
@@ -445,7 +313,7 @@ function sendProspectTaskTimerUpdate(prospectTaskId, elapsedTime, url) {
       
    // Prospect Task Timer Ends 
        
-        document.addEventListener("DOMContentLoaded", function() {
+   document.addEventListener("DOMContentLoaded", function() {
     const userSpans = document.querySelectorAll('.user-span');
 
     userSpans.forEach(span => {
@@ -461,71 +329,76 @@ function sendProspectTaskTimerUpdate(prospectTaskId, elapsedTime, url) {
         });
     });
 
-        function showTasksForUser(username) {
-            // Here you would typically make an AJAX call to fetch tasks for the selected user
-            fetch(`/tasks?username=${username}`)
-                .then(response => response.json())
-                .then(tasks => {
-                    updateTaskDetails(tasks, username);
-                })
-                .catch(error => console.error('Error fetching tasks:', error));
-        }
+    function showTasksForUser(username) {
+        // Here you would typically make an AJAX call to fetch tasks for the selected user
+        fetch(`/tasks?username=${username}`)
+            .then(response => response.json())
+            .then(tasks => {
+                updateTaskDetails(tasks, username);
+            })
+            .catch(error => console.error('Error fetching tasks:', error));
+    }
 
-        function updateTaskDetails(tasks, username) {
-            const tasksContainer = document.querySelector('.current-tasks');
-            tasksContainer.innerHTML = `<h2>${username} Tasks</h2>`; // Update the header with the selected username
+    function updateTaskDetails(tasks, username) {
+    const tasksContainer = document.querySelector('.current-tasks');
+    tasksContainer.innerHTML = `<h2>${username} Tasks</h2>`; // Update the header with the selected username
 
-            if (tasks.length > 0) {
-                let tableHtml = `<table class="task-table">
-                    <thead>
-                        <tr>
-                            <th>S.N</th>
-                            <th>Task</th>
-                            <th>Project</th>
-                            <th>Assigned by</th>
-                            <th>Start date</th>
-                            <th>Due date</th>
-                            <th>Priority</th>
-                            <th>Actions</th>
-                            <th>Timestamp</th>
-                            <th>Status</th>
-                            <th>Comment</th>
-                        </tr>
-                    </thead>
-                    <tbody>`;
+    if (tasks.length > 0) {
+        let tableHtml = `<table class="task-table">
+            <thead>
+                <tr>
+                    <th>S.N</th>
+                    <th>Task</th>
+                    <th>Category Name</th>
+                    <th>Category</th>
+                    <th>Assigned by</th>
+                    <th>Start date</th>
+                    <th>Due date</th>
+                    <th>Priority</th>
+                    <th>Actions</th>
+                    <th>Timestamp</th>
+                    <th>Status</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>`;
 
-                tasks.forEach((task, index) => {
-                    tableHtml += `<tr>
-                        <td>${index + 1}</td>
-                        <td>${task.name}</td>
-                        <td>${task.project_name}</td>
-                        <td>${task.assignedBy ? task.assignedBy.username : 'N/A'}</td>
-                        <td>${task.start_date}</td>
-                        <td>${task.due_date}</td>
-                        <td>${task.priority}</td>
-                        <td>
-                            <button class="btn-toggle start" id="toggle-${task.id}" onclick="toggleTimer(${task.id})">Start</button>
-                        </td>
-                        <td id="time-${task.id}">00:00:00</td>
-                        <td>
-                            <select name="status">
-                                <option>To Do</option>
-                                <option>In Progress</option>
-                                <option>QA</option>
-                                <option>Completed</option>
-                            </select>
-                        </td>
-                        <td><textarea>${task.comment}</textarea></td>
-                    </tr>`;
-                });
+        tasks.forEach((task, index) => {
+            tableHtml += `<tr>
+                <td>${index + 1}</td>
+                <td>${task.name}</td>
+                <td>${task.category_name || 'N/A'}</td> <!-- Category Name -->
+                <td>${task.category || 'N/A'}</td> <!-- Category Type -->
+                <td>${task.assignedBy || 'N/A'}</td> <!-- Assigned By -->
+                <td>${task.start_date}</td>
+                <td>${task.due_date}</td>
+                <td>${task.priority}</td>
+                <td>
+                    <button class="btn-toggle start" id="toggle-${task.id}" onclick="toggleTaskTimer(${task.id})">Start</button>
+                </td>
+                <td id="time-${task.id}">00:00:00</td>
+                <td>
+                    <select name="status">
+                        <option>To Do</option>
+                        <option>In Progress</option>
+                        <option>QA</option>
+                        <option>Completed</option>
+                    </select>
+                </td>
+                <td><textarea>${task.comment}</textarea></td>
+            </tr>`;
+        });
 
-                tableHtml += `</tbody></table>`;
-                tasksContainer.innerHTML += tableHtml; // Append the table to the tasks container
-            } else {
-                tasksContainer.innerHTML += `<p>No tasks available for ${username}.</p>`;
-            }
-        }
-    });
+        tableHtml += `</tbody></table>`;
+        tasksContainer.innerHTML += tableHtml;
+    } else {
+        tasksContainer.innerHTML += `<p>No tasks available.</p>`;
+    }
+}
+
+
+});
+
 
 
     </script>

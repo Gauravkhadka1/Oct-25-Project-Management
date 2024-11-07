@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Models\PaymentTask;
+use App\Models\ProspectTask;
 use App\Models\User;
 
 class TaskController extends Controller {
@@ -76,25 +78,43 @@ public function getTasksForUsername(Request $request)
         return response()->json(['error' => 'User not found'], 404);
     }
 
-    $tasks = Task::with(['assignedBy', 'project']) // Ensure to include the project relationship
-        ->where('assigned_to', $user->id)
-        ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority', 'project_id')
-        ->get();
+    // Retrieve tasks for all types: Project, Payment, and Prospect
+    $tasks = Task::where('assigned_to', $user->id)
+        ->get()
+        ->map(function ($task) {
+            $task->category = 'Project';  // Set category type as Project
+            $task->category_name = $task->project->name ?? 'N/A';  // Set category name from related project
+            $task->assignedBy = $task->assignedBy->username ?? 'N/A';  // Get assigned by username
+            return $task;
+        });
 
-    // Map tasks to include the project name
-    $tasksWithProjectName = $tasks->map(function ($task) {
-        return [
-            'id' => $task->id,
-            'name' => $task->name,
-            'assignedBy' => $task->assignedBy,
-            'start_date' => $task->start_date,
-            'due_date' => $task->due_date,
-            'priority' => $task->priority,
-            'comment' => $task->comment,
-            'project_name' => $task->project ? $task->project->name : 'N/A', // Check if project exists
-        ];
-    });
+    $prospectTasks = ProspectTask::where('assigned_to', $user->id)
+        ->get()
+        ->map(function ($task) {
+            $task->category = 'Prospect';  // Set category type as Prospect
+            $task->category_name = $task->prospect->company_name ?? 'N/A';  // Set category name from related prospect
+            $task->assignedBy = $task->assignedBy->username ?? 'N/A';  // Get assigned by username
+            return $task;
+        });
 
-    return response()->json($tasksWithProjectName);
+    $paymentTasks = PaymentTask::where('assigned_to', $user->id)
+        ->get()
+        ->map(function ($task) {
+            // Ensure the relationship with the 'payment' model is correct
+            $payment = $task->payment;  // Get the associated Payment model
+            
+            $task->category = 'Payment';  // Set category type as Payment
+            $task->category_name = $payment ? $payment->company_name : 'N/A';  // Set category name from related payment
+            $task->assignedBy = $task->assignedBy->username ?? 'N/A';  // Get assigned by username
+            return $task;
+        });
+
+    // Combine all tasks into one collection
+    $allTasks = $tasks->merge($prospectTasks)->merge($paymentTasks);
+
+    return response()->json($allTasks);
 }
+
+
+
 }

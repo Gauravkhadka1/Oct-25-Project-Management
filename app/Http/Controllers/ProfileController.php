@@ -33,21 +33,22 @@ class ProfileController extends Controller
          $userEmail = $user->email;
          $username = $user->username;
      
-         // Get tasks assigned only to the logged-in user, including the user who assigned them
-         $tasks = Task::with('assignedBy') // Eager load the assignedBy relationship
-             ->where('assigned_to', $user->id)
-             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
-             ->get();
-         // Get tasks assigned only to the logged-in user, including the user who assigned them
-         $prospectTasks = ProspectTask::with('assignedBy') // Eager load the assignedBy relationship
-             ->where('assigned_to', $user->id)
-             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
-             ->get();
+        // Modify the existing code to eager load related categories
+$tasks = Task::with('assignedBy', 'project') // Eager load project
+->where('assigned_to', $user->id)
+->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
+->get();
 
-         $paymentTasks = PaymentTask::with('assignedBy') // Eager load the assignedBy relationship
-             ->where('assigned_to', $user->id)
-             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
-             ->get();
+// Similarly, for prospect and payment tasks
+$prospectTasks = ProspectTask::with('assignedBy', 'prospect') // Eager load prospect
+->where('assigned_to', $user->id)
+->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
+->get();
+
+$paymentTasks = PaymentTask::with('assignedBy', 'payment') // Eager load payment
+->where('assigned_to', $user->id)
+->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
+->get();
      
          // Debugging: Log the tasks to see what's retrieved for this user
          \Log::info("Tasks for user {$user->email}:", $tasks->toArray());
@@ -67,8 +68,9 @@ class ProfileController extends Controller
      
          // Debugging: Log the projects with tasks to verify filtering
          \Log::info("Projects for user {$user->email}:", $projects->toArray());
-     
-         return view('frontends.dashboard', compact('projects', 'payments', 'prospects', 'username', 'userEmail', 'user', 'tasks', 'prospectTasks'));
+   
+        return view('frontends.dashboard', compact('projects', 'payments', 'prospects', 'username', 'userEmail', 'user', 'tasks', 'prospectTasks', 'paymentTasks'));
+
      }
      
 
@@ -156,6 +158,7 @@ public function getUsernames(Request $request)
 
     return response()->json($usernames);
 }
+
 
 
 }
