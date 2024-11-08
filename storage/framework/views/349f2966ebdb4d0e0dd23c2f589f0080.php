@@ -16,6 +16,9 @@
 
 
   <?php
+  use App\Models\User;
+  $users = User::select('id', 'username')->get();
+
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
   $username = $user->username;
@@ -154,6 +157,24 @@
           <ul class="task-dropdown">
             <li><a href="<?php echo e(route('dashboard')); ?>">All Tasks</a></li>
           </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+          <div class="icon-text">
+            <img src="<?php echo e(url('frontend/images/team.png')); ?>" alt=""> Teams
+          </div>
+          <div class="dropdown-arrow-div">
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </div>
+          </a>
+          <ul class="task-dropdown">
+            <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li class="username-item" data-username="<?php echo e($user->username); ?>">
+                    <a href="<?php echo e(route('user.dashboard', ['username' => $user->username])); ?>"><?php echo e($user->username); ?></a>
+                </li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </ul>
         </li>
       </ul>
     </div>

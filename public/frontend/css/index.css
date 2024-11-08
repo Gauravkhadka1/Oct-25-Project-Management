@@ -78,7 +78,7 @@
     padding-right: 17px; 
     transition: transform 0.3s ease;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    /* overflow-y: auto;  */
+    overflow-y: auto; 
     scroll-behavior: smooth; 
   }
   .sidebar::-webkit-scrollbar {

@@ -7,6 +7,7 @@ use App\Http\Controllers\ProspectTaskController;
 use App\Http\Controllers\PaymentTaskController;
 use App\Http\Controllers\Frontend\ProspectController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\YourController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\PaymentsActivityController;
 use App\Http\Controllers\Frontend\TimeController;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Middleware\CheckAllowedEmails;
+
 
 Route::get('/',[HomeController::class, 'index']);
 Route::get('/mention',[HomeController::class, 'mention']);
@@ -136,6 +138,8 @@ Route::get('/api/users/search', [UserController::class, 'search']);
 Route::post('/api/notify-mention', [UserController::class, 'notifyMention']);
 
 Route::post('/submit-message', [MessageController::class, 'submitMessage']);
+
+Route::get('/user-dashboard/{username}', [YourController::class, 'userDashboard'])->name('user.dashboard');
 
 
 

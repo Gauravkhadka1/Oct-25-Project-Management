@@ -209,3 +209,9 @@ tbody tr:nth-child(odd) {
     border-radius: 7px;
     font-weight: bold;
 }
+.schedule-table-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;
+}

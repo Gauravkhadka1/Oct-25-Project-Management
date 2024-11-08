@@ -11,15 +11,6 @@
             <?php
                 $loggedInUser = Auth::user()->username; // Get the logged-in user's username
             ?>
-            
-            <?php if(auth()->check() && in_array(auth()->user()->email, $allowedEmails)): ?>
-            <?php $__currentLoopData = ['Sabin', 'Anubhav', 'Lokendra', 'Denisha', 'Muskaan', 'Jeena', 'Sabita', 'Gaurav', 'Sudeep Sir', 'Suraj Sir']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $username): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <span class="user-span <?php echo e($username === $loggedInUser ? 'active' : ''); ?>" data-username="<?php echo e($username); ?>">
-                    <?php echo e($username); ?>
-
-                </span>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <?php endif; ?>
         </div>
 
 
@@ -120,6 +111,10 @@
    
 </div>
 <div class="schedule-table">
+    <div class="schedule-table-heading">
+    <h2><?php echo e($loggedInUser); ?> today schedule</h2>
+    </div>
+   
 <table class="task-table">
     <thead class="schedule head">
         <tr>

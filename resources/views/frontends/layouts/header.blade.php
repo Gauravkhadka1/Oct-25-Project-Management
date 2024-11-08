@@ -16,6 +16,9 @@
 
 
   @php
+  use App\Models\User;
+  $users = User::select('id', 'username')->get();
+
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
   $username = $user->username;
@@ -154,6 +157,24 @@
           <ul class="task-dropdown">
             <li><a href="{{ route('dashboard') }}">All Tasks</a></li>
           </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+          <div class="icon-text">
+            <img src="{{url('frontend/images/team.png')}}" alt=""> Teams
+          </div>
+          <div class="dropdown-arrow-div">
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+          </div>
+          </a>
+          <ul class="task-dropdown">
+            @foreach ($users as $user)
+                <li class="username-item" data-username="{{ $user->username }}">
+                    <a href="{{ route('user.dashboard', ['username' => $user->username]) }}">{{ $user->username }}</a>
+                </li>
+            @endforeach
+        </ul>
         </li>
       </ul>
     </div>

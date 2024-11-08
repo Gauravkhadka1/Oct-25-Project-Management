@@ -13,14 +13,6 @@
             @php
                 $loggedInUser = Auth::user()->username; // Get the logged-in user's username
             @endphp
-            
-            @if(auth()->check() && in_array(auth()->user()->email, $allowedEmails))
-            @foreach(['Sabin', 'Anubhav', 'Lokendra', 'Denisha', 'Muskaan', 'Jeena', 'Sabita', 'Gaurav', 'Sudeep Sir', 'Suraj Sir'] as $username)
-                <span class="user-span {{ $username === $loggedInUser ? 'active' : '' }}" data-username="{{ $username }}">
-                    {{ $username }}
-                </span>
-            @endforeach
-            @endif
         </div>
 
 
@@ -120,6 +112,10 @@
    
 </div>
 <div class="schedule-table">
+    <div class="schedule-table-heading">
+    <h2>{{ $loggedInUser }} today schedule</h2>
+    </div>
+   
 <table class="task-table">
     <thead class="schedule head">
         <tr>
