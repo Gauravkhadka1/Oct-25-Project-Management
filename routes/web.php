@@ -98,11 +98,10 @@ Route::post('/activities/{activity}/reply', [ActivityController::class, 'replyTo
 Route::get('/user-search', [UserController::class, 'searchUsernames']);
 
 // web.php
-Route::post('/tasks/{task}/start-timer', [TaskController::class, 'startProjectTaskTimer']);
-Route::post('/tasks/{task}/pause-timer', [TaskController::class, 'pauseProjectTaskTimer']);
+Route::post('/tasks/{task}/start-timer', [TaskController::class, 'startTimer']);
+Route::post('/tasks/{task}/pause-timer', [TaskController::class, 'pauseTimer']);
 
-Route::post('/prospect_tasks/{prospect_task}/start-timer', [ProspectTaskController::class, 'startProspectTaskTimer']);
-Route::post('/prospect_tasks/{prospect_task}/pause-timer', [ProspectTaskController::class, 'pauseProspectTaskTimer']);
+
 
 
 

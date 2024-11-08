@@ -51,23 +51,23 @@ public function store(Request $request)
 }
 
 
-public function startProjectTaskTimer(Request $request, Task $task)
+public function startTimer(Request $request, Task $task)
 {
     // Save current elapsed time when starting the timer
     $task->elapsed_time = $request->input('elapsed_time', 0);
     $task->save();
 
-    return response()->json(['message' => 'Project Task Timer started', 'elapsed_time' => $task->elapsed_time]);
+    return response()->json(['message' => 'Timer started', 'elapsed_time' => $task->elapsed_time]);
 }
 
-public function pauseProjectTaskTimer(Request $request, Task $task)
+public function pauseTimer(Request $request, Task $task)
 {
     // Update elapsed time when pausing
     $task->elapsed_time = $request->input('elapsed_time');
     $task->save();
 
     return response()->json(['message' => 'Timer paused', 'elapsed_time' => $task->elapsed_time]);
-}  
+}   
 
 public function getTasksForUsername(Request $request)
 {
@@ -108,6 +108,8 @@ public function getTasksForUsername(Request $request)
             $task->assignedBy = $task->assignedBy->username ?? 'N/A';  // Get assigned by username
             return $task;
         });
+
+        
 
     // Combine all tasks into one collection
     $allTasks = $tasks->merge($prospectTasks)->merge($paymentTasks);

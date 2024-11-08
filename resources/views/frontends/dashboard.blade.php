@@ -92,9 +92,9 @@
                             <td>{{ $task->due_date }}</td>
                             <td>{{ $task->priority }}</td>
                             <td>
-                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTaskTimer({{ $task->id }})">Start</button>
-                            </td>
-                            <td id="time-{{ $task->id }}">00:00:00</td>
+                                    <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
+                                </td>
+                                <td id="time-{{ $task->id }}">00:00:00</td>
                             <td>
                                 <select name="status">
                                     <option>To Do</option>
@@ -124,10 +124,6 @@
         
 
         let timers = {};
-        const projectTaskTimers = {};
-
-
-        // Project Tasks Timer Starts 
 
         // Load the saved time from the database when the page loads
         window.addEventListener("load", () => {
@@ -140,25 +136,25 @@
                     };
                 }
                 console.log("Timer initialized for task ID:", {{ $task->id }});
-                updateProjectTaskTimerDisplay({{ $task->id }});
+                updateTimerDisplay({{ $task->id }});
             @endforeach
             @endforeach
         });
 
-        function toggleProjectTaskTimer(taskId) {
+        function toggleTimer(taskId) {
             const timer = timers[taskId];
             const button = document.getElementById(`toggle-${taskId}`);
             
             if (timer) {
                 if (timer.running) {
                     // If timer is running, pause it
-                    pauseProjectTaskTimer(taskId);
+                    pauseTimer(taskId);
                     button.innerText = "Resume";
                     button.classList.remove("pause");
                     button.classList.add("start");
                 } else {
                     // If timer is paused or not started, start/resume it
-                    startProjectTaskTimer(taskId);
+                    startTimer(taskId);
                     button.innerText = "Pause";
                     button.classList.remove("start");
                     button.classList.add("pause");
@@ -168,20 +164,20 @@
             }
         }
 
-        function startProjectTaskTimer(taskId) {
+        function startTimer(taskId) {
             const timer = timers[taskId];
             if (timer) {
                 timer.startTime = new Date().getTime() - timer.elapsedTime;
                 timer.running = true;
                 
                 console.log(`Starting/resuming timer for task ID: ${taskId}`);
-                sendProjectTaskTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/start-timer`);
+                sendTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/start-timer`);
                 
-                updateProjectTaskTimer(taskId);
+                updateTimer(taskId);
             }
         }
 
-        function pauseProjectTaskTimer(taskId) {
+        function pauseTimer(taskId) {
             const timer = timers[taskId];
             if (timer && timer.running) {
                 timer.elapsedTime = new Date().getTime() - timer.startTime;
@@ -189,23 +185,23 @@
                 
                 console.log(`Pausing timer for task ${taskId}, elapsed time: ${timer.elapsedTime}`);
                 
-                sendProjectTaskTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/pause-timer`);
+                sendTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/pause-timer`);
             }
         }
 
-        function updateProjectTaskTimer(taskId) {
+        function updateTimer(taskId) {
             const timer = timers[taskId];
             if (timer && timer.running) {
                 const currentTime = new Date().getTime() - timer.startTime;
                 timer.elapsedTime = currentTime;
                 
-                updateProjectTaskTimerDisplay(taskId);
+                updateTimerDisplay(taskId);
                 
-                setTimeout(() => updateProjectTaskTimer(taskId), 1000);
+                setTimeout(() => updateTimer(taskId), 1000);
             }
         }
 
-        function updateProjectTaskTimerDisplay(taskId) {
+        function updateTimerDisplay(taskId) {
             const timer = timers[taskId];
             if (timer) {
                 const totalSeconds = Math.floor(timer.elapsedTime / 1000);
@@ -218,7 +214,7 @@
             }
         }
 
-        function sendProjectTaskTimerUpdate(taskId, elapsedTime, url) {
+        function sendTimerUpdate(taskId, elapsedTime, url) {
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -231,84 +227,6 @@
             .then(data => console.log(`Timer updated: ${data.message}`))
             .catch(error => console.error('Error updating timer:', error));
         }
-
-   // Project Task Timer Ends 
-//Prospect Task Timer Starts
-let prospectTaskTimers = {};
-function toggleProspectTaskTimer(prospectTaskId) {
-    const timer = prospectTaskTimers[prospectTaskId];
-    const button = document.getElementById(`toggle-prospect-${prospectTaskId}`);
-    
-    if (timer) {
-        if (timer.running) {
-            pauseProspectTaskTimer(prospectTaskId);
-            button.innerText = "Resume";
-            button.classList.remove("pause");
-            button.classList.add("start");
-        } else {
-            startProspectTaskTimer(prospectTaskId);
-            button.innerText = "Pause";
-            button.classList.remove("start");
-            button.classList.add("pause");
-        }
-    } else {
-        console.error(`Timer not found for prospect task ID: ${prospectTaskId}`);
-    }
-}
-
-function startProspectTaskTimer(prospectTaskId) {
-    const timer = prospectTaskTimers[prospectTaskId] || { elapsedTime: 0, running: false };
-    timer.startTime = new Date().getTime() - timer.elapsedTime;
-    timer.running = true;
-    prospectTaskTimers[prospectTaskId] = timer;
-    sendProspectTaskTimerUpdate(prospectTaskId, timer.elapsedTime / 1000, `/prospect_tasks/${prospectTaskId}/start-timer`);
-    updateProspectTaskTimer(prospectTaskId);
-}
-
-function pauseProspectTaskTimer(prospectTaskId) {
-    const timer = prospectTaskTimers[prospectTaskId];
-    if (timer && timer.running) {
-        timer.elapsedTime = new Date().getTime() - timer.startTime;
-        timer.running = false;
-        sendProspectTaskTimerUpdate(prospectTaskId, timer.elapsedTime / 1000, `/prospect_tasks/${prospectTaskId}/pause-timer`);
-    }
-}
-
-function updateProspectTaskTimer(prospectTaskId) {
-    const timer = prospectTaskTimers[prospectTaskId];
-    if (timer && timer.running) {
-        timer.elapsedTime = new Date().getTime() - timer.startTime;
-        updateProspectTaskTimerDisplay(prospectTaskId);
-        setTimeout(() => updateProspectTaskTimer(prospectTaskId), 1000);
-    }
-}
-
-function updateProspectTaskTimerDisplay(prospectTaskId) {
-    const timer = prospectTaskTimers[prospectTaskId];
-    if (timer) {
-        const totalSeconds = Math.floor(timer.elapsedTime / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        document.getElementById(`prospect-time-${prospectTaskId}`).innerText = 
-            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }
-}
-
-function sendProspectTaskTimerUpdate(prospectTaskId, elapsedTime, url) {
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ elapsed_time: elapsedTime })
-    })
-    .then(response => response.json())
-    .then(data => console.log(`Prospect Task timer updated: ${data.message}`))
-    .catch(error => console.error('Error updating prospect task timer:', error));
-}
-
 
       
    // Prospect Task Timer Ends 
