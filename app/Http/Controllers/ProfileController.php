@@ -76,6 +76,7 @@ $taskSessions = TaskSession::where('user_id', $user->id)
     ->get();
 
 // Group task sessions by task ID and accumulate the time spent for each task
+// Group task sessions by task ID and accumulate the time spent for each task
 $sessionsData = $taskSessions->groupBy('task_id')->map(function ($sessions) {
     // Initialize total time spent in seconds
     $totalTimeSpentInSeconds = 0;
@@ -84,8 +85,8 @@ $sessionsData = $taskSessions->groupBy('task_id')->map(function ($sessions) {
         $startTime = $session->started_at instanceof \Carbon\Carbon ? $session->started_at : new \Carbon\Carbon($session->started_at);
         $endTime = $session->paused_at ? new \Carbon\Carbon($session->paused_at) : now();
 
-        // Add the time spent on this session to the total time spent
-        $totalTimeSpentInSeconds += $endTime->diffInSeconds($startTime);
+        // Add the absolute value of the time spent on this session to the total time spent
+        $totalTimeSpentInSeconds += abs($endTime->diffInSeconds($startTime));
     }
 
     // If the total time spent is less than 60 seconds, show in seconds
