@@ -120,32 +120,25 @@
    
 </div>
 <div class="schedule-table">
-    <table class="task-table">
-        <thead class="schedule head">
+<table class="task-table">
+    <thead class="schedule head">
+        <tr>
+            <th>Task Name</th>
+            <th>Project Name</th>
+            <th>Time Spent</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php $__currentLoopData = $sessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $session): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
-                <th>Hour (Nepal Time)</th>
-                <th>Task Name</th>
-                <th>Project Name</th>
-                <th>Time Spent</th>
+                <td><?php echo e($session['task_name']); ?></td>
+                <td><?php echo e($session['project_name']); ?></td>
+                <td><?php echo e($session['time_spent']); ?></td> <!-- now shows minutes -->
             </tr>
-        </thead>
-        <tbody>
-            <?php $__currentLoopData = $sessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hour => $tasks): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <tr>
-                        <td><?php echo e(str_pad($hour, 2, '0', STR_PAD_LEFT)); ?>:00 - <?php echo e(str_pad($hour + 1, 2, '0', STR_PAD_LEFT)); ?>:00</td>
-                        <td><?php echo e($task['task_name']); ?></td>
-                        <td><?php echo e($task['project_name']); ?></td>
-                        <td><?php echo e($task['time_spent']); ?></td>
-                    </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </tbody>
-    </table>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </tbody>
+</table>
 </div>
-
-
-
 
     
     

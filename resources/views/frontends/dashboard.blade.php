@@ -120,32 +120,25 @@
    
 </div>
 <div class="schedule-table">
-    <table class="task-table">
-        <thead class="schedule head">
+<table class="task-table">
+    <thead class="schedule head">
+        <tr>
+            <th>Task Name</th>
+            <th>Project Name</th>
+            <th>Time Spent</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach($sessionsData as $session)
             <tr>
-                <th>Hour (Nepal Time)</th>
-                <th>Task Name</th>
-                <th>Project Name</th>
-                <th>Time Spent</th>
+                <td>{{ $session['task_name'] }}</td>
+                <td>{{ $session['project_name'] }}</td>
+                <td>{{ $session['time_spent'] }}</td> <!-- now shows minutes -->
             </tr>
-        </thead>
-        <tbody>
-            @foreach($sessionsData as $hour => $tasks)
-                @foreach($tasks as $task)
-                    <tr>
-                        <td>{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00 - {{ str_pad($hour + 1, 2, '0', STR_PAD_LEFT) }}:00</td>
-                        <td>{{ $task['task_name'] }}</td>
-                        <td>{{ $task['project_name'] }}</td>
-                        <td>{{ $task['time_spent'] }}</td>
-                    </tr>
-                @endforeach
-            @endforeach
-        </tbody>
-    </table>
+        @endforeach
+    </tbody>
+</table>
 </div>
-
-
-
 
     
     
