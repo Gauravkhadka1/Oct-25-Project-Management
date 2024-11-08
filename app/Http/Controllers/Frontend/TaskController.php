@@ -11,6 +11,7 @@ use App\Models\Task;
 use App\Models\PaymentTask;
 use App\Models\ProspectTask;
 use App\Models\User;
+use App\Models\TaskSession;
 
 class TaskController extends Controller {
    // In TaskController
@@ -53,7 +54,13 @@ public function store(Request $request)
 
 public function startTimer(Request $request, Task $task)
 {
-    // Save current elapsed time when starting the timer
+    $session = TaskSession::create([
+        'user_id' => auth()->id(),
+        'task_id' => $task->id,
+        'project_id' => $task->project_id,
+        'started_at' => now(),
+    ]);
+
     $task->elapsed_time = $request->input('elapsed_time', 0);
     $task->save();
 
@@ -62,12 +69,22 @@ public function startTimer(Request $request, Task $task)
 
 public function pauseTimer(Request $request, Task $task)
 {
-    // Update elapsed time when pausing
+    $session = TaskSession::where('task_id', $task->id)
+                ->where('user_id', auth()->id())
+                ->whereNull('paused_at')
+                ->latest()
+                ->first();
+
+    if ($session) {
+        $session->update(['paused_at' => now()]);
+    }
+
     $task->elapsed_time = $request->input('elapsed_time');
     $task->save();
 
     return response()->json(['message' => 'Timer paused', 'elapsed_time' => $task->elapsed_time]);
-}   
+}
+
 
 public function getTasksForUsername(Request $request)
 {
@@ -116,7 +133,4 @@ public function getTasksForUsername(Request $request)
 
     return response()->json($allTasks);
 }
-
-
-
 }
