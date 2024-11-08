@@ -93,20 +93,31 @@ $serialNo = 1;
 <div class="schedule-table" style="margin-top: 30px;">
     <h2><?php echo e($username); ?> today schedule</h2>
     <table class="task-table">
-        <thead>
+        <thead class="schedule head">
             <tr>
+                <th>Time Interval</th>
                 <th>Task Name</th>
                 <th>Project Name</th>
                 <th>Time Spent</th>
             </tr>
         </thead>
         <tbody>
-            <?php $__currentLoopData = $sessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $session): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <tr>
-                <td><?php echo e($session['task_name']); ?></td>
-                <td><?php echo e($session['project_name']); ?></td>
-                <td><?php echo e($session['time_spent']); ?></td>
-            </tr>
+            <?php $__currentLoopData = $hourlySessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $interval => $tasks): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if($tasks->isEmpty()): ?>
+                    <tr>
+                        <td><?php echo e($interval); ?></td>
+                        <td colspan="3">N/A</td>
+                    </tr>
+                <?php else: ?>
+                    <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td><?php echo e($interval); ?></td>
+                            <td><?php echo e($task['task_name']); ?></td>
+                            <td><?php echo e($task['project_name']); ?></td>
+                            <td><?php echo e($task['time_spent']); ?></td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
     </table>

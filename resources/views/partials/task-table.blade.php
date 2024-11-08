@@ -69,7 +69,7 @@ $serialNo = 1;
             <td>{{ $task->due_date }}</td>
             <td>{{ $task->priority }}</td>
             <td>
-                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
+                <button class="btn-toggle start">Start</button>
             </td>
             <td id="time-{{ $task->id }}">00:00:00</td>
             <td>
@@ -92,20 +92,31 @@ $serialNo = 1;
 <div class="schedule-table" style="margin-top: 30px;">
     <h2>{{ $username }} today schedule</h2>
     <table class="task-table">
-        <thead>
+        <thead class="schedule head">
             <tr>
+                <th>Time Interval</th>
                 <th>Task Name</th>
                 <th>Project Name</th>
                 <th>Time Spent</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($sessionsData as $session)
-            <tr>
-                <td>{{ $session['task_name'] }}</td>
-                <td>{{ $session['project_name'] }}</td>
-                <td>{{ $session['time_spent'] }}</td>
-            </tr>
+            @foreach($hourlySessionsData as $interval => $tasks)
+                @if ($tasks->isEmpty())
+                    <tr>
+                        <td>{{ $interval }}</td>
+                        <td colspan="3">N/A</td>
+                    </tr>
+                @else
+                    @foreach($tasks as $task)
+                        <tr>
+                            <td>{{ $interval }}</td>
+                            <td>{{ $task['task_name'] }}</td>
+                            <td>{{ $task['project_name'] }}</td>
+                            <td>{{ $task['time_spent'] }}</td>
+                        </tr>
+                    @endforeach
+                @endif
             @endforeach
         </tbody>
     </table>

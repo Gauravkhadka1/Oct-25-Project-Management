@@ -13,21 +13,7 @@
         </div>
     </div>
     <script>
-         // Load the saved time from the database when the page loads
-         window.addEventListener("load", () => {
-            <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php $__currentLoopData = $project->tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                if (!timers[<?php echo e($task->id); ?>]) {
-                    timers[<?php echo e($task->id); ?>] = {
-                        elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
-                        running: false
-                    };
-                }
-                console.log("Timer initialized for task ID:", <?php echo e($task->id); ?>);
-                updateTimerDisplay(<?php echo e($task->id); ?>);
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        });
+     
     document.addEventListener("DOMContentLoaded", function() {
         const userItems = document.querySelectorAll(".username-item");
 

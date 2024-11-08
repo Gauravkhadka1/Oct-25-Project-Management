@@ -12,7 +12,11 @@ class TaskSession extends Model
 
     protected $fillable = ['user_id', 'task_id', 'project_id', 'started_at', 'paused_at'];
     // In your TaskSession model
-protected $dates = ['started_at', 'paused_at'];
+    protected $casts = [
+        'started_at' => 'datetime',
+        'paused_at' => 'datetime',
+    ];
+    
 
 
     public function user() {

@@ -112,28 +112,40 @@
 </div>
 <div class="schedule-table">
     <div class="schedule-table-heading">
-    <h2><?php echo e($loggedInUser); ?> today schedule</h2>
+        <h2><?php echo e($loggedInUser); ?>'s Today's Schedule</h2>
     </div>
-   
-<table class="task-table">
-    <thead class="schedule head">
-        <tr>
-            <th>Task Name</th>
-            <th>Project Name</th>
-            <th>Time Spent</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php $__currentLoopData = $sessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $session): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+    <table class="task-table">
+        <thead class="schedule head">
             <tr>
-                <td><?php echo e($session['task_name']); ?></td>
-                <td><?php echo e($session['project_name']); ?></td>
-                <td><?php echo e($session['time_spent']); ?></td> <!-- now shows minutes -->
+                <th>Time Interval</th>
+                <th>Task Name</th>
+                <th>Project Name</th>
+                <th>Time Spent</th>
             </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php $__currentLoopData = $hourlySessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $interval => $tasks): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if($tasks->isEmpty()): ?>
+                    <tr>
+                        <td><?php echo e($interval); ?></td>
+                        <td colspan="3">N/A</td>
+                    </tr>
+                <?php else: ?>
+                    <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td><?php echo e($interval); ?></td>
+                            <td><?php echo e($task['task_name']); ?></td>
+                            <td><?php echo e($task['project_name']); ?></td>
+                            <td><?php echo e($task['time_spent']); ?></td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </tbody>
+    </table>
 </div>
+
 
     
     
@@ -251,93 +263,7 @@
       
    // Prospect Task Timer Ends 
        
-   document.addEventListener("DOMContentLoaded", function() {
-    const userSpans = document.querySelectorAll('.user-span');
-
-    userSpans.forEach(span => {
-        span.addEventListener('click', function() {
-            // Remove 'active' class from all spans
-            userSpans.forEach(s => s.classList.remove('active'));
-            
-            // Add 'active' class to the clicked span
-            this.classList.add('active');
-
-            const selectedUsername = this.dataset.username;
-            showTasksForUser(selectedUsername);
-        });
-    });
-
-    function showTasksForUser(username) {
-        // Here you would typically make an AJAX call to fetch tasks for the selected user
-        fetch(`/tasks?username=${username}`)
-            .then(response => response.json())
-            .then(tasks => {
-                updateTaskDetails(tasks, username);
-            })
-            .catch(error => console.error('Error fetching tasks:', error));
-    }
-
-    function updateTaskDetails(tasks, username) {
-    const tasksContainer = document.querySelector('.current-tasks');
-    tasksContainer.innerHTML = `<h2>${username} Tasks</h2>`; // Update the header with the selected username
-
-    if (tasks.length > 0) {
-        let tableHtml = `<table class="task-table">
-            <thead>
-                <tr>
-                    <th>S.N</th>
-                    <th>Task</th>
-                    <th>Category Name</th>
-                    <th>Category</th>
-                    <th>Assigned by</th>
-                    <th>Start date</th>
-                    <th>Due date</th>
-                    <th>Priority</th>
-                    <th>Actions</th>
-                    <th>Timestamp</th>
-                    <th>Status</th>
-                    <th>Comment</th>
-                </tr>
-            </thead>
-            <tbody>`;
-
-        tasks.forEach((task, index) => {
-            tableHtml += `<tr>
-                <td>${index + 1}</td>
-                <td>${task.name}</td>
-                <td>${task.category_name || 'N/A'}</td> <!-- Category Name -->
-                <td>${task.category || 'N/A'}</td> <!-- Category Type -->
-                
-                <td>${task.assignedBy || 'N/A'}</td> <!-- Assigned By -->
-                <td>${task.start_date}</td>
-                <td>${task.due_date}</td>
-                <td>${task.priority}</td>
-                <td>
-                    <button class="btn-toggle start" id="toggle-${task.id}" onclick="toggleTaskTimer(${task.id})">Start</button>
-                </td>
-                <td id="time-${task.id}">00:00:00</td>
-                <td>
-                    <select name="status">
-                        <option>To Do</option>
-                        <option>In Progress</option>
-                        <option>QA</option>
-                        <option>Completed</option>
-                    </select>
-                </td>
-                <td><textarea>${task.comment}</textarea></td>
-            </tr>`;
-        });
-
-        tableHtml += `</tbody></table>`;
-        tasksContainer.innerHTML += tableHtml;
-    } else {
-        tasksContainer.innerHTML += `<p>No tasks available.</p>`;
-    }
-}
-
-
-});
-
+   
 
 
     </script>
