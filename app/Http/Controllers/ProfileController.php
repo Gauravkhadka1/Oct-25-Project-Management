@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Task;
 use App\Models\ProspectTask;
@@ -20,44 +15,35 @@ use App\Models\TaskSession;
 use Carbon\Carbon;
 use DateTimeZone;
 use DateTime;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
-
-
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's dashboard.
      */
-
     public function dashboard()
     {
         $user = auth()->user();
         $userEmail = $user->email;
         $username = $user->username;
 
-        // Modify the existing code to eager load related categories
-        $tasks = Task::with('assignedBy', 'project') // Eager load project
+        // Load tasks, prospect tasks, and payment tasks assigned to the user
+        $tasks = Task::with('assignedBy', 'project')
             ->where('assigned_to', $user->id)
             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
             ->get();
 
-        // Similarly, for prospect and payment tasks
-        $prospectTasks = ProspectTask::with('assignedBy', 'prospect') // Eager load prospect
+        $prospectTasks = ProspectTask::with('assignedBy', 'prospect')
             ->where('assigned_to', $user->id)
             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
             ->get();
 
-        $paymentTasks = PaymentTask::with('assignedBy', 'payment') // Eager load payment
+        $paymentTasks = PaymentTask::with('assignedBy', 'payment')
             ->where('assigned_to', $user->id)
             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
             ->get();
 
-        // Debugging: Log the tasks to see what's retrieved for this user
-        \Log::info("Tasks for user {$user->email}:", $tasks->toArray());
-
-        // Retrieve projects and include only tasks assigned to the logged-in user
+        // Retrieve projects, prospects, and payments, including only tasks assigned to the user
         $projects = Project::with(['tasks' => function ($query) use ($user) {
             $query->where('assigned_to', $user->id);
         }])->get();
@@ -79,45 +65,36 @@ class ProfileController extends Controller
         // Initialize hourly sessions data array
         $hourlySessionsData = [];
 
-        // Convert time to Nepali Time (NPT)
+        // Nepali timezone
         $nepaliTimeZone = new DateTimeZone('Asia/Kathmandu');
 
-        // Get current time in Nepali Time
-        $currentNepaliTime = Carbon::now($nepaliTimeZone);
-
-        // Log the current Nepali time
-\Log::info('Current Nepali Time:', ['time' => $currentNepaliTime->toDateTimeString()]);
-
+        // Iterate over each hour of the past day
         foreach (range(0, 23) as $hour) {
-            $startInterval = Carbon::now()->startOfDay()->addHours($hour);
-            $endInterval = $startInterval->copy()->addHour();
+            // Define start and end of the hourly interval in Nepali timezone
+            $startInterval = Carbon::now()->startOfDay()->addHours($hour)->setTimezone($nepaliTimeZone);
+            $endInterval = $startInterval->copy()->addHour()->setTimezone($nepaliTimeZone);
 
-            // Adjust to Nepali Time
-            $startInterval = $startInterval->setTimezone($nepaliTimeZone);
-            $endInterval = $endInterval->setTimezone($nepaliTimeZone);
+            // Filter task sessions by this time range
+            $hourlyData = $taskSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
+                // Convert session times to Asia/Kathmandu timezone
+                $sessionStart = $session->started_at->copy()->setTimezone($nepaliTimeZone);
+                $sessionEnd = ($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone);
 
-            $hourlyData = $taskSessions->filter(function ($session) use ($startInterval, $endInterval) {
-                return $session->started_at->between($startInterval, $endInterval);
+                return $sessionStart->between($startInterval, $endInterval) || $sessionEnd->between($startInterval, $endInterval);
             })->groupBy('task_id')->map(function ($sessions) use ($startInterval, $endInterval, $nepaliTimeZone) {
                 $totalTimeSpentInSeconds = 0;
 
                 foreach ($sessions as $session) {
-                    $startTime = max($session->started_at, $startInterval);
-                    $endTime = min($session->paused_at ?? now(), $endInterval);
+                    // Adjust both times to Asia/Kathmandu timezone
+                    $startTime = max($session->started_at->copy()->setTimezone($nepaliTimeZone), $startInterval);
+                    $endTime = min(($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone), $endInterval);
 
-                    // Adjust to Nepali Time
-                    $startTime = $startTime->setTimezone($nepaliTimeZone);
-                    $endTime = $endTime->setTimezone($nepaliTimeZone);
-
-                    // Calculate the difference between start and end time
-                    $start = new DateTime($startTime);
-                    $end = new DateTime($endTime);
-                    $interval = $start->diff($end);
-                    $totalTimeSpentInSeconds += $interval->days * 24 * 60 * 60 + $interval->h * 60 * 60 + $interval->i * 60 + $interval->s;
+                    // Calculate the difference in seconds
+                    $totalTimeSpentInSeconds += $startTime->diffInSeconds($endTime);
                 }
 
-                $totalTimeSpentInMinutes = round($totalTimeSpentInSeconds / 60);
-                $formattedTime = "{$totalTimeSpentInMinutes} minute" . ($totalTimeSpentInMinutes > 1 ? 's' : '');
+                // Format the time based on total seconds
+                $formattedTime = $this->formatDuration($totalTimeSpentInSeconds);
 
                 return [
                     'task_name' => $sessions->first()->task->name,
@@ -126,6 +103,7 @@ class ProfileController extends Controller
                 ];
             });
 
+            // Create a label for this interval
             $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
             $hourlySessionsData[$intervalLabel] = $hourlyData;
         }
@@ -143,6 +121,27 @@ class ProfileController extends Controller
             'hourlySessionsData'
         ));
     }
+
+    /**
+     * Helper function to format duration from seconds to human-readable format.
+     */
+    protected function formatDuration($totalTimeInSeconds)
+    {
+        if ($totalTimeInSeconds < 60) {
+            return "{$totalTimeInSeconds} seconds";
+        } elseif ($totalTimeInSeconds < 3600) {
+            $minutes = floor($totalTimeInSeconds / 60);
+            $seconds = str_pad($totalTimeInSeconds % 60, 2, '0', STR_PAD_LEFT);
+            return "{$minutes} minute" . ($minutes > 1 ? 's' : '') . " {$seconds} seconds";
+        } else {
+            $hours = floor($totalTimeInSeconds / 3600);
+            $minutes = floor(($totalTimeInSeconds % 3600) / 60);
+            $seconds = str_pad($totalTimeInSeconds % 60, 2, '0', STR_PAD_LEFT);
+            return "{$hours} hour" . ($hours > 1 ? 's' : '') . " {$minutes} minute" . ($minutes > 1 ? 's' : '') . " {$seconds} seconds";
+        }
+    }
+
+
 
 
     public function edit(Request $request): View

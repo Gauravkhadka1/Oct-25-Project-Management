@@ -60,6 +60,7 @@ public function startTimer(Request $request, Task $task)
         'project_id' => $task->project_id,
         'started_at' => now(),
     ]);
+    \Log::info("TaskSession created:", $session->toArray());
 
     $task->elapsed_time = $request->input('elapsed_time', 0);
     $task->save();

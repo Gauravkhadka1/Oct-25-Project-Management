@@ -70,7 +70,7 @@ $serialNo = 1;
             <td><?php echo e($task->due_date); ?></td>
             <td><?php echo e($task->priority); ?></td>
             <td>
-                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>)">Start</button>
+                <button class="btn-toggle start">Start</button>
             </td>
             <td id="time-<?php echo e($task->id); ?>">00:00:00</td>
             <td>
