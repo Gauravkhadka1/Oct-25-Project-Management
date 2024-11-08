@@ -86,7 +86,12 @@
                             <td>{{ $serialNo++ }}</td>
                             <td>{{ $task->name }}</td>
                             <td>{{ $task->category_name }}</td> <!-- Category Name -->
-                            <td>{{ $task->category }}</td> <!-- Category Type (Project/Payment/Prospect) -->
+                            <td>
+    <span class="{{ $task->category === 'Project' ? 'label-project' : ($task->category === 'Payment' ? 'label-payment' : 'label-prospect') }}">
+        {{ $task->category }}
+    </span>
+</td>
+ <!-- Category Type (Project/Payment/Prospect) -->
                             <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
                             <td>{{ $task->start_date }}</td>
                             <td>{{ $task->due_date }}</td>
@@ -112,10 +117,11 @@
             <p>No tasks available.</p>
         @endif
     </div>
+   
 </div>
-
-<table border="1">
-    <thead>
+<div class="schedule-table">
+<table class="task-table">
+    <thead class="schedule head">
         <tr>
             <th>Task Name</th>
             <th>Project Name</th>
@@ -132,6 +138,8 @@
         @endforeach
     </tbody>
 </table>
+</div>
+
     
     
     </div>
@@ -304,6 +312,7 @@
                 <td>${task.name}</td>
                 <td>${task.category_name || 'N/A'}</td> <!-- Category Name -->
                 <td>${task.category || 'N/A'}</td> <!-- Category Type -->
+                
                 <td>${task.assignedBy || 'N/A'}</td> <!-- Assigned By -->
                 <td>${task.start_date}</td>
                 <td>${task.due_date}</td>

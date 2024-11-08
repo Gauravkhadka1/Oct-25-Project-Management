@@ -187,3 +187,25 @@ tbody tr:nth-child(odd) {
 .btn-add-comments img, .btn-view-comments img {
     width: 20px;
 }
+
+.label-project {
+    color: white; /* Green for Project */
+    font-weight: bold;
+    background-color: green;
+    padding: 5px;
+    border-radius: 7px;
+}
+.label-payment {
+    color: white; /* Green for Project */
+    background-color: #2196F3;
+    padding: 5px;
+    border-radius: 7px;
+    font-weight: bold;
+}
+.label-prospect {
+    color: white; /* Green for Project */
+    background-color: #FF9800;
+    padding: 5px;
+    border-radius: 7px;
+    font-weight: bold;
+}

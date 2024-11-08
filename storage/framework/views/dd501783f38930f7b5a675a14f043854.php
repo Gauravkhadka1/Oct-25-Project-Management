@@ -85,7 +85,13 @@
                             <td><?php echo e($serialNo++); ?></td>
                             <td><?php echo e($task->name); ?></td>
                             <td><?php echo e($task->category_name); ?></td> <!-- Category Name -->
-                            <td><?php echo e($task->category); ?></td> <!-- Category Type (Project/Payment/Prospect) -->
+                            <td>
+    <span class="<?php echo e($task->category === 'Project' ? 'label-project' : ($task->category === 'Payment' ? 'label-payment' : 'label-prospect')); ?>">
+        <?php echo e($task->category); ?>
+
+    </span>
+</td>
+ <!-- Category Type (Project/Payment/Prospect) -->
                             <td><?php echo e($task->assignedBy ? $task->assignedBy->username : 'N/A'); ?></td>
                             <td><?php echo e($task->start_date); ?></td>
                             <td><?php echo e($task->due_date); ?></td>
@@ -111,10 +117,11 @@
             <p>No tasks available.</p>
         <?php endif; ?>
     </div>
+   
 </div>
-
-<table border="1">
-    <thead>
+<div class="schedule-table">
+<table class="task-table">
+    <thead class="schedule head">
         <tr>
             <th>Task Name</th>
             <th>Project Name</th>
@@ -131,6 +138,8 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </tbody>
 </table>
+</div>
+
     
     
     </div>
@@ -303,6 +312,7 @@
                 <td>${task.name}</td>
                 <td>${task.category_name || 'N/A'}</td> <!-- Category Name -->
                 <td>${task.category || 'N/A'}</td> <!-- Category Type -->
+                
                 <td>${task.assignedBy || 'N/A'}</td> <!-- Assigned By -->
                 <td>${task.start_date}</td>
                 <td>${task.due_date}</td>
