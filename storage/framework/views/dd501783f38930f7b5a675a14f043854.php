@@ -146,6 +146,30 @@
     </table>
 </div>
 
+<div class="schedule-table">
+    <div class="schedule-table-heading">
+        <h2><?php echo e($loggedInUser); ?>'s Today's Task Summary</h2>
+    </div>
+
+    <table class="task-table">
+        <thead class="schedule head">
+            <tr>
+                <th>Task Name</th>
+                <th>Total Time Spent (24 hours)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $__currentLoopData = $taskSummaryData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $taskData): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                    <td><?php echo e($taskData['task_name']); ?></td>
+                    <td><?php echo e($taskData['formatted_time']); ?></td>
+                </tr>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </tbody>
+    </table>
+</div>
+
+
 
     
     

@@ -147,6 +147,30 @@
     </table>
 </div>
 
+<div class="schedule-table">
+    <div class="schedule-table-heading">
+        <h2>{{ $loggedInUser }}'s Today's Task Summary</h2>
+    </div>
+
+    <table class="task-table">
+        <thead class="schedule head">
+            <tr>
+                <th>Task Name</th>
+                <th>Total Time Spent (24 hours)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($taskSummaryData as $taskData)
+                <tr>
+                    <td>{{ $taskData['task_name'] }}</td>
+                    <td>{{ $taskData['formatted_time'] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+
 
     
     
