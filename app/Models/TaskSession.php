@@ -11,6 +11,9 @@ class TaskSession extends Model
    
 
     protected $fillable = ['user_id', 'task_id', 'project_id', 'started_at', 'paused_at'];
+    // In your TaskSession model
+protected $dates = ['started_at', 'paused_at'];
+
 
     public function user() {
         return $this->belongsTo(User::class);
@@ -23,8 +26,4 @@ class TaskSession extends Model
     public function project() {
         return $this->belongsTo(Project::class);
     }
-    $taskSessions = TaskSession::where('user_id', auth()->id())
-    ->where('started_at', '>=', now()->subDay())
-    ->with(['task', 'project'])
-    ->get();
 }

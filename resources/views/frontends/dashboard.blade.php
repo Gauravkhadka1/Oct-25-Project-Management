@@ -114,7 +114,24 @@
     </div>
 </div>
 
-
+<table border="1">
+    <thead>
+        <tr>
+            <th>Task Name</th>
+            <th>Project Name</th>
+            <th>Time Spent</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach($sessionsData as $session)
+            <tr>
+                <td>{{ $session['task_name'] }}</td>
+                <td>{{ $session['project_name'] }}</td>
+                <td>{{ $session['time_spent'] }}</td> <!-- now shows minutes -->
+            </tr>
+        @endforeach
+    </tbody>
+</table>
     
     
     </div>

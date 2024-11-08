@@ -16,6 +16,7 @@ use App\Models\Project;
 use App\Models\Prospect;
 use App\Models\Payments;
 use App\Models\PaymentTask;
+use App\Models\TaskSession;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
@@ -65,11 +66,49 @@ $paymentTasks = PaymentTask::with('assignedBy', 'payment') // Eager load payment
          $payments = Payments::with(['payment_tasks' => function($query) use ($user) {
              $query->where('assigned_to', $user->id);
          }])->get();
-     
+
+         // Fetch task sessions for the past 24 hours
+   // Fetch task sessions for the past 24 hours
+// Fetch task sessions for the past 24 hours
+$taskSessions = TaskSession::where('user_id', $user->id)
+    ->where('started_at', '>=', now()->subDay())
+    ->with(['task', 'project'])
+    ->get();
+
+// Group task sessions by task ID and accumulate the time spent for each task
+$sessionsData = $taskSessions->groupBy('task_id')->map(function ($sessions) {
+    // Initialize total time spent in seconds
+    $totalTimeSpentInSeconds = 0;
+
+    foreach ($sessions as $session) {
+        $startTime = $session->started_at instanceof \Carbon\Carbon ? $session->started_at : new \Carbon\Carbon($session->started_at);
+        $endTime = $session->paused_at ? new \Carbon\Carbon($session->paused_at) : now();
+
+        // Add the time spent on this session to the total time spent
+        $totalTimeSpentInSeconds += $endTime->diffInSeconds($startTime);
+    }
+
+    // If the total time spent is less than 60 seconds, show in seconds
+    if ($totalTimeSpentInSeconds < 60) {
+        $formattedTime = str_pad($totalTimeSpentInSeconds, 2, '0', STR_PAD_LEFT) . ' seconds';
+    } else {
+        // Otherwise, show in minutes, rounding up to the nearest minute
+        $totalTimeSpentInMinutes = round($totalTimeSpentInSeconds / 60); // Round to nearest minute
+        $formattedTime = "{$totalTimeSpentInMinutes} minute" . ($totalTimeSpentInMinutes > 1 ? 's' : '');
+    }
+
+    // Return the task name, project name, and formatted total time spent
+    return [
+        'task_name' => $sessions->first()->task->name,
+        'project_name' => $sessions->first()->project->name,
+        'time_spent' => $formattedTime, // display formatted total time
+    ];
+});
+
          // Debugging: Log the projects with tasks to verify filtering
          \Log::info("Projects for user {$user->email}:", $projects->toArray());
    
-        return view('frontends.dashboard', compact('projects', 'payments', 'prospects', 'username', 'userEmail', 'user', 'tasks', 'prospectTasks', 'paymentTasks'));
+        return view('frontends.dashboard', compact('projects', 'payments', 'prospects', 'username', 'userEmail', 'user', 'tasks', 'prospectTasks', 'paymentTasks', 'sessionsData'));
 
      }
      

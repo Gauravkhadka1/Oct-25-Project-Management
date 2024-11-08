@@ -113,7 +113,24 @@
     </div>
 </div>
 
-
+<table border="1">
+    <thead>
+        <tr>
+            <th>Task Name</th>
+            <th>Project Name</th>
+            <th>Time Spent</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php $__currentLoopData = $sessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $session): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <tr>
+                <td><?php echo e($session['task_name']); ?></td>
+                <td><?php echo e($session['project_name']); ?></td>
+                <td><?php echo e($session['time_spent']); ?></td> <!-- now shows minutes -->
+            </tr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </tbody>
+</table>
     
     
     </div>
