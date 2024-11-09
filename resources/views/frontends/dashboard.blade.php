@@ -55,59 +55,85 @@
         @endphp
 
         @if ($hasTasks)
-            <table class="task-table">
-                <thead>
-                    <tr>
-                        <th>S.N</th>
-                        <th>Task</th>
-                        <th>Category Name</th> <!-- New column for Category Name -->
-                        <th>Category</th> <!-- New column for Category Type -->
-                        <th>Assigned by</th>
-                        <th>Start date</th>
-                        <th>Due date</th>
-                        <th>Priority</th>
-                        <th>Actions</th>
-                        <th>Timestamp</th>
-                        <th>Status</th>
-                        <th>Comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($tasks as $task)
-                        <tr>
-                            <td>{{ $serialNo++ }}</td>
-                            <td>{{ $task->name }}</td>
-                            <td>{{ $task->category_name }}</td> <!-- Category Name -->
-                            <td>
-    <span class="{{ $task->category === 'Project' ? 'label-project' : ($task->category === 'Payment' ? 'label-payment' : 'label-prospect') }}">
-        {{ $task->category }}
-    </span>
-</td>
- <!-- Category Type (Project/Payment/Prospect) -->
-                            <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
-                            <td>{{ $task->start_date }}</td>
-                            <td>{{ $task->due_date }}</td>
-                            <td>{{ $task->priority }}</td>
-                            <td>
-                                    <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
-                                </td>
-                                <td id="time-{{ $task->id }}">00:00:00</td>
-                                <td>
-                                    <select name="status[{{ $task->id }}]" class="task-status">
-                                        <option {{ $task->status === 'To Do' ? 'selected' : '' }}>To Do</option>
-                                        <option {{ $task->status === 'In Progress' ? 'selected' : '' }}>In Progress</option>
-                                        <option {{ $task->status === 'QA' ? 'selected' : '' }}>QA</option>
-                                        <option {{ $task->status === 'Completed' ? 'selected' : '' }}>Completed</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <textarea name="comment[{{ $task->id }}]" class="task-comment">{{ $task->comment }}</textarea>
-                                </td>
+        <table class="task-table">
+    <thead>
+        <tr>
+            <th>S.N</th>
+            <th>Task</th>
+            <th>Category Name</th> <!-- New column for Category Name -->
+            <th>Category</th> <!-- New column for Category Type -->
+            <th>Assigned by</th>
+            <th>Start date</th>
+            <th>Due date</th>
+            <th>Priority</th>
+            <th>Actions</th>
+            <th>Timestamp</th>
+            <th>Status</th>
+            <th>Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($tasks as $task)
+            <tr>
+                <td>{{ $serialNo++ }}</td>
+                <td>{{ $task->name }}</td>
+                <td>{{ $task->category_name }}</td> <!-- Category Name -->
+                <td>
+                    <span class="{{ $task->category === 'Project' ? 'label-project' : 
+                                 ($task->category === 'Payment' ? 'label-payment' : 'label-prospect') }}">
+                        {{ $task->category }}
+                    </span>
+                </td>
+                <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
+                <td>{{ $task->start_date }}</td>
+                <td>{{ $task->due_date }}</td>
+                <td>{{ $task->priority }}</td>
+                <td>
+                    <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
+                </td>
+                <td id="time-{{ $task->id }}">00:00:00</td>
 
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                <!-- Status Column -->
+                <td>
+                    @if ($task->category == 'Project')
+                        <select name="status[{{ $task->id }}]" class="task-status">
+                            <option {{ $task->status === 'To Do' ? 'selected' : '' }}>To Do</option>
+                            <option {{ $task->status === 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                            <option {{ $task->status === 'QA' ? 'selected' : '' }}>QA</option>
+                            <option {{ $task->status === 'Completed' ? 'selected' : '' }}>Completed</option>
+                        </select>
+                    @elseif ($task->category == 'Payment')
+                        <select name="status[{{ $task->id }}]" class="payment-task-status">
+                            <option {{ $task->status === 'To Do' ? 'selected' : '' }}>To Do</option>
+                            <option {{ $task->status === 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                            <option {{ $task->status === 'QA' ? 'selected' : '' }}>QA</option>
+                            <option {{ $task->status === 'Completed' ? 'selected' : '' }}>Completed</option>
+                        </select>
+                    @elseif ($task->category == 'Prospect')
+                        <select name="status[{{ $task->id }}]" class="prospect-task-status">
+                            <option {{ $task->status === 'To Do' ? 'selected' : '' }}>To Do</option>
+                            <option {{ $task->status === 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                            <option {{ $task->status === 'QA' ? 'selected' : '' }}>QA</option>
+                            <option {{ $task->status === 'Completed' ? 'selected' : '' }}>Completed</option>
+                        </select>
+                    @endif
+                </td>
+
+                <!-- Comment Column -->
+                <td>
+                    @if ($task->category == 'Project')
+                        <textarea name="comment[{{ $task->id }}]" class="task-comment">{{ $task->comment }}</textarea>
+                    @elseif ($task->category == 'Payment')
+                        <textarea name="comment[{{ $task->id }}]" class="payment-task-comment">{{ $task->comment }}</textarea>
+                    @elseif ($task->category == 'Prospect')
+                        <textarea name="comment[{{ $task->id }}]" class="prospect-task-comment">{{ $task->comment }}</textarea>
+                    @endif
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
         @else
             <p>No tasks available.</p>
         @endif
@@ -276,18 +302,21 @@
             .then(data => console.log(`Timer updated: ${data.message}`))
             .catch(error => console.error('Error updating timer:', error));
         }
-        document.querySelectorAll('.task-status').forEach(statusElement => {
+        // Handle status change for task, payment task, and prospect task
+document.querySelectorAll('.task-status, .payment-task-status, .prospect-task-status').forEach(statusElement => {
     statusElement.addEventListener('change', function () {
         const taskId = this.name.match(/\d+/)[0];
         const status = this.value;
+        const taskType = this.classList.contains('payment-task-status') ? 'payment' : 
+                         this.classList.contains('prospect-task-status') ? 'prospect' : 'task'; // Determine the task type
 
         fetch(`/tasks/update-status-comment`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ensure CSRF token is correct
             },
-            body: JSON.stringify({ taskId, status })
+            body: JSON.stringify({ taskId, status, taskType }) // Add taskType to distinguish between task types
         })
         .then(response => response.json())
         .then(data => {
@@ -301,18 +330,21 @@
     });
 });
 
-document.querySelectorAll('.task-comment').forEach(commentElement => {
+// Handle comment change for task, payment task, and prospect task
+document.querySelectorAll('.task-comment, .payment-task-comment, .prospect-task-comment').forEach(commentElement => {
     commentElement.addEventListener('change', function () {
         const taskId = this.name.match(/\d+/)[0];
         const comment = this.value;
+        const taskType = this.classList.contains('payment-task-comment') ? 'payment' : 
+                         this.classList.contains('prospect-task-comment') ? 'prospect' : 'task'; // Determine the task type
 
         fetch(`/tasks/update-comment`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Ensure CSRF token is correct
             },
-            body: JSON.stringify({ task_id: taskId, comment })
+            body: JSON.stringify({ task_id: taskId, comment, taskType }) // Add taskType to distinguish between task types
         })
         .then(response => response.json())
         .then(data => {
@@ -325,7 +357,6 @@ document.querySelectorAll('.task-comment').forEach(commentElement => {
         .catch(error => console.error('Error:', error));
     });
 });
-
 
 
       

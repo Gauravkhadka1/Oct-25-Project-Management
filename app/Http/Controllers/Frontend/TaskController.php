@@ -145,36 +145,49 @@ public function getTasksForUsername(Request $request)
 }
 public function updateStatusComment(Request $request)
 {
-    $task = Task::findOrFail($request->taskId);
-    $username = Auth::user()->username;
+    $taskId = $request->taskId;
+    $taskType = $request->taskType;
+    $status = $request->status;
 
-    $task->status = $request->status;
-    $task->save();
-
-    // Send status update notification to the assigner
-    if ($task->assignedBy) {
-        $task->assignedBy->notify(new TaskStatusUpdated($task, $request->status, $username));
+    // Update the correct task based on taskType
+    if ($taskType === 'payment') {
+        $task = PaymentTask::findOrFail($taskId);
+    } elseif ($taskType === 'prospect') {
+        $task = ProspectTask::findOrFail($taskId);
+    } else {
+        $task = Task::findOrFail($taskId);
     }
+
+    // Update the status
+    $task->status = $status;
+    $task->save();
 
     return response()->json(['success' => true]);
 }
+
 
 public function addComment(Request $request)
 {
-    $task = Task::findOrFail($request->task_id);
+    $taskId = $request->task_id;
+    $taskType = $request->taskType;  // Add taskType here
     $comment = $request->comment;
-    $username = Auth::user()->username;
 
+    // Determine which task type and update the comment
+    if ($taskType === 'payment') {
+        $task = PaymentTask::findOrFail($taskId);
+    } elseif ($taskType === 'prospect') {
+        $task = ProspectTask::findOrFail($taskId);
+    } else {
+        $task = Task::findOrFail($taskId);
+    }
+
+    // Update the comment
     $task->comment = $comment;
     $task->save();
 
-    // Send comment notification to the assigner
-    if ($task->assignedBy) {
-        $task->assignedBy->notify(new TaskCommentAdded($task, $comment, $username));
-    }
-
     return response()->json(['success' => true]);
 }
+
 
 
 }
