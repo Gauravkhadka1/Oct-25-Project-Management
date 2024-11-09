@@ -325,27 +325,7 @@ document.querySelectorAll('.task-comment').forEach(commentElement => {
         .catch(error => console.error('Error:', error));
     });
 });
-document.addEventListener('DOMContentLoaded', function() {
-    const notificationIcon = document.getElementById('notification-icon');
-    const notificationCount = document.getElementById('notification-count');
-    const notificationDropdown = document.getElementById('notification-dropdown');
 
-    // Toggle notification dropdown when clicking on the notification icon or count
-    notificationIcon.addEventListener('click', function() {
-        notificationDropdown.style.display = notificationDropdown.style.display === 'none' ? 'block' : 'none';
-    });
-
-    notificationCount.addEventListener('click', function() {
-        notificationDropdown.style.display = notificationDropdown.style.display === 'none' ? 'block' : 'none';
-    });
-
-    // Close the notification dropdown if clicked outside of it
-    document.addEventListener('click', function(event) {
-        if (!notificationDropdown.contains(event.target) && event.target !== notificationIcon && event.target !== notificationCount) {
-            notificationDropdown.style.display = 'none';
-        }
-    });
-});
 
 
       

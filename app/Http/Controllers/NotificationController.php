@@ -1,15 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class NotificationController extends Controller
 {
-    public function markAllRead()
+    public function markAllRead(Request $request)
     {
-        auth()->user()->unreadNotifications->markAsRead();
-        return response()->json(['success' => true]);
+        try {
+            auth()->user()->unreadNotifications->markAsRead();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
     }
+
 }
 

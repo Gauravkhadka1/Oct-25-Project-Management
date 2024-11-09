@@ -260,6 +260,58 @@
 
     // Call updateGreeting on page load
     window.onload = updateGreeting;
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const notificationIcon = document.getElementById('notification-icon');
+    const notificationCount = document.getElementById('notification-count');
+    const notificationDropdown = document.getElementById('notification-dropdown');
+    const markAllReadButton = document.getElementById('mark-all-read');
+
+    // Toggle notification dropdown when clicking on the notification icon or count
+    notificationIcon.addEventListener('click', function() {
+        notificationDropdown.style.display = notificationDropdown.style.display === 'none' ? 'block' : 'none';
+    });
+
+    notificationCount.addEventListener('click', function() {
+        notificationDropdown.style.display = notificationDropdown.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Close the notification dropdown if clicked outside of it
+    document.addEventListener('click', function(event) {
+        if (!notificationDropdown.contains(event.target) && event.target !== notificationIcon && event.target !== notificationCount) {
+            notificationDropdown.style.display = 'none';
+        }
+    });
+
+    // Handle "Mark All as Read" button click
+    markAllReadButton.addEventListener('click', function() {
+        // Send AJAX request to mark all notifications as read
+        fetch('{{ route('notifications.markAllRead') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({}) // You can pass additional data if needed
+        })
+        .then(response => response.json()) // Parse JSON response
+        .then(data => {
+            if (data.success) {
+                // If the request was successful, update the notification count and UI
+                document.getElementById('notification-count').textContent = '0'; // Set count to 0 or however you want
+                // Optionally, hide the notification dropdown or do other UI updates
+                document.getElementById('notification-dropdown').style.display = 'none';
+            } else {
+                console.error('Error marking notifications as read:', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error with the request:', error);
+        });
+    });
+});
+
+
   </script>
 
 </body>
