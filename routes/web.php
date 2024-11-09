@@ -143,4 +143,5 @@ Route::get('/user-dashboard/{username}', [UserDashboardController::class, 'userD
 
 Route::post('/tasks/update-status-comment', [TaskController::class, 'updateStatusComment'])->name('tasks.updateStatusComment');
 
+Route::post('/tasks/update-comment', [TaskController::class, 'addComment'])->name('tasks.addComment');
 

@@ -14,16 +14,19 @@ class TaskStatusUpdated extends Notification
 
     protected $task;
     protected $newStatus;
+    protected $username;
 
     /**
      * Create a new notification instance.
      *
      * @param $task
      * @param $newStatus
+     * @param $username
      */
-    public function __construct($task, $newStatus)
+    public function __construct($task, $newStatus, $username)
     {
         $this->task = $task;
+        $this->username = $username;
         $this->newStatus = $newStatus;
     }
 
@@ -44,9 +47,9 @@ class TaskStatusUpdated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line("The status of the task '{$this->task->name}' has been updated to '{$this->newStatus}'.")
-                    ->action('View Task', url('/tasks/'.$this->task->id))
-                    ->line('Thank you for using our application!');
+        ->line("{$this->username} updated the status of '{$this->task->name}' to '{$this->newStatus}'.")
+        ->action('View Task', url('/tasks/'.$this->task->id));
+                  
     }
 
     /**
@@ -58,7 +61,8 @@ class TaskStatusUpdated extends Notification
             'task_id' => $this->task->id,
             'task_name' => $this->task->name,
             'new_status' => $this->newStatus,
-            'message' => "The status of the task '{$this->task->name}' has been updated to '{$this->newStatus}'.",
+            'username' => $this->username,
+            'message' => "{$this->username} updated the status of '{$this->task->name}' to '{$this->newStatus}'.",
         ];
     }
 }

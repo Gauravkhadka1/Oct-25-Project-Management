@@ -13,6 +13,8 @@ use App\Models\ProspectTask;
 use App\Models\User;
 use App\Models\TaskSession;
 use App\Notifications\TaskStatusUpdated;
+use App\Notifications\TaskCommentAdded;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller {
    // In TaskController
@@ -137,22 +139,35 @@ public function getTasksForUsername(Request $request)
 }
 public function updateStatusComment(Request $request)
 {
-    $task = Task::find($request->taskId);
+    $task = Task::findOrFail($request->taskId);
+    $username = Auth::user()->username;
 
-    if ($task) {
-        $task->status = $request->status;
-        $task->comment = $request->comment;
-        $task->save();
+    $task->status = $request->status;
+    $task->save();
 
-        // Send notification to the user who assigned the task
-        if ($task->assignedBy) { // Check if an assigner exists
-            $task->assignedBy->notify(new TaskStatusUpdated($task, $request->status));
-        }
-
-        return response()->json(['success' => true]);
+    // Send status update notification to the assigner
+    if ($task->assignedBy) {
+        $task->assignedBy->notify(new TaskStatusUpdated($task, $request->status, $username));
     }
 
-    return response()->json(['success' => false], 404);
+    return response()->json(['success' => true]);
+}
+
+public function addComment(Request $request)
+{
+    $task = Task::findOrFail($request->task_id);
+    $comment = $request->comment;
+    $username = Auth::user()->username;
+
+    $task->comment = $comment;
+    $task->save();
+
+    // Send comment notification to the assigner
+    if ($task->assignedBy) {
+        $task->assignedBy->notify(new TaskCommentAdded($task, $comment, $username));
+    }
+
+    return response()->json(['success' => true]);
 }
 
 

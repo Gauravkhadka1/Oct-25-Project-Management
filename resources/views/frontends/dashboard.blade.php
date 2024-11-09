@@ -276,11 +276,10 @@
             .then(data => console.log(`Timer updated: ${data.message}`))
             .catch(error => console.error('Error updating timer:', error));
         }
-        document.querySelectorAll('.task-status, .task-comment').forEach(element => {
-    element.addEventListener('change', function () {
+        document.querySelectorAll('.task-status').forEach(statusElement => {
+    statusElement.addEventListener('change', function () {
         const taskId = this.name.match(/\d+/)[0];
-        const status = document.querySelector(`select[name="status[${taskId}]"]`).value;
-        const comment = document.querySelector(`textarea[name="comment[${taskId}]"]`).value;
+        const status = this.value;
 
         fetch(`/tasks/update-status-comment`, {
             method: 'POST',
@@ -288,19 +287,45 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ taskId, status, comment })
+            body: JSON.stringify({ taskId, status })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Status and comment updated successfully.');
+                console.log('Status updated successfully.');
             } else {
-                console.error('Failed to update status and comment.');
+                console.error('Failed to update status.');
             }
         })
         .catch(error => console.error('Error:', error));
     });
 });
+
+document.querySelectorAll('.task-comment').forEach(commentElement => {
+    commentElement.addEventListener('change', function () {
+        const taskId = this.name.match(/\d+/)[0];
+        const comment = this.value;
+
+        fetch(`/tasks/update-comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ task_id: taskId, comment })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Comment updated successfully.');
+            } else {
+                console.error('Failed to update comment.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+
 
       
    // Prospect Task Timer Ends 
