@@ -144,29 +144,18 @@
                 @endif
             @endforeach
         </tbody>
-    </table>
-</div>
-
-<div class="schedule-table">
-    <div class="schedule-table-heading">
-        <h2>{{ $loggedInUser }}'s Today's Task Summary</h2>
-    </div>
-
-    <table class="task-table">
-        <thead class="schedule head">
+        <tfoot>
             <tr>
-                <th>Task Name</th>
-                <th>Total Time Spent (24 hours)</th>
+                <th colspan="4">Summary - Total Time Spent per Task</th>
             </tr>
-        </thead>
-        <tbody>
-            @foreach($taskSummaryData as $taskData)
+            @foreach($taskSummaryData as $summary)
                 <tr>
-                    <td>{{ $taskData['task_name'] }}</td>
-                    <td>{{ $taskData['formatted_time'] }}</td>
+                    <td colspan="2">{{ $summary['task_name'] }}</td>
+                    <td>{{ $summary['project_name'] }}</td>
+                    <td>{{ $summary['total_time_spent'] }}</td>
                 </tr>
             @endforeach
-        </tbody>
+        </tfoot>
     </table>
 </div>
 

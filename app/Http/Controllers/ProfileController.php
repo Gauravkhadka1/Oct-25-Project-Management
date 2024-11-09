@@ -105,32 +105,33 @@ foreach (range(0, 23) as $hour) {
     $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
     $hourlySessionsData[$intervalLabel] = $hourlyData;
 }
+// Initialize task summary data for total time spent per task
+$taskSummaryData = [];
 
-// Sort intervals to ensure they start from 12 AM and end at 11 PM
-ksort($hourlySessionsData);
-
-
-// Iterate through the task sessions and sum the time spent on each task
-foreach ($taskSessions as $session) {
-    // Calculate the time spent for each session
-    $sessionStart = $session->started_at;
-    $sessionEnd = $session->paused_at ?? now();
-    $timeSpentInSeconds = $sessionStart->diffInSeconds($sessionEnd);
-
-    // Add to the task's total time spent
-    if (!isset($taskSummaryData[$session->task_id])) {
-        $taskSummaryData[$session->task_id] = [
-            'task_name' => $session->task->name,
-            'total_time_spent' => 0,
-        ];
+// Populate total time spent on each task
+foreach ($hourlySessionsData as $interval => $tasks) {
+    foreach ($tasks as $taskId => $taskData) {
+        // Initialize task entry in summary data if not already set
+        if (!isset($taskSummaryData[$taskId])) {
+            $taskSummaryData[$taskId] = [
+                'task_name' => $taskData['task_name'],
+                'project_name' => $taskData['project_name'],
+                'total_time_spent' => 0,
+            ];
+        }
+        
+        // Convert time spent to seconds for each interval
+        $timeSpentInSeconds = $this->parseDurationToSeconds($taskData['time_spent']);
+        
+        // Accumulate total time spent on the task
+        $taskSummaryData[$taskId]['total_time_spent'] += $timeSpentInSeconds;
     }
-
-    $taskSummaryData[$session->task_id]['total_time_spent'] += $timeSpentInSeconds;
 }
 
-// Format the total time spent for each task in hours and minutes
-foreach ($taskSummaryData as &$taskData) {
-    $taskData['formatted_time'] = $this->formatDuration($taskData['total_time_spent']);
+
+// Format total time spent back to HH:MM:SS for display
+foreach ($taskSummaryData as &$summary) {
+    $summary['total_time_spent'] = $this->formatDuration($summary['total_time_spent']);
 }
 
 return view('frontends.dashboard', compact(
@@ -144,9 +145,32 @@ return view('frontends.dashboard', compact(
     'prospectTasks',
     'paymentTasks',
     'hourlySessionsData',
-    'taskSummaryData' 
+    'taskSummaryData'
 ));
     }
+
+ /**
+ * Convert a duration string (HH:MM:SS) to seconds.
+ */
+/**
+ * Convert a duration string (HH:MM:SS) to seconds.
+ */
+protected function parseDurationToSeconds($duration)
+{
+    // Check if duration has only seconds
+    if (is_numeric($duration)) {
+        return (int)$duration;
+    }
+    
+    // Ensure the duration is in HH:MM:SS format by padding missing components
+    $parts = explode(':', $duration);
+    $parts = array_pad($parts, -3, '0'); // Pad on the left for missing hours or minutes
+
+    list($hours, $minutes, $seconds) = array_map('intval', $parts);
+    return ($hours * 3600) + ($minutes * 60) + $seconds;
+}
+
+
 
     /**
      * Helper function to format duration from seconds to human-readable format.
