@@ -92,15 +92,18 @@
                                     <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
                                 </td>
                                 <td id="time-{{ $task->id }}">00:00:00</td>
-                            <td>
-                                <select name="status">
-                                    <option>To Do</option>
-                                    <option>In Progress</option>
-                                    <option>QA</option>
-                                    <option>Completed</option>
-                                </select>
-                            </td>
-                            <td><textarea>{{ $task->comment }}</textarea></td>
+                                <td>
+                                    <select name="status[{{ $task->id }}]" class="task-status">
+                                        <option {{ $task->status === 'To Do' ? 'selected' : '' }}>To Do</option>
+                                        <option {{ $task->status === 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                                        <option {{ $task->status === 'QA' ? 'selected' : '' }}>QA</option>
+                                        <option {{ $task->status === 'Completed' ? 'selected' : '' }}>Completed</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea name="comment[{{ $task->id }}]" class="task-comment">{{ $task->comment }}</textarea>
+                                </td>
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -273,6 +276,31 @@
             .then(data => console.log(`Timer updated: ${data.message}`))
             .catch(error => console.error('Error updating timer:', error));
         }
+        document.querySelectorAll('.task-status, .task-comment').forEach(element => {
+    element.addEventListener('change', function () {
+        const taskId = this.name.match(/\d+/)[0];
+        const status = document.querySelector(`select[name="status[${taskId}]"]`).value;
+        const comment = document.querySelector(`textarea[name="comment[${taskId}]"]`).value;
+
+        fetch(`/tasks/update-status-comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ taskId, status, comment })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Status and comment updated successfully.');
+            } else {
+                console.error('Failed to update status and comment.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
 
       
    // Prospect Task Timer Ends 

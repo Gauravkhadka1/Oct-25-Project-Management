@@ -12,6 +12,7 @@ use App\Models\PaymentTask;
 use App\Models\ProspectTask;
 use App\Models\User;
 use App\Models\TaskSession;
+use App\Notifications\TaskStatusUpdated;
 
 class TaskController extends Controller {
    // In TaskController
@@ -134,4 +135,25 @@ public function getTasksForUsername(Request $request)
 
     return response()->json($allTasks);
 }
+public function updateStatusComment(Request $request)
+{
+    $task = Task::find($request->taskId);
+
+    if ($task) {
+        $task->status = $request->status;
+        $task->comment = $request->comment;
+        $task->save();
+
+        // Send notification to the user who assigned the task
+        if ($task->assignedBy) { // Check if an assigner exists
+            $task->assignedBy->notify(new TaskStatusUpdated($task, $request->status));
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    return response()->json(['success' => false], 404);
+}
+
+
 }

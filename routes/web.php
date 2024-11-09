@@ -141,5 +141,6 @@ Route::post('/submit-message', [MessageController::class, 'submitMessage']);
 
 Route::get('/user-dashboard/{username}', [UserDashboardController::class, 'userDashboard'])->name('user.dashboard');
 
+Route::post('/tasks/update-status-comment', [TaskController::class, 'updateStatusComment'])->name('tasks.updateStatusComment');
 
 

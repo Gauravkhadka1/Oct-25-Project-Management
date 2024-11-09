@@ -15,6 +15,8 @@ class Task extends Model
         'due_date',
         'priority',
         'project_id',
+        'status',
+        'comment',
     ];
 
     // Task belongs to a project

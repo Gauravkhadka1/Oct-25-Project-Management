@@ -91,15 +91,18 @@
                                     <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>)">Start</button>
                                 </td>
                                 <td id="time-<?php echo e($task->id); ?>">00:00:00</td>
-                            <td>
-                                <select name="status">
-                                    <option>To Do</option>
-                                    <option>In Progress</option>
-                                    <option>QA</option>
-                                    <option>Completed</option>
-                                </select>
-                            </td>
-                            <td><textarea><?php echo e($task->comment); ?></textarea></td>
+                                <td>
+                                    <select name="status[<?php echo e($task->id); ?>]" class="task-status">
+                                        <option <?php echo e($task->status === 'To Do' ? 'selected' : ''); ?>>To Do</option>
+                                        <option <?php echo e($task->status === 'In Progress' ? 'selected' : ''); ?>>In Progress</option>
+                                        <option <?php echo e($task->status === 'QA' ? 'selected' : ''); ?>>QA</option>
+                                        <option <?php echo e($task->status === 'Completed' ? 'selected' : ''); ?>>Completed</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea name="comment[<?php echo e($task->id); ?>]" class="task-comment"><?php echo e($task->comment); ?></textarea>
+                                </td>
+
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
@@ -272,6 +275,31 @@
             .then(data => console.log(`Timer updated: ${data.message}`))
             .catch(error => console.error('Error updating timer:', error));
         }
+        document.querySelectorAll('.task-status, .task-comment').forEach(element => {
+    element.addEventListener('change', function () {
+        const taskId = this.name.match(/\d+/)[0];
+        const status = document.querySelector(`select[name="status[${taskId}]"]`).value;
+        const comment = document.querySelector(`textarea[name="comment[${taskId}]"]`).value;
+
+        fetch(`/tasks/update-status-comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+            },
+            body: JSON.stringify({ taskId, status, comment })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Status and comment updated successfully.');
+            } else {
+                console.error('Failed to update status and comment.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
 
       
    // Prospect Task Timer Ends 
