@@ -15,6 +15,7 @@ use App\Http\Controllers\EsewaController;
 use App\Http\Controllers\Frontend\HomeController; 
 use App\Http\Controllers\ContactFormController; 
 use App\Http\Controllers\UserController; 
+use App\Http\Controllers\NotificationController; 
 use App\Http\Controllers\Auth\RegisteredUserController; 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
@@ -144,4 +145,5 @@ Route::get('/user-dashboard/{username}', [UserDashboardController::class, 'userD
 Route::post('/tasks/update-status-comment', [TaskController::class, 'updateStatusComment'])->name('tasks.updateStatusComment');
 
 Route::post('/tasks/update-comment', [TaskController::class, 'addComment'])->name('tasks.addComment');
+Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
 

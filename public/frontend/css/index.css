@@ -309,4 +309,59 @@
 
   }
 
+  .notification {
+    position: relative;
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: 0;
+    left: 10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    width: 20px;          /* Set a fixed width */
+    height: 20px;         /* Set a fixed height */
+    display: flex;        /* Center content with flexbox */
+    align-items: center;  /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    text-align: center;
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    width: 200px;
+    display: none; /* Hidden by default */
+}
+
+.notification-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-dropdown li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notification-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.notification-dropdown button {
+    width: 100%;
+    padding: 8px;
+    background: rgb(55, 55, 243);
+    border: none;
+    cursor: pointer;
+}
+
   

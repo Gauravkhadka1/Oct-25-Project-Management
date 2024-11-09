@@ -41,8 +41,26 @@
           </div>
           <div class="end">
             <div class="notification">
-              <img src="{{url('frontend/images/notification.png')}}" alt="" class="notification-icon">
+              <img src="{{ url('frontend/images/notification.png') }}" alt="Notifications" class="notification-icon" id="notification-icon">
+              <span class="notification-count" id="notification-count">
+                {{ auth()->user()->unreadNotifications->count() }}
+              </span>
+
+              <div class="notification-dropdown" id="notification-dropdown" style="display: none;">
+                <ul>
+                  @forelse(auth()->user()->unreadNotifications as $notification)
+                  <li>
+                    <span>{{ $notification->data['message'] }}</span>
+                    <small>{{ $notification->created_at->diffForHumans() }}</small>
+                  </li>
+                  @empty
+                  <li>No new notifications</li>
+                  @endforelse
+                </ul>
+                <button id="mark-all-read">Mark All as Read</button>
+              </div>
             </div>
+
             <div class="profile-header" style="position: relative;">
               <a href="javascript:void(0);" onclick="toggleDropdown(event)">
                 <div class="user-icon">
@@ -104,12 +122,12 @@
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="{{url('frontend/images/customer.png')}}" alt=""> Clients
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="{{url('frontend/images/customer.png')}}" alt=""> Clients
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="{{url('/all-clients')}}">All Clients</a></li>
@@ -119,12 +137,12 @@
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="{{url('frontend/images/group.png')}}" alt=""> Prospects
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="{{url('frontend/images/group.png')}}" alt=""> Prospects
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="{{url('/prospects')}}">All </a></li>
@@ -133,12 +151,12 @@
         @endif
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="{{url('frontend/images/blueprint.png')}}" alt=""> Projects
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="{{url('frontend/images/blueprint.png')}}" alt=""> Projects
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="{{url('/projects')}}">All</a></li>
@@ -147,12 +165,12 @@
 
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="{{url('frontend/images/clipboard.png')}}" alt=""> Tasks
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="{{url('frontend/images/clipboard.png')}}" alt=""> Tasks
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="{{ route('dashboard') }}">All Tasks</a></li>
@@ -161,20 +179,20 @@
 
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="{{url('frontend/images/team.png')}}" alt=""> Teams
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="{{url('frontend/images/team.png')}}" alt=""> Teams
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             @foreach ($users as $user)
-                <li class="username-item" data-username="{{ $user->username }}">
-                    <a href="{{ route('user.dashboard', ['username' => $user->username]) }}">{{ $user->username }}</a>
-                </li>
+            <li class="username-item" data-username="{{ $user->username }}">
+              <a href="{{ route('user.dashboard', ['username' => $user->username]) }}">{{ $user->username }}</a>
+            </li>
             @endforeach
-        </ul>
+          </ul>
         </li>
       </ul>
     </div>

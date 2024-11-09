@@ -41,8 +41,27 @@
           </div>
           <div class="end">
             <div class="notification">
-              <img src="<?php echo e(url('frontend/images/notification.png')); ?>" alt="" class="notification-icon">
+              <img src="<?php echo e(url('frontend/images/notification.png')); ?>" alt="Notifications" class="notification-icon" id="notification-icon">
+              <span class="notification-count" id="notification-count">
+                <?php echo e(auth()->user()->unreadNotifications->count()); ?>
+
+              </span>
+
+              <div class="notification-dropdown" id="notification-dropdown" style="display: none;">
+                <ul>
+                  <?php $__empty_1 = true; $__currentLoopData = auth()->user()->unreadNotifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                  <li>
+                    <span><?php echo e($notification->data['message']); ?></span>
+                    <small><?php echo e($notification->created_at->diffForHumans()); ?></small>
+                  </li>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                  <li>No new notifications</li>
+                  <?php endif; ?>
+                </ul>
+                <button id="mark-all-read">Mark All as Read</button>
+              </div>
             </div>
+
             <div class="profile-header" style="position: relative;">
               <a href="javascript:void(0);" onclick="toggleDropdown(event)">
                 <div class="user-icon">
@@ -104,12 +123,12 @@
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="<?php echo e(url('frontend/images/customer.png')); ?>" alt=""> Clients
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="<?php echo e(url('frontend/images/customer.png')); ?>" alt=""> Clients
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/all-clients')); ?>">All Clients</a></li>
@@ -119,12 +138,12 @@
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="<?php echo e(url('frontend/images/group.png')); ?>" alt=""> Prospects
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="<?php echo e(url('frontend/images/group.png')); ?>" alt=""> Prospects
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/prospects')); ?>">All </a></li>
@@ -133,12 +152,12 @@
         <?php endif; ?>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="<?php echo e(url('frontend/images/blueprint.png')); ?>" alt=""> Projects
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="<?php echo e(url('frontend/images/blueprint.png')); ?>" alt=""> Projects
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/projects')); ?>">All</a></li>
@@ -147,12 +166,12 @@
 
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="<?php echo e(url('frontend/images/clipboard.png')); ?>" alt=""> Tasks
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="<?php echo e(url('frontend/images/clipboard.png')); ?>" alt=""> Tasks
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(route('dashboard')); ?>">All Tasks</a></li>
@@ -161,20 +180,20 @@
 
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-          <div class="icon-text">
-            <img src="<?php echo e(url('frontend/images/team.png')); ?>" alt=""> Teams
-          </div>
-          <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-          </div>
+            <div class="icon-text">
+              <img src="<?php echo e(url('frontend/images/team.png')); ?>" alt=""> Teams
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
           </a>
           <ul class="task-dropdown">
             <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <li class="username-item" data-username="<?php echo e($user->username); ?>">
-                    <a href="<?php echo e(route('user.dashboard', ['username' => $user->username])); ?>"><?php echo e($user->username); ?></a>
-                </li>
+            <li class="username-item" data-username="<?php echo e($user->username); ?>">
+              <a href="<?php echo e(route('user.dashboard', ['username' => $user->username])); ?>"><?php echo e($user->username); ?></a>
+            </li>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </ul>
+          </ul>
         </li>
       </ul>
     </div>
