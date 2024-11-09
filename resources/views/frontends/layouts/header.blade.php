@@ -47,18 +47,20 @@
               </span>
 
               <div class="notification-dropdown" id="notification-dropdown" style="display: none;">
-                <ul>
-                  @forelse(auth()->user()->unreadNotifications as $notification)
-                  <li>
-                    <span>{{ $notification->data['message'] }}</span>
-                    <small>{{ $notification->created_at->diffForHumans() }}</small>
-                  </li>
-                  @empty
-                  <li>No new notifications</li>
-                  @endforelse
-                </ul>
-                <button id="mark-all-read">Mark All as Read</button>
-              </div>
+    <ul>
+        @forelse(auth()->user()->unreadNotifications as $notification)
+            <li>
+                <!-- Check if 'message' exists, otherwise show a fallback value -->
+                <span>{{ $notification->data['message'] ?? 'No message available' }}</span>
+                <small>{{ $notification->created_at->diffForHumans() }}</small>
+            </li>
+        @empty
+            <li>No new notifications</li>
+        @endforelse
+    </ul>
+    <button id="mark-all-read">Mark All as Read</button>
+</div>
+
             </div>
 
             <div class="profile-header" style="position: relative;">

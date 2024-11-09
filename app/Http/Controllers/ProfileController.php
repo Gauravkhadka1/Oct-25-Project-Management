@@ -276,4 +276,6 @@ protected function parseDurationToSeconds($duration)
 
         return response()->json($usernames);
     }
+
+
 }

@@ -48,18 +48,20 @@
               </span>
 
               <div class="notification-dropdown" id="notification-dropdown" style="display: none;">
-                <ul>
-                  <?php $__empty_1 = true; $__currentLoopData = auth()->user()->unreadNotifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                  <li>
-                    <span><?php echo e($notification->data['message']); ?></span>
-                    <small><?php echo e($notification->created_at->diffForHumans()); ?></small>
-                  </li>
-                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                  <li>No new notifications</li>
-                  <?php endif; ?>
-                </ul>
-                <button id="mark-all-read">Mark All as Read</button>
-              </div>
+    <ul>
+        <?php $__empty_1 = true; $__currentLoopData = auth()->user()->unreadNotifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <li>
+                <!-- Check if 'message' exists, otherwise show a fallback value -->
+                <span><?php echo e($notification->data['message'] ?? 'No message available'); ?></span>
+                <small><?php echo e($notification->created_at->diffForHumans()); ?></small>
+            </li>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+            <li>No new notifications</li>
+        <?php endif; ?>
+    </ul>
+    <button id="mark-all-read">Mark All as Read</button>
+</div>
+
             </div>
 
             <div class="profile-header" style="position: relative;">

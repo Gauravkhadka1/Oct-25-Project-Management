@@ -1,6 +1,7 @@
 <?php
 namespace App\Mail;
 
+use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -10,21 +11,20 @@ class TaskAssigned extends Mailable
     use Queueable, SerializesModels;
 
     public $task;
-    public $userEmail;
 
-    public function __construct($task, $userEmail)
+    public function __construct(Task $task)
     {
         $this->task = $task;
-        $this->userEmail = $userEmail;
     }
 
     public function build()
     {
-        return $this->view('emails.task_assigned')
+        return $this->subject('New Task Assigned')
+                    ->view('emails.tasks.assigned')
                     ->with([
                         'taskName' => $this->task->name,
-                        'projectName' => $this->task->project->name,
-                    ])
-                    ->to($this->userEmail);
+                        'dueDate' => $this->task->due_date,
+                        'assignedBy' => $this->task->assignedBy->username,
+                    ]);
     }
 }

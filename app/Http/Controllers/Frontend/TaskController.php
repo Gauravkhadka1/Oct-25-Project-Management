@@ -14,22 +14,23 @@ use App\Models\User;
 use App\Models\TaskSession;
 use App\Notifications\TaskStatusUpdated;
 use App\Notifications\TaskCommentAdded;
+use App\Notifications\TaskAssignedNotification;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller {
    // In TaskController
-public function store(Request $request)
+   public function store(Request $request)
 {
     \Log::info("Incoming project_id: " . $request->input('project_id'));
+
     // Validate the request data
     $request->validate([
         'name' => 'required|string|max:255',
         'assigned_to' => 'required|email',
         'project_id' => 'required|exists:projects,id',
-        'start_date' => 'nullable|date', // Optional validation
-        'due_date' => 'nullable|date',   // Optional validation
-        'priority' => 'nullable|string',  // Optional validation
-        // Other validations as necessary
+        'start_date' => 'nullable|date',
+        'due_date' => 'nullable|date',
+        'priority' => 'nullable|string',
     ]);
 
     // Get the ID of the user assigned to the task
@@ -40,19 +41,24 @@ public function store(Request $request)
     // Create the task
     $task = Task::create([
         'name' => $request->input('name'),
-        'assigned_to' => $assignedToUser->id, // Use the user's ID
-        'assigned_by' => $assignedByUserId, // Store the ID of the user who assigned the task
+        'assigned_to' => $assignedToUser->id,
+        'assigned_by' => $assignedByUserId,
         'project_id' => $request->input('project_id'),
         'start_date' => $request->input('start_date'),
         'due_date' => $request->input('due_date'),
         'priority' => $request->input('priority'),
     ]);
 
-    // Send email notification, etc.
-    // Mail::to($request->input('assigned_to'))->send(new TaskAssigned($task, $request->input('assigned_to')));
+    // Send a notification to the assigned user
+    $assignedToUser->notify(new TaskAssignedNotification($task));
+
+    // Send an email to the assigned user
+    Mail::to($assignedToUser->email)->send(new TaskAssigned($task));
 
     return redirect(url('/projects'))->with('success', 'Task created successfully.');
 }
+
+   
 
 
 public function startTimer(Request $request, Task $task)
