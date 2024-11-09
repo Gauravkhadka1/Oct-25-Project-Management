@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Frontend;
+use App\Notifications\TaskStatusUpdatedNotification;
+use App\Notifications\TaskCommentAddedNotification;
+use app\Mail\TaskStatusUpdatedMail;
+use app\Mail\TaskCommentAddedMail;
 use App\Http\Controllers\Controller;
 
 use App\Mail\TaskAssigned;
@@ -15,6 +19,7 @@ use App\Models\TaskSession;
 use App\Notifications\TaskStatusUpdated;
 use App\Notifications\TaskCommentAdded;
 use App\Notifications\TaskAssignedNotification;
+
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller {
@@ -149,7 +154,7 @@ public function updateStatusComment(Request $request)
     $taskType = $request->taskType;
     $status = $request->status;
 
-    // Update the correct task based on taskType
+    // Determine the task based on taskType
     if ($taskType === 'payment') {
         $task = PaymentTask::findOrFail($taskId);
     } elseif ($taskType === 'prospect') {
@@ -162,6 +167,13 @@ public function updateStatusComment(Request $request)
     $task->status = $status;
     $task->save();
 
+    // Notify the assigned user (task assigned by user)
+    $assignedByUser = $task->assignedBy; // User who assigned the task
+    $assignedByUser->notify(new TaskStatusUpdatedNotification($task, $status));
+
+    // Send an email to the assigned user
+    Mail::to($assignedByUser->email)->send(new TaskStatusUpdatedMail($task, $status));
+
     return response()->json(['success' => true]);
 }
 
@@ -169,10 +181,10 @@ public function updateStatusComment(Request $request)
 public function addComment(Request $request)
 {
     $taskId = $request->task_id;
-    $taskType = $request->taskType;  // Add taskType here
+    $taskType = $request->taskType;
     $comment = $request->comment;
 
-    // Determine which task type and update the comment
+    // Determine the task based on taskType
     if ($taskType === 'payment') {
         $task = PaymentTask::findOrFail($taskId);
     } elseif ($taskType === 'prospect') {
@@ -185,8 +197,18 @@ public function addComment(Request $request)
     $task->comment = $comment;
     $task->save();
 
+    $user = auth()->user();
+
+    // Notify the assigned user (task assigned by user)
+    $assignedByUser = $task->assignedBy; // User who assigned the task
+    $assignedByUser->notify(new TaskCommentAddedNotification($task, $comment, $user));
+
+    // Send an email to the assigned user
+    Mail::to($assignedByUser->email)->send(new TaskCommentAddedMail($task, $comment));
+
     return response()->json(['success' => true]);
 }
+
 
 
 
