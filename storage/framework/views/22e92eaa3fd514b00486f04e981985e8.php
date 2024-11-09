@@ -36,62 +36,67 @@ $serialNo = 1;
 <?php if($hasTasks): ?>
 <div class="user-tasks">
 <table class="task-table">
-    <thead>
-        <tr>
-            <th>S.N</th>
-            <th>Task</th>
-            <th>Category Name</th> <!-- New column for Category Name -->
-            <th>Category</th> <!-- New column for Category Type -->
-            <th>Assigned by</th>
-            <th>Start date</th>
-            <th>Due date</th>
-            <th>Priority</th>
-            <th>Actions</th>
-            <th>Timestamp</th>
-            <th>Status</th>
-            <th>Comment</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <tr>
-            <td><?php echo e($serialNo++); ?></td>
-            <td><?php echo e($task->name); ?></td>
-            <td><?php echo e($task->category_name); ?></td> <!-- Category Name -->
-            <td>
-                <span class="<?php echo e($task->category === 'Project' ? 'label-project' : ($task->category === 'Payment' ? 'label-payment' : 'label-prospect')); ?>">
-                    <?php echo e($task->category); ?>
+                <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Task</th>
+                        <th>Category Name</th> <!-- New column for Category Name -->
+                        <th>Category</th> <!-- New column for Category Type -->
+                        <th>Assigned by</th>
+                        <th>Start date</th>
+                        <th>Due date</th>
+                        <th>Priority</th>
+                        <th>Actions</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td><?php echo e($serialNo++); ?></td>
+                            <td><?php echo e($task->name); ?></td>
+                            <td><?php echo e($task->category_name); ?></td> <!-- Category Name -->
+                            <td>
+    <span class="<?php echo e($task->category === 'Project' ? 'label-project' : ($task->category === 'Payment' ? 'label-payment' : 'label-prospect')); ?>">
+        <?php echo e($task->category); ?>
 
-                </span>
-            </td>
-            <!-- Category Type (Project/Payment/Prospect) -->
-            <td><?php echo e($task->assignedBy ? $task->assignedBy->username : 'N/A'); ?></td>
-            <td><?php echo e($task->start_date); ?></td>
-            <td><?php echo e($task->due_date); ?></td>
-            <td><?php echo e($task->priority); ?></td>
-            <td>
-                <button class="btn-toggle start">Start</button>
-            </td>
-            <td id="time-<?php echo e($task->id); ?>">00:00:00</td>
-            <td>
-                <select name="status">
-                    <option>To Do</option>
-                    <option>In Progress</option>
-                    <option>QA</option>
-                    <option>Completed</option>
-                </select>
-            </td>
-            <td><textarea><?php echo e($task->comment); ?></textarea></td>
-        </tr>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    </tbody>
-</table>
-<?php else: ?>
-<p>No tasks available.</p>
-<?php endif; ?>
+    </span>
+</td>
+ <!-- Category Type (Project/Payment/Prospect) -->
+                            <td><?php echo e($task->assignedBy ? $task->assignedBy->username : 'N/A'); ?></td>
+                            <td><?php echo e($task->start_date); ?></td>
+                            <td><?php echo e($task->due_date); ?></td>
+                            <td><?php echo e($task->priority); ?></td>
+                            <td>
+                                    <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>)">Start</button>
+                                </td>
+                                <td id="time-<?php echo e($task->id); ?>">00:00:00</td>
+                            <td>
+                                <select name="status">
+                                    <option>To Do</option>
+                                    <option>In Progress</option>
+                                    <option>QA</option>
+                                    <option>Completed</option>
+                                </select>
+                            </td>
+                            <td><textarea><?php echo e($task->comment); ?></textarea></td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No tasks available.</p>
+        <?php endif; ?>
+    </div>
+   
 </div>
-<div class="schedule-table" style="margin-top: 30px;">
-    <h2><?php echo e($username); ?> today schedule</h2>
+<div class="schedule-table">
+    <div class="schedule-table-heading">
+        <h2><?php echo e($username); ?> Today's Schedule</h2>
+    </div>
+
     <table class="task-table">
         <thead class="schedule head">
             <tr>
@@ -120,7 +125,21 @@ $serialNo = 1;
                 <?php endif; ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4">Summary - Total Time Spent per Task</th>
+            </tr>
+            <?php $__currentLoopData = $taskSummaryData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $summary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                    <td colspan="2"><?php echo e($summary['task_name']); ?></td>
+                    <td><?php echo e($summary['project_name']); ?></td>
+                    <td><?php echo e($summary['total_time_spent']); ?></td>
+                </tr>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </tfoot>
     </table>
+</div>
+
 </div>
 
 </div>

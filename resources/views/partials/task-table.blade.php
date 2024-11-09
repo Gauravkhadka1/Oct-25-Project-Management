@@ -36,61 +36,66 @@ $serialNo = 1;
 @if ($hasTasks)
 <div class="user-tasks">
 <table class="task-table">
-    <thead>
-        <tr>
-            <th>S.N</th>
-            <th>Task</th>
-            <th>Category Name</th> <!-- New column for Category Name -->
-            <th>Category</th> <!-- New column for Category Type -->
-            <th>Assigned by</th>
-            <th>Start date</th>
-            <th>Due date</th>
-            <th>Priority</th>
-            <th>Actions</th>
-            <th>Timestamp</th>
-            <th>Status</th>
-            <th>Comment</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($tasks as $task)
-        <tr>
-            <td>{{ $serialNo++ }}</td>
-            <td>{{ $task->name }}</td>
-            <td>{{ $task->category_name }}</td> <!-- Category Name -->
-            <td>
-                <span class="{{ $task->category === 'Project' ? 'label-project' : ($task->category === 'Payment' ? 'label-payment' : 'label-prospect') }}">
-                    {{ $task->category }}
-                </span>
-            </td>
-            <!-- Category Type (Project/Payment/Prospect) -->
-            <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
-            <td>{{ $task->start_date }}</td>
-            <td>{{ $task->due_date }}</td>
-            <td>{{ $task->priority }}</td>
-            <td>
-                <button class="btn-toggle start">Start</button>
-            </td>
-            <td id="time-{{ $task->id }}">00:00:00</td>
-            <td>
-                <select name="status">
-                    <option>To Do</option>
-                    <option>In Progress</option>
-                    <option>QA</option>
-                    <option>Completed</option>
-                </select>
-            </td>
-            <td><textarea>{{ $task->comment }}</textarea></td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-@else
-<p>No tasks available.</p>
-@endif
+                <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Task</th>
+                        <th>Category Name</th> <!-- New column for Category Name -->
+                        <th>Category</th> <!-- New column for Category Type -->
+                        <th>Assigned by</th>
+                        <th>Start date</th>
+                        <th>Due date</th>
+                        <th>Priority</th>
+                        <th>Actions</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($tasks as $task)
+                        <tr>
+                            <td>{{ $serialNo++ }}</td>
+                            <td>{{ $task->name }}</td>
+                            <td>{{ $task->category_name }}</td> <!-- Category Name -->
+                            <td>
+    <span class="{{ $task->category === 'Project' ? 'label-project' : ($task->category === 'Payment' ? 'label-payment' : 'label-prospect') }}">
+        {{ $task->category }}
+    </span>
+</td>
+ <!-- Category Type (Project/Payment/Prospect) -->
+                            <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
+                            <td>{{ $task->start_date }}</td>
+                            <td>{{ $task->due_date }}</td>
+                            <td>{{ $task->priority }}</td>
+                            <td>
+                                    <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
+                                </td>
+                                <td id="time-{{ $task->id }}">00:00:00</td>
+                            <td>
+                                <select name="status">
+                                    <option>To Do</option>
+                                    <option>In Progress</option>
+                                    <option>QA</option>
+                                    <option>Completed</option>
+                                </select>
+                            </td>
+                            <td><textarea>{{ $task->comment }}</textarea></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p>No tasks available.</p>
+        @endif
+    </div>
+   
 </div>
-<div class="schedule-table" style="margin-top: 30px;">
-    <h2>{{ $username }} today schedule</h2>
+<div class="schedule-table">
+    <div class="schedule-table-heading">
+        <h2>{{$username}} Today's Schedule</h2>
+    </div>
+
     <table class="task-table">
         <thead class="schedule head">
             <tr>
@@ -119,7 +124,21 @@ $serialNo = 1;
                 @endif
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4">Summary - Total Time Spent per Task</th>
+            </tr>
+            @foreach($taskSummaryData as $summary)
+                <tr>
+                    <td colspan="2">{{ $summary['task_name'] }}</td>
+                    <td>{{ $summary['project_name'] }}</td>
+                    <td>{{ $summary['total_time_spent'] }}</td>
+                </tr>
+            @endforeach
+        </tfoot>
     </table>
+</div>
+
 </div>
 
 </div>

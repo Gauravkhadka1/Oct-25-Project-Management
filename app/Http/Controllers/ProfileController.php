@@ -102,6 +102,8 @@ foreach (range(0, 23) as $hour) {
         ];
     });
 
+    
+
     $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
     $hourlySessionsData[$intervalLabel] = $hourlyData;
 }
