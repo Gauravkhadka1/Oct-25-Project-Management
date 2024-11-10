@@ -199,6 +199,20 @@
         
 
         let timers = {};
+        // Detect page unload or navigation
+window.addEventListener("beforeunload", function (e) {
+    // Check if any timer is running
+    const isAnyTimerRunning = Object.values(timers).some(timer => timer.running);
+
+    // If a timer is running, show a confirmation prompt
+    if (isAnyTimerRunning) {
+        // Custom message for modern browsers (this is mostly ignored now)
+        const message = "Please pause the time before going to another page.";
+        e.returnValue = message;  // Standard for modern browsers
+        return message;  // For some older browsers (rarely used now)
+    }
+});
+
 
         // Load the saved time from the database when the page loads
         window.addEventListener("load", () => {
@@ -216,28 +230,29 @@
             @endforeach
         });
 
-        function toggleTimer(taskId) {
-            const timer = timers[taskId];
-            const button = document.getElementById(`toggle-${taskId}`);
-            
-            if (timer) {
-                if (timer.running) {
-                    // If timer is running, pause it
-                    pauseTimer(taskId);
-                    button.innerText = "Resume";
-                    button.classList.remove("pause");
-                    button.classList.add("start");
-                } else {
-                    // If timer is paused or not started, start/resume it
-                    startTimer(taskId);
-                    button.innerText = "Pause";
-                    button.classList.remove("start");
-                    button.classList.add("pause");
-                }
-            } else {
-                console.error(`Timer not found for task ID: ${taskId}`);
-            }
+        // Modify toggleTimer to ensure that it pauses the timer before leaving
+function toggleTimer(taskId) {
+    const timer = timers[taskId];
+    const button = document.getElementById(`toggle-${taskId}`);
+    
+    if (timer) {
+        if (timer.running) {
+            // If timer is running, pause it
+            pauseTimer(taskId);
+            button.innerText = "Resume";
+            button.classList.remove("pause");
+            button.classList.add("start");
+        } else {
+            // If timer is paused or not started, start/resume it
+            startTimer(taskId);
+            button.innerText = "Pause";
+            button.classList.remove("start");
+            button.classList.add("pause");
         }
+    } else {
+        console.error(`Timer not found for task ID: ${taskId}`);
+    }
+}
 
         function startTimer(taskId) {
             const timer = timers[taskId];
