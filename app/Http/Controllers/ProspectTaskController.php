@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Notifications\TaskAssignedNotification;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\ProspectTask;
+use App\Mail\TaskAssignedMail;
+use Illuminate\Support\Facades\Mail;
 
 class ProspectTaskController extends Controller
 {
@@ -39,9 +41,10 @@ class ProspectTaskController extends Controller
             'due_date' => $request->input('due_date'),
             'priority' => $request->input('priority'),
         ]);
-
+ // Send a notification to the assigned user
+ $assignedToUser->notify(new TaskAssignedNotification($prospectTask));
         // Send email notification, etc.
-        // Mail::to($request->input('assigned_to'))->send(new TaskAssigned($task, $request->input('assigned_to')));
+        Mail::to($request->input('assigned_to'))->send(new TaskAssignedMail($prospectTask, $request->input('assigned_to')));
 
         return redirect(url('/prospects'))->with('success', 'Task created successfully.');
     }

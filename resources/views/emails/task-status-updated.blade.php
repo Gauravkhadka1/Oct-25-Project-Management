@@ -6,9 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-<p>The status of task "{{ $taskName }}" has been updated to "{{ $status }}".</p>
-<p>Click the link below to view the task:</p>
-<a href="{{ $taskUrl }}">View Task</a>
+<p>{{$username}} upadate the status of task "{{ $taskName }}" to "{{ $status }}".</p>
+
 
 </body>
 </html>

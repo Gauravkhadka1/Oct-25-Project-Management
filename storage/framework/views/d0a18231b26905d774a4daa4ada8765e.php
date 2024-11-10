@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('main-container'); ?>
 
 <main>

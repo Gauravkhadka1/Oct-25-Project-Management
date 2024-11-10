@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PaymentTask;
 use App\Models\User;
+use App\Mail\TaskAssignedMail;
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\TaskAssignedNotification;
 
 class PaymentTaskController extends Controller
 {
@@ -40,8 +43,10 @@ class PaymentTaskController extends Controller
             'priority' => $request->input('priority'),
         ]);
 
+        // Send a notification to the assigned user
+    $assignedToUser->notify(new TaskAssignedNotification($paymentTask));
         // Send email notification, etc.
-        // Mail::to($request->input('assigned_to'))->send(new TaskAssigned($task, $request->input('assigned_to')));
+        Mail::to($request->input('assigned_to'))->send(new TaskAssignedMail($paymentTask, $request->input('assigned_to')));
 
         return redirect(url('/payments'))->with('success', 'Payment Task created successfully.');
     }

@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Frontend;
+use App\Notifications\TaskAssignedNotification;
 use App\Notifications\TaskStatusUpdatedNotification;
 use App\Notifications\TaskCommentAddedNotification;
 use app\Mail\TaskStatusUpdatedMail;
 use app\Mail\TaskCommentAddedMail;
 use App\Http\Controllers\Controller;
 
-use App\Mail\TaskAssigned;
+use App\Mail\TaskAssignedMail;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ use App\Models\User;
 use App\Models\TaskSession;
 use App\Notifications\TaskStatusUpdated;
 use App\Notifications\TaskCommentAdded;
-use App\Notifications\TaskAssignedNotification;
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -58,7 +59,7 @@ class TaskController extends Controller {
     $assignedToUser->notify(new TaskAssignedNotification($task));
 
     // Send an email to the assigned user
-    Mail::to($assignedToUser->email)->send(new TaskAssigned($task));
+    Mail::to($assignedToUser->email)->send(new TaskAssignedMail($task));
 
     return redirect(url('/projects'))->with('success', 'Task created successfully.');
 }
