@@ -64,6 +64,7 @@ class ProfileController extends Controller
 
         // Initialize hourly sessions data array
        // Initialize hourly sessions data array
+       $defaultIntervals = ['10 AM - 11 AM', '11 AM - 12 PM', '12 PM - 1 PM', '1 PM - 2 PM', '2 PM - 3 PM', '3 PM - 4 PM', '4 PM - 5 PM', '5 PM - 6 PM'];
 $hourlySessionsData = [];
 // Initialize a summary array to store total time spent on each task
 $taskSummaryData = [];
@@ -72,10 +73,18 @@ $taskSummaryData = [];
 $nepaliTimeZone = new DateTimeZone('Asia/Kathmandu');
 
 // Iterate over each hour from midnight to 11 PM
+// Define the default time intervals to always display
+$defaultIntervals = ['10 AM - 11 AM', '11 AM - 12 PM', '12 PM - 1 PM', '1 PM - 2 PM', '2 PM - 3 PM', '3 PM - 4 PM', '4 PM - 5 PM', '5 PM - 6 PM'];
+$hourlySessionsData = [];
+
+// Loop through each hour of the day
 foreach (range(0, 23) as $hour) {
     // Define start and end of the hourly interval in Nepali timezone
     $startInterval = Carbon::now()->startOfDay()->addHours($hour)->setTimezone($nepaliTimeZone);
     $endInterval = $startInterval->copy()->addHour()->setTimezone($nepaliTimeZone);
+
+    // Generate the interval label
+    $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
 
     // Filter task sessions by this time range
     $hourlyData = $taskSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
@@ -102,11 +111,12 @@ foreach (range(0, 23) as $hour) {
         ];
     });
 
-    
-
-    $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
-    $hourlySessionsData[$intervalLabel] = $hourlyData;
+    // Only add this interval if it’s a default interval or if it has tasks
+    if (!$hourlyData->isEmpty() || in_array($intervalLabel, $defaultIntervals)) {
+        $hourlySessionsData[$intervalLabel] = $hourlyData;
+    }
 }
+
 // Initialize task summary data for total time spent per task
 $taskSummaryData = [];
 
@@ -121,15 +131,14 @@ foreach ($hourlySessionsData as $interval => $tasks) {
                 'total_time_spent' => 0,
             ];
         }
-        
+
         // Convert time spent to seconds for each interval
         $timeSpentInSeconds = $this->parseDurationToSeconds($taskData['time_spent']);
-        
+
         // Accumulate total time spent on the task
         $taskSummaryData[$taskId]['total_time_spent'] += $timeSpentInSeconds;
     }
 }
-
 
 // Format total time spent back to HH:MM:SS for display
 foreach ($taskSummaryData as &$summary) {
@@ -149,6 +158,7 @@ return view('frontends.dashboard', compact(
     'hourlySessionsData',
     'taskSummaryData'
 ));
+
     }
 
  /**
