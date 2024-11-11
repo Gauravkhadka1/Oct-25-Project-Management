@@ -25,4 +25,10 @@ class PaymentTaskSession extends Model
     public function payment() {
         return $this->belongsTo(Payments::class);
     }
+    // In PaymentTaskSession model
+public function payment_task()
+{
+    return $this->belongsTo(PaymentTask::class, 'payment_task_id');
+}
+
 }

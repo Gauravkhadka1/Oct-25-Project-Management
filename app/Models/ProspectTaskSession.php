@@ -27,4 +27,8 @@ class ProspectTaskSession extends Model
     public function prospect() {
         return $this->belongsTo(Prospect::class);
     }
+    public function prospect_task()
+{
+    return $this->belongsTo(ProspectTask::class, 'prospect_task_id');
+}
 }

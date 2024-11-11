@@ -142,53 +142,48 @@
     </div>
    
 </div>
-<div class="schedule-table">
-    <div class="schedule-table-heading">
-        <h2>{{ $loggedInUser }}'s Today's Schedule</h2>
-    </div>
-
-    <table class="task-table">
-        <thead class="schedule head">
-            <tr>
-                <th>Time Interval</th>
-                <th>Task Name</th>
-                <th>Project Name</th>
-                <th>Time Spent</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($hourlySessionsData as $interval => $tasks)
-                @if ($tasks->isEmpty())
+<table class="task-table">
+    <thead class="schedule head">
+        <tr>
+            <th>Time Interval</th>
+            <th>Task Name</th>
+            <th>Project Name</th>
+            <th>Time Spent</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($hourlySessionsData as $interval => $tasks)
+            @if ($tasks->isEmpty())
+                <tr>
+                    <td>{{ $interval }}</td>
+                    <td colspan="3">N/A</td>
+                </tr>
+            @else
+                @foreach($tasks as $task)
                     <tr>
                         <td>{{ $interval }}</td>
-                        <td colspan="3">N/A</td>
+                        <td>{{ $task['task_name'] }}</td>
+                        <td>{{ $task['project_name'] }}</td>
+                        <td>{{ $task['time_spent'] }}</td>
                     </tr>
-                @else
-                    @foreach($tasks as $task)
-                        <tr>
-                            <td>{{ $interval }}</td>
-                            <td>{{ $task['task_name'] }}</td>
-                            <td>{{ $task['project_name'] }}</td>
-                            <td>{{ $task['time_spent'] }}</td>
-                        </tr>
-                    @endforeach
-                @endif
-            @endforeach
-        </tbody>
-        <tfoot>
+                @endforeach
+            @endif
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="4">Summary - Total Time Spent per Task</th>
+        </tr>
+        @foreach($taskSummaryData as $summary)
             <tr>
-                <th colspan="4">Summary - Total Time Spent per Task</th>
+                <td colspan="2">{{ $summary['task_name'] }}</td>
+                <td>{{ $summary['project_name'] }}</td>
+                <td>{{ $summary['total_time_spent'] }}</td>
             </tr>
-            @foreach($taskSummaryData as $summary)
-                <tr>
-                    <td colspan="2">{{ $summary['task_name'] }}</td>
-                    <td>{{ $summary['project_name'] }}</td>
-                    <td>{{ $summary['total_time_spent'] }}</td>
-                </tr>
-            @endforeach
-        </tfoot>
-    </table>
-</div>
+        @endforeach
+    </tfoot>
+</table>
+
 
 
 
