@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskSession extends Model
 {
-
-   
-
     protected $fillable = ['user_id', 'task_id', 'project_id', 'started_at', 'paused_at'];
     // In your TaskSession model
     protected $casts = [
@@ -24,8 +21,9 @@ class TaskSession extends Model
     }
 
     public function task() {
-        return $this->belongsTo(Task::class);
+        return $this->belongsTo(Task::class, 'task_id'); // Ensure task_id is specified
     }
+    
 
     public function project() {
         return $this->belongsTo(Project::class);

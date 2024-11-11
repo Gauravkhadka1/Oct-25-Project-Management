@@ -17,6 +17,8 @@ use App\Models\PaymentTask;
 use App\Models\ProspectTask;
 use App\Models\User;
 use App\Models\TaskSession;
+use App\Models\ProspectTaskSession;
+use App\Models\PaymentTaskSession;
 use Illuminate\Support\Facades\Log;
 use App\Notifications\TaskStatusUpdated;
 use App\Notifications\TaskCommentAdded;
@@ -81,7 +83,7 @@ public function startTimer(Request $request, $taskId)
                 // Create a session for ProspectTask
                 $session = ProspectTaskSession::create([
                     'user_id' => auth()->id(),
-                    'prospect_task_id' => $task->id,
+                    'prospect_id' => $task->id,
                     'started_at' => now(),
                 ]);
                 break;
@@ -93,7 +95,7 @@ public function startTimer(Request $request, $taskId)
                 // Create a session for PaymentTask
                 $session = PaymentTaskSession::create([
                     'user_id' => auth()->id(),
-                    'payment_task_id' => $task->id,
+                    'payments_id' => $task->id,
                     'started_at' => now(),
                 ]);
                 break;
@@ -106,6 +108,7 @@ public function startTimer(Request $request, $taskId)
                 $session = TaskSession::create([
                     'user_id' => auth()->id(),
                     'task_id' => $task->id,
+                    'project_id' => $task->project_id, 
                     'started_at' => now(),
                 ]);
                 break;
@@ -135,7 +138,7 @@ public function pauseTimer(Request $request, $taskId)
                 if (!$task) return response()->json(['error' => 'Task not found'], 404);
 
                 // Find the latest active session for ProspectTask
-                $session = ProspectTaskSession::where('prospect_task_id', $task->id)
+                $session = ProspectTaskSession::where('prospect_id', $task->id)
                     ->where('user_id', auth()->id())
                     ->whereNull('paused_at')
                     ->latest()
@@ -152,7 +155,7 @@ public function pauseTimer(Request $request, $taskId)
                 if (!$task) return response()->json(['error' => 'Task not found'], 404);
 
                 // Find the latest active session for PaymentTask
-                $session = PaymentTaskSession::where('payment_task_id', $task->id)
+                $session = PaymentTaskSession::where('payments_id', $task->id)
                     ->where('user_id', auth()->id())
                     ->whereNull('paused_at')
                     ->latest()
