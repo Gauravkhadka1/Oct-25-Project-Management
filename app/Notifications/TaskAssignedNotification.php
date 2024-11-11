@@ -77,7 +77,7 @@ class TaskAssignedNotification extends Notification
         return (new MailMessage)
             ->subject('New ' . $taskType . ' Assigned')
             ->line('A ' . strtolower($taskType) . ' has been assigned to you: ' . $this->task->name)
-            ->action('View Task', url('/tasks/' . $this->task->id))
+            ->action('View Task', url('dashboard/'))
             ->line('Please check the task and complete it by the due date.');
     }
 }

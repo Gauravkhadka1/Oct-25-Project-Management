@@ -171,7 +171,7 @@
   
   .user-icon img {
     width: 40px;
-    margin-left: 20px;
+    margin-left: 28px;
   }
   .name {
     margin-left: 10px;
@@ -196,21 +196,26 @@
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    width: 110%;
+    width: 120%;
   }
   
   .dropdown-menu.show {
     display: block;
+    align-items: center;
+    justify-content: center;
   }
   .dropdown-menu img {
     width: 17px;
     margin-right: 7px;
   }
   .dropdown-menu a {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     padding: 10px;
     color: #333;
     text-decoration: none;
+    /* background-color: red; */
   }
   
   .dropdown-menu a:hover {

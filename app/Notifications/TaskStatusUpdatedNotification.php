@@ -28,7 +28,7 @@ class TaskStatusUpdatedNotification extends Notification
         return (new MailMessage)
                     ->subject('Task Status Updated')
                     ->line('The status of task "' . $this->task->name . '" has been updated to ' . $this->status . '.')
-                    ->action('View Task', url('/tasks/' . $this->task->id));
+                    ->action('View Task', url('dashboard'));
     }
 
     public function toDatabase($notifiable)

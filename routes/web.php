@@ -4,11 +4,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Frontend\ProjectController;
 use App\Http\Controllers\Frontend\TaskController;
 use App\Http\Controllers\ProspectTaskController;
+use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\PaymentTaskController;
 use App\Http\Controllers\Frontend\ProspectController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\UserDashboardController;
-use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\PaymentsActivityController;
 use App\Http\Controllers\Frontend\TimeController;
 use App\Http\Controllers\EsewaController;
@@ -101,23 +101,14 @@ Route::post('/activities/{activity}/reply', [ActivityController::class, 'replyTo
 Route::get('/user-search', [UserController::class, 'searchUsernames']);
 
 // web.php
-Route::post('/tasks/{task}/start-timer', [TaskController::class, 'startTimer']);
-Route::post('/tasks/{task}/pause-timer', [TaskController::class, 'pauseTimer']);
-
-
-
-
-
-
+Route::post('/tasks/{taskId}/start-timer', [TaskController::class, 'startTimer']);
+Route::post('/tasks/{taskId}/pause-timer', [TaskController::class, 'pauseTimer']);
 
 // Route::middleware('guest')->group(function () {
 //     Route::get('register', [RegisteredUserController::class, 'create'])
 //                 ->name('register');
 //     Route::post('register', [RegisteredUserController::class, 'store']);
 // });
-
-
-
 
 Route::get('/storage-link',function(){
     $targetFolder = storage_path('app/public/profilepics');
@@ -127,14 +118,8 @@ Route::get('/storage-link',function(){
 
 Route::get('/tasks', [TaskController::class, 'getTasksForUsername']);
 
-
-
-
-
 Route::get('/api/users/search', [UserController::class, 'search']);
 // routes/web.php
-
-
 
 Route::post('/api/notify-mention', [UserController::class, 'notifyMention']);
 
@@ -147,3 +132,6 @@ Route::post('/tasks/update-status-comment', [TaskController::class, 'updateStatu
 Route::post('/tasks/update-comment', [TaskController::class, 'addComment'])->name('tasks.addComment');
 Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
 
+Route::get('/add-new-clients', [ClientsController::class, 'addclients']);
+Route::resource('clients', ClientsController::class);
+// Route::resource('tasks', TaskController::class);

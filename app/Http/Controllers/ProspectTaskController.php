@@ -44,7 +44,7 @@ class ProspectTaskController extends Controller
  // Send a notification to the assigned user
  $assignedToUser->notify(new TaskAssignedNotification($prospectTask));
         // Send email notification, etc.
-        Mail::to($request->input('assigned_to'))->send(new TaskAssignedMail($prospectTask, $request->input('assigned_to')));
+        // Mail::to($request->input('assigned_to'))->send(new TaskAssignedMail($prospectTask, $request->input('assigned_to')));
 
         return redirect(url('/prospects'))->with('success', 'Task created successfully.');
     }

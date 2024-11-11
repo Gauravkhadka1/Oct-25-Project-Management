@@ -33,7 +33,7 @@ class TaskCommentAddedNotification extends Notification
                     ->subject('New Comment Added to Task')
                     ->line($this->user->username . ' added a new comment on ' . $taskType . ' "' . $this->task->name . '":')
                     ->line($this->comment)  // Show the comment itself
-                    ->action('View Task', url('/tasks/' . $this->task->id));
+                    ->action('View Task', url('dashboard'));
     }
 
     public function toDatabase($notifiable)

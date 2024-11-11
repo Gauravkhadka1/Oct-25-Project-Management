@@ -17,6 +17,7 @@ use App\Models\PaymentTask;
 use App\Models\ProspectTask;
 use App\Models\User;
 use App\Models\TaskSession;
+use Illuminate\Support\Facades\Log;
 use App\Notifications\TaskStatusUpdated;
 use App\Notifications\TaskCommentAdded;
 
@@ -67,38 +68,88 @@ class TaskController extends Controller {
    
 
 
-public function startTimer(Request $request, Task $task)
+public function startTimer(Request $request, $taskId)
 {
-    $session = TaskSession::create([
-        'user_id' => auth()->id(),
-        'task_id' => $task->id,
-        'project_id' => $task->project_id,
-        'started_at' => now(),
-    ]);
-    \Log::info("TaskSession created:", $session->toArray());
+    $taskCategory = $request->input('task_category');
 
-    $task->elapsed_time = $request->input('elapsed_time', 0);
-    $task->save();
+    try {
+        switch ($taskCategory) {
+            case 'Prospect':
+                $task = ProspectTask::find($taskId);
+                break;
+            case 'Payment':
+                $task = PaymentTask::find($taskId);
+                break;
+            case 'Project':
+                $task = Task::find($taskId);
+                break;
+            default:
+                return response()->json(['error' => 'Invalid task category'], 400);
+        }
 
-    return response()->json(['message' => 'Timer started', 'elapsed_time' => $task->elapsed_time]);
+        if (!$task) {
+            return response()->json(['error' => 'Task not found'], 404);
+        }
+
+        // Start the timer by creating a new session
+        $session = TaskSession::create([
+            'user_id' => auth()->id(),
+            'task_id' => $task->id,
+            'started_at' => now(),
+            'task_category' => $taskCategory,
+        ]);
+
+        return response()->json(['message' => 'Timer started', 'task_id' => $task->id]);
+    } catch (\Exception $e) {
+        Log::error("Error in startTimer for task ID $taskId: " . $e->getMessage());
+        return response()->json(['error' => 'Internal Server Error'], 500);
+    }
 }
 
-public function pauseTimer(Request $request, Task $task)
+public function pauseTimer(Request $request, $taskId)
 {
-    $session = TaskSession::where('task_id', $task->id)
-                ->where('user_id', auth()->id())
-                ->whereNull('paused_at')
-                ->latest()
-                ->first();
+    $taskCategory = $request->input('task_category');
 
-    if ($session) {
-        $session->update(['paused_at' => now()]);
+    try {
+        switch ($taskCategory) {
+            case 'Prospect':
+                $task = ProspectTask::find($taskId);
+                break;
+            case 'Payment':
+                $task = PaymentTask::find($taskId);
+                break;
+            case 'Project':
+                $task = Task::find($taskId);
+                break;
+            default:
+                return response()->json(['error' => 'Invalid task category'], 400);
+        }
+
+        if (!$task) {
+            return response()->json(['error' => 'Task not found'], 404);
+        }
+
+        // Find the latest active session for this task
+        $session = TaskSession::where('task_id', $task->id)
+            ->where('user_id', auth()->id())
+            ->whereNull('paused_at')
+            ->where('task_category', $taskCategory)
+            ->latest()
+            ->first();
+
+        if ($session) {
+            $session->update(['paused_at' => now()]);
+        }
+
+        // Update the elapsed time on the task
+        $task->elapsed_time = $request->input('elapsed_time');
+        $task->save();
+
+        return response()->json(['message' => 'Timer paused', 'elapsed_time' => $task->elapsed_time]);
+    } catch (\Exception $e) {
+        Log::error("Error in pauseTimer for task ID $taskId: " . $e->getMessage());
+        return response()->json(['error' => 'Internal Server Error'], 500);
     }
-
-    $task->elapsed_time = $request->input('elapsed_time');
-    $task->save();
-
-    return response()->json(['message' => 'Timer paused', 'elapsed_time' => $task->elapsed_time]);
 }
 
 

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/prospects.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/projects.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/payments.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('frontend/css/add-client.css')); ?>">
 
 
   <?php
@@ -136,6 +137,7 @@
             <li><a href="<?php echo e(url('/all-clients')); ?>">All Clients</a></li>
             <li><a href="<?php echo e(url('/tasks/all')); ?>">Website</a></li>
             <li><a href="<?php echo e(url('/tasks/my')); ?>">Microsoft</a></li>
+            <li><a href="<?php echo e(url('add-new-clients')); ?>">Add New</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -151,7 +153,7 @@
             <li><a href="<?php echo e(url('/prospects')); ?>">All </a></li>
           </ul>
         </li>
-        <?php endif; ?>
+
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
@@ -163,20 +165,6 @@
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/projects')); ?>">All</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
-              <img src="<?php echo e(url('frontend/images/clipboard.png')); ?>" alt=""> Tasks
-            </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
-          </a>
-          <ul class="task-dropdown">
-            <li><a href="<?php echo e(route('dashboard')); ?>">All Tasks</a></li>
           </ul>
         </li>
 
@@ -197,6 +185,22 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </ul>
         </li>
+        <?php endif; ?>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+            <div class="icon-text">
+              <img src="<?php echo e(url('frontend/images/clipboard.png')); ?>" alt=""> Tasks
+            </div>
+            <div class="dropdown-arrow-div">
+              <i class="fas fa-chevron-right dropdown-arrow"></i>
+            </div>
+          </a>
+          <ul class="task-dropdown">
+            <li><a href="<?php echo e(route('dashboard')); ?>">My Tasks</a></li>
+          </ul>
+        </li>
+
+        
       </ul>
     </div>
   </div>

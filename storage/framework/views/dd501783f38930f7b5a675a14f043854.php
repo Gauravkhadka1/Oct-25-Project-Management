@@ -88,7 +88,9 @@
                 <td><?php echo e($task->due_date); ?></td>
                 <td><?php echo e($task->priority); ?></td>
                 <td>
-                    <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>)">Start</button>
+                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">Start</button>
+
+
                 </td>
                 <td id="time-<?php echo e($task->id); ?>">00:00:00</td>
 
@@ -215,35 +217,60 @@ window.addEventListener("beforeunload", function (e) {
 
         // Load the saved time from the database when the page loads
         window.addEventListener("load", () => {
-            <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php $__currentLoopData = $project->tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                if (!timers[<?php echo e($task->id); ?>]) {
-                    timers[<?php echo e($task->id); ?>] = {
-                        elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
-                        running: false
-                    };
-                }
-                console.log("Timer initialized for task ID:", <?php echo e($task->id); ?>);
-                updateTimerDisplay(<?php echo e($task->id); ?>);
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        });
+    // Initialize timers for Project tasks
+    <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $project->tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            timers[<?php echo e($task->id); ?>] = {
+                elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
+                running: false
+            };
+            console.log("Timer initialized for project task ID:", <?php echo e($task->id); ?>);
+            updateTimerDisplay(<?php echo e($task->id); ?>);
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+    // Initialize timers for Payment tasks
+    <?php $__currentLoopData = $payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $payment->payment_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            timers[<?php echo e($task->id); ?>] = {
+                elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
+                running: false
+            };
+            console.log("Timer initialized for payment task ID:", <?php echo e($task->id); ?>);
+            updateTimerDisplay(<?php echo e($task->id); ?>);
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+    // Initialize timers for Prospect tasks
+    <?php $__currentLoopData = $prospects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $prospect->prospect_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            timers[<?php echo e($task->id); ?>] = {
+                elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
+                running: false
+            };
+            console.log("Timer initialized for prospect task ID:", <?php echo e($task->id); ?>);
+            updateTimerDisplay(<?php echo e($task->id); ?>);
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+});
+
+
 
         // Modify toggleTimer to ensure that it pauses the timer before leaving
-function toggleTimer(taskId) {
+        function toggleTimer(taskId, taskCategory) {
     const timer = timers[taskId];
     const button = document.getElementById(`toggle-${taskId}`);
-    
+
     if (timer) {
         if (timer.running) {
             // If timer is running, pause it
-            pauseTimer(taskId);
+            pauseTimer(taskId, taskCategory);
             button.innerText = "Resume";
             button.classList.remove("pause");
             button.classList.add("start");
         } else {
             // If timer is paused or not started, start/resume it
-            startTimer(taskId);
+            startTimer(taskId, taskCategory);
             button.innerText = "Pause";
             button.classList.remove("start");
             button.classList.add("pause");
@@ -253,31 +280,31 @@ function toggleTimer(taskId) {
     }
 }
 
-        function startTimer(taskId) {
-            const timer = timers[taskId];
-            if (timer) {
-                timer.startTime = new Date().getTime() - timer.elapsedTime;
-                timer.running = true;
-                
-                console.log(`Starting/resuming timer for task ID: ${taskId}`);
-                sendTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/start-timer`);
-                
-                updateTimer(taskId);
-            }
-        }
 
-        function pauseTimer(taskId) {
-            const timer = timers[taskId];
-            if (timer && timer.running) {
-                timer.elapsedTime = new Date().getTime() - timer.startTime;
-                timer.running = false;
-                
-                console.log(`Pausing timer for task ${taskId}, elapsed time: ${timer.elapsedTime}`);
-                
-                sendTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/pause-timer`);
-            }
-        }
+function startTimer(taskId, taskCategory) {
+    const timer = timers[taskId];
+    if (timer) {
+        timer.startTime = new Date().getTime() - timer.elapsedTime;
+        timer.running = true;
+        
+        console.log(`Starting/resuming timer for task ID: ${taskId} of category ${taskCategory}`);
+        sendTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/start-timer`, taskCategory);
+        
+        updateTimer(taskId);
+    }
+}
 
+function pauseTimer(taskId, taskCategory) {
+    const timer = timers[taskId];
+    if (timer && timer.running) {
+        timer.elapsedTime = new Date().getTime() - timer.startTime;
+        timer.running = false;
+        
+        console.log(`Pausing timer for task ${taskId} of category ${taskCategory}, elapsed time: ${timer.elapsedTime}`);
+        
+        sendTimerUpdate(taskId, timer.elapsedTime / 1000, `/tasks/${taskId}/pause-timer`, taskCategory);
+    }
+}
         function updateTimer(taskId) {
             const timer = timers[taskId];
             if (timer && timer.running) {
@@ -302,20 +329,34 @@ function toggleTimer(taskId) {
                     `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }
         }
-
-        function sendTimerUpdate(taskId, elapsedTime, url) {
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
-                },
-                body: JSON.stringify({ elapsed_time: elapsedTime })
-            })
-            .then(response => response.json())
-            .then(data => console.log(`Timer updated: ${data.message}`))
-            .catch(error => console.error('Error updating timer:', error));
+        function sendTimerUpdate(taskId, elapsedTime, url, taskCategory) {
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            elapsed_time: elapsedTime,
+            task_category: taskCategory
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error ${response.status}`);
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Timer updated:", data);
+    })
+    .catch(error => {
+        console.error("Error updating timer:", error);
+        // Additional error handling if needed
+    });
+}
+
+
         // Handle status change for task, payment task, and prospect task
 document.querySelectorAll('.task-status, .payment-task-status, .prospect-task-status').forEach(statusElement => {
     statusElement.addEventListener('change', function () {
