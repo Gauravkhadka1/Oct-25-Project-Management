@@ -91,13 +91,19 @@ public function startTimer(Request $request, $taskId)
             return response()->json(['error' => 'Task not found'], 404);
         }
 
-        // Start the timer by creating a new session
-        $session = TaskSession::create([
+        // Include project_id only if it exists
+        $sessionData = [
             'user_id' => auth()->id(),
             'task_id' => $task->id,
             'started_at' => now(),
             'task_category' => $taskCategory,
-        ]);
+        ];
+
+        if (isset($task->project_id)) {
+            $sessionData['project_id'] = $task->project_id;
+        }
+
+        $session = TaskSession::create($sessionData);
 
         return response()->json(['message' => 'Timer started', 'task_id' => $task->id]);
     } catch (\Exception $e) {
@@ -129,7 +135,7 @@ public function pauseTimer(Request $request, $taskId)
             return response()->json(['error' => 'Task not found'], 404);
         }
 
-        // Find the latest active session for this task
+        // Find the latest active session for this task and category
         $session = TaskSession::where('task_id', $task->id)
             ->where('user_id', auth()->id())
             ->whereNull('paused_at')
