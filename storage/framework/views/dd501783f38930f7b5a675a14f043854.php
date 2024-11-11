@@ -163,14 +163,20 @@
                         <td colspan="3">N/A</td>
                     </tr>
                 <?php else: ?>
-                    <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <tr>
-                            <td><?php echo e($interval); ?></td>
-                            <td><?php echo e($task['task_name']); ?></td>
-                            <td><?php echo e($task['project_name']); ?></td>
-                            <td><?php echo e($task['time_spent']); ?></td>
-                        </tr>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php
+                $isFirstTask = true;
+            ?>
+            <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr>
+                    <td><?php echo e($isFirstTask ? $interval : ' " " '); ?></td>
+                    <td><?php echo e($task['task_name']); ?></td>
+                    <td><?php echo e($task['project_name']); ?></td>
+                    <td><?php echo e($task['time_spent']); ?></td>
+                </tr>
+                <?php
+                    $isFirstTask = false;
+                ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <?php endif; ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
@@ -185,6 +191,10 @@
                     <td><?php echo e($summary['total_time_spent']); ?></td>
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <tr>
+                <td colspan="3"><strong>Total Time Spent Today on All Tasks</strong></td>
+                <td><strong><?php echo e($totalTimeSpentAcrossTasksFormatted); ?></strong></td>
+            </tr>
         </tfoot>
     </table>
 </div>

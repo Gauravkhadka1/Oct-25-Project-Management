@@ -126,6 +126,7 @@ foreach (range(0, 23) as $hour) {
 
 // Prepare summary data for the total time spent on each task
 $taskSummaryData = [];
+$totalTimeSpentAcrossTasks = 0;
 foreach ($hourlySessionsData as $interval => $tasks) {
     foreach ($tasks as $taskId => $taskData) {
         if (!isset($taskSummaryData[$taskId])) {
@@ -141,6 +142,9 @@ foreach ($hourlySessionsData as $interval => $tasks) {
 
         // Accumulate total time spent on the task
         $taskSummaryData[$taskId]['total_time_spent'] += $timeSpentInSeconds;
+
+         // Add to the overall total time spent on all tasks
+         $totalTimeSpentAcrossTasks += $timeSpentInSeconds;
     }
 }
 
@@ -154,7 +158,7 @@ if (!$hourlyData->isEmpty() || in_array($intervalLabel, $defaultIntervals)) {
     $hourlySessionsData[$intervalLabel] = $hourlyData;
 }
 
-
+$totalTimeSpentAcrossTasksFormatted = $this->formatDuration($totalTimeSpentAcrossTasks); // Format overall total time
 // Pass the updated data to the view
 return view('frontends.dashboard', compact(
 'projects',
@@ -167,7 +171,8 @@ return view('frontends.dashboard', compact(
 'prospectTasks',
 'paymentTasks',
 'hourlySessionsData',
-'taskSummaryData'
+'taskSummaryData',
+'totalTimeSpentAcrossTasksFormatted'
 ));
 
     }

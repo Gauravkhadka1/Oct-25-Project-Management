@@ -164,14 +164,20 @@
                         <td colspan="3">N/A</td>
                     </tr>
                 @else
-                    @foreach($tasks as $task)
-                        <tr>
-                            <td>{{ $interval }}</td>
-                            <td>{{ $task['task_name'] }}</td>
-                            <td>{{ $task['project_name'] }}</td>
-                            <td>{{ $task['time_spent'] }}</td>
-                        </tr>
-                    @endforeach
+                @php
+                $isFirstTask = true;
+            @endphp
+            @foreach($tasks as $task)
+                <tr>
+                    <td>{{ $isFirstTask ? $interval : ' " " ' }}</td>
+                    <td>{{ $task['task_name'] }}</td>
+                    <td>{{ $task['project_name'] }}</td>
+                    <td>{{ $task['time_spent'] }}</td>
+                </tr>
+                @php
+                    $isFirstTask = false;
+                @endphp
+                @endforeach
                 @endif
             @endforeach
         </tbody>
@@ -186,6 +192,10 @@
                     <td>{{ $summary['total_time_spent'] }}</td>
                 </tr>
             @endforeach
+            <tr>
+                <td colspan="3"><strong>Total Time Spent Today on All Tasks</strong></td>
+                <td><strong>{{ $totalTimeSpentAcrossTasksFormatted }}</strong></td>
+            </tr>
         </tfoot>
     </table>
 </div>
