@@ -339,23 +339,18 @@ function pauseTimer(taskId, taskCategory) {
         },
         body: JSON.stringify({
             elapsed_time: elapsedTime,
-            task_category: taskCategory
+            task_category: taskCategory // Ensure correct category is sent
         })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error ${response.status}`);
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
         console.log("Timer updated:", data);
     })
     .catch(error => {
         console.error("Error updating timer:", error);
-        // Additional error handling if needed
     });
 }
+
 
 
         // Handle status change for task, payment task, and prospect task
