@@ -64,18 +64,7 @@ $taskSessions = TaskSession::where('user_id', $user->id)
 ->with(['task', 'project'])
 ->get();
 
-$paymentTaskSessions = PaymentTaskSession::where('user_id', $user->id)
-->where('started_at', '>=', now()->subDay())
-->with(['payment_task', 'payment'])
-->get();
 
-$prospectTaskSessions = ProspectTaskSession::where('user_id', $user->id)
-->where('started_at', '>=', now()->subDay())
-->with(['prospect_task', 'prospect'])
-->get();
-
-// Merge task sessions from all categories
-$allTaskSessions = $taskSessions->merge($paymentTaskSessions)->merge($prospectTaskSessions);
 
 // Initialize hourly sessions data array
 $hourlySessionsData = [];
@@ -95,7 +84,7 @@ $endInterval = $startInterval->copy()->addHour()->setTimezone($nepaliTimeZone);
 $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
 
 // Filter task sessions by this time range
-$hourlyData = $allTaskSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
+$hourlyData = $taskSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
     $sessionStart = $session->started_at->copy()->setTimezone($nepaliTimeZone);
     $sessionEnd = ($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone);
 

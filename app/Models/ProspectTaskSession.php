@@ -7,28 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProspectTaskSession extends Model
 {
-    protected $fillable = ['user_id', 'task_id', 'prospect_id', 'started_at', 'paused_at'];
-    // In your TaskSession model
+    use HasFactory;
+
+    protected $fillable = ['user_id', 'prospect_task_id', 'prospect_id', 'started_at', 'paused_at'];
+
     protected $casts = [
         'started_at' => 'datetime',
         'paused_at' => 'datetime',
     ];
-    
 
-
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function task() {
-        return $this->belongsTo(Task::class);
+    public function prospectTask()
+    {
+        return $this->belongsTo(ProspectTask::class);
     }
 
-    public function prospect() {
+    public function prospect()
+    {
         return $this->belongsTo(Prospect::class);
     }
-    public function prospect_task()
-{
-    return $this->belongsTo(ProspectTask::class, 'prospect_task_id');
-}
 }

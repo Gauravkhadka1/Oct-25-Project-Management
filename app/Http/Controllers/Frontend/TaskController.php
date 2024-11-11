@@ -73,44 +73,38 @@ class TaskController extends Controller {
 public function startTimer(Request $request, $taskId)
 {
     $taskCategory = $request->input('task_category');
-
+    
     try {
         switch ($taskCategory) {
             case 'Prospect':
                 $task = ProspectTask::find($taskId);
                 if (!$task) return response()->json(['error' => 'Task not found'], 404);
-                
-                // Create a session for ProspectTask
-                $session = ProspectTaskSession::create([
+
+                // Create ProspectTaskSession
+                ProspectTaskSession::create([
                     'user_id' => auth()->id(),
-                    'prospect_id' => $task->id,
+                    'prospect_task_id' => $task->id,
+                    'prospect_id' => $task->prospect_id,
                     'started_at' => now(),
                 ]);
                 break;
-
+            
             case 'Payment':
                 $task = PaymentTask::find($taskId);
                 if (!$task) return response()->json(['error' => 'Task not found'], 404);
-                
-                // Create a session for PaymentTask
-                $session = PaymentTaskSession::create([
+
+                // Create PaymentTaskSession
+                PaymentTaskSession::create([
                     'user_id' => auth()->id(),
-                    'payments_id' => $task->id,
+                    'payment_task_id' => $task->id,
+                    'payment_id' => $task->payments_id,
                     'started_at' => now(),
                 ]);
                 break;
-
+            
             case 'Project':
                 $task = Task::find($taskId);
                 if (!$task) return response()->json(['error' => 'Task not found'], 404);
-
-                // Create a session for Task (in the existing task_sessions table)
-                $session = TaskSession::create([
-                    'user_id' => auth()->id(),
-                    'task_id' => $task->id,
-                    'project_id' => $task->project_id, 
-                    'started_at' => now(),
-                ]);
                 break;
 
             default:
@@ -118,7 +112,6 @@ public function startTimer(Request $request, $taskId)
         }
 
         return response()->json(['message' => 'Timer started', 'task_id' => $task->id]);
-
     } catch (\Exception $e) {
         Log::error("Error in startTimer for task ID $taskId: " . $e->getMessage());
         return response()->json(['error' => 'Internal Server Error'], 500);
@@ -127,10 +120,11 @@ public function startTimer(Request $request, $taskId)
 
 
 
+
 public function pauseTimer(Request $request, $taskId)
 {
     $taskCategory = $request->input('task_category');
-
+    
     try {
         switch ($taskCategory) {
             case 'Prospect':
@@ -138,7 +132,7 @@ public function pauseTimer(Request $request, $taskId)
                 if (!$task) return response()->json(['error' => 'Task not found'], 404);
 
                 // Find the latest active session for ProspectTask
-                $session = ProspectTaskSession::where('prospect_id', $task->id)
+                $session = ProspectTaskSession::where('prospect_task_id', $task->id)
                     ->where('user_id', auth()->id())
                     ->whereNull('paused_at')
                     ->latest()
@@ -147,7 +141,6 @@ public function pauseTimer(Request $request, $taskId)
                 if ($session) {
                     $session->update(['paused_at' => now()]);
                 }
-
                 break;
 
             case 'Payment':
@@ -155,7 +148,7 @@ public function pauseTimer(Request $request, $taskId)
                 if (!$task) return response()->json(['error' => 'Task not found'], 404);
 
                 // Find the latest active session for PaymentTask
-                $session = PaymentTaskSession::where('payments_id', $task->id)
+                $session = PaymentTaskSession::where('payment_task_id', $task->id)
                     ->where('user_id', auth()->id())
                     ->whereNull('paused_at')
                     ->latest()
@@ -164,14 +157,13 @@ public function pauseTimer(Request $request, $taskId)
                 if ($session) {
                     $session->update(['paused_at' => now()]);
                 }
-
                 break;
-
+            
             case 'Project':
                 $task = Task::find($taskId);
                 if (!$task) return response()->json(['error' => 'Task not found'], 404);
 
-                // Find the latest active session for Task (in the existing task_sessions table)
+                // Find the latest active session for Task
                 $session = TaskSession::where('task_id', $task->id)
                     ->where('user_id', auth()->id())
                     ->whereNull('paused_at')
@@ -181,7 +173,6 @@ public function pauseTimer(Request $request, $taskId)
                 if ($session) {
                     $session->update(['paused_at' => now()]);
                 }
-
                 break;
 
             default:
@@ -193,7 +184,6 @@ public function pauseTimer(Request $request, $taskId)
         $task->save();
 
         return response()->json(['message' => 'Timer paused', 'elapsed_time' => $task->elapsed_time]);
-
     } catch (\Exception $e) {
         Log::error("Error in pauseTimer for task ID $taskId: " . $e->getMessage());
         return response()->json(['error' => 'Internal Server Error'], 500);
