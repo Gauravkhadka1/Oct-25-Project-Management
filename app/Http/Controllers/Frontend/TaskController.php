@@ -102,10 +102,18 @@ public function startTimer(Request $request, $taskId)
                 ]);
                 break;
             
-            case 'Project':
-                $task = Task::find($taskId);
-                if (!$task) return response()->json(['error' => 'Task not found'], 404);
-                break;
+                case 'Project':
+                    $task = Task::find($taskId);
+                    if (!$task) return response()->json(['error' => 'Task not found'], 404);
+    
+                    // Create TaskSession
+                    TaskSession::create([
+                        'user_id' => auth()->id(),
+                        'task_id' => $task->id,
+                        'project_id' => $task->project_id,
+                        'started_at' => now(),
+                    ]);
+                    break;
 
             default:
                 return response()->json(['error' => 'Invalid task category'], 400);

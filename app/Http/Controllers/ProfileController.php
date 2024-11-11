@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Task;
-use App\Models\ProspectTask;
 use App\Models\PaymentTask;
+use App\Models\ProspectTask;
 use App\Models\Project;
 use App\Models\Prospect;
 use App\Models\Payments;
@@ -58,69 +58,102 @@ class ProfileController extends Controller
             $query->where('assigned_to', $user->id);
         }])->get();
 
-        // Fetch Task Sessions, Prospect Task Sessions, and Payment Task Sessions for the past 24 hours
-$taskSessions = TaskSession::where('user_id', $user->id)
-->where('started_at', '>=', now()->subDay())
-->with(['task', 'project'])
-->get();
+         // Fetch sessions for all task categories
+    $taskSessions = TaskSession::where('user_id', $user->id)
+    ->where('started_at', '>=', now()->subDay())
+    ->with(['task', 'project'])
+    ->get();
 
+$prospectTaskSessions = ProspectTaskSession::where('user_id', $user->id)
+    ->where('started_at', '>=', now()->subDay())
+    ->with(['prospectTask', 'prospect'])
+    ->get();
 
+$paymentTaskSessions = PaymentTaskSession::where('user_id', $user->id)
+    ->where('started_at', '>=', now()->subDay())
+    ->with(['paymentTask', 'payment'])
+    ->get();
+
+// Combine all task sessions (projects, prospects, payments)
+$allSessions = $taskSessions->merge($prospectTaskSessions)->merge($paymentTaskSessions);
 
 // Initialize hourly sessions data array
 $hourlySessionsData = [];
-$nepaliTimeZone = 'Asia/Kathmandu'; // Define Nepali Time Zone
+$nepaliTimeZone = new DateTimeZone('Asia/Kathmandu');
 
-
-// Define the default time intervals
-$defaultIntervals = ['10 AM - 11 AM', '11 AM - 12 PM', '12 PM - 1 PM', '1 PM - 2 PM', '2 PM - 3 PM', '3 PM - 4 PM', '4 PM - 5 PM', '5 PM - 6 PM'];
-
-// Loop through each hour of the day
+// Iterate over each hour of the day
 foreach (range(0, 23) as $hour) {
-// Define start and end of the hourly interval in Nepali timezone
-$startInterval = Carbon::now()->startOfDay()->addHours($hour)->setTimezone($nepaliTimeZone);
-$endInterval = $startInterval->copy()->addHour()->setTimezone($nepaliTimeZone);
+    // Define start and end of the hourly interval in Nepali timezone
+    $startInterval = Carbon::now()->startOfDay()->addHours($hour)->setTimezone($nepaliTimeZone);
+    $endInterval = $startInterval->copy()->addHour()->setTimezone($nepaliTimeZone);
 
-// Generate the interval label
-$intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
+    // Generate the interval label
+    $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
 
-// Filter task sessions by this time range
-$hourlyData = $taskSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
-    $sessionStart = $session->started_at->copy()->setTimezone($nepaliTimeZone);
-    $sessionEnd = ($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone);
+    // Filter all sessions by this time range
+    $hourlyData = $allSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
+        $sessionStart = $session->started_at->copy()->setTimezone($nepaliTimeZone);
+        $sessionEnd = ($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone);
 
-    return $sessionStart->between($startInterval, $endInterval) || $sessionEnd->between($startInterval, $endInterval);
-})->groupBy('task_id')->map(function ($sessions) use ($startInterval, $endInterval, $nepaliTimeZone) {
-    $totalTimeSpentInSeconds = 0;
+        return $sessionStart->between($startInterval, $endInterval) || $sessionEnd->between($startInterval, $endInterval);
+    })->groupBy(function ($session) {
+        // Group by task ID, taking into account different task types (Prospect, Payment, Project)
+        return $session->task_id ?? ($session->prospect_task_id ?? $session->payment_task_id);
+    })->map(function ($sessions) use ($startInterval, $endInterval, $nepaliTimeZone) {
+        $totalTimeSpentInSeconds = 0;
 
-    foreach ($sessions as $session) {
-        $startTime = max($session->started_at->copy()->setTimezone($nepaliTimeZone), $startInterval);
-        $endTime = min(($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone), $endInterval);
+        foreach ($sessions as $session) {
+            $startTime = max($session->started_at->copy()->setTimezone($nepaliTimeZone), $startInterval);
+            $endTime = min(($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone), $endInterval);
 
-        $totalTimeSpentInSeconds += $startTime->diffInSeconds($endTime);
+            $totalTimeSpentInSeconds += $startTime->diffInSeconds($endTime);
+        }
+
+        $formattedTime = $this->formatDuration($totalTimeSpentInSeconds);
+
+        return [
+            'task_name' => $sessions->first()->task->name ?? $sessions->first()->prospectTask->name ?? $sessions->first()->paymentTask->name,
+            'project_name' => $sessions->first()->project->name ?? $sessions->first()->prospect->company_name ?? $sessions->first()->payment->company_name,
+            'time_spent' => $formattedTime,
+        ];
+    });
+
+    // Only add this interval if it has tasks
+    if (!$hourlyData->isEmpty()) {
+        $hourlySessionsData[$intervalLabel] = $hourlyData;
     }
+}
 
-    $formattedTime = $this->formatDuration($totalTimeSpentInSeconds);
+// Prepare summary data for the total time spent on each task
+$taskSummaryData = [];
+foreach ($hourlySessionsData as $interval => $tasks) {
+    foreach ($tasks as $taskId => $taskData) {
+        if (!isset($taskSummaryData[$taskId])) {
+            $taskSummaryData[$taskId] = [
+                'task_name' => $taskData['task_name'],
+                'project_name' => $taskData['project_name'],
+                'total_time_spent' => 0,
+            ];
+        }
 
-    return [
-       'task_name' => optional($sessions->first()->task)->name ??
-               optional($sessions->first()->payment_task)->name ??
-               optional($sessions->first()->prospect_task)->name,
+        // Convert time spent to seconds for each interval
+        $timeSpentInSeconds = $this->parseDurationToSeconds($taskData['time_spent']);
 
-        'project_name' => optional($sessions->first()->project)->name ??
-                  optional($sessions->first()->payment)->company_name ??
-                  optional($sessions->first()->prospect)->company_name,
+        // Accumulate total time spent on the task
+        $taskSummaryData[$taskId]['total_time_spent'] += $timeSpentInSeconds;
+    }
+}
 
-        'time_spent' => $formattedTime,
-    ];
-});
-$taskSummaryData = // your data or query to fetch the data, for example:
-    Task::select('name', 'status', 'due_date')->get();
-
+// Format total time spent back to HH:MM:SS for display
+foreach ($taskSummaryData as &$summary) {
+    $summary['total_time_spent'] = $this->formatDuration($summary['total_time_spent']);
+}
+$defaultIntervals = ['10 AM - 11 AM', '11 AM - 12 PM', '12 PM - 1 PM', '1 PM - 2 PM', '2 PM - 3 PM', '3 PM - 4 PM', '4 PM - 5 PM', '5 PM - 6 PM'];
 // Only add this interval if it’s a default interval or if it has tasks
 if (!$hourlyData->isEmpty() || in_array($intervalLabel, $defaultIntervals)) {
     $hourlySessionsData[$intervalLabel] = $hourlyData;
 }
-}
+
 
 // Pass the updated data to the view
 return view('frontends.dashboard', compact(
