@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NewDashboardController;
 use App\Http\Controllers\Frontend\ProjectController;
 use App\Http\Controllers\Frontend\TaskController;
 use App\Http\Controllers\ProspectTaskController;
@@ -25,6 +26,7 @@ use App\Http\Middleware\CheckAllowedEmails;
 
 Route::get('/',[HomeController::class, 'index']);
 Route::get('/mention',[HomeController::class, 'mention']);
+Route::get('/new-user-dashboard',[NewDashboardController::class, 'newuserdashboard']);
 
 Route::get('/dashboard', [ProfileController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -127,7 +129,9 @@ Route::post('/submit-message', [MessageController::class, 'submitMessage']);
 
 Route::get('/user-dashboard/{username}', [UserDashboardController::class, 'userDashboard'])->name('user.dashboard');
 
+
 Route::post('/tasks/update-status-comment', [TaskController::class, 'updateStatusComment'])->name('tasks.updateStatusComment');
+
 
 Route::post('/tasks/update-comment', [TaskController::class, 'addComment'])->name('tasks.addComment');
 Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');

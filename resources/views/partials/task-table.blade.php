@@ -1,96 +1,219 @@
 
-@php
-$tasks = collect(); // Create an empty collection to hold all tasks
+        <div class="users-tasks">
+            @php
+                $loggedInUser = Auth::user()->username; // Get the logged-in user's username
+            @endphp
+        </div>
 
-// Add tasks from payments first
-foreach ($payments as $payment) {
-foreach ($payment->payment_tasks as $task) {
-$task->category = 'Payment';
-$task->category_name = $payment->company_name; // Store payment company name in 'category_name'
-$tasks->push($task); // Add payment tasks to the collection
-}
-}
 
-// Add tasks from projects second
-foreach ($projects as $project) {
-foreach ($project->tasks as $task) {
-$task->category = 'Project';
-$task->category_name = $project->name; // Store project name in 'category_name'
-$tasks->push($task); // Add project tasks to the collection
-}
-}
+        <div class="task-board">
+            @php
+            $tasks = collect(); // Create an empty collection to hold all tasks
 
-// Add tasks from prospects third
-foreach ($prospects as $prospect) {
-foreach ($prospect->prospect_tasks as $task) {
-$task->category = 'Prospect';
-$task->category_name = $prospect->company_name; // Store prospect company name in 'category_name'
-$tasks->push($task); // Add prospect tasks to the collection
-}
-}
+            // Add tasks from payments first
+            foreach ($payments as $payment) {
+            foreach ($payment->payment_tasks as $task) {
+            $task->category = 'Payment';
+            $task->category_name = $payment->company_name; // Store payment company name in 'category_name'
+            $tasks->push($task); // Add payment tasks to the collection
+            }
+            }
 
-// Flag to check if there are any tasks
-$hasTasks = $tasks->isNotEmpty();
-$serialNo = 1;
-@endphp
-@if ($hasTasks)
-<div class="user-tasks">
-<table class="task-table">
-                <thead>
-                    <tr>
-                        <th>S.N</th>
-                        <th>Task</th>
-                        <th>Category Name</th> <!-- New column for Category Name -->
-                        <th>Category</th> <!-- New column for Category Type -->
-                        <th>Assigned by</th>
-                        <th>Start date</th>
-                        <th>Due date</th>
-                        <th>Priority</th>
-                        <th>Actions</th>
-                        <th>Timestamp</th>
-                        <th>Status</th>
-                        <th>Comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($tasks as $task)
-                        <tr>
-                            <td>{{ $serialNo++ }}</td>
-                            <td>{{ $task->name }}</td>
-                            <td>{{ $task->category_name }}</td> <!-- Category Name -->
-                            <td>
-    <span class="{{ $task->category === 'Project' ? 'label-project' : ($task->category === 'Payment' ? 'label-payment' : 'label-prospect') }}">
-        {{ $task->category }}
-    </span>
-</td>
- <!-- Category Type (Project/Payment/Prospect) -->
-                            <td>{{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}</td>
-                            <td>{{ $task->start_date }}</td>
-                            <td>{{ $task->due_date }}</td>
-                            <td>{{ $task->priority }}</td>
-                            <td>
-                                    <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }})">Start</button>
-                                </td>
-                                <td id="time-{{ $task->id }}">00:00:00</td>
-                            <td>
-                                <select name="status">
-                                    <option>To Do</option>
-                                    <option>In Progress</option>
-                                    <option>QA</option>
-                                    <option>Completed</option>
-                                </select>
-                            </td>
-                            <td><textarea>{{ $task->comment }}</textarea></td>
-                        </tr>
+            // Add tasks from projects second
+            foreach ($projects as $project) {
+            foreach ($project->tasks as $task) {
+            $task->category = 'Project';
+            $task->category_name = $project->name; // Store project name in 'category_name'
+            $tasks->push($task); // Add project tasks to the collection
+            }
+            }
+
+            // Add tasks from prospects third
+            foreach ($prospects as $prospect) {
+            foreach ($prospect->prospect_tasks as $task) {
+            $task->category = 'Prospect';
+            $task->category_name = $prospect->company_name; // Store prospect company name in 'category_name'
+            $tasks->push($task); // Add prospect tasks to the collection
+            }
+            }
+
+            // Flag to check if there are any tasks
+            $hasTasks = $tasks->isNotEmpty();
+            $serialNo = 1;
+            
+            $tasksToDo = $tasks->filter(function ($task) {
+                return $task->status === 'To Do' || $task->status === null;
+            });
+                $tasksInProgress = $tasks->where('status', 'In Progress');
+                $tasksQA = $tasks->where('status', 'QA');
+                $tasksCompleted = $tasks->where('status', 'Completed');
+                $tasksClosed = $tasks->where('status', 'Closed');
+            @endphp
+
+            <!-- Column for To Do tasks -->
+            <div class="task-column" id="todo" data-status="To Do">
+                <h3>To Do</h3>
+                <div class="task-list">
+                    @foreach ($tasksToDo as $task)
+                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
+                            <div class="task-name">
+                            {{ $task->name }}
+                            </div>
+                            <div class="in-project">
+                            in {{ $task->category_name }}
+                            </div>
+                            <div class="assigne">
+                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
+                            </div>
+                            <div class="due-date">
+                            Due Date:{{ $task->due_date }}
+                            </div>
+                            <div class="priority">
+                            Priority: {{ $task->priority }}
+                            </div>
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
-                </tbody>
-            </table>
-        @else
-            <p>No tasks available.</p>
-        @endif
-    </div>
+                </div>
+            </div>
+
+
+            <!-- Column for In Progress tasks -->
+            <div class="task-column" id="inprogress" data-status="In Progress">
+                <h3>In Progress</h3>
+                <div class="task-list">
+                    @foreach ($tasksInProgress as $task)
+                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
+                        <div class="task-name">
+                            {{ $task->name }}
+                            </div>
+                            <div class="in-project">
+                            in {{ $task->category_name }}
+                            </div>
+                            <div class="assigne">
+                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
+                            </div>
+                            <div class="due-date">
+                            Due Date:{{ $task->due_date }}
+                            </div>
+                            <div class="priority">
+                            Priority: {{ $task->priority }}
+                            </div>
+                            <div class="start-pause">
+                            <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">Start</button>
+                            </div>
+                            <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                            </div>
+                            <!-- Additional task details here -->
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Column for QA tasks -->
+            <div class="task-column" id="qa" data-status="QA">
+                <h3>QA</h3>
+                <div class="task-list">
+                    @foreach ($tasksQA as $task)
+                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
+                        <div class="task-name">
+                            {{ $task->name }}
+                            </div>
+                            <div class="in-project">
+                            in {{ $task->category_name }}
+                            </div>
+                            <div class="assigne">
+                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
+                            </div>
+                            <div class="due-date">
+                            Due Date:{{ $task->due_date }}
+                            </div>
+                            <div class="priority">
+                            Priority: {{ $task->priority }}
+                            </div>
+                            <div class="start-pause">
+                            <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">Start</button>
+                            </div>
+                            <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                            </div>
+                            <!-- Additional task details here -->
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Column for Completed tasks -->
+            <div class="task-column" id="completed" data-status="Completed">
+                <h3>Completed</h3>
+                <div class="task-list">
+                    @foreach ($tasksCompleted as $task)
+                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
+                        <div class="task-name">
+                            {{ $task->name }}
+                            </div>
+                            <div class="in-project">
+                            in {{ $task->category_name }}
+                            </div>
+                            <div class="assigne">
+                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
+                            </div>
+                            <div class="due-date">
+                            Due Date:{{ $task->due_date }}
+                            </div>
+                            <div class="priority">
+                            Priority: {{ $task->priority }}
+                            </div>
+                            <div class="start-pause">
+                            <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">Start</button>
+                            </div>
+                            <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                            </div>
+                            <!-- Additional task details here -->
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Column for Closed tasks -->
+            <div class="task-column" id="closed" data-status="Closed">
+                <h3>Closed</h3>
+                <div class="task-list">
+                    @foreach ($tasksClosed as $task)
+                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
+                        <div class="task-name">
+                            {{ $task->name }}
+                            </div>
+                            <div class="in-project">
+                            in {{ $task->category_name }}
+                            </div>
+                            <div class="assigne">
+                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
+                            </div>
+                            <div class="due-date">
+                            Due Date:{{ $task->due_date }}
+                            </div>
+                            <div class="priority">
+                            Priority: {{ $task->priority }}
+                            </div>
+                            <div class="start-pause">
+                            <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">Start</button>
+                            </div>
+                            <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                            </div>
+                            <!-- Additional task details here -->
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
    
-</div>
+
 
 <div class="schedule-table">
             <div class="schedule-table-heading">
