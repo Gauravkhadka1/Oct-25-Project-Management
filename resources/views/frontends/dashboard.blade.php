@@ -143,8 +143,12 @@
    
 </div>
 <div class="schedule-table">
-    <div class="schedule-table-heading">
-        <h2>{{ $username }}'s Today's Schedule</h2>
+<div class="schedule-table-heading">
+        <h2>{{ $username }} Today Schedule</h2>
+        <form method="GET" action="{{ route('dashboard') }}">
+            <label for="schedule-date">View Schedule:</label>
+            <input type="date" id="schedule-date" name="date" value="{{ request('date', now()->toDateString()) }}" onchange="this.form.submit()">
+        </form>
     </div>
 
     <table class="task-table">

@@ -142,8 +142,12 @@
    
 </div>
 <div class="schedule-table">
-    <div class="schedule-table-heading">
-        <h2><?php echo e($username); ?>'s Today's Schedule</h2>
+<div class="schedule-table-heading">
+        <h2><?php echo e($username); ?> Today Schedule</h2>
+        <form method="GET" action="<?php echo e(route('dashboard')); ?>">
+            <label for="schedule-date">View Schedule:</label>
+            <input type="date" id="schedule-date" name="date" value="<?php echo e(request('date', now()->toDateString())); ?>" onchange="this.form.submit()">
+        </form>
     </div>
 
     <table class="task-table">

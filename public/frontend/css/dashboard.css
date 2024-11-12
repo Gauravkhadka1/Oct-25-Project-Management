@@ -212,6 +212,44 @@ tbody tr:nth-child(odd) {
 .schedule-table-heading {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 15px;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #f4f7fb;
+    border-radius: 8px;
 }
+
+.schedule-table-heading h2 {
+    flex-grow: 1;
+    text-align: center; /* Centers the h2 within its available space */
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.schedule-table-heading form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Style for label and input */
+.schedule-table-heading form label {
+    font-size: 16px;
+    color: #555;
+}
+
+.schedule-table-heading form input[type="date"] {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.schedule-table-heading form input[type="date"]:focus {
+    border-color: #4e73df;
+}
+
+
