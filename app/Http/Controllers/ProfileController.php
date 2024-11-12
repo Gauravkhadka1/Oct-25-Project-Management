@@ -57,71 +57,78 @@ class ProfileController extends Controller
         $payments = Payments::with(['payment_tasks' => function ($query) use ($user) {
             $query->where('assigned_to', $user->id);
         }])->get();
+// Define the Nepali timezone
+$nepaliTimeZone = new DateTimeZone('Asia/Kathmandu');
 
+// Get the current date and time in Nepali timezone, then move to the start of the day
+$nepaliStartOfDay = Carbon::now($nepaliTimeZone)->startOfDay();
+
+// Convert Nepali start of day to UTC for database filtering
+$utcStartOfDay = $nepaliStartOfDay->copy()->setTimezone('UTC');
          // Fetch sessions for all task categories
-    $taskSessions = TaskSession::where('user_id', $user->id)
-    ->where('started_at', '>=', now()->subDay())
-    ->with(['task', 'project'])
-    ->get();
+ // Fetch sessions for all task categories starting from midnight Nepali time (converted to UTC)
+$taskSessions = TaskSession::where('user_id', $user->id)
+->where('started_at', '>=', $utcStartOfDay)
+->with(['task', 'project'])
+->get();
 
 $prospectTaskSessions = ProspectTaskSession::where('user_id', $user->id)
-    ->where('started_at', '>=', now()->subDay())
-    ->with(['prospectTask', 'prospect'])
-    ->get();
+->where('started_at', '>=', $utcStartOfDay)
+->with(['prospectTask', 'prospect'])
+->get();
 
 $paymentTaskSessions = PaymentTaskSession::where('user_id', $user->id)
-    ->where('started_at', '>=', now()->subDay())
-    ->with(['paymentTask', 'payment'])
-    ->get();
+->where('started_at', '>=', $utcStartOfDay)
+->with(['paymentTask', 'payment'])
+->get();
 
 // Combine all task sessions (projects, prospects, payments)
 $allSessions = $taskSessions->merge($prospectTaskSessions)->merge($paymentTaskSessions);
 
 // Initialize hourly sessions data array
 $hourlySessionsData = [];
-$nepaliTimeZone = new DateTimeZone('Asia/Kathmandu');
 
 // Iterate over each hour of the day
 foreach (range(0, 23) as $hour) {
-    // Define start and end of the hourly interval in Nepali timezone
-    $startInterval = Carbon::now()->startOfDay()->addHours($hour)->setTimezone($nepaliTimeZone);
-    $endInterval = $startInterval->copy()->addHour()->setTimezone($nepaliTimeZone);
+// Define start and end of the hourly interval in Nepali timezone
+$startInterval = $nepaliStartOfDay->copy()->addHours($hour);
+$endInterval = $startInterval->copy()->addHour();
 
-    // Generate the interval label
-    $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
+// Generate the interval label
+$intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
 
-    // Filter all sessions by this time range
-    $hourlyData = $allSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
-        $sessionStart = $session->started_at->copy()->setTimezone($nepaliTimeZone);
-        $sessionEnd = ($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone);
+// Filter all sessions by this time range
+$hourlyData = $allSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
+    $sessionStart = $session->started_at->copy()->setTimezone($nepaliTimeZone);
+    $sessionEnd = ($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone);
 
-        return $sessionStart->between($startInterval, $endInterval) || $sessionEnd->between($startInterval, $endInterval);
-    })->groupBy(function ($session) {
-        // Group by task ID, taking into account different task types (Prospect, Payment, Project)
-        return $session->task_id ?? ($session->prospect_task_id ?? $session->payment_task_id);
-    })->map(function ($sessions) use ($startInterval, $endInterval, $nepaliTimeZone) {
-        $totalTimeSpentInSeconds = 0;
+    return $sessionStart->between($startInterval, $endInterval) || $sessionEnd->between($startInterval, $endInterval);
+})->groupBy(function ($session) {
+    // Group by task ID, taking into account different task types (Prospect, Payment, Project)
+    return $session->task_id ?? ($session->prospect_task_id ?? $session->payment_task_id);
+})->map(function ($sessions) use ($startInterval, $endInterval) {
+    $totalTimeSpentInSeconds = 0;
 
-        foreach ($sessions as $session) {
-            $startTime = max($session->started_at->copy()->setTimezone($nepaliTimeZone), $startInterval);
-            $endTime = min(($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone), $endInterval);
+    foreach ($sessions as $session) {
+        $startTime = max($session->started_at->copy()->setTimezone('Asia/Kathmandu'), $startInterval);
+        $endTime = min(($session->paused_at ?? now())->copy()->setTimezone('Asia/Kathmandu'), $endInterval);
 
-            $totalTimeSpentInSeconds += $startTime->diffInSeconds($endTime);
-        }
-
-        $formattedTime = $this->formatDuration($totalTimeSpentInSeconds);
-
-        return [
-            'task_name' => $sessions->first()->task->name ?? $sessions->first()->prospectTask->name ?? $sessions->first()->paymentTask->name,
-            'project_name' => $sessions->first()->project->name ?? $sessions->first()->prospect->company_name ?? $sessions->first()->payment->company_name,
-            'time_spent' => $formattedTime,
-        ];
-    });
-
-    // Only add this interval if it has tasks
-    if (!$hourlyData->isEmpty()) {
-        $hourlySessionsData[$intervalLabel] = $hourlyData;
+        $totalTimeSpentInSeconds += $startTime->diffInSeconds($endTime);
     }
+
+    $formattedTime = $this->formatDuration($totalTimeSpentInSeconds);
+
+    return [
+        'task_name' => $sessions->first()->task->name ?? $sessions->first()->prospectTask->name ?? $sessions->first()->paymentTask->name,
+        'project_name' => $sessions->first()->project->name ?? $sessions->first()->prospect->company_name ?? $sessions->first()->payment->company_name,
+        'time_spent' => $formattedTime,
+    ];
+});
+
+// Only add this interval if it has tasks
+if (!$hourlyData->isEmpty()) {
+    $hourlySessionsData[$intervalLabel] = $hourlyData;
+}
 }
 
 // Prepare summary data for the total time spent on each task
