@@ -91,53 +91,68 @@ $serialNo = 1;
     </div>
    
 </div>
-<div class="schedule-table">
-    <div class="schedule-table-heading">
-        <h2>{{$username}} Today's Schedule</h2>
-    </div>
 
-    <table class="task-table">
-        <thead class="schedule head">
-            <tr>
-                <th>Time Interval</th>
-                <th>Task Name</th>
-                <th>Project Name</th>
-                <th>Time Spent</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($hourlySessionsData as $interval => $tasks)
-                @if ($tasks->isEmpty())
+<div class="schedule-table">
+            <div class="schedule-table-heading">
+                <h2>{{ $username }} Today Schedule</h2>
+                <form method="GET" action="{{ route('user.dashboard', ['username' => $user->username]) }}">
+                    <label for="schedule-date">View Schedule:</label>
+                    <input type="date" id="schedule-date" name="date" value="{{ request('date', now()->toDateString()) }}" onchange="this.form.submit()">
+                </form>
+            </div>
+
+            <table class="task-table">
+                <thead class="schedule head">
+                    <tr>
+                        <th>Time Interval</th>
+                        <th>Task Name</th>
+                        <th>Project Name</th>
+                        <th>Time Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($hourlySessionsData as $interval => $tasks)
+                    @if ($tasks->isEmpty())
                     <tr>
                         <td>{{ $interval }}</td>
                         <td colspan="3">N/A</td>
                     </tr>
-                @else
+                    @else
+                    @php
+                    $isFirstTask = true;
+                    @endphp
                     @foreach($tasks as $task)
-                        <tr>
-                            <td>{{ $interval }}</td>
-                            <td>{{ $task['task_name'] }}</td>
-                            <td>{{ $task['project_name'] }}</td>
-                            <td>{{ $task['time_spent'] }}</td>
-                        </tr>
+                    <tr>
+                        <td>{{ $isFirstTask ? $interval : ' " " ' }}</td>
+                        <td>{{ $task['task_name'] }}</td>
+                        <td>{{ $task['project_name'] }}</td>
+                        <td>{{ $task['time_spent'] }}</td>
+                    </tr>
+                    @php
+                    $isFirstTask = false;
+                    @endphp
                     @endforeach
-                @endif
-            @endforeach
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="4">Summary - Total Time Spent per Task</th>
-            </tr>
-            @foreach($taskSummaryData as $summary)
-                <tr>
-                    <td colspan="2">{{ $summary['task_name'] }}</td>
-                    <td>{{ $summary['project_name'] }}</td>
-                    <td>{{ $summary['total_time_spent'] }}</td>
-                </tr>
-            @endforeach
-        </tfoot>
-    </table>
-</div>
+                    @endif
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4">Summary - Total Time Spent per Task</th>
+                    </tr>
+                    @foreach($taskSummaryData as $summary)
+                    <tr>
+                        <td colspan="2">{{ $summary['task_name'] }}</td>
+                        <td>{{ $summary['project_name'] }}</td>
+                        <td>{{ $summary['total_time_spent'] }}</td>
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="3"><strong>Total Time Spent Today on All Tasks</strong></td>
+                        <td><strong>{{ $totalTimeSpentAcrossTasksFormatted }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
 </div>
 
