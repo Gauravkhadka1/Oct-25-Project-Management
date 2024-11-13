@@ -52,12 +52,16 @@
 
             <!-- Column for To Do tasks -->
             <div class="task-column" id="todo" data-status="To Do">
-                <h3>To Do</h3>
+                <div class="todo-heading">
+                    <img src="{{url ('frontend/images/todo.png')}}" alt="">
+                    <h3>To Do</h3>
+                </div>
+                
                 <div class="task-list">
                     @foreach ($tasksToDo as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                             <div class="task-name">
-                            {{ $task->name }}
+                            <p>{{ $task->name }}</p>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -86,12 +90,16 @@
 
             <!-- Column for In Progress tasks -->
             <div class="task-column" id="inprogress" data-status="In Progress">
-                <h3>In Progress</h3>
+                <div class="inprogress-heading">
+                    <img src="{{url ('frontend/images/inprogress.png')}}" alt="">
+                    <h3>In Progress</h3>
+                </div>
+             
                 <div class="task-list">
                     @foreach ($tasksInProgress as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            {{ $task->name }}
+                            <p>{{ $task->name }}</p>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -105,10 +113,12 @@
                             <div class="priority">
                             Priority: {{ $task->priority }}
                             </div>
-                            <div class="start-pause">
-                            <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">Start</button>
-                            </div>
-                            <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                                </div>
                             </div>
                             <!-- Additional task details here -->
                         </div>
@@ -118,12 +128,15 @@
 
             <!-- Column for QA tasks -->
             <div class="task-column" id="qa" data-status="QA">
-                <h3>QA</h3>
+                <div class="qa-heading">
+                    <img src="{{url ('frontend/images/qa.png')}}" alt="">
+                    <h3>QA</h3>
+                </div>
                 <div class="task-list">
                     @foreach ($tasksQA as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            {{ $task->name }}
+                            <p>{{ $task->name }}</p>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -137,10 +150,12 @@
                             <div class="priority">
                             Priority: {{ $task->priority }}
                             </div>
-                            <div class="start-pause">
-                            <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">Start</button>
-                            </div>
-                            <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                                </div>
                             </div>
                             <!-- Additional task details here -->
                         </div>
@@ -150,12 +165,15 @@
 
             <!-- Column for Completed tasks -->
             <div class="task-column" id="completed" data-status="Completed">
-                <h3>Completed</h3>
+                <div class="completed-heading">
+                    <img src="{{url ('frontend/images/completed.png')}}" alt="">
+                    <h3>Completed</h3>
+                </div>
                 <div class="task-list">
                     @foreach ($tasksCompleted as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            {{ $task->name }}
+                            <p>{{ $task->name }}</p>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -169,10 +187,12 @@
                             <div class="priority">
                             Priority: {{ $task->priority }}
                             </div>
-                            <div class="start-pause">
-                            <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">Start</button>
-                            </div>
-                            <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                                </div>
                             </div>
                             <!-- Additional task details here -->
                         </div>
@@ -182,12 +202,15 @@
 
             <!-- Column for Closed tasks -->
             <div class="task-column" id="closed" data-status="Closed">
-                <h3>Closed</h3>
+                <div class="closed-heading">
+                    <img src="{{url ('frontend/images/closed.png')}}" alt="">
+                    <h3>Closed</h3>
+                </div>
                 <div class="task-list">
                     @foreach ($tasksClosed as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            {{ $task->name }}
+                            <p>{{ $task->name }}</p>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -201,10 +224,12 @@
                             <div class="priority">
                             Priority: {{ $task->priority }}
                             </div>
-                            <div class="start-pause">
-                            <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">Start</button>
-                            </div>
-                            <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
+                                </div>
                             </div>
                             <!-- Additional task details here -->
                         </div>

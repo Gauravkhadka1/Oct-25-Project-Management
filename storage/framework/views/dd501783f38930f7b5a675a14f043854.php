@@ -60,7 +60,11 @@
 
             <!-- Column for To Do tasks -->
             <div class="task-column" id="todo" data-status="To Do">
-                <h3>To Do</h3>
+                <div class="todo-heading">
+                    <img src="<?php echo e(url ('frontend/images/todo.png')); ?>" alt="">
+                    <h3>To Do</h3>
+                </div>
+                
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksToDo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
@@ -98,7 +102,11 @@
 
             <!-- Column for In Progress tasks -->
             <div class="task-column" id="inprogress" data-status="In Progress">
-                <h3>In Progress</h3>
+                <div class="inprogress-heading">
+                    <img src="<?php echo e(url ('frontend/images/inprogress.png')); ?>" alt="">
+                    <h3>In Progress</h3>
+                </div>
+             
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksInProgress; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
@@ -136,7 +144,10 @@
 
             <!-- Column for QA tasks -->
             <div class="task-column" id="qa" data-status="QA">
-                <h3>QA</h3>
+                <div class="qa-heading">
+                    <img src="<?php echo e(url ('frontend/images/qa.png')); ?>" alt="">
+                    <h3>QA</h3>
+                </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksQA; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
@@ -174,7 +185,10 @@
 
             <!-- Column for Completed tasks -->
             <div class="task-column" id="completed" data-status="Completed">
-                <h3>Completed</h3>
+                <div class="completed-heading">
+                    <img src="<?php echo e(url ('frontend/images/completed.png')); ?>" alt="">
+                    <h3>Completed</h3>
+                </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksCompleted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
@@ -212,7 +226,10 @@
 
             <!-- Column for Closed tasks -->
             <div class="task-column" id="closed" data-status="Closed">
-                <h3>Closed</h3>
+                <div class="closed-heading">
+                    <img src="<?php echo e(url ('frontend/images/closed.png')); ?>" alt="">
+                    <h3>Closed</h3>
+                </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksClosed; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
@@ -249,68 +266,69 @@
             </div>
         </div>
    
-    </div>
-<div class="schedule-table">
-<div class="schedule-table-heading">
-        <h2><?php echo e($username); ?> Today Schedule</h2>
-        <form method="GET" action="<?php echo e(route('dashboard')); ?>">
-            <label for="schedule-date">View Schedule:</label>
-            <input type="date" id="schedule-date" name="date" value="<?php echo e(request('date', now()->toDateString())); ?>" onchange="this.form.submit()">
-        </form>
-    </div>
+ 
+        <div class="schedule-table">
+            <div class="schedule-table-heading">
+                    <h2><?php echo e($username); ?> Today Schedule</h2>
+                    <form method="GET" action="<?php echo e(route('dashboard')); ?>">
+                        <label for="schedule-date">View Schedule:</label>
+                        <input type="date" id="schedule-date" name="date" value="<?php echo e(request('date', now()->toDateString())); ?>" onchange="this.form.submit()">
+                    </form>
+                </div>
 
-    <table class="task-table">
-        <thead class="schedule head">
-            <tr>
-                <th>Time Interval</th>
-                <th>Task Name</th>
-                <th>Project Name</th>
-                <th>Time Spent</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $__currentLoopData = $hourlySessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $interval => $tasks): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php if($tasks->isEmpty()): ?>
-                    <tr>
-                        <td><?php echo e($interval); ?></td>
-                        <td colspan="3">N/A</td>
-                    </tr>
-                <?php else: ?>
-                <?php
-                $isFirstTask = true;
-            ?>
-            <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <tr>
-                    <td><?php echo e($isFirstTask ? $interval : ' " " '); ?></td>
-                    <td><?php echo e($task['task_name']); ?></td>
-                    <td><?php echo e($task['project_name']); ?></td>
-                    <td><?php echo e($task['time_spent']); ?></td>
-                </tr>
-                <?php
-                    $isFirstTask = false;
-                ?>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <?php endif; ?>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="4">Summary - Total Time Spent per Task</th>
-            </tr>
-            <?php $__currentLoopData = $taskSummaryData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $summary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <tr>
-                    <td colspan="2"><?php echo e($summary['task_name']); ?></td>
-                    <td><?php echo e($summary['project_name']); ?></td>
-                    <td><?php echo e($summary['total_time_spent']); ?></td>
-                </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <tr>
-                <td colspan="3"><strong>Total Time Spent Today on All Tasks</strong></td>
-                <td><strong><?php echo e($totalTimeSpentAcrossTasksFormatted); ?></strong></td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+                <table class="task-table">
+                    <thead class="schedule head">
+                        <tr>
+                            <th>Time Interval</th>
+                            <th>Task Name</th>
+                            <th>Project Name</th>
+                            <th>Time Spent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $__currentLoopData = $hourlySessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $interval => $tasks): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($tasks->isEmpty()): ?>
+                                <tr>
+                                    <td><?php echo e($interval); ?></td>
+                                    <td colspan="3">N/A</td>
+                                </tr>
+                            <?php else: ?>
+                            <?php
+                            $isFirstTask = true;
+                        ?>
+                        <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <tr>
+                                <td><?php echo e($isFirstTask ? $interval : ' " " '); ?></td>
+                                <td><?php echo e($task['task_name']); ?></td>
+                                <td><?php echo e($task['project_name']); ?></td>
+                                <td><?php echo e($task['time_spent']); ?></td>
+                            </tr>
+                            <?php
+                                $isFirstTask = false;
+                            ?>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4">Summary - Total Time Spent per Task</th>
+                        </tr>
+                        <?php $__currentLoopData = $taskSummaryData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $summary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <tr>
+                                <td colspan="2"><?php echo e($summary['task_name']); ?></td>
+                                <td><?php echo e($summary['project_name']); ?></td>
+                                <td><?php echo e($summary['total_time_spent']); ?></td>
+                            </tr>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td colspan="3"><strong>Total Time Spent Today on All Tasks</strong></td>
+                            <td><strong><?php echo e($totalTimeSpentAcrossTasksFormatted); ?></strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 
 

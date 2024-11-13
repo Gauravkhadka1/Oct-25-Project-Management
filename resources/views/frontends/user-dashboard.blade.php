@@ -3,11 +3,9 @@
 @section('main-container')
 
 <div class="profile-page">
-        <h1>{{ $username }}'s Dashboard</h1>
-
         <div class="mytasks">
             <div class="current-tasks">
-                <h2>Tasks for {{ $username }}</h2>
+                <h2>{{ $username }} Tasks</h2>
                 @include('partials.task-table', ['tasks' => $tasks, 'prospectTasks' => $prospectTasks, 'paymentTasks' => $paymentTasks, 'projects' => $projects, 'prospects' => $prospects, 'payments' => $payments])
             </div>
         </div>

@@ -3,11 +3,9 @@
 <?php $__env->startSection('main-container'); ?>
 
 <div class="profile-page">
-        <h1><?php echo e($username); ?>'s Dashboard</h1>
-
         <div class="mytasks">
             <div class="current-tasks">
-                <h2>Tasks for <?php echo e($username); ?></h2>
+                <h2><?php echo e($username); ?> Tasks</h2>
                 <?php echo $__env->make('partials.task-table', ['tasks' => $tasks, 'prospectTasks' => $prospectTasks, 'paymentTasks' => $paymentTasks, 'projects' => $projects, 'prospects' => $prospects, 'payments' => $payments], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
         </div>

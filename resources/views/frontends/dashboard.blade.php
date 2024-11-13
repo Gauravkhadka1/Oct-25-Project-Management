@@ -62,7 +62,11 @@
 
             <!-- Column for To Do tasks -->
             <div class="task-column" id="todo" data-status="To Do">
-                <h3>To Do</h3>
+                <div class="todo-heading">
+                    <img src="{{url ('frontend/images/todo.png')}}" alt="">
+                    <h3>To Do</h3>
+                </div>
+                
                 <div class="task-list">
                     @foreach ($tasksToDo as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
@@ -96,7 +100,11 @@
 
             <!-- Column for In Progress tasks -->
             <div class="task-column" id="inprogress" data-status="In Progress">
-                <h3>In Progress</h3>
+                <div class="inprogress-heading">
+                    <img src="{{url ('frontend/images/inprogress.png')}}" alt="">
+                    <h3>In Progress</h3>
+                </div>
+             
                 <div class="task-list">
                     @foreach ($tasksInProgress as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
@@ -130,7 +138,10 @@
 
             <!-- Column for QA tasks -->
             <div class="task-column" id="qa" data-status="QA">
-                <h3>QA</h3>
+                <div class="qa-heading">
+                    <img src="{{url ('frontend/images/qa.png')}}" alt="">
+                    <h3>QA</h3>
+                </div>
                 <div class="task-list">
                     @foreach ($tasksQA as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
@@ -164,7 +175,10 @@
 
             <!-- Column for Completed tasks -->
             <div class="task-column" id="completed" data-status="Completed">
-                <h3>Completed</h3>
+                <div class="completed-heading">
+                    <img src="{{url ('frontend/images/completed.png')}}" alt="">
+                    <h3>Completed</h3>
+                </div>
                 <div class="task-list">
                     @foreach ($tasksCompleted as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
@@ -198,7 +212,10 @@
 
             <!-- Column for Closed tasks -->
             <div class="task-column" id="closed" data-status="Closed">
-                <h3>Closed</h3>
+                <div class="closed-heading">
+                    <img src="{{url ('frontend/images/closed.png')}}" alt="">
+                    <h3>Closed</h3>
+                </div>
                 <div class="task-list">
                     @foreach ($tasksClosed as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
@@ -231,68 +248,69 @@
             </div>
         </div>
    
-    </div>
-<div class="schedule-table">
-<div class="schedule-table-heading">
-        <h2>{{ $username }} Today Schedule</h2>
-        <form method="GET" action="{{ route('dashboard') }}">
-            <label for="schedule-date">View Schedule:</label>
-            <input type="date" id="schedule-date" name="date" value="{{ request('date', now()->toDateString()) }}" onchange="this.form.submit()">
-        </form>
-    </div>
+ 
+        <div class="schedule-table">
+            <div class="schedule-table-heading">
+                    <h2>{{ $username }} Today Schedule</h2>
+                    <form method="GET" action="{{ route('dashboard') }}">
+                        <label for="schedule-date">View Schedule:</label>
+                        <input type="date" id="schedule-date" name="date" value="{{ request('date', now()->toDateString()) }}" onchange="this.form.submit()">
+                    </form>
+                </div>
 
-    <table class="task-table">
-        <thead class="schedule head">
-            <tr>
-                <th>Time Interval</th>
-                <th>Task Name</th>
-                <th>Project Name</th>
-                <th>Time Spent</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($hourlySessionsData as $interval => $tasks)
-                @if ($tasks->isEmpty())
-                    <tr>
-                        <td>{{ $interval }}</td>
-                        <td colspan="3">N/A</td>
-                    </tr>
-                @else
-                @php
-                $isFirstTask = true;
-            @endphp
-            @foreach($tasks as $task)
-                <tr>
-                    <td>{{ $isFirstTask ? $interval : ' " " ' }}</td>
-                    <td>{{ $task['task_name'] }}</td>
-                    <td>{{ $task['project_name'] }}</td>
-                    <td>{{ $task['time_spent'] }}</td>
-                </tr>
-                @php
-                    $isFirstTask = false;
-                @endphp
-                @endforeach
-                @endif
-            @endforeach
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="4">Summary - Total Time Spent per Task</th>
-            </tr>
-            @foreach($taskSummaryData as $summary)
-                <tr>
-                    <td colspan="2">{{ $summary['task_name'] }}</td>
-                    <td>{{ $summary['project_name'] }}</td>
-                    <td>{{ $summary['total_time_spent'] }}</td>
-                </tr>
-            @endforeach
-            <tr>
-                <td colspan="3"><strong>Total Time Spent Today on All Tasks</strong></td>
-                <td><strong>{{ $totalTimeSpentAcrossTasksFormatted }}</strong></td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+                <table class="task-table">
+                    <thead class="schedule head">
+                        <tr>
+                            <th>Time Interval</th>
+                            <th>Task Name</th>
+                            <th>Project Name</th>
+                            <th>Time Spent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($hourlySessionsData as $interval => $tasks)
+                            @if ($tasks->isEmpty())
+                                <tr>
+                                    <td>{{ $interval }}</td>
+                                    <td colspan="3">N/A</td>
+                                </tr>
+                            @else
+                            @php
+                            $isFirstTask = true;
+                        @endphp
+                        @foreach($tasks as $task)
+                            <tr>
+                                <td>{{ $isFirstTask ? $interval : ' " " ' }}</td>
+                                <td>{{ $task['task_name'] }}</td>
+                                <td>{{ $task['project_name'] }}</td>
+                                <td>{{ $task['time_spent'] }}</td>
+                            </tr>
+                            @php
+                                $isFirstTask = false;
+                            @endphp
+                            @endforeach
+                            @endif
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4">Summary - Total Time Spent per Task</th>
+                        </tr>
+                        @foreach($taskSummaryData as $summary)
+                            <tr>
+                                <td colspan="2">{{ $summary['task_name'] }}</td>
+                                <td>{{ $summary['project_name'] }}</td>
+                                <td>{{ $summary['total_time_spent'] }}</td>
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td colspan="3"><strong>Total Time Spent Today on All Tasks</strong></td>
+                            <td><strong>{{ $totalTimeSpentAcrossTasksFormatted }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 
 

@@ -52,13 +52,16 @@
 
             <!-- Column for To Do tasks -->
             <div class="task-column" id="todo" data-status="To Do">
-                <h3>To Do</h3>
+                <div class="todo-heading">
+                    <img src="<?php echo e(url ('frontend/images/todo.png')); ?>" alt="">
+                    <h3>To Do</h3>
+                </div>
+                
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksToDo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                             <div class="task-name">
-                            <?php echo e($task->name); ?>
-
+                            <p><?php echo e($task->name); ?></p>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -91,13 +94,16 @@
 
             <!-- Column for In Progress tasks -->
             <div class="task-column" id="inprogress" data-status="In Progress">
-                <h3>In Progress</h3>
+                <div class="inprogress-heading">
+                    <img src="<?php echo e(url ('frontend/images/inprogress.png')); ?>" alt="">
+                    <h3>In Progress</h3>
+                </div>
+             
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksInProgress; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <?php echo e($task->name); ?>
-
+                            <p><?php echo e($task->name); ?></p>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -115,10 +121,12 @@
                             Priority: <?php echo e($task->priority); ?>
 
                             </div>
-                            <div class="start-pause">
-                            <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">Start</button>
-                            </div>
-                            <div class="time-data"id="time-<?php echo e($task->id); ?>">00:00:00
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')"><img src="<?php echo e(url ('frontend/images/play.png')); ?>" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-<?php echo e($task->id); ?>">00:00:00
+                                </div>
                             </div>
                             <!-- Additional task details here -->
                         </div>
@@ -128,13 +136,15 @@
 
             <!-- Column for QA tasks -->
             <div class="task-column" id="qa" data-status="QA">
-                <h3>QA</h3>
+                <div class="qa-heading">
+                    <img src="<?php echo e(url ('frontend/images/qa.png')); ?>" alt="">
+                    <h3>QA</h3>
+                </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksQA; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <?php echo e($task->name); ?>
-
+                            <p><?php echo e($task->name); ?></p>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -152,10 +162,12 @@
                             Priority: <?php echo e($task->priority); ?>
 
                             </div>
-                            <div class="start-pause">
-                            <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">Start</button>
-                            </div>
-                            <div class="time-data"id="time-<?php echo e($task->id); ?>">00:00:00
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')"><img src="<?php echo e(url ('frontend/images/play.png')); ?>" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-<?php echo e($task->id); ?>">00:00:00
+                                </div>
                             </div>
                             <!-- Additional task details here -->
                         </div>
@@ -165,13 +177,15 @@
 
             <!-- Column for Completed tasks -->
             <div class="task-column" id="completed" data-status="Completed">
-                <h3>Completed</h3>
+                <div class="completed-heading">
+                    <img src="<?php echo e(url ('frontend/images/completed.png')); ?>" alt="">
+                    <h3>Completed</h3>
+                </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksCompleted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <?php echo e($task->name); ?>
-
+                            <p><?php echo e($task->name); ?></p>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -189,10 +203,12 @@
                             Priority: <?php echo e($task->priority); ?>
 
                             </div>
-                            <div class="start-pause">
-                            <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">Start</button>
-                            </div>
-                            <div class="time-data"id="time-<?php echo e($task->id); ?>">00:00:00
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')"><img src="<?php echo e(url ('frontend/images/play.png')); ?>" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-<?php echo e($task->id); ?>">00:00:00
+                                </div>
                             </div>
                             <!-- Additional task details here -->
                         </div>
@@ -202,13 +218,15 @@
 
             <!-- Column for Closed tasks -->
             <div class="task-column" id="closed" data-status="Closed">
-                <h3>Closed</h3>
+                <div class="closed-heading">
+                    <img src="<?php echo e(url ('frontend/images/closed.png')); ?>" alt="">
+                    <h3>Closed</h3>
+                </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $tasksClosed; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <?php echo e($task->name); ?>
-
+                            <p><?php echo e($task->name); ?></p>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -226,10 +244,12 @@
                             Priority: <?php echo e($task->priority); ?>
 
                             </div>
-                            <div class="start-pause">
-                            <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">Start</button>
-                            </div>
-                            <div class="time-data"id="time-<?php echo e($task->id); ?>">00:00:00
+                            <div class="time-details">
+                                <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')"><img src="<?php echo e(url ('frontend/images/play.png')); ?>" alt=""></button>
+                                </div>
+                                <div class="time-data"id="time-<?php echo e($task->id); ?>">00:00:00
+                                </div>
                             </div>
                             <!-- Additional task details here -->
                         </div>
