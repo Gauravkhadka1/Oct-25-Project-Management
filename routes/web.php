@@ -10,6 +10,7 @@ use App\Http\Controllers\PaymentTaskController;
 use App\Http\Controllers\Frontend\ProspectController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentsActivityController;
 use App\Http\Controllers\Frontend\TimeController;
 use App\Http\Controllers\EsewaController;
@@ -139,3 +140,5 @@ Route::post('/notifications/mark-all-read', [NotificationController::class, 'mar
 Route::get('/add-new-clients', [ClientsController::class, 'addclients']);
 Route::resource('clients', ClientsController::class);
 // Route::resource('tasks', TaskController::class);
+Route::get('/subcategories/{categoryId}', [CategoryController::class, 'getSubcategories']);
+Route::get('/additional-subcategories/{subcategoryId}', [CategoryController::class, 'getAdditionalSubcategories']);

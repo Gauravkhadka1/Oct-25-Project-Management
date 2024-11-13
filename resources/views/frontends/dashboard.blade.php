@@ -77,13 +77,13 @@
                             in {{ $task->category_name }}
                             </div>
                             <div class="assigne">
-                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
+                                <img src="{{url ('frontend/images/assignedby.png')}}" alt="">  by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
                             </div>
                             <div class="due-date">
-                            Due Date:{{ $task->due_date }}
+                            <img src="{{url ('frontend/images/duedate.png')}}" alt=""> : {{ $task->due_date }}
                             </div>
                             <div class="priority">
-                            Priority: {{ $task->priority }}
+                            <img src="{{url ('frontend/images/priority.png')}}" alt="">: {{ $task->priority }}
                             </div>
                             <div class="time-details">
                                 <div class="start-pause">

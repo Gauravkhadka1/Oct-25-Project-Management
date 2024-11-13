@@ -94,3 +94,9 @@
         font-size: 1.1em;
     }
 }
+.form-container form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}

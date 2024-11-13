@@ -150,6 +150,7 @@
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    
 }
 .task.dragging {
     opacity: 0.5;
@@ -158,10 +159,11 @@
 .task-column.drag-over {
     background-color: #cbd5e0;
 }
-.task-name {
+.task-name p {
     color: #2A2E34;
-    font-weight: 500;
+    font-weight: bolder;
     font-weight: 14px;
+margin-bottom: 5px;
 }
 .time-details {
     display: flex;
@@ -169,9 +171,42 @@
     justify-content: flex-start;
 }
 .time-details img {
-    width: 30px;
+    width: 22px;
     background-color: transparent;
+    margin-right: 10px;
 }
 .time-details  button {
     background-color: transparent !important;
+    padding: 0 ;
+}
+.assigne {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.assigne img {
+    width: 25px;
+    margin-right: 5px;
+}
+.priority {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.priority img {
+    width: 25px;
+    margin-right: 2px;
+}
+.due-date {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.due-date img {
+    width: 22px;
+    margin-right: 5px;
 }

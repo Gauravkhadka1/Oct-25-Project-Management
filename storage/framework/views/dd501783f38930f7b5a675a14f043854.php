@@ -76,15 +76,15 @@
 
                             </div>
                             <div class="assigne">
-                                Assigned by: <?php echo e($task->assignedBy ? $task->assignedBy->username : 'N/A'); ?>
+                                <img src="<?php echo e(url ('frontend/images/assignedby.png')); ?>" alt="">  by: <?php echo e($task->assignedBy ? $task->assignedBy->username : 'N/A'); ?>
 
                             </div>
                             <div class="due-date">
-                            Due Date:<?php echo e($task->due_date); ?>
+                            <img src="<?php echo e(url ('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date); ?>
 
                             </div>
                             <div class="priority">
-                            Priority: <?php echo e($task->priority); ?>
+                            <img src="<?php echo e(url ('frontend/images/priority.png')); ?>" alt="">: <?php echo e($task->priority); ?>
 
                             </div>
                             <div class="time-details">
