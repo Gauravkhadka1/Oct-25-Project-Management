@@ -12,12 +12,12 @@
     <div class="company-details">
         <div class="form-group">
             <label for="company_name">Company Name:</label>
-            <input type="text" id="company_name" name="company_name" required>
+            <input type="text" id="company_name" name="company_name" nullable>
         </div>
 
         <div class="form-group">
             <label for="category">Category:</label>
-            <select id="category" name="category" required>
+            <select id="category" name="category" nullable>
                 <option value="">Select Category</option>
                 <option value="Website">Website</option>
                 <option value="Microsoft">Microsoft</option>
@@ -28,7 +28,7 @@
         <!-- Subcategory Selection -->
         <div class="form-group" id="subcategory-container" style="display: none;">
             <label for="subcategory">Subcategory:</label>
-            <select id="subcategory" name="subcategory" required>
+            <select id="subcategory" name="subcategory" nullable>
                 <option value="">Select Subcategory</option>
             </select>
         </div>
@@ -36,41 +36,41 @@
         <!-- Additional Subcategory Selection -->
         <div class="form-group" id="additional-subcategory-container" style="display: none;">
             <label for="additional_subcategory">Additional Subcategory:</label>
-            <select id="additional_subcategory" name="additional_subcategory" required>
+            <select id="additional_subcategory" name="additional_subcategory" nullable>
                 <option value="">Select Additional Subcategory</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="address">Address:</label>
-            <textarea id="address" name="address" rows="3" required></textarea>
+            <textarea id="address" name="address" rows="3"nullable></textarea>
         </div>
 
         <div class="form-group">
             <label for="company_phone">Company Phone:</label>
-            <input type="tel" id="company_phone" name="company_phone" required>
+            <input type="tel" id="company_phone" name="company_phone" nullable>
         </div>
 
         <div class="form-group">
             <label for="company_email">Company Email:</label>
-            <input type="email" id="company_email" name="company_email" required>
+            <input type="email" id="company_email" name="company_email" nullable>
         </div>
     </div>
 
     <div class="contact-person-details">
         <div class="form-group">
             <label for="contact_person">Contact Person:</label>
-            <input type="text" id="contact_person" name="contact_person" required>
+            <input type="text" id="contact_person" name="contact_person" nullable>
         </div>
 
         <div class="form-group">
             <label for="contact_person_phone">Contact Person Phone:</label>
-            <input type="tel" id="contact_person_phone" name="contact_person_phone" required>
+            <input type="tel" id="contact_person_phone" name="contact_person_phone" nullable>
         </div>
 
         <div class="form-group">
             <label for="contact_person_email">Contact Person Email:</label>
-            <input type="email" id="contact_person_email" name="contact_person_email" required>
+            <input type="email" id="contact_person_email" name="contact_person_email" nullable>
         </div>
     </div>
 
@@ -83,17 +83,23 @@
    document.addEventListener('DOMContentLoaded', function () {
     const categoryData = {
         "Website": {
-            "eCommerce": ["B2B", "B2C"],
-            "Company": ["Manpower", "Hydro"],
-            "Tourism": ["Travel Agency", "Accommodation"]
+            "Company": ["Manpower", "Hydropower", "Other"],
+            "NGO/ INGO": [],
+            "Tourism": [],
+            "Education": ["Edu Consultancy", "School", "College", "Other"],
+            "eCommerce": ["Product Catlog", "ecommerce", "Other"],
+            "Hospitality": ["Hotel & Cafe", "Resort", "Other"],
+            "other": [""]
         },
         "Microsoft": {
-            "Software": ["Office 365", "Dynamics 365"],
-            "Cloud": ["Azure", "Power Platform"]
+            "Paid": [],
+            "Non Profit": ["Education", "NGO/ INGO"]
         },
         "Hosting": {
-            "Shared": ["Linux Hosting", "Windows Hosting"],
-            "Dedicated": ["VPS", "Cloud Hosting"]
+            
+        },
+        "Other": {
+            
         }
     };
 

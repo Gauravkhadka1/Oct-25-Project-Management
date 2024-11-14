@@ -8,15 +8,35 @@ use App\Models\Category;
 
 class ClientsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('frontends.clients');
+        $query = Clients::query();
+        $filterCount = 0;
+    
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where('company_name', 'like', "%{$searchTerm}%");
+        }
+    
+        // Filter by Category, Subcategory, and Additional Subcategory
+        if ($request->has('filter_category') && !empty($request->filter_category)) {
+            $query->where('category', $request->filter_category);
+            $filterCount++;
+        }
+        if ($request->has('filter_subcategory') && !empty($request->filter_subcategory)) {
+            $query->where('subcategory', $request->filter_subcategory);
+            $filterCount++;
+        }
+        if ($request->has('filter_additional_subcategory') && !empty($request->filter_additional_subcategory)) {
+            $query->where('additional_subcategory', $request->filter_additional_subcategory);
+            $filterCount++;
+        }
+    
+        $clients = $query->get();
+        return view('frontends.clients', compact('clients', 'filterCount'));
     }
-    public function addclients()
-    {
-        $categories = Category::all();
-        return view('frontends.add-clients', compact('categories'));
-    }
+    
 
 
     public function store(Request $request)
