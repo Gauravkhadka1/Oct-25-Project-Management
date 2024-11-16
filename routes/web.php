@@ -150,4 +150,8 @@ Route::get('/task/detail/{id}', [TaskController::class, 'show'])->name('task.det
 Route::get('/prospect_task/detail/{id}', [ProspectTaskController::class, 'show'])->name('prospect_task.detail');
 Route::get('/payment_task/detail/{id}', [PaymentTaskController::class, 'show'])->name('payment_task.detail');
 
+Route::get('/activity/{id}', [PaymentsActivityController::class, 'show'])->name('activity.show');
+
+
+
 

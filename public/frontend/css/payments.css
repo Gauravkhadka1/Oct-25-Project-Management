@@ -462,3 +462,62 @@ margin: 5px 0;
 width: 20px;
 margin: 5px 0 10px 0 ;
 }
+
+
+.sticky-section {
+    position: sticky;
+    bottom: -20px;
+    background-color: #f9f9f9; /* Adjust as needed for your modal's design */
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    z-index: 10; /* Ensure it stays above other content */
+}
+
+.sticky-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.sticky-section form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sticky-section input[type="text"] {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.sticky-section .btn-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.sticky-section .btn-submit:hover {
+    background-color: #0056b3;
+}
+#suggestions {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    display: none;
+    z-index: 1000;
+}
+
+#suggestions div {
+    padding: 8px;
+    cursor: pointer;
+}
+
+#suggestions div:hover {
+    background-color: #f0f0f0;
+}

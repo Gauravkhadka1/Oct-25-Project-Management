@@ -8,6 +8,10 @@
 
 <?php endif; ?>
 
+<div id="success-message" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #28a745; color: white; padding: 15px; border-radius: 5px; z-index: 9999;">
+    <!-- Success message will be dynamically inserted here -->
+</div>
+
 <div class="payments-page">
     <div class="payments-heading">
         <h1>Due Payments Data</h1>
@@ -122,7 +126,6 @@
 
                         
                         <div class="comments">
-                        <button class="btn-add-activity" onclick="openAddActivityModal(<?php echo e($payment->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""></button>
                         <button class="btn-view-activities" onclick="viewActivities(<?php echo e($payment->id); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt=""></button>
                         </div>
                        
@@ -406,38 +409,38 @@
         </div>
     </div>
 
-    <!-- Add Activity Modal -->
-    <div id="add-activity-modal" class="modal">
-        <div class="modal-content">
-            <h3>Add Activity</h3>
+    
+    <!-- View Activities Modal -->
+    <div id="view-activities-modal" class="modal">
+    <div class="modal-content">
+        <h3>Activities</h3>
+        <div id="activities-list">
+            <!-- Activities will be populated here -->
+        </div>
+
+        <!-- Sticky Add Activity Section -->
+        <div id="add-activity-section" class="sticky-section">
             <form id="add-activity-form" action="<?php echo e(route('payments-activities.store')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 <input type="hidden" name="payments_id" id="activity-payments-id">
-
-                <label for="activity-details">Activity Details:</label>
-                <input type="text" name="details" id="activity-details" required>
-
-                <div class="modal-buttons">
-                    <button type="submit" class="btn-submit">Add Activity</button>
-                    <button type="button" class="btn-cancel" onclick="closeAddActivityModal()">Cancel</button>
+                <input type="text" name="details" id="activity-details" placeholder="Add Comments..." required>
+                <div id="suggestions"></div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">Add<div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
+    <img src="<?php echo e(url('frontend/images/spinner.gif')); ?>" alt="Loading...">
+</div>
+</button>
                 </div>
             </form>
         </div>
-    </div>
 
-    <!-- View Activities Modal -->
-    <div id="view-activities-modal" class="modal">
-        <div class="modal-content">
-            <h3>Activities</h3>
-            <div id="activities-list">
-                <!-- Activities will be populated here -->
-            </div>
-            <div class="modal-buttons">
-                <button type="button" class="btn-cancel" onclick="closeViewActivitiesModal()">Close</button>
-            </div>
+        <div class="modal-buttons">
+            <button type="button" class="btn-cancel" onclick="closeViewActivitiesModal()">Close</button>
         </div>
     </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         // open create payments
@@ -498,78 +501,70 @@
             });
         });
 
-        // activities model
-        function openAddActivityModal(paymentsId) {
-            document.getElementById('activity-payments-id').value = paymentsId;
-            document.getElementById('add-activity-modal').style.display = 'block';
-        }
-
-        // close add activity model
-        function closeAddActivityModal() {
-            document.getElementById('add-activity-modal').style.display = 'none';
-        }
+       
 
         function viewActivities(paymentsId) {
-            // Fetch activities from the server for the given payments
-            fetch(`/payments/${paymentsId}/activities`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data); // Log the entire response
-                    const activitiesList = document.getElementById('activities-list');
-                    activitiesList.innerHTML = ''; // Clear previous activities
+    // Set the hidden input for payments_id in the Add Activity form
+    document.getElementById('activity-payments-id').value = paymentsId;
 
-                    if (data.activities && data.activities.length > 0) {
-                        data.activities.reverse().forEach(activity => {
-                            const utcDate = new Date(activity.created_at); // Get the date in UTC
-                            const localTime = utcDate;
+    // Fetch activities and populate them
+    fetch(`/payments/${paymentsId}/activities`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const activitiesList = document.getElementById('activities-list');
+            activitiesList.innerHTML = ''; // Clear previous activities
 
-                            // Formatting options for day, date, and time
-                            const dateOptions = {
-                                weekday: 'long',
-                                year: 'numeric',
-                                month: '2-digit',
-                                day: '2-digit'
-                            };
-                            const timeOptions = {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                hour12: true
-                            };
+            if (data.activities && data.activities.length > 0) {
+                data.activities.reverse().forEach(activity => {
+                    const utcDate = new Date(activity.created_at); // Parse the UTC timestamp
+                    const localTime = utcDate.toLocaleString('en-US', {
+                        weekday: 'long', // Show the day of the week
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: undefined, // Omit seconds if not needed
+                        hour12: true, // Display in 12-hour format
+                    });
 
-                            const formattedDate = localTime.toLocaleDateString('en-NP', dateOptions);
-                            const formattedTime = localTime.toLocaleTimeString('en-US', timeOptions).replace(/^0/, '');
-
-                            // Use a fallback for undefined replies
-                            const replies = activity.replies || [];
-
-                            // Create a card-like structure for each activity with like and reply functionality
-                            const activityCard = document.createElement('div');
-                            activityCard.className = 'activity-card';
-                            activityCard.innerHTML = `
-                        <p>${formattedDate} ${formattedTime}</p>
+                    // Create a card-like structure for each activity
+                    const activityCard = document.createElement('div');
+                    activityCard.className = 'activity-card';
+                    activityCard.innerHTML = `
+                        <p>${localTime}</p>
                         <p><strong>${activity.username}</strong>: ${activity.details}</p>
                     `;
-                            activitiesList.appendChild(activityCard); // Append the card to the list
-                        });
-                    } else {
-                        activitiesList.innerHTML = '<p>No activities found.</p>'; // Message if no activities
-                    }
+                    activitiesList.appendChild(activityCard); // Append the card to the list
+                });
+            } else {
+                activitiesList.innerHTML = '<p>No activities found.</p>'; // Message if no activities
+            }
 
-                    // Display the modal
-                    document.getElementById('view-activities-modal').style.display = 'block';
-                })
-                .catch(error => console.error('Error fetching activities:', error));
-        }
+            // Display the modal
+            // Display the modal
+            const modal = document.getElementById('view-activities-modal');
+            modal.style.display = 'block';
 
-        // close view activities model
-        function closeViewActivitiesModal() {
-            document.getElementById('view-activities-modal').style.display = 'none';
-        }
+            // Add event listener to close modal when clicking outside
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeViewActivitiesModal();
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching activities:', error));
+}
+
+function closeViewActivitiesModal() {
+    document.getElementById('view-activities-modal').style.display = 'none';
+}
+
 
         // delete payments data
         function deletePayments(id) {
@@ -713,6 +708,144 @@ columns.forEach(column => {
 
     });
 });
+
+// mention script
+
+$(document).ready(function() {
+    // Detect '@' and fetch suggestions
+    $('#activity-details').on('keyup', function(e) {
+        const value = $(this).val();
+        const atIndex = value.lastIndexOf('@');
+
+        // Show suggestions when '@' is typed and it's the last character
+        if (atIndex !== -1 && (value.length === atIndex + 1)) {
+            $.ajax({
+                url: '/api/users/search',
+                method: 'GET',
+                data: { query: '' }, // Empty query fetches all usernames
+                success: function(data) {
+                    $('#suggestions').empty();
+                    if (data.length > 0) {
+                        data.forEach(function(user) {
+                            $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
+                        });
+                        $('#suggestions').show();
+                    } else {
+                        $('#suggestions').hide();
+                    }
+                }
+            });
+        } else if (atIndex !== -1) {
+            const query = value.substring(atIndex + 1);
+            if (query.length > 0) {
+                $.ajax({
+                    url: '/api/users/search',
+                    method: 'GET',
+                    data: { query: query },
+                    success: function(data) {
+                        $('#suggestions').empty();
+                        if (data.length > 0) {
+                            data.forEach(function(user) {
+                                $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
+                            });
+                            $('#suggestions').show();
+                        } else {
+                            $('#suggestions').hide();
+                        }
+                    }
+                });
+            } else {
+                $('#suggestions').hide();
+            }
+        } else {
+            $('#suggestions').hide();
+        }
+    });
+
+    // Add username to message when clicked from suggestions
+    $(document).on('click', '#suggestions div', function() {
+        const username = $(this).data('username');
+        const message = $('#activity-details').val();
+        const atIndex = message.lastIndexOf('@');
+
+        const fullMessage = message.substring(0, atIndex + 1) + username + ' ';
+        $('#activity-details').val(fullMessage);
+        $('#suggestions').hide();
+    });
+
+    // Form submission handler
+    $('#add-activity-form').on('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        const message = $('#activity-details').val();
+        const mentionedUser = extractMentionedUser(message); // Extract mentioned user
+        const paymentsId = $('#activity-payments-id').val();
+
+        // Show loading spinner
+        $('#loading-spinner').show();
+
+        $.ajax({
+            url: $(this).attr('action'), // Use form's action URL
+            method: 'POST',
+            data: {
+                message: message,
+                mentioned_user: mentionedUser, // Include mentioned user
+                payments_id: paymentsId, // Payment ID
+                _token: $('input[name="_token"]').val() // CSRF token
+            },
+            success: function(response) {
+                // Dynamically display success message
+                $('#success-message').text('Activity added and notification sent successfully!').show();
+
+                // Clear input field and hide suggestions
+                $('#activity-details').val('');
+                $('#suggestions').hide();
+
+                // Hide the success message after 5 seconds
+                setTimeout(function() {
+                    $('#success-message').fadeOut();
+                }, 5000);
+
+                // Hide loading spinner
+                $('#loading-spinner').hide();
+            },
+            error: function(xhr) {
+                console.error('Error submitting message:', xhr.responseText); // Log errors
+
+                // Hide loading spinner
+                $('#loading-spinner').hide();
+            }
+        });
+    });
+
+    // Submit message on Enter keypress
+    $('#activity-details').on('keypress', function(e) {
+        if (e.which === 13) { // Enter key
+            e.preventDefault(); // Prevent default new line
+            $('#add-activity-form').submit(); // Trigger form submission
+        }
+    });
+
+    // Hide suggestions when clicking outside
+    $(document).click(function(e) {
+        if (!$(e.target).closest('#suggestions, #activity-details').length) {
+            $('#suggestions').hide();
+        }
+    });
+});
+
+// Helper function to extract the mentioned user from the message
+function extractMentionedUser(message) {
+    const mentionRegex = /@(\w+)/; // Regex to match @username
+    const match = message.match(mentionRegex);
+
+    if (match && match[1]) {
+        return match[1]; // Return the username or identifier
+    }
+    return null; // Return null if no mention found
+}
+
+
     </script>
 
 </div>

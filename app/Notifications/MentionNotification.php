@@ -26,19 +26,24 @@ class MentionNotification extends Notification
      */
     public function via(object $notifiable): array
     {
+        \Log::info('Notification via method triggered for user: ' . $notifiable->email);
         return ['mail'];
     }
+    
 
     /**
      * Get the mail representation of the notification.
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->subject('You were mentioned')
-                    ->line('You have been mentioned in a message.')
-                    ->action('View Message', url('/messages'));
+        \Log::info('toMail method executed for user: ' . $notifiable->email);
+    
+        return (new \Illuminate\Notifications\Messages\MailMessage)
+            ->subject('You were mentioned')
+            ->line('You have been mentioned in a message.')
+            ->action('View Message', url('/messages'));
     }
+    
 
     /**
      * Get the array representation of the notification.
