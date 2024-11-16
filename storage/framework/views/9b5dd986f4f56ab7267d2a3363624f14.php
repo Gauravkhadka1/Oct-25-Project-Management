@@ -118,6 +118,14 @@
                                 Due today
                             <?php endif; ?>
                         </div>
+
+
+                        
+                        <div class="comments">
+                        <button class="btn-add-activity" onclick="openAddActivityModal(<?php echo e($payment->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""></button>
+                        <button class="btn-view-activities" onclick="viewActivities(<?php echo e($payment->id); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt=""></button>
+                        </div>
+                       
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -516,7 +524,7 @@
                     activitiesList.innerHTML = ''; // Clear previous activities
 
                     if (data.activities && data.activities.length > 0) {
-                        data.activities.forEach(activity => {
+                        data.activities.reverse().forEach(activity => {
                             const utcDate = new Date(activity.created_at); // Get the date in UTC
                             const localTime = utcDate;
 

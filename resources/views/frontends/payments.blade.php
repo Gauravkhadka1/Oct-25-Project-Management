@@ -117,6 +117,14 @@
                                 Due today
                             @endif
                         </div>
+
+
+                        
+                        <div class="comments">
+                        <button class="btn-add-activity" onclick="openAddActivityModal({{ $payment->id }})"><img src="{{url ('/frontend/images/plus.png')}}" alt=""></button>
+                        <button class="btn-view-activities" onclick="viewActivities({{ $payment->id }})"><img src="{{url ('/frontend/images/view.png')}}" alt=""></button>
+                        </div>
+                       
                     </div>
                     @endforeach
                 </div>
@@ -509,7 +517,7 @@
                     activitiesList.innerHTML = ''; // Clear previous activities
 
                     if (data.activities && data.activities.length > 0) {
-                        data.activities.forEach(activity => {
+                        data.activities.reverse().forEach(activity => {
                             const utcDate = new Date(activity.created_at); // Get the date in UTC
                             const localTime = utcDate;
 
