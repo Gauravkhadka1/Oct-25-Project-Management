@@ -48,6 +48,11 @@ class ProspectTaskController extends Controller
 
         return redirect(url('/prospects'))->with('success', 'Task created successfully.');
     }
-   
-
+    public function show($id)
+    {
+        $task = ProspectTask::findOrFail($id); // or respective model for each controller
+        return view('frontends.taskdetail', compact('task'));
+    }
 }
+
+

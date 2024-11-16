@@ -87,74 +87,192 @@
             </div>
 
         </div>
-        <table class="modern-payments-table">
-            <thead>
-                <tr>
-                    <th>SN</th>
-                    <th>
-                        Company Name
-                    </th>
-                    <th>
-                        Category
-                    </th>
-                    <th>
-                        Inquiry Date
-                    </th>
-                    <th>
-                        Probability
-                    </th>
-                    <th>Tasks</th>
-                    <th>Activities</th>
-                    <th>
-                        Status
-                    </th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <?php $__currentLoopData = $prospects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <tr>
-                    <td><?php echo e($key + 1); ?></td>
-                    <td>
-                        <span class="prospect-name"><?php echo e($prospect->company_name); ?></span>
-                        <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-address="<?php echo e($prospect->address); ?>" data-message="<?php echo e($prospect->message); ?>">
-                            <div class="btn-see-detail-img">
-                                <img src="<?php echo e(url ('/frontend/images/info.png')); ?>" alt="">
-                            </div>
-                        </button>
-                    </td>
 
 
-                    <td><?php echo e($prospect->category); ?></td>
 
-                    <td><?php echo e($prospect->inquirydate ? $prospect->inquirydate->format('Y-m-d h:i A') : 'N/A'); ?></td>
-                    <td><?php echo e($prospect->probability); ?>%</td>
-                    <td>
-                        <button class="btn-create" id="task-create" onclick="openAddTaskModal(<?php echo e($prospect->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""> Task</button>
-                        <button class="btn-view-activities-p" onclick="openTaskDetailsModal(<?php echo e(json_encode($prospect)); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt="">Tasks</button>
-                    </td>
-                    <td>
-                        <button class="btn-add-activity" onclick="openAddActivityModal(<?php echo e($prospect->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""></button>
-                        <button class="btn-view-activities" onclick="viewActivities(<?php echo e($prospect->id); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt=""></button>
-                    </td>
+        <div class="task-board">
+            <!-- Column for To Do tasks -->
+            <div class="task-column" id="new" data-status="new">
+                <div class="todo-heading-prospect">
+                    <img src="<?php echo e(url ('frontend/images/new.png')); ?>" alt="">
+                    <h3>Not Dealt</h3>
+                </div>
+
+                <div class="task-list">
+                <?php $__currentLoopData = $prospects->where('status', 'new'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
+                        <div class="task-name">
+                            <p><?php echo e($prospect->company_name); ?></p>
+                        </div>
+                        <div class="category">
+                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
+
+                        </div>
+
+                        <div class="inquiry-date">
+                        <img src="<?php echo e(url ('frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+
+                        </div>
+                        <div class="probability">
+                        <img src="<?php echo e(url ('frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
+                        </div>
+                        <div class="details">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-address="<?php echo e($prospect->address); ?>" data-message="<?php echo e($prospect->message); ?>">
+                                <div class="btn-see-detail-img-p">
+                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
 
 
-                    <td><?php echo e($prospect->status); ?></td>
-                    <td>
-                        <button class="btn-create" onclick="openEditProspectModal(<?php echo e(json_encode($prospect)); ?>)"><img src="<?php echo e(url ('/frontend/images/edit.png')); ?>" alt=""></button>
-                        <form action="<?php echo e(route('prospects.destroy', $prospect->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this prospect?');">
-                            <?php echo csrf_field(); ?>
-                            <?php echo method_field('DELETE'); ?>
-                            <button type="submit" class="btn-cancel"><img src="<?php echo e(url ('/frontend/images/delete.png')); ?>" alt=""></button>
-                        </form>
-                    </td>
+            <!-- Column for In Progress tasks -->
+            <div class="task-column" id="dealing" data-status="dealing">
+                <div class="inprogress-heading">
+                    <img src="<?php echo e(url ('frontend/images/dealing.png')); ?>" alt="">
+                    <h3>Dealing</h3>
+                </div>
 
-                </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </tbody>
-        </table>
+                <div class="task-list">
+                <?php $__currentLoopData = $prospects->where('status', 'dealing'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
+                    <div class="task-name">
+                            <p><?php echo e($prospect->company_name); ?></p>
+                        </div>
+                        <div class="in-project">
+                            Category: <?php echo e($prospect->category); ?>
 
+                        </div>
+
+                        <div class="due-date">
+                            Inquiry Date : <?php echo e($prospect->inquirydate); ?>
+
+                        </div>
+                        <div class="priority">
+                            Probability: <?php echo e($prospect->probability); ?> %
+                        </div>
+                        <div class="details">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-address="<?php echo e($prospect->address); ?>" data-message="<?php echo e($prospect->message); ?>">
+                                <div class="btn-see-detail-img-p">
+                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+
+            <!-- Column for QA tasks -->
+            <div class="task-column" id="quote_sent" data-status="quote_sent">
+                <div class="qs-heading">
+                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                    <h3>Quote Sent</h3>
+                </div>
+                <div class="task-list">
+                <?php $__currentLoopData = $prospects->where('status', 'quote_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
+                    <div class="task-name">
+                            <p><?php echo e($prospect->company_name); ?></p>
+                        </div>
+                        <div class="in-project">
+                            Category: <?php echo e($prospect->category); ?>
+
+                        </div>
+
+                        <div class="due-date">
+                            Inquiry Date : <?php echo e($prospect->inquirydate); ?>
+
+                        </div>
+                        <div class="priority">
+                            Probability: <?php echo e($prospect->probability); ?> %
+                        </div> 
+                        <div class="details">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-address="<?php echo e($prospect->address); ?>" data-message="<?php echo e($prospect->message); ?>">
+                                <div class="btn-see-detail-img-p">
+                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+
+            <!-- Column for Completed tasks -->
+            <div class="task-column" id="aggrement_sent" data-status="aggrement_sent">
+                <div class="aggrement-heading">
+                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                    <h3>Agreement Sent</h3>
+                </div>
+                <div class="task-list">
+                <?php $__currentLoopData = $prospects->where('status', 'aggrement_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
+                    <div class="task-name">
+                            <p><?php echo e($prospect->company_name); ?></p>
+                        </div>
+                        <div class="in-project">
+                            Category: <?php echo e($prospect->category); ?>
+
+                        </div>
+
+                        <div class="due-date">
+                            Inquiry Date : <?php echo e($prospect->inquirydate); ?>
+
+                        </div>
+                        <div class="priority">
+                            Probability: <?php echo e($prospect->probability); ?> %
+                        </div>
+                        <div class="details">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-address="<?php echo e($prospect->address); ?>" data-message="<?php echo e($prospect->message); ?>">
+                                <div class="btn-see-detail-img-p">
+                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+            <div class="task-column" id="converted" data-status="converted">
+                <div class="closed-heading-prospect">
+                    <img src="<?php echo e(url ('frontend/images/completed.png')); ?>" alt="">
+                    <h3>Converted</h3>
+                </div>
+                <div class="task-list">
+                <?php $__currentLoopData = $prospects->where('status', 'converted'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
+                    <div class="task-name">
+                            <p><?php echo e($prospect->company_name); ?></p>
+                        </div>
+                        <div class="in-project">
+                            Category: <?php echo e($prospect->category); ?>
+
+                        </div>
+
+                        <div class="due-date">
+                            Inquiry Date : <?php echo e($prospect->inquirydate); ?>
+
+                        </div>
+                        <div class="priority">
+                            Probability: <?php echo e($prospect->probability); ?>
+
+                        </div>
+                        <div class="details">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($prospect->contact_person); ?>" data-phone="<?php echo e($prospect->phone_number); ?>" data-email="<?php echo e($prospect->email); ?>" data-address="<?php echo e($prospect->address); ?>" data-message="<?php echo e($prospect->message); ?>">
+                                <div class="btn-see-detail-img-p">
+                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- details modals -->
@@ -266,7 +384,7 @@
                     <option value="Ecommerce">Ecommerce</option>
                     <option value="NGO/ INGO">NGO/ INGO</option>
                     <option value="Tourism">Tourism</option>
-                    <option value="Tourism">Informative</option>
+                    <option value="Informative">Informative</option>
                     <option value="Education">Education</option>
                     <option value="Microsoft">Microsoft</option>
                     <option value="Other">Other</option>
@@ -298,10 +416,11 @@
 
                 <label for="status">Status</label>
                 <select name="status" id="status">
-                    <option value="Not Responded">Not Responded</option>
-                    <option value="Dealing">Dealing</option>
-                    <option value="Converted">Converted</option>
-                    <option value="Missed">Missed</option>
+                    <option value="new">New</option>
+                    <option value="dealing">Dealing</option>
+                    <option value="quote_sent">Quote Sent</option>
+                    <option value="aggrement_sent">Aggrement sent</option>
+                    <option value="converted">Converted</option>
                 </select><br>
 
                 <div class="modal-buttons">
@@ -759,6 +878,60 @@
         function closeAddTaskModal() {
             document.getElementById('add-task-modal').style.display = 'none';
         }
+
+
+           // JavaScript for drag-and-drop functionality
+    const tasks = document.querySelectorAll('.task');
+const columns = document.querySelectorAll('.task-column');
+
+// Enable drag-and-drop
+tasks.forEach(task => {
+    task.addEventListener('dragstart', () => {
+        task.classList.add('dragging');
+    });
+
+    task.addEventListener('dragend', () => {
+        task.classList.remove('dragging');
+    });
+});
+
+// Update task status on drop
+columns.forEach(column => {
+    column.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    column.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const draggingTask = document.querySelector('.dragging');
+        const taskId = draggingTask.getAttribute('data-task-id');
+        const taskType = draggingTask.getAttribute('data-task-type');
+        const newStatus = column.getAttribute('data-status');
+
+        // Move task to new column
+        column.querySelector('.task-list').appendChild(draggingTask);
+
+        // AJAX request to update task status in the database
+        fetch("<?php echo e(route('prospects.updateStatus')); ?>", {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+    },
+    body: JSON.stringify({ taskId, status: newStatus })
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        console.log(`Task ${taskId} status updated to ${newStatus}`);
+    } else {
+        console.error("Failed to update task status");
+    }
+})
+.catch(error => console.error("Error:", error));
+
+    });
+});
     </script>
 </main>
 

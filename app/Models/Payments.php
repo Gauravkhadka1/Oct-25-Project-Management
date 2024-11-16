@@ -15,6 +15,7 @@ class Payments extends Model
         'phone',
         'email',
         'amount',
+        'due_date',
         'activities',
     ];
     protected $casts = [

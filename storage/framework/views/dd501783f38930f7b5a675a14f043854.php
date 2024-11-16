@@ -69,7 +69,16 @@
                     <?php $__currentLoopData = $tasksToDo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                             <div class="task-name">
-                            <p><?php echo e($task->name); ?></p>
+                            <?php if($task->category == 'Payment'): ?>
+                                    <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
+                                <?php elseif($task->category == 'Prospect'): ?>
+                                    <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
+                                <?php else: ?>
+                                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                                <?php endif; ?>
+                                    <p><?php echo e($task->name); ?></p>
+                                </a>
+
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -111,7 +120,9 @@
                     <?php $__currentLoopData = $tasksInProgress; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <p><?php echo e($task->name); ?></p>
+                        <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                                <p><?php echo e($task->name); ?></p>
+                            </a>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -152,7 +163,9 @@
                     <?php $__currentLoopData = $tasksQA; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <p><?php echo e($task->name); ?></p>
+                        <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                                <p><?php echo e($task->name); ?></p>
+                            </a>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -193,7 +206,9 @@
                     <?php $__currentLoopData = $tasksCompleted; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <p><?php echo e($task->name); ?></p>
+                        <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                                <p><?php echo e($task->name); ?></p>
+                            </a>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>
@@ -234,7 +249,9 @@
                     <?php $__currentLoopData = $tasksClosed; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <p><?php echo e($task->name); ?></p>
+                        <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                                <p><?php echo e($task->name); ?></p>
+                            </a>
                             </div>
                             <div class="in-project">
                             in <?php echo e($task->category_name); ?>

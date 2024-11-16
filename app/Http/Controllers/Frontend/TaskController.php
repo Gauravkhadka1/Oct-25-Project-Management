@@ -308,6 +308,12 @@ public function addComment(Request $request)
     return response()->json(['success' => true]);
 }
 
+public function show($id)
+{
+    $task = Task::findOrFail($id); // or respective model for each controller
+    return view('frontends.taskdetail', compact('task'));
+}
+
 
 
 

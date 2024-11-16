@@ -50,4 +50,9 @@ class PaymentTaskController extends Controller
 
         return redirect(url('/payments'))->with('success', 'Payment Task created successfully.');
     }
+    public function show($id)
+{
+    $task = PaymentTask::findOrFail($id); // or respective model for each controller
+    return view('frontends.taskdetail', compact('task'));
+}
 }

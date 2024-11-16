@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Prospect;
 use App\Models\User;
+use App\Notifications\ProspectStatusUpdated;
+use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Notification;
+
+
 
 class ProspectController extends Controller
 {
@@ -136,4 +141,23 @@ class ProspectController extends Controller
         // Redirect back with a success message
         return redirect()->route('prospects.index')->with('success', 'Prospect updated successfully.');
     }
+    public function updateStatus(Request $request)
+{
+    $validatedData = $request->validate([
+        'taskId' => 'required|integer|exists:prospects,id',
+        'status' => 'required|string|max:255'
+    ]);
+
+    // Find the prospect by ID and update the status
+    $prospect = Prospect::findOrFail($validatedData['taskId']);
+    $prospect->status = $validatedData['status'];
+    $prospect->save();
+
+    // Send notifications to specified emails
+    $emails = ['gaurav@webtech.com.np'];
+    Notification::route('mail', $emails)->notify(new ProspectStatusUpdated($prospect, $validatedData['status']));
+
+    // Return a success response
+    return response()->json(['success' => true, 'message' => 'Status updated successfully']);
+}
 }

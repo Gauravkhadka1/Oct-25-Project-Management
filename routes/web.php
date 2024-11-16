@@ -132,6 +132,9 @@ Route::get('/user-dashboard/{username}', [UserDashboardController::class, 'userD
 
 
 Route::post('/tasks/update-status-comment', [TaskController::class, 'updateStatusComment'])->name('tasks.updateStatusComment');
+Route::post('/prospects/update-status', [ProspectController::class, 'updateStatus'])->name('prospects.updateStatus');
+Route::post('/payments/update-status', [PaymentsController::class, 'updateStatus'])->name('payments.updateStatus');
+Route::get('/paymentdetails', [PaymentsController::class, 'paymentDetails'])->name('payments.paymentDetails');
 
 
 Route::post('/tasks/update-comment', [TaskController::class, 'addComment'])->name('tasks.addComment');
@@ -142,3 +145,9 @@ Route::resource('clients', ClientsController::class);
 // Route::resource('tasks', TaskController::class);
 Route::get('/subcategories/{categoryId}', [CategoryController::class, 'getSubcategories']);
 Route::get('/additional-subcategories/{subcategoryId}', [CategoryController::class, 'getAdditionalSubcategories']);
+
+Route::get('/task/detail/{id}', [TaskController::class, 'show'])->name('task.detail');
+Route::get('/prospect_task/detail/{id}', [ProspectTaskController::class, 'show'])->name('prospect_task.detail');
+Route::get('/payment_task/detail/{id}', [PaymentTaskController::class, 'show'])->name('payment_task.detail');
+
+

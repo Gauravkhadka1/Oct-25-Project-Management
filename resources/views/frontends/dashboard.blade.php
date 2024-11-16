@@ -71,7 +71,16 @@
                     @foreach ($tasksToDo as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                             <div class="task-name">
-                            <p>{{ $task->name }}</p>
+                            @if($task->category == 'Payment')
+                                    <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
+                                @elseif($task->category == 'Prospect')
+                                    <a href="{{ route('prospect_task.detail', ['id' => $task->id]) }}">
+                                @else
+                                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                                @endif
+                                    <p>{{ $task->name }}</p>
+                                </a>
+
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -109,7 +118,9 @@
                     @foreach ($tasksInProgress as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            <p>{{ $task->name }}</p>
+                        <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                                <p>{{ $task->name }}</p>
+                            </a>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -146,7 +157,9 @@
                     @foreach ($tasksQA as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            <p>{{ $task->name }}</p>
+                        <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                                <p>{{ $task->name }}</p>
+                            </a>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -183,7 +196,9 @@
                     @foreach ($tasksCompleted as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            <p>{{ $task->name }}</p>
+                        <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                                <p>{{ $task->name }}</p>
+                            </a>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}
@@ -220,7 +235,9 @@
                     @foreach ($tasksClosed as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            <p>{{ $task->name }}</p>
+                        <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                                <p>{{ $task->name }}</p>
+                            </a>
                             </div>
                             <div class="in-project">
                             in {{ $task->category_name }}

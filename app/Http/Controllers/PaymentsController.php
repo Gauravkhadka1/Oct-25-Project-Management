@@ -6,54 +6,81 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Payments;
 use App\Models\User;
+use App\Notifications\PaymentsStatusUpdated;
+use Illuminate\Support\Facades\Notification;
+use Carbon\Carbon;
+
 
 class PaymentsController extends Controller
 {
     public function index(Request $request)
-    {
-        // Fetch all payments from the database
-        $query = Payments::query();
-        $filterCount = 0;
+{
+    // Fetch and filter payments
+    $query = Payments::query();
+    $filterCount = 0;
 
-        // Initialize the total dues text
-        $totalDuesText = 'Total Due:';
-
-
-        // Filtering by Category
-        if ($request->filled('filter_category')) {
-            $query->where('category', $request->filter_category);
-            $filterCount++;
-        }
-
-        // Filtering by Amount Date
-        if ($request->filled('amount')) {
-            $filterCount++;
-            if ($request->amount == 'high-to-low') {
-                $query->orderBy('amount', 'desc');
-            } elseif ($request->amount == 'low-to-high') {
-                $query->orderBy('amount', 'asc');
-            }
-        }
-
-        // Search functionality
-        if ($request->has('search') && !empty($request->search)) {
-            $searchTerm = $request->search;
-            $query->where('company_name', 'like', "%{$searchTerm}%"); // Search by project name
-        }
-
-        // Get filtered payments and calculate total due
-        $payments = $query->get();
-        $filteredTotalAmount = $payments->sum('amount');
-        $totalDuesText = $request->filled('filter_category') ? "Total {$request->filter_category} Dues:" : 'Total Dues from All Categories:';
-
-        // Fetch the sorted and filtered data
-        $payments = $query->get();
-
-        // Fetch all users
-        $users = User::all();
-
-        return view('frontends.payments', compact('payments', 'users', 'filteredTotalAmount', 'totalDuesText', 'filterCount'));
+    // Filtering by Category
+    if ($request->filled('filter_category')) {
+        $query->where('category', $request->filter_category);
+        $filterCount++;
     }
+
+    // Filtering by Amount
+    if ($request->filled('amount')) {
+        if ($request->amount == 'high-to-low') {
+            $query->orderBy('amount', 'desc');
+        } elseif ($request->amount == 'low-to-high') {
+            $query->orderBy('amount', 'asc');
+        }
+        $filterCount++;
+    }
+
+    // Search functionality
+    if ($request->has('search') && !empty($request->search)) {
+        $query->where('company_name', 'like', "%{$request->search}%");
+    }
+
+    // Fetch and calculate due_days
+    $payments = $query->get()->map(function ($payment) {
+        $now = Carbon::now();
+    
+        if ($payment->due_date) {
+            $dueDate = Carbon::parse($payment->due_date);
+            $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false); // Ensure days only
+        } else {
+            $payment->due_days = null; // Set null explicitly
+        }
+    
+        return $payment;
+    });
+    
+    
+    // Sorting by Days Remaining or Overdue
+    if ($request->filled('due_date')) {
+        if ($request->due_date == 'less-days') {
+            // Sort by overdue days, highest first
+            $payments = $payments->sortByDesc('due_days');
+        } elseif ($request->due_date == 'more-days') {
+            // Sort by remaining days, highest first
+            $payments = $payments->sortBy('due_days');
+        }
+        $filterCount++;
+    }
+
+
+    // Calculate total dues text and filtered amount
+    $filteredTotalAmount = $payments->sum('amount');
+    $totalDuesText = $request->filled('filter_category')
+        ? "Total {$request->filter_category} Dues:"
+        : 'Total Dues from All Categories:';
+
+    // Fetch all users
+    $users = User::all();
+
+    // Return view
+    return view('frontends.payments', compact('payments', 'users', 'filteredTotalAmount', 'totalDuesText', 'filterCount'));
+}
+
 
     // payments store
     public function store(Request $request)
@@ -66,9 +93,11 @@ class PaymentsController extends Controller
             'email' => 'nullable|email|max:255',
             'category' => 'nullable|string|max:255',
             'amount' => 'nullable|numeric|min:0',
+            'status' => 'nullable|string|max:255',
+            'due_date' => 'nullable|date',
             'activities' => 'nullable|string|max:255',
         ]);
-
+        $validatedData['status'] = 'due'; // Default status to "due"
         Payments::create($validatedData);
 
         return redirect(url('/payments'))->with('success', 'Payments created successfully.');
@@ -94,6 +123,8 @@ class PaymentsController extends Controller
             'email' => 'nullable|email|max:255',
             'category' => 'nullable|string|max:255',
             'amount' => 'nullable|numeric|min:0',
+            'amount' => 'nullable|string|max:255',
+            'due_date' => 'nullable|date',
             'activities' => 'nullable|string|max:255',
         ]);
         // Find the prospect by ID
@@ -113,5 +144,44 @@ class PaymentsController extends Controller
 
         // Redirect back with a success message
         return redirect()->route('payments.index')->with('success', 'Payments updated successfully.');
+    }
+    public function updateStatus(Request $request)
+    {
+        $validatedData = $request->validate([
+            'taskId' => 'required|integer|exists:payments,id',
+            'status' => 'required|string|max:255'
+        ]);
+    
+        // Find the prospect by ID and update the status
+        $payment = Payments::findOrFail($validatedData['taskId']);
+        $payment->status = $validatedData['status'];
+        $payment->save();
+    
+        // Send notifications to specified emails
+        $emails = ['gaurav@webtech.com.np'];
+        Notification::route('mail', $emails)->notify(new PaymentsStatusUpdated($payment, $validatedData['status']));
+    
+        // Return a success response
+        return response()->json(['success' => true, 'message' => 'Status updated successfully']);
+    }
+
+    public function paymentDetails (Request $request) {
+        $query = Payments::query();
+         // Fetch and calculate due_days
+    $payments = $query->get()->map(function ($payment) {
+        $now = Carbon::now();
+    
+        if ($payment->due_date) {
+            $dueDate = Carbon::parse($payment->due_date);
+            $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false); // Ensure days only
+        } else {
+            $payment->due_days = null; // Set null explicitly
+        }
+    
+        return $payment;
+    });
+    $users = User::all();
+
+        return view('frontends.payment-details', compact('payments', 'users'));
     }
 }

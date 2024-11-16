@@ -48,6 +48,19 @@
                             <option value="low-to-high" <?php echo e(request('amount') == 'low-to-high' ? 'selected' : ''); ?>>Low to High</option>
                         </select>
                     </div>
+
+                    <!-- Due Days Filters -->
+                <div class="filter-item">
+                    <label for="due_date">Days Remaining:</label>
+                    <select id="due_date" name="due_date" class="filter-select">
+                        <option value="">Select Options</option>
+                        <option value="less-days" <?php echo e(request('due_date') == 'less-days' ? 'selected' : ''); ?>>Less Days</option>
+                        <option value="more-days" <?php echo e(request('due_date') == 'more-days' ? 'selected' : ''); ?>>More Days</option>
+                    </select>
+                </div>
+
+
+
                     <button type="submit">Apply Filter</button>
                 </form>
             </div>
@@ -65,73 +78,201 @@
         </div>
     </div>
 
-    <table class="modern-payments-table">
-        <thead>
-            <tr>
-                <th>SN</th>
-                <th>
-                    Company Name
-                </th>
-                <th>
-                    Category
-                </th>
-                <th>
-                    Amount
-                </th>
-                <th>Tasks</th>
-                <th>Activities</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $__currentLoopData = $payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $payments): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <tr>
-                <td><?php echo e($key + 1); ?></td>
-                <td class="company-name-td">
-                    <span class="payments-name"><?php echo e($payments->company_name); ?></span>
-                    <button class="btn-see-details" data-contact_person="<?php echo e($payments->contact_person); ?>" data-phone="<?php echo e($payments->phone); ?>" data-email="<?php echo e($payments->email); ?>">
-                        <div class="btn-see-detail-img">
-                            <img src="<?php echo e(url ('/frontend/images/info.png')); ?>" alt="">
-                        </div>
-                    </button>
-                </td>
-                <td><?php echo e($payments->category); ?></td>
-                <td><?php echo e($payments->amount); ?></td>
-                <td>
-                    <button class="btn-create" id="task-create" onclick="openAddTaskModal(<?php echo e($payments->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""> Task</button>
-                    <button class="btn-view-activities-p" onclick="openTaskDetailsModal(<?php echo e(json_encode($payments)); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt="">Tasks</button>
-                </td>
-                <td>
-                    <button class="btn-add-activity" onclick="openAddActivityModal(<?php echo e($payments->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""></button>
-                    <button class="btn-view-activities" onclick="viewActivities(<?php echo e($payments->id); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt=""></button>
-                </td>
-                <td class="payment-edit-delete">
-                    <button class="btn-create" onclick="openEditPaymentsModal(<?php echo e(json_encode($payments)); ?>)"><img src="<?php echo e(url ('/frontend/images/edit.png')); ?>" alt=""></button>
-                    <form action="<?php echo e(route('payments.destroy', $payments->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this payment?');">
-                        <?php echo csrf_field(); ?>
-                        <?php echo method_field('DELETE'); ?>
-                        <button type="submit" class="btn-cancel"><img src="<?php echo e(url ('/frontend/images/delete.png')); ?>" alt=""></button>
-                    </form>
-                </td>
-            </tr>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3" style="text-align: right; font-weight: bold;"><?php echo e($totalDuesText); ?></td>
-                <td colspan="3" style="font-weight: bold;">
-                    <?php echo e(number_format($filteredTotalAmount)); ?>
+   
+    <div class="task-board">
+            <!-- Column for To Do tasks -->
+            <div class="task-column" id="due" data-status="due">
+                <div class="todo-heading-payments">
+                    <img src="<?php echo e(url ('frontend/images/due.png')); ?>" alt="">
+                    <h3>Dues</h3>
+                </div>
 
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+                <div class="task-list">
+                <?php $__currentLoopData = $payments->filter(fn($payment) => $payment->status === 'due' || is_null($payment->status)); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+                    <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
+                        <div class="task-name">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
+                                <div class="btn-see-detail-img-payments">
+                                <p><?php echo e($payment->company_name); ?></p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="category">
+                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+
+                        </div>
+
+                        <div class="inquiry-date">
+                        NPR: <?php echo e($payment->amount); ?>
+
+                        </div>
+                        <div class="probability">
+                            <?php if(is_null($payment->due_days)): ?>
+                                N/A
+                            <?php elseif($payment->due_days < 0): ?>
+                                Due in <?php echo e(abs($payment->due_days)); ?> day's
+                            <?php elseif($payment->due_days > 0): ?>
+                                Overdue by <?php echo e($payment->due_days); ?> day's
+                            <?php else: ?>
+                                Due today
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+
+
+            <!-- Column for In Progress tasks -->
+            <div class="task-column" id="invoice_sent" data-status="invoice_sent">
+                <div class="invoicesent-heading">
+                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                    <h3>Payment Details Sent</h3>
+                </div>
+
+                <div class="task-list">
+                <?php $__currentLoopData = $payments->where('status', 'invoice_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
+                    <div class="task-name">
+                            <p><?php echo e($payment->company_name); ?></p>
+                        </div>
+                        <div class="category">
+                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+
+                        </div>
+
+                        <div class="inquiry-date">
+                        NPR: <?php echo e($payment->amount); ?>
+
+                        </div>
+                        <div class="probability">
+                            <?php if(is_null($payment->due_days)): ?>
+                                N/A
+                            <?php elseif($payment->due_days < 0): ?>
+                                Due in <?php echo e(abs($payment->due_days)); ?> day's
+                            <?php elseif($payment->due_days > 0): ?>
+                                Overdue by <?php echo e($payment->due_days); ?> day's
+                            <?php else: ?>
+                                Due today
+                            <?php endif; ?>
+                        </div>
+
+
+
+                        <div class="details">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
+                                <div class="btn-see-detail-img-p">
+                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+
+            <!-- Column for QA tasks -->
+            <div class="task-column" id="vatbill_sent" data-status="vatbill_sent">
+                <div class="vatbillsent-heading">
+                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                    <h3>Vat Bill Sent</h3>
+                </div>
+                <div class="task-list">
+                <?php $__currentLoopData = $payments->where('status', 'vatbill_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
+                    <div class="task-name">
+                            <p><?php echo e($payment->company_name); ?></p>
+                        </div>
+                        <div class="category">
+                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+
+                        </div>
+
+                        <div class="inquiry-date">
+                        NPR: <?php echo e($payment->amount); ?>
+
+                        </div>
+                        <div class="probability">
+                            <?php if(is_null($payment->due_days)): ?>
+                                N/A
+                            <?php elseif($payment->due_days < 0): ?>
+                                Due in <?php echo e(abs($payment->due_days)); ?> day's
+                            <?php elseif($payment->due_days > 0): ?>
+                                Overdue by <?php echo e($payment->due_days); ?> day's
+                            <?php else: ?>
+                                Due today
+                            <?php endif; ?>
+                        </div>
+
+
+
+                        <div class="details">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
+                                <div class="btn-see-detail-img-p">
+                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+
+            <!-- Column for Completed tasks -->
+            <div class="task-column" id="paid" data-status="paid">
+                <div class="paid-heading">
+                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                    <h3>Paid</h3>
+                </div>
+                <div class="task-list">
+                <?php $__currentLoopData = $payments->where('status', 'paid'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
+                    <div class="task-name">
+                            <p><?php echo e($payment->company_name); ?></p>
+                        </div>
+                        <div class="category">
+                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+
+                        </div>
+
+                        <div class="inquiry-date">
+                        NPR: <?php echo e($payment->amount); ?>
+
+                        </div>
+                        <div class="probability">
+                            <?php if(is_null($payment->due_days)): ?>
+                                N/A
+                            <?php elseif($payment->due_days < 0): ?>
+                                Due in <?php echo e(abs($payment->due_days)); ?> day's
+                            <?php elseif($payment->due_days > 0): ?>
+                                Overdue by <?php echo e($payment->due_days); ?> day's
+                            <?php else: ?>
+                                Due today
+                            <?php endif; ?>
+                        </div>
+
+
+
+                        <div class="details">
+                            <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
+                                <div class="btn-see-detail-img-p">
+                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+    </div>
+   
 
 
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
         <div class="details-modal-content">
-            <h3>Payments Details</h3>
+            <h3>Contact Details</h3>
             <p><strong>Contact person:</strong> <span id="modal-contact_person"></span></p>
             <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
             <p><strong>Email:</strong> <span id="modal-email"></span></p>
@@ -169,7 +310,8 @@
                 <label for="amount">Amount:</label>
                 <input type="number" name="amount" id="amount"><br>
 
-                </select><br>
+                <label for="due_date">Due Date</label>
+                <input type="date" name="due_date" id="due_date"><br>
 
                 <div class="modal-buttons">
                     <button type="submit" class="btn-submit">Add Payments</button>
@@ -508,6 +650,61 @@
         function closeAddTaskModal() {
             document.getElementById('add-task-modal').style.display = 'none';
         }
+
+
+
+ // JavaScript for drag-and-drop functionality
+        const tasks = document.querySelectorAll('.task');
+const columns = document.querySelectorAll('.task-column');
+
+// Enable drag-and-drop
+tasks.forEach(task => {
+    task.addEventListener('dragstart', () => {
+        task.classList.add('dragging');
+    });
+
+    task.addEventListener('dragend', () => {
+        task.classList.remove('dragging');
+    });
+});
+
+// Update task status on drop
+columns.forEach(column => {
+    column.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    column.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const draggingTask = document.querySelector('.dragging');
+        const taskId = draggingTask.getAttribute('data-task-id');
+        const taskType = draggingTask.getAttribute('data-task-type');
+        const newStatus = column.getAttribute('data-status');
+
+        // Move task to new column
+        column.querySelector('.task-list').appendChild(draggingTask);
+
+        // AJAX request to update task status in the database
+        fetch("<?php echo e(route('payments.updateStatus')); ?>", {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+    },
+    body: JSON.stringify({ taskId, status: newStatus })
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        console.log(`Task ${taskId} status updated to ${newStatus}`);
+    } else {
+        console.error("Failed to update task status");
+    }
+})
+.catch(error => console.error("Error:", error));
+
+    });
+});
     </script>
 
 </div>

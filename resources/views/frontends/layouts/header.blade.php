@@ -10,11 +10,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.atwho/1.3.0/css/jquery.atwho.min.css" />
   <link rel="stylesheet" href="{{url('frontend/css/index.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/dashboard.css')}}">
-  <link rel="stylesheet" href="{{url('frontend/css/prospects.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/projects.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/payments.css')}}">
+  <link rel="stylesheet" href="{{url('frontend/css/prospects.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/add-client.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/new-dashboard.css')}}">
+  <link rel="stylesheet" href="{{url('frontend/css/task-detail.css')}}">
 
 
   @php
