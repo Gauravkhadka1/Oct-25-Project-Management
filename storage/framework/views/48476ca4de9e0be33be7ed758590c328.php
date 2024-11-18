@@ -102,7 +102,8 @@
                 <?php $__currentLoopData = $prospects->where('status', 'new'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
                         <div class="task-name">
-                            <p><?php echo e($prospect->company_name); ?></p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal(<?php echo e($prospect->id); ?>)"><p><?php echo e($prospect->company_name); ?></p></button>
+                            
                         </div>
                         <div class="category">
                             <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
@@ -140,7 +141,8 @@
                 <?php $__currentLoopData = $prospects->where('status', 'dealing'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
                     <div class="task-name">
-                            <p><?php echo e($prospect->company_name); ?></p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal(<?php echo e($prospect->id); ?>)"><p><?php echo e($prospect->company_name); ?></p></button>
+                            
                         </div>
                         <div class="in-project">
                             Category: <?php echo e($prospect->category); ?>
@@ -176,7 +178,8 @@
                 <?php $__currentLoopData = $prospects->where('status', 'quote_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
                     <div class="task-name">
-                            <p><?php echo e($prospect->company_name); ?></p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal(<?php echo e($prospect->id); ?>)"><p><?php echo e($prospect->company_name); ?></p></button>
+                            
                         </div>
                         <div class="in-project">
                             Category: <?php echo e($prospect->category); ?>
@@ -212,7 +215,8 @@
                 <?php $__currentLoopData = $prospects->where('status', 'aggrement_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
                     <div class="task-name">
-                            <p><?php echo e($prospect->company_name); ?></p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal(<?php echo e($prospect->id); ?>)"><p><?php echo e($prospect->company_name); ?></p></button>
+                            
                         </div>
                         <div class="in-project">
                             Category: <?php echo e($prospect->category); ?>
@@ -246,7 +250,8 @@
                 <?php $__currentLoopData = $prospects->where('status', 'converted'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="task" draggable="true" data-task-id="<?php echo e($prospect->id); ?>" data-task-type="<?php echo e(strtolower($prospect->category)); ?>">
                     <div class="task-name">
-                            <p><?php echo e($prospect->company_name); ?></p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal(<?php echo e($prospect->id); ?>)"><p><?php echo e($prospect->company_name); ?></p></button>
+                            
                         </div>
                         <div class="in-project">
                             Category: <?php echo e($prospect->category); ?>

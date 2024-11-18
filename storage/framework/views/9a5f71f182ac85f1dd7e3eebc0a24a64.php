@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('main-container'); ?>
 <div class="task-detail-page">
     <div class="task-details">

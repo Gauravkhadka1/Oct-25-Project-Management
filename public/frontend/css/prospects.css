@@ -834,3 +834,8 @@ margin: 5px 0;
 width: 20px;
 margin: 5px 0 10px 0 ;
 }
+.btn-task-create {
+    background-color: transparent !important;
+    padding: 0;
+    
+}

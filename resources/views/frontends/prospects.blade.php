@@ -103,7 +103,8 @@
                 @foreach ($prospects->where('status', 'new') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                         <div class="task-name">
-                            <p>{{ $prospect->company_name }}</p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                            
                         </div>
                         <div class="category">
                             <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
@@ -139,7 +140,8 @@
                 @foreach ($prospects->where('status', 'dealing') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                     <div class="task-name">
-                            <p>{{ $prospect->company_name }}</p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                            
                         </div>
                         <div class="in-project">
                             Category: {{ $prospect->category}}
@@ -173,7 +175,8 @@
                 @foreach ($prospects->where('status', 'quote_sent') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                     <div class="task-name">
-                            <p>{{ $prospect->company_name }}</p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                            
                         </div>
                         <div class="in-project">
                             Category: {{ $prospect->category}}
@@ -207,7 +210,8 @@
                 @foreach ($prospects->where('status', 'aggrement_sent') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                     <div class="task-name">
-                            <p>{{ $prospect->company_name }}</p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                            
                         </div>
                         <div class="in-project">
                             Category: {{ $prospect->category}}
@@ -239,7 +243,8 @@
                 @foreach ($prospects->where('status', 'converted') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                     <div class="task-name">
-                            <p>{{ $prospect->company_name }}</p>
+                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                            
                         </div>
                         <div class="in-project">
                             Category: {{ $prospect->category}}
