@@ -44,6 +44,7 @@ class ClientsController extends Controller
         // Validate incoming request data
         $validatedData = $request->validate([
             'company_name' => 'nullable|string|max:255',
+            'website' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'company_phone' => 'nullable|string|max:255',
             'company_email' => 'nullable|string|max:255',
@@ -58,6 +59,7 @@ class ClientsController extends Controller
         // Create a new client entry with validated data
         $clients = Clients::create([
             'company_name' => $validatedData['company_name'],
+            'website' => $validatedData['website'],
             'address' => $validatedData['address'],
             'company_phone' => $validatedData['company_phone'],
             'company_email' => $validatedData['company_email'],
@@ -75,5 +77,7 @@ class ClientsController extends Controller
         // Redirect with a success message
         return redirect(url('/clients'))->with('success', 'Client added successfully.');
     }
-    
+    public function addclients() {
+        return view('frontends.add-clients');
+    }
 }

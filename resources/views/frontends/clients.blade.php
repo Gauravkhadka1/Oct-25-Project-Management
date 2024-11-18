@@ -23,8 +23,8 @@
             <h2>All Clients</h2>
         </div>
         <div class="create-filter-search">
-            <div class="create-payments">
-                <button class="btn-create" onclick=""><img src="{{url ('/frontend/images/add.png')}}" alt=""> Clients</button>
+            <div class="create-clients">
+                <button class="btn-create"> <a href="{{url ('add-new-clients')}}"><img src="{{url ('/frontend/images/add.png')}}" alt=""> Clients</a> </button>
             </div>
             <div class="filter-section">
                 <div class="filter-payments" onclick="toggleFilterList()">
@@ -85,12 +85,13 @@
                 </form>
             </div>
         </div>
-        <div class="clients-data">
+        <div class="modern-payments-table">
             <table>
                 <thead>
                     <tr>
                         <th>SN</th>
                         <th>Company Name</th>
+                        <th>Website</th>
                         <th>Category</th>
                         <th>Address</th>
                         <th>Contact Person</th>
@@ -105,6 +106,18 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $client->company_name ?? '' }}</td>
+                        <td>
+                            @if(!empty($client->website))
+                                @php
+                                    $url = preg_match('/^(http|https):\/\//', $client->website) ? $client->website : 'http://' . $client->website;
+                                @endphp
+                                <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">{{ $client->website }}</a>
+                            @else
+                                No Website
+                            @endif
+                        </td>
+
+
                         <td>{{ $client->category ?? '' }}</td>
                         <td>{{ $client->address ?? '' }}</td>
                         <td>{{ $client->contact_person ?? '' }}</td>
@@ -131,6 +144,7 @@
                         <label for="company_name">Company Name:</label>
                         <input type="text" id="company_name" name="company_name" nullable>
                     </div>
+                    
 
                     <div class="form-group">
                         <label for="category">Category:</label>

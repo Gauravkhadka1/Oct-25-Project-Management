@@ -1,0 +1,20 @@
+.client-page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0 0 10;
+}
+.client-page-heading h2 {
+    font-size: 30px;
+}
+.create-clients button{
+    background-color: #45A049;
+    color: white;
+}
+.create-clients button a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+}

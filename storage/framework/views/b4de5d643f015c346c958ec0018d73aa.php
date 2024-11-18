@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('main-container'); ?>
 
 <div class="add-clients-page">
@@ -13,6 +11,10 @@
         <div class="form-group">
             <label for="company_name">Company Name:</label>
             <input type="text" id="company_name" name="company_name" nullable>
+        </div>
+        <div class="form-group">
+            <label for="website">Website:</label>
+            <input type="text" id="website" name="website" nullable>
         </div>
 
         <div class="form-group">

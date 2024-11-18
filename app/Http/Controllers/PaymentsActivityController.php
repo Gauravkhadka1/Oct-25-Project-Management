@@ -27,8 +27,16 @@ class PaymentsActivityController extends Controller
             // Find the mentioned user by their username
             $mentionedUser = User::where('username', $mentionedUserUsername)->first();
             if ($mentionedUser) {
-                // Send a notification to the mentioned user
-                Mail::to($mentionedUser->email)->send(new MentionedUserNotification($activity, $mentionedUser));
+                $companyName = $activity->payment->company_name;
+                // Pass mentioning user (current user) and payment ID
+                Mail::to($mentionedUser->email)->send(
+                    new MentionedUserNotification(
+                        $activity,
+                        $mentionedUser,
+                        Auth::user(), // The mentioning user
+                        $companyName
+                    )
+                );
             }
         }
           // Load the user relationship to include the user data in the response

@@ -6,10 +6,11 @@
     <title>You were mentioned!</title>
 </head>
 <body>
-    <p>Hello {{ $username }},</p>
-    <p>You were mentioned in the following activity:</p>
-    <blockquote>{{ $activityDetails }}</blockquote>
-    <p>Click the link below to view the full activity:</p>
-    <p><a href="{{ $activityLink }}">View Activity</a></p>
+<p>Hello {{ $mentionedUsername }},</p>
+<p>{{ $mentioningUsername }} mentioned you in a comment in the company: {{ $companyName }}.</p>
+<p>Comment: {{ $activityDetails }}</p>
+
+<!-- <p><a href="{{ $activityLink }}">View Activity</a></p> -->
+
 </body>
 </html>

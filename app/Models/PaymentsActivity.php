@@ -13,4 +13,8 @@ class PaymentsActivity extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function payment()
+    {
+        return $this->belongsTo(Payments::class, 'payments_id');
+    }
 }

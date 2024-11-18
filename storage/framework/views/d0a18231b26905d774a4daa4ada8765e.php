@@ -22,8 +22,8 @@
             <h2>All Clients</h2>
         </div>
         <div class="create-filter-search">
-            <div class="create-payments">
-                <button class="btn-create" onclick=""><img src="<?php echo e(url ('/frontend/images/add.png')); ?>" alt=""> Clients</button>
+            <div class="create-clients">
+                <button class="btn-create"> <a href="<?php echo e(url ('add-new-clients')); ?>"><img src="<?php echo e(url ('/frontend/images/add.png')); ?>" alt=""> Clients</a> </button>
             </div>
             <div class="filter-section">
                 <div class="filter-payments" onclick="toggleFilterList()">
@@ -84,12 +84,13 @@
                 </form>
             </div>
         </div>
-        <div class="clients-data">
+        <div class="modern-payments-table">
             <table>
                 <thead>
                     <tr>
                         <th>SN</th>
                         <th>Company Name</th>
+                        <th>Website</th>
                         <th>Category</th>
                         <th>Address</th>
                         <th>Contact Person</th>
@@ -104,6 +105,18 @@
                     <tr>
                         <td><?php echo e($index + 1); ?></td>
                         <td><?php echo e($client->company_name ?? ''); ?></td>
+                        <td>
+                            <?php if(!empty($client->website)): ?>
+                                <?php
+                                    $url = preg_match('/^(http|https):\/\//', $client->website) ? $client->website : 'http://' . $client->website;
+                                ?>
+                                <a href="<?php echo e($url); ?>" target="_blank" rel="noopener noreferrer"><?php echo e($client->website); ?></a>
+                            <?php else: ?>
+                                No Website
+                            <?php endif; ?>
+                        </td>
+
+
                         <td><?php echo e($client->category ?? ''); ?></td>
                         <td><?php echo e($client->address ?? ''); ?></td>
                         <td><?php echo e($client->contact_person ?? ''); ?></td>
@@ -130,6 +143,7 @@
                         <label for="company_name">Company Name:</label>
                         <input type="text" id="company_name" name="company_name" nullable>
                     </div>
+                    
 
                     <div class="form-group">
                         <label for="category">Category:</label>
