@@ -304,26 +304,22 @@
                     </thead>
                     <tbody>
                         <?php $__currentLoopData = $hourlySessionsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $interval => $tasks): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <?php if($tasks->isEmpty()): ?>
-                                <tr>
-                                    <td><?php echo e($interval); ?></td>
-                                    <td colspan="3">N/A</td>
-                                </tr>
-                            <?php else: ?>
-                            <?php
-                            $isFirstTask = true;
-                        ?>
-                        <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(count($tasks) === 1 && $tasks->first()['task_name'] === 'N/A'): ?>
                             <tr>
-                                <td><?php echo e($isFirstTask ? $interval : ' " " '); ?></td>
-                                <td><?php echo e($task['task_name']); ?></td>
-                                <td><?php echo e($task['project_name']); ?></td>
-                                <td><?php echo e($task['time_spent']); ?></td>
+                                <td><?php echo e($interval); ?></td>
+                                <td colspan="3">No tasks during this interval</td>
                             </tr>
-                            <?php
-                                $isFirstTask = false;
-                            ?>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php else: ?>
+                                <?php $isFirstTask = true; ?>
+                                <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <tr>
+                                        <td><?php echo e($isFirstTask ? $interval : ''); ?></td>
+                                        <td><?php echo e($task['task_name']); ?></td>
+                                        <td><?php echo e($task['project_name']); ?></td>
+                                        <td><?php echo e($task['time_spent']); ?></td>
+                                    </tr>
+                                    <?php $isFirstTask = false; ?>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             <?php endif; ?>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>

@@ -99,9 +99,13 @@
                         <div class="task-name">
                             <button class="btn-see-details" data-contact_person="{{ $payment->contact_person }}" data-phone="{{ $payment->phone_number }}" data-email="{{ $payment->email }}" data-address="{{ $payment->address }}" data-message="{{ $payment->message }}">
                                 <div class="btn-see-detail-img-payments">
-                                <p>{{ $payment->company_name }}</p>
+                              
                                 </div>
                             </button>
+                            <a href="{{url ('paymentdetails')}}">
+                            <p>{{ $payment->company_name }}</p>
+                            </a>
+                           
                         </div>
                         <div class="category">
                             <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
@@ -420,9 +424,9 @@
                 <div id="suggestions"></div>
                 <div class="form-buttons">
                     <button type="submit" class="btn-submit">Add<div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
-    <img src="{{url('frontend/images/spinner.gif')}}" alt="Loading...">
-</div>
-</button>
+                    <img src="{{url('frontend/images/spinner.gif')}}" alt="Loading...">
+                </div>
+                </button>
                 </div>
             </form>
         </div>

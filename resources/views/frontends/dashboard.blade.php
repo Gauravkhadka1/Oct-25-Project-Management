@@ -286,26 +286,22 @@
                     </thead>
                     <tbody>
                         @foreach($hourlySessionsData as $interval => $tasks)
-                            @if ($tasks->isEmpty())
-                                <tr>
-                                    <td>{{ $interval }}</td>
-                                    <td colspan="3">N/A</td>
-                                </tr>
-                            @else
-                            @php
-                            $isFirstTask = true;
-                        @endphp
-                        @foreach($tasks as $task)
+                        @if (count($tasks) === 1 && $tasks->first()['task_name'] === 'N/A')
                             <tr>
-                                <td>{{ $isFirstTask ? $interval : ' " " ' }}</td>
-                                <td>{{ $task['task_name'] }}</td>
-                                <td>{{ $task['project_name'] }}</td>
-                                <td>{{ $task['time_spent'] }}</td>
+                                <td>{{ $interval }}</td>
+                                <td colspan="3">No tasks during this interval</td>
                             </tr>
-                            @php
-                                $isFirstTask = false;
-                            @endphp
-                            @endforeach
+                            @else
+                                @php $isFirstTask = true; @endphp
+                                @foreach($tasks as $task)
+                                    <tr>
+                                        <td>{{ $isFirstTask ? $interval : '' }}</td>
+                                        <td>{{ $task['task_name'] }}</td>
+                                        <td>{{ $task['project_name'] }}</td>
+                                        <td>{{ $task['time_spent'] }}</td>
+                                    </tr>
+                                    @php $isFirstTask = false; @endphp
+                                @endforeach
                             @endif
                         @endforeach
                     </tbody>

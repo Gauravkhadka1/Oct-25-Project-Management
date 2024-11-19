@@ -98,9 +98,13 @@
                         <div class="task-name">
                             <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
                                 <div class="btn-see-detail-img-payments">
-                                <p><?php echo e($payment->company_name); ?></p>
+                              
                                 </div>
                             </button>
+                            <a href="<?php echo e(url ('paymentdetails')); ?>">
+                            <p><?php echo e($payment->company_name); ?></p>
+                            </a>
+                           
                         </div>
                         <div class="category">
                             <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>

@@ -22,17 +22,21 @@
         <div class="client-page-heading">
             <h2>All Clients</h2>
         </div>
-        <div class="create-filter-search">
+        <div class="create-filter-search-clients">
             <div class="create-clients">
-                <button class="btn-create"> <a href="{{url ('add-new-clients')}}"><img src="{{url ('/frontend/images/add.png')}}" alt=""> Clients</a> </button>
+                <button class="btn-create">
+                    <a href="{{ url('add-new-clients') }}">
+                        <img src="{{ url('/frontend/images/add.png') }}" alt=""> Clients
+                    </a>
+                </button>
             </div>
             <div class="filter-section">
                 <div class="filter-payments" onclick="toggleFilterList()">
                     <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
                     <div class="filter-count">
-                    @if($filterCount > 0)
-                    <p>{{ $filterCount }}</p>
-                    @endif
+                        @if($filterCount > 0)
+                        <p>{{ $filterCount }}</p>
+                        @endif
                     </div>
                     Filter
                 </div>
@@ -71,8 +75,6 @@
                         <button type="submit">Apply Filter</button>
                     </form>
                 </div>
-
-
             </div>
             <div class="search-payments">
                 <div class="search-icon">
@@ -84,7 +86,16 @@
                     </div>
                 </form>
             </div>
+            <!-- Number Category Section -->
+            <div class="number-category">
+                @if($lastSelectedFilter)
+                    <p>Total number of {{ $lastSelectedFilter }} Clients - {{ $clients->count() }}</p>
+                @else
+                    <p>Total number of Clients - {{ $clients->count() }}</p>
+                @endif
+            </div>
         </div>
+
         <div class="modern-payments-table">
             <table>
                 <thead>

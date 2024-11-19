@@ -1,0 +1,14 @@
+.payment-detail-page {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+.payment-detail {
+    width: 60%;
+    background-color: red;
+}
+.payment-comments {
+    background-color: green;
+    width: 40%;
+}
