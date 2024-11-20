@@ -239,6 +239,15 @@
                 </div>
             </div>
     </div>
+    <tfoot>
+            <tr>
+                <td colspan="3" style="text-align: right; font-weight: bold;"><?php echo e($totalDuesText); ?></td>
+                <td colspan="3" style="font-weight: bold;">
+                    <?php echo e(number_format($filteredTotalAmount)); ?>
+
+                </td>
+            </tr>
+        </tfoot>
    
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
