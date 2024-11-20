@@ -153,5 +153,7 @@ Route::get('/payment_task/detail/{id}', [PaymentTaskController::class, 'show'])-
 Route::get('/activity/{id}', [PaymentsActivityController::class, 'show'])->name('activity.show');
 
 
+Route::get('paymentdetails/{id}', [PaymentsController::class, 'show'])->name('paymentdetails.show');
+Route::get('prospectdetails/{id}', [ProspectController::class, 'show'])->name('prospectdetails.show');
 
 

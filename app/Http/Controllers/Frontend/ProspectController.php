@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Notifications\ProspectStatusUpdated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Notification;
-
+use Carbon\Carbon;
 
 
 class ProspectController extends Controller
@@ -159,5 +159,25 @@ class ProspectController extends Controller
 
     // Return a success response
     return response()->json(['success' => true, 'message' => 'Status updated successfully']);
+}
+
+public function show($id)
+{
+    // Fetch the specific payment by ID
+    $prospect = prospect::findOrFail($id);
+
+    // Calculate due_days for this specific payment
+    $now = Carbon::now();
+    if ($prospect->due_date) {
+        $dueDate = Carbon::parse($prospect->due_date);
+        $prospect->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false);
+    } else {
+        $prospect->due_days = null; // Explicitly set null
+    }
+
+    $users = User::all();
+
+    // Pass the data to the view
+    return view('frontends.prospect-details', compact('prospect', 'users'));
 }
 }

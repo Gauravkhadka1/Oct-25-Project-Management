@@ -96,12 +96,7 @@
 
                     <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
                         <div class="task-name">
-                            <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
-                                <div class="btn-see-detail-img-payments">
-                              
-                                </div>
-                            </button>
-                            <a href="<?php echo e(url ('paymentdetails')); ?>">
+                            <a href="<?php echo e(url ('paymentdetails/' .$payment->id)); ?>">
                             <p><?php echo e($payment->company_name); ?></p>
                             </a>
                            
@@ -126,13 +121,6 @@
                                 Due today
                             <?php endif; ?>
                         </div>
-
-
-                        
-                        <div class="comments">
-                        <button class="btn-view-activities" onclick="viewActivities(<?php echo e($payment->id); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt=""></button>
-                        </div>
-                       
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -172,16 +160,6 @@
                                 Due today
                             <?php endif; ?>
                         </div>
-
-
-
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
-                                </div>
-                            </button>
-                        </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -218,16 +196,6 @@
                             <?php else: ?>
                                 Due today
                             <?php endif; ?>
-                        </div>
-
-
-
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
-                                </div>
-                            </button>
                         </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -266,24 +234,12 @@
                                 Due today
                             <?php endif; ?>
                         </div>
-
-
-
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="<?php echo e($payment->contact_person); ?>" data-phone="<?php echo e($payment->phone_number); ?>" data-email="<?php echo e($payment->email); ?>" data-address="<?php echo e($payment->address); ?>" data-message="<?php echo e($payment->message); ?>">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="<?php echo e(url ('frontend/images/info.png')); ?>" alt="">
-                                </div>
-                            </button>
-                        </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
     </div>
    
-
-
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
         <div class="details-modal-content">
@@ -431,9 +387,9 @@
                 <div id="suggestions"></div>
                 <div class="form-buttons">
                     <button type="submit" class="btn-submit">Add<div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
-    <img src="<?php echo e(url('frontend/images/spinner.gif')); ?>" alt="Loading...">
-</div>
-</button>
+                    <img src="<?php echo e(url('frontend/images/spinner.gif')); ?>" alt="Loading...">
+                </div>
+                </button>
                 </div>
             </form>
         </div>

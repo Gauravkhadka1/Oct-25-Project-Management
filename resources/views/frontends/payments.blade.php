@@ -97,12 +97,7 @@
 
                     <div class="task" draggable="true" data-task-id="{{ $payment->id }}" data-task-type="{{ strtolower($payment->category) }}">
                         <div class="task-name">
-                            <button class="btn-see-details" data-contact_person="{{ $payment->contact_person }}" data-phone="{{ $payment->phone_number }}" data-email="{{ $payment->email }}" data-address="{{ $payment->address }}" data-message="{{ $payment->message }}">
-                                <div class="btn-see-detail-img-payments">
-                              
-                                </div>
-                            </button>
-                            <a href="{{url ('paymentdetails')}}">
+                            <a href="{{url ('paymentdetails/' .$payment->id)}}">
                             <p>{{ $payment->company_name }}</p>
                             </a>
                            
@@ -125,13 +120,6 @@
                                 Due today
                             @endif
                         </div>
-
-
-                        
-                        <div class="comments">
-                        <button class="btn-view-activities" onclick="viewActivities({{ $payment->id }})"><img src="{{url ('/frontend/images/view.png')}}" alt=""></button>
-                        </div>
-                       
                     </div>
                     @endforeach
                 </div>
@@ -169,16 +157,6 @@
                                 Due today
                             @endif
                         </div>
-
-
-
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="{{ $payment->contact_person }}" data-phone="{{ $payment->phone_number }}" data-email="{{ $payment->email }}" data-address="{{ $payment->address }}" data-message="{{ $payment->message }}">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="{{url ('frontend/images/info.png')}}" alt="">
-                                </div>
-                            </button>
-                        </div>
                     </div>
                     @endforeach
                 </div>
@@ -213,16 +191,6 @@
                             @else
                                 Due today
                             @endif
-                        </div>
-
-
-
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="{{ $payment->contact_person }}" data-phone="{{ $payment->phone_number }}" data-email="{{ $payment->email }}" data-address="{{ $payment->address }}" data-message="{{ $payment->message }}">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="{{url ('frontend/images/info.png')}}" alt="">
-                                </div>
-                            </button>
                         </div>
                     </div>
                     @endforeach
@@ -259,24 +227,12 @@
                                 Due today
                             @endif
                         </div>
-
-
-
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="{{ $payment->contact_person }}" data-phone="{{ $payment->phone_number }}" data-email="{{ $payment->email }}" data-address="{{ $payment->address }}" data-message="{{ $payment->message }}">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="{{url ('frontend/images/info.png')}}" alt="">
-                                </div>
-                            </button>
-                        </div>
                     </div>
                     @endforeach
                 </div>
             </div>
     </div>
    
-
-
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
         <div class="details-modal-content">

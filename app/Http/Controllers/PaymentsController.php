@@ -184,4 +184,24 @@ class PaymentsController extends Controller
 
         return view('frontends.payment-details', compact('payments', 'users'));
     }
+    public function show($id)
+{
+    // Fetch the specific payment by ID
+    $payment = Payments::findOrFail($id);
+
+    // Calculate due_days for this specific payment
+    $now = Carbon::now();
+    if ($payment->due_date) {
+        $dueDate = Carbon::parse($payment->due_date);
+        $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false);
+    } else {
+        $payment->due_days = null; // Explicitly set null
+    }
+
+    $users = User::all();
+
+    // Pass the data to the view
+    return view('frontends.payment-details', compact('payment', 'users'));
+}
+
 }

@@ -24,5 +24,8 @@ public function replies()
     return $this->hasMany(Reply::class);
 }
 
-
+public function prospect()
+    {
+        return $this->belongsTo(Prospect::class, 'prospect_id');
+    }
 }

@@ -187,10 +187,6 @@
     outline: none; 
 }
 
-
-
-
-
 /* dragand drop css  */
 .new-dashboard-page {
     font-family: Arial, sans-serif;
@@ -359,7 +355,7 @@
     align-items: center;
     justify-content: flex-start;
 }
-.task-name button {
+.task-name a {
     display: flex;
     align-items: center;
     justify-content: flex-start;

@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{url('frontend/css/task-detail.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/client.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/payment-detail-page.css')}}">
+  <link rel="stylesheet" href="{{url('frontend/css/prospect-details-page.css')}}">
 
 
   @php

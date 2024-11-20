@@ -103,7 +103,9 @@
                 @foreach ($prospects->where('status', 'new') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                         <div class="task-name">
-                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                            <p>{{ $prospect->company_name }}</p>
+                            </a>
                             
                         </div>
                         <div class="category">
@@ -115,13 +117,6 @@
                         </div>
                         <div class="probability">
                         <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
-                        </div>
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="{{ $prospect->contact_person }}" data-phone="{{ $prospect->phone_number }}" data-email="{{ $prospect->email }}" data-address="{{ $prospect->address }}" data-message="{{ $prospect->message }}">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="{{url ('frontend/images/info.png')}}" alt="">
-                                </div>
-                            </button>
                         </div>
                     </div>
                     @endforeach
@@ -140,25 +135,20 @@
                 @foreach ($prospects->where('status', 'dealing') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                     <div class="task-name">
-                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                            <p>{{ $prospect->company_name }}</p>
+                            </a>
                             
                         </div>
-                        <div class="in-project">
-                            Category: {{ $prospect->category}}
+                        <div class="category">
+                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
-                        <div class="due-date">
-                            Inquiry Date : {{ $prospect->inquirydate }}
+                        <div class="inquiry-date">
+                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
-                        <div class="priority">
-                            Probability: {{ $prospect->probability }} %
-                        </div>
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="{{ $prospect->contact_person }}" data-phone="{{ $prospect->phone_number }}" data-email="{{ $prospect->email }}" data-address="{{ $prospect->address }}" data-message="{{ $prospect->message }}">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="{{url ('frontend/images/info.png')}}" alt="">
-                                </div>
-                            </button>
+                        <div class="probability">
+                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -175,25 +165,20 @@
                 @foreach ($prospects->where('status', 'quote_sent') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                     <div class="task-name">
-                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                            <p>{{ $prospect->company_name }}</p>
+                            </a>
                             
                         </div>
-                        <div class="in-project">
-                            Category: {{ $prospect->category}}
+                        <div class="category">
+                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
-                        <div class="due-date">
-                            Inquiry Date : {{ $prospect->inquirydate }}
+                        <div class="inquiry-date">
+                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
-                        <div class="priority">
-                            Probability: {{ $prospect->probability }} %
-                        </div> 
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="{{ $prospect->contact_person }}" data-phone="{{ $prospect->phone_number }}" data-email="{{ $prospect->email }}" data-address="{{ $prospect->address }}" data-message="{{ $prospect->message }}">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="{{url ('frontend/images/info.png')}}" alt="">
-                                </div>
-                            </button>
+                        <div class="probability">
+                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -210,25 +195,20 @@
                 @foreach ($prospects->where('status', 'aggrement_sent') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                     <div class="task-name">
-                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                            <p>{{ $prospect->company_name }}</p>
+                            </a>
                             
                         </div>
-                        <div class="in-project">
-                            Category: {{ $prospect->category}}
+                        <div class="category">
+                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
-                        <div class="due-date">
-                            Inquiry Date : {{ $prospect->inquirydate }}
+                        <div class="inquiry-date">
+                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
-                        <div class="priority">
-                            Probability: {{ $prospect->probability }} %
-                        </div>
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="{{ $prospect->contact_person }}" data-phone="{{ $prospect->phone_number }}" data-email="{{ $prospect->email }}" data-address="{{ $prospect->address }}" data-message="{{ $prospect->message }}">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="{{url ('frontend/images/info.png')}}" alt="">
-                                </div>
-                            </button>
+                        <div class="probability">
+                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -243,25 +223,20 @@
                 @foreach ($prospects->where('status', 'converted') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                     <div class="task-name">
-                        <button class="btn-task-create" id="task-create" onclick="openAddTaskModal({{ $prospect->id }})"><p>{{ $prospect->company_name }}</p></button>
+                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                            <p>{{ $prospect->company_name }}</p>
+                            </a>
                             
                         </div>
-                        <div class="in-project">
-                            Category: {{ $prospect->category}}
+                        <div class="category">
+                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
-                        <div class="due-date">
-                            Inquiry Date : {{ $prospect->inquirydate }}
+                        <div class="inquiry-date">
+                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
-                        <div class="priority">
-                            Probability: {{ $prospect->probability }}
-                        </div>
-                        <div class="details">
-                            <button class="btn-see-details" data-contact_person="{{ $prospect->contact_person }}" data-phone="{{ $prospect->phone_number }}" data-email="{{ $prospect->email }}" data-address="{{ $prospect->address }}" data-message="{{ $prospect->message }}">
-                                <div class="btn-see-detail-img-p">
-                                    <img src="{{url ('frontend/images/info.png')}}" alt="">
-                                </div>
-                            </button>
+                        <div class="probability">
+                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -681,9 +656,6 @@
                         <p>${formattedDate} ${formattedTime}</p>
                         <p><strong>${activity.username}</strong>: ${activity.details}</p>
 
-
-                      
-                      
 
                     `;
                             activitiesList.appendChild(activityCard); // Append the card to the list
