@@ -33,7 +33,7 @@ Route::get('/dashboard', [ProfileController::class, 'dashboard'])->middleware(['
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'updateProfile'])->name('profile.updateProfile');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/{email}', [ProfileController::class, 'show'])->name('profile.show');
 
@@ -134,7 +134,9 @@ Route::get('/user-dashboard/{username}', [UserDashboardController::class, 'userD
 Route::post('/tasks/update-status-comment', [TaskController::class, 'updateStatusComment'])->name('tasks.updateStatusComment');
 Route::post('/prospects/update-status', [ProspectController::class, 'updateStatus'])->name('prospects.updateStatus');
 Route::post('/payments/update-status', [PaymentsController::class, 'updateStatus'])->name('payments.updateStatus');
+Route::post('/projects/update-status', [ProjectController::class, 'updateStatus'])->name('projects.updateStatus');
 Route::get('/paymentdetails', [PaymentsController::class, 'paymentDetails'])->name('payments.paymentDetails');
+
 
 
 Route::post('/tasks/update-comment', [TaskController::class, 'addComment'])->name('tasks.addComment');
@@ -155,5 +157,8 @@ Route::get('/activity/{id}', [PaymentsActivityController::class, 'show'])->name(
 
 Route::get('paymentdetails/{id}', [PaymentsController::class, 'show'])->name('paymentdetails.show');
 Route::get('prospectdetails/{id}', [ProspectController::class, 'show'])->name('prospectdetails.show');
+Route::get('projectdetails/{id}', [ProjectController::class, 'showdetails'])->name('projectdetails.show');
+Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projects.update');
+
 
 

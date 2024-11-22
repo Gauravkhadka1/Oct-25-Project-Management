@@ -15,6 +15,7 @@ class Project extends Model
         'start_date',
         'due_date',
         'status',
+        'sub-status',
     ];
     public function tasks()
     {

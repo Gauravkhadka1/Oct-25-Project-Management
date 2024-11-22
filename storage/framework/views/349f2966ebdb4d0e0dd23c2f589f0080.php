@@ -72,9 +72,17 @@
 
             <div class="profile-header" style="position: relative;">
               <a href="javascript:void(0);" onclick="toggleDropdown(event)">
-                <div class="user-icon">
-                  <img src="<?php echo e(url('frontend/images/user.png')); ?>" alt="User Icon">
-                </div>
+              <div class="user-icon">
+                  <?php if(auth()->user() && auth()->user()->profilepic): ?>
+                      <img src="<?php echo e(asset('storage/profile_pictures/' . auth()->user()->profilepic)); ?>" alt="User Profile Picture" class="user-profile-pic">
+                  <?php else: ?>
+                      <img src="<?php echo e(asset('images/default-profile.png')); ?>" alt="Default Profile Picture" class="user-profile-pic">
+                  <?php endif; ?>
+              </div>
+
+
+
+
                 <div class="name">
                   <p><?php echo e($username); ?></p>
                 </div>
@@ -82,6 +90,7 @@
               </a>
               <div id="dropdownMenu" class="dropdown-menu">
                 <a href="<?php echo e(route('dashboard')); ?>"><img src="<?php echo e(url('frontend/images/dashboard.png')); ?>" alt=""> Dashboard</a>
+                <a href="<?php echo e(url('profile')); ?>"><img src="<?php echo e(url('frontend/images/profile.png')); ?>" alt=""> My Profile</a>
                 <a href="<?php echo e(route('logout')); ?>"><img src="<?php echo e(url('frontend/images/logout.png')); ?>" alt="">Logout</a>
               </div>
             </div>
@@ -169,7 +178,7 @@
             </div>
           </a>
           <ul class="task-dropdown">
-            <li><a href="<?php echo e(url('/projects')); ?>">All</a></li>
+            <li><a href="<?php echo e(url('/projects')); ?>">New</a></li>
           </ul>
         </li>
 

@@ -12,84 +12,82 @@
 
     <div class="prospects-list">
         <div class="prospect-heading">
-            <div class="prospect-heading">
+            <div class="prospect-heading-h2">
                 <h2>Prospects</h2>
             </div>
-        </div>
-        <div class="create-filter-search">
-            <div class="create-prospect">
-                <button class="btn-create" onclick="openCreateProspectModal()"><img src="{{url ('/frontend/images/add.png')}}" alt=""> Prospect</button>
-            </div>
-            <div class="filter-section">
-                <div class="filter-prospects" onclick="toggleFilterList()">
-                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                    <div class="filter-count">
-                        @if($filterCount > 0)
-                        <p>{{ $filterCount }}</p>
-                        @endif
-                    </div>
-                    Filter
+            <div class="create-filter-search">
+                <div class="create-prospect">
+                    <button class="btn-create" onclick="openCreateProspectModal()"><img src="{{url ('/frontend/images/add-new.png')}}" alt=""></button>
                 </div>
-                <div class="filter-options" style="display: none;">
-                    <form action="{{ route('prospects.index') }}" method="GET">
-                        <!-- Inquiry Date Filter -->
-                        <div class="filter-item">
-                            <label for="inquiry-date">Inquiry Date:</label>
-                            <select id="inquiry-date" name="inquiry_date" class="filter-select" onchange="handleDateRange(this)">
-                                <option value="">Select Options</option>
-                                <option value="recent" {{ request('inquiry_date') == 'recent' ? 'selected' : '' }}>Recent</option>
-                                <option value="oldest" {{ request('inquiry_date') == 'oldest' ? 'selected' : '' }}>Oldest</option>
-                                <option value="date-range" {{ request('inquiry_date') == 'date-range' ? 'selected' : '' }}>Choose Date Range</option>
-                            </select>
-                            <div id="date-range-picker" class="date-range-picker" style="display: {{ request('inquiry-date') == 'date-range' ? 'block' : 'none' }}">
-                                <label for="from-date">From:</label>
-                                <input type="date" id="from-date" name="from_date" value="{{ request('from_date') }}">
-                                <label for="to-date">To:</label>
-                                <input type="date" id="to-date" name="to_date" value="{{ request('to_date') }}">
+                <div class="filter-section">
+                    <div class="filter-prospects" onclick="toggleFilterList()">
+                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <div class="filter-count">
+                            @if($filterCount > 0)
+                            <p>{{ $filterCount }}</p>
+                            @endif
+                        </div>
+                        Filter
+                    </div>
+                    <div class="filter-options" style="display: none;">
+                        <form action="{{ route('prospects.index') }}" method="GET">
+                            <!-- Inquiry Date Filter -->
+                            <div class="filter-item">
+                                <label for="inquiry-date">Inquiry Date:</label>
+                                <select id="inquiry-date" name="inquiry_date" class="filter-select" onchange="handleDateRange(this)">
+                                    <option value="">Select Options</option>
+                                    <option value="recent" {{ request('inquiry_date') == 'recent' ? 'selected' : '' }}>Recent</option>
+                                    <option value="oldest" {{ request('inquiry_date') == 'oldest' ? 'selected' : '' }}>Oldest</option>
+                                    <option value="date-range" {{ request('inquiry_date') == 'date-range' ? 'selected' : '' }}>Choose Date Range</option>
+                                </select>
+                                <div id="date-range-picker" class="date-range-picker" style="display: {{ request('inquiry-date') == 'date-range' ? 'block' : 'none' }}">
+                                    <label for="from-date">From:</label>
+                                    <input type="date" id="from-date" name="from_date" value="{{ request('from_date') }}">
+                                    <label for="to-date">To:</label>
+                                    <input type="date" id="to-date" name="to_date" value="{{ request('to_date') }}">
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Category Filter -->
-                        <div class="filter-item">
-                            <label for="category">Category:</label>
-                            <select id="category" name="filter_category" class="filter-select">
-                                <option value="">Select Options</option>
-                                <option value="website" {{ request('filter_category') == 'website' ? 'selected' : '' }}>Website</option>
-                                <option value="microsoft" {{ request('filter_category') == 'microsoft' ? 'selected' : '' }}>Microsoft</option>
-                                <option value="other" {{ request('filter_category') == 'other' ? 'selected' : '' }}>Other</option>
-                            </select>
-                        </div>
+                            <!-- Category Filter -->
+                            <div class="filter-item">
+                                <label for="category">Category:</label>
+                                <select id="category" name="filter_category" class="filter-select">
+                                    <option value="">Select Options</option>
+                                    <option value="website" {{ request('filter_category') == 'website' ? 'selected' : '' }}>Website</option>
+                                    <option value="microsoft" {{ request('filter_category') == 'microsoft' ? 'selected' : '' }}>Microsoft</option>
+                                    <option value="other" {{ request('filter_category') == 'other' ? 'selected' : '' }}>Other</option>
+                                </select>
+                            </div>
 
-                        <!-- Status Filter -->
-                        <div class="filter-item">
-                            <label for="status">Status:</label>
-                            <select id="status" name="sort_status" class="filter-select">
-                                <option value="">Select Options</option>
-                                <option value="Not Responded" {{ request('sort_status') == 'Not Responded' ? 'selected' : '' }}>Not Responded</option>
-                                <option value="dealing" {{ request('sort_status') == 'dealing' ? 'selected' : '' }}>Dealing</option>
-                                <option value="converted" {{ request('sort_status') == 'converted' ? 'selected' : '' }}>Converted</option>
-                            </select>
-                        </div>
+                            <!-- Status Filter -->
+                            <div class="filter-item">
+                                <label for="status">Status:</label>
+                                <select id="status" name="sort_status" class="filter-select">
+                                    <option value="">Select Options</option>
+                                    <option value="Not Responded" {{ request('sort_status') == 'Not Responded' ? 'selected' : '' }}>Not Responded</option>
+                                    <option value="dealing" {{ request('sort_status') == 'dealing' ? 'selected' : '' }}>Dealing</option>
+                                    <option value="converted" {{ request('sort_status') == 'converted' ? 'selected' : '' }}>Converted</option>
+                                </select>
+                            </div>
 
-                        <button type="submit">Apply Filter</button>
+                            <button type="submit">Apply Filter</button>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="search-prospects">
+                    <div class="search-icon">
+                        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                    </div>
+                    <form action="{{ route('prospects.index') }}" method="GET" id="search-form">
+                        <div class="search-text-area">
+                            <input type="text" name="search" placeholder="search..." value="{{ request('search') }}" oninput="this.form.submit()">
+                        </div>
                     </form>
                 </div>
 
             </div>
-            <div class="search-prospects">
-                <div class="search-icon">
-                    <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
-                </div>
-                <form action="{{ route('prospects.index') }}" method="GET" id="search-form">
-                    <div class="search-text-area">
-                        <input type="text" name="search" placeholder="search..." value="{{ request('search') }}" oninput="this.form.submit()">
-                    </div>
-                </form>
-            </div>
-
         </div>
-
-
 
         <div class="task-board">
             <!-- Column for To Do tasks -->
@@ -100,23 +98,23 @@
                 </div>
 
                 <div class="task-list">
-                @foreach ($prospects->where('status', 'new') as $prospect)
+                    @foreach ($prospects->where('status', 'new') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
                         <div class="task-name">
-                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
-                            <p>{{ $prospect->company_name }}</p>
+                            <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                                <p>{{ $prospect->company_name }}</p>
                             </a>
-                            
+
                         </div>
                         <div class="category">
                             <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -132,23 +130,23 @@
                 </div>
 
                 <div class="task-list">
-                @foreach ($prospects->where('status', 'dealing') as $prospect)
+                    @foreach ($prospects->where('status', 'dealing') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
-                    <div class="task-name">
-                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
-                            <p>{{ $prospect->company_name }}</p>
+                        <div class="task-name">
+                            <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                                <p>{{ $prospect->company_name }}</p>
                             </a>
-                            
+
                         </div>
                         <div class="category">
                             <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -162,23 +160,23 @@
                     <h3>Quote Sent</h3>
                 </div>
                 <div class="task-list">
-                @foreach ($prospects->where('status', 'quote_sent') as $prospect)
+                    @foreach ($prospects->where('status', 'quote_sent') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
-                    <div class="task-name">
-                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
-                            <p>{{ $prospect->company_name }}</p>
+                        <div class="task-name">
+                            <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                                <p>{{ $prospect->company_name }}</p>
                             </a>
-                            
+
                         </div>
                         <div class="category">
                             <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -192,23 +190,23 @@
                     <h3>Agreement Sent</h3>
                 </div>
                 <div class="task-list">
-                @foreach ($prospects->where('status', 'aggrement_sent') as $prospect)
+                    @foreach ($prospects->where('status', 'aggrement_sent') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
-                    <div class="task-name">
-                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
-                            <p>{{ $prospect->company_name }}</p>
+                        <div class="task-name">
+                            <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                                <p>{{ $prospect->company_name }}</p>
                             </a>
-                            
+
                         </div>
                         <div class="category">
                             <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -220,23 +218,23 @@
                     <h3>Converted</h3>
                 </div>
                 <div class="task-list">
-                @foreach ($prospects->where('status', 'converted') as $prospect)
+                    @foreach ($prospects->where('status', 'converted') as $prospect)
                     <div class="task" draggable="true" data-task-id="{{ $prospect->id }}" data-task-type="{{ strtolower($prospect->category) }}">
-                    <div class="task-name">
-                        <a href="{{url ('prospectdetails/' .$prospect->id)}}">
-                            <p>{{ $prospect->company_name }}</p>
+                        <div class="task-name">
+                            <a href="{{url ('prospectdetails/' .$prospect->id)}}">
+                                <p>{{ $prospect->company_name }}</p>
                             </a>
-                            
+
                         </div>
                         <div class="category">
                             <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                        <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                        <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -847,58 +845,61 @@
         }
 
 
-           // JavaScript for drag-and-drop functionality
-    const tasks = document.querySelectorAll('.task');
-const columns = document.querySelectorAll('.task-column');
+        // JavaScript for drag-and-drop functionality
+        const tasks = document.querySelectorAll('.task');
+        const columns = document.querySelectorAll('.task-column');
 
-// Enable drag-and-drop
-tasks.forEach(task => {
-    task.addEventListener('dragstart', () => {
-        task.classList.add('dragging');
-    });
+        // Enable drag-and-drop
+        tasks.forEach(task => {
+            task.addEventListener('dragstart', () => {
+                task.classList.add('dragging');
+            });
 
-    task.addEventListener('dragend', () => {
-        task.classList.remove('dragging');
-    });
-});
+            task.addEventListener('dragend', () => {
+                task.classList.remove('dragging');
+            });
+        });
 
-// Update task status on drop
-columns.forEach(column => {
-    column.addEventListener('dragover', (e) => {
-        e.preventDefault();
-    });
+        // Update task status on drop
+        columns.forEach(column => {
+            column.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
 
-    column.addEventListener('drop', (e) => {
-        e.preventDefault();
-        const draggingTask = document.querySelector('.dragging');
-        const taskId = draggingTask.getAttribute('data-task-id');
-        const taskType = draggingTask.getAttribute('data-task-type');
-        const newStatus = column.getAttribute('data-status');
+            column.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const draggingTask = document.querySelector('.dragging');
+                const taskId = draggingTask.getAttribute('data-task-id');
+                const taskType = draggingTask.getAttribute('data-task-type');
+                const newStatus = column.getAttribute('data-status');
 
-        // Move task to new column
-        column.querySelector('.task-list').appendChild(draggingTask);
+                // Move task to new column
+                column.querySelector('.task-list').appendChild(draggingTask);
 
-        // AJAX request to update task status in the database
-        fetch("{{ route('prospects.updateStatus') }}", {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': "{{ csrf_token() }}"
-    },
-    body: JSON.stringify({ taskId, status: newStatus })
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        console.log(`Task ${taskId} status updated to ${newStatus}`);
-    } else {
-        console.error("Failed to update task status");
-    }
-})
-.catch(error => console.error("Error:", error));
+                // AJAX request to update task status in the database
+                fetch("{{ route('prospects.updateStatus') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            taskId,
+                            status: newStatus
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log(`Task ${taskId} status updated to ${newStatus}`);
+                        } else {
+                            console.error("Failed to update task status");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
 
-    });
-});
+            });
+        });
     </script>
 </main>
 

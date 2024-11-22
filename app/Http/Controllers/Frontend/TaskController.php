@@ -29,43 +29,50 @@ use Illuminate\Support\Facades\Auth;
 class TaskController extends Controller {
    // In TaskController
    public function store(Request $request)
-{
-    \Log::info("Incoming project_id: " . $request->input('project_id'));
+   {
+       \Log::info("Incoming project_id: " . $request->input('project_id'));
+   
+       // Validate the request data
+       $validatedData = $request->validate([
+           'name' => 'required|string|max:255',
+           'assigned_to' => 'required|exists:users,id',
+           'project_id' => 'required|exists:projects,id',
+           'due_date' => 'nullable|date',
+           'priority' => 'nullable|string',
+       ]);
+       
+        // $assignedByUserId = auth()->id();
+       // Create the task
+       $task = Task::create([
+           'name' => $validatedData['name'],
+           'assigned_to' => $validatedData['assigned_to'],
+           'project_id' => $validatedData['project_id'],
+           'due_date' => $validatedData['due_date'],
+           'priority' => $validatedData['priority'],
+       ]);
+   
+       \Log::info('Task Created Successfully: ', $task->toArray());
+ 
+   
+       // Return JSON response for AJAX
+       if ($request->expectsJson()) {
+           return response()->json([
+               'message' => 'Task created successfully.',
+               'task' => $task,
+           ]);
+       }
+        // $assignedToUser = User::where('email', $request->input('assigned_to'))->firstOrFail();
+         // Send a notification to the assigned user
+//    $assignedToUser->notify(new TaskAssignedNotification($task));
 
-    // Validate the request data
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'assigned_to' => 'required|email',
-        'project_id' => 'required|exists:projects,id',
-        'start_date' => 'nullable|date',
-        'due_date' => 'nullable|date',
-        'priority' => 'nullable|string',
-    ]);
+   // Send an email to the assigned user
+//    Mail::to($assignedToUser->email)->send(new TaskAssignedMail($task));
+   
+return redirect()->back()->with('success', 'Task created successfully.');
 
-    // Get the ID of the user assigned to the task
-    $assignedToUser = User::where('email', $request->input('assigned_to'))->firstOrFail();
-
-    $assignedByUserId = auth()->id();
-
-    // Create the task
-    $task = Task::create([
-        'name' => $request->input('name'),
-        'assigned_to' => $assignedToUser->id,
-        'assigned_by' => $assignedByUserId,
-        'project_id' => $request->input('project_id'),
-        'start_date' => $request->input('start_date'),
-        'due_date' => $request->input('due_date'),
-        'priority' => $request->input('priority'),
-    ]);
-
-    // Send a notification to the assigned user
-    $assignedToUser->notify(new TaskAssignedNotification($task));
-
-    // Send an email to the assigned user
-    Mail::to($assignedToUser->email)->send(new TaskAssignedMail($task));
-
-    return redirect(url('/projects'))->with('success', 'Task created successfully.');
-}
+   }
+   
+   
 
    
 

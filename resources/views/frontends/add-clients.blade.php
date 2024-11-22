@@ -91,6 +91,7 @@
             "NGO/ INGO": [],
             "Tourism": [],
             "Education": ["Edu Consultancy", "School", "College", "Other"],
+            "News": [],
             "eCommerce": ["Product Catlog", "ecommerce", "Other"],
             "Hospitality": ["Hotel & Cafe", "Resort", "Other"],
             "other": [""]

@@ -14,241 +14,244 @@
 
 <div class="payments-page">
     <div class="payments-heading">
-        <h1>Due Payments Data</h1>
-    </div>
-    <div class="create-filter-search">
-        <div class="create-payments">
-            <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="<?php echo e(url ('/frontend/images/add.png')); ?>" alt=""> Due Payments</button>
+        <div class="payments-heading-h2">
+        <h1>Due Payments</h1>
         </div>
-        <div class="filter-section">
-            <div class="filter-payments" onclick="toggleFilterList()">
-                <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                <div class="filter-count">
-                    <?php if($filterCount > 0): ?>
-                    <p><?php echo e($filterCount); ?></p>
-                    <?php endif; ?>
-                </div>
-                Filter
+        <div class="create-filter-search">
+            <div class="create-payments">
+                <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="<?php echo e(url ('/frontend/images/add-new.png')); ?>" alt=""></button>
             </div>
-            <div class="filter-options" style="display: none;">
-                <form action="<?php echo e(route('payments.index')); ?>" method="GET">
-                    <!-- Category Filter -->
-                    <div class="filter-item">
-                        <label for="category">Category:</label>
-                        <select id="category" name="filter_category" class="filter-select">
-                            <option value="">Select Options</option>
-                            <option value="website" <?php echo e(request('filter_category') == 'website' ? 'selected' : ''); ?>>Website</option>
-                            <option value="renewal" <?php echo e(request('filter_category') == 'renewal' ? 'selected' : ''); ?>>Renewal</option>
-                            <option value="other" <?php echo e(request('filter_category') == 'other' ? 'selected' : ''); ?>>Other</option>
-                        </select>
+            <div class="filter-section">
+                <div class="filter-payments" onclick="toggleFilterList()">
+                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                    <div class="filter-count">
+                        <?php if($filterCount > 0): ?>
+                        <p><?php echo e($filterCount); ?></p>
+                        <?php endif; ?>
                     </div>
+                    Filter
+                </div>
+                <div class="filter-options" style="display: none;">
+                    <form action="<?php echo e(route('payments.index')); ?>" method="GET">
+                        <!-- Category Filter -->
+                        <div class="filter-item">
+                            <label for="category">Category:</label>
+                            <select id="category" name="filter_category" class="filter-select">
+                                <option value="">Select Options</option>
+                                <option value="website" <?php echo e(request('filter_category') == 'website' ? 'selected' : ''); ?>>Website</option>
+                                <option value="renewal" <?php echo e(request('filter_category') == 'renewal' ? 'selected' : ''); ?>>Renewal</option>
+                                <option value="other" <?php echo e(request('filter_category') == 'other' ? 'selected' : ''); ?>>Other</option>
+                            </select>
+                        </div>
 
-                    <!-- Amount Filter -->
-                    <div class="filter-item">
-                        <label for="amount">Amount:</label>
-                        <select id="amount" name="amount" class="filter-select" onchange="handleDateRange(this)">
-                            <option value="">Select Options</option>
-                            <option value="high-to-low" <?php echo e(request('amount') == 'high-to-low' ? 'selected' : ''); ?>>High to low</option>
-                            <option value="low-to-high" <?php echo e(request('amount') == 'low-to-high' ? 'selected' : ''); ?>>Low to High</option>
-                        </select>
-                    </div>
+                        <!-- Amount Filter -->
+                        <div class="filter-item">
+                            <label for="amount">Amount:</label>
+                            <select id="amount" name="amount" class="filter-select" onchange="handleDateRange(this)">
+                                <option value="">Select Options</option>
+                                <option value="high-to-low" <?php echo e(request('amount') == 'high-to-low' ? 'selected' : ''); ?>>High to low</option>
+                                <option value="low-to-high" <?php echo e(request('amount') == 'low-to-high' ? 'selected' : ''); ?>>Low to High</option>
+                            </select>
+                        </div>
 
-                    <!-- Due Days Filters -->
-                <div class="filter-item">
-                    <label for="due_date">Days Remaining:</label>
-                    <select id="due_date" name="due_date" class="filter-select">
-                        <option value="">Select Options</option>
-                        <option value="less-days" <?php echo e(request('due_date') == 'less-days' ? 'selected' : ''); ?>>Less Days</option>
-                        <option value="more-days" <?php echo e(request('due_date') == 'more-days' ? 'selected' : ''); ?>>More Days</option>
-                    </select>
+                        <!-- Due Days Filters -->
+                        <div class="filter-item">
+                            <label for="due_date">Days Remaining:</label>
+                            <select id="due_date" name="due_date" class="filter-select">
+                                <option value="">Select Options</option>
+                                <option value="less-days" <?php echo e(request('due_date') == 'less-days' ? 'selected' : ''); ?>>Less Days</option>
+                                <option value="more-days" <?php echo e(request('due_date') == 'more-days' ? 'selected' : ''); ?>>More Days</option>
+                            </select>
+                        </div>
+
+
+
+                        <button type="submit">Apply Filter</button>
+                    </form>
                 </div>
 
-
-
-                    <button type="submit">Apply Filter</button>
+            </div>
+            <div class="search-payments">
+                <div class="search-icon">
+                    <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                </div>
+                <form action="<?php echo e(route('payments.index')); ?>" method="GET" id="search-form">
+                    <div class="search-text-area">
+                        <input type="text" name="search" placeholder="search payments" value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
+                    </div>
                 </form>
             </div>
-
-        </div>
-        <div class="search-payments">
-            <div class="search-icon">
-                <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
-            </div>
-            <form action="<?php echo e(route('payments.index')); ?>" method="GET" id="search-form">
-                <div class="search-text-area">
-                    <input type="text" name="search" placeholder="search payments..." value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
-                </div>
-            </form>
         </div>
     </div>
 
-   
-    <div class="task-board">
-            <!-- Column for To Do tasks -->
-            <div class="task-column" id="due" data-status="due">
-                <div class="todo-heading-payments">
-                    <img src="<?php echo e(url ('frontend/images/due.png')); ?>" alt="">
-                    <h3>Dues</h3>
-                </div>
 
-                <div class="task-list">
+
+    <div class="task-board">
+        <!-- Column for To Do tasks -->
+        <div class="task-column" id="due" data-status="due">
+            <div class="todo-heading-payments">
+                <img src="<?php echo e(url ('frontend/images/due.png')); ?>" alt="">
+                <h3>Dues</h3>
+            </div>
+
+            <div class="task-list">
                 <?php $__currentLoopData = $payments->filter(fn($payment) => $payment->status === 'due' || is_null($payment->status)); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-                    <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
-                        <div class="task-name">
-                            <a href="<?php echo e(url ('paymentdetails/' .$payment->id)); ?>">
+                <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
+                    <div class="task-name">
+                        <a href="<?php echo e(url ('paymentdetails/' .$payment->id)); ?>">
                             <p><?php echo e($payment->company_name); ?></p>
-                            </a>
-                           
-                        </div>
-                        <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        </a>
 
-                        </div>
+                    </div>
+                    <div class="category">
+                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
-                        <div class="inquiry-date">
+                    </div>
+
+                    <div class="inquiry-date">
                         NPR: <?php echo e($payment->amount); ?>
 
-                        </div>
-                        <div class="probability">
-                            <?php if(is_null($payment->due_days)): ?>
-                                N/A
-                            <?php elseif($payment->due_days < 0): ?>
-                                Due in <?php echo e(abs($payment->due_days)); ?> day's
-                            <?php elseif($payment->due_days > 0): ?>
-                                Overdue by <?php echo e($payment->due_days); ?> day's
-                            <?php else: ?>
-                                Due today
-                            <?php endif; ?>
-                        </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <div class="probability">
+                        <?php if(is_null($payment->due_days)): ?>
+                        N/A
+                        <?php elseif($payment->due_days < 0): ?>
+                            Due in <?php echo e(abs($payment->due_days)); ?> day's
+                            <?php elseif($payment->due_days > 0): ?>
+                            Overdue by <?php echo e($payment->due_days); ?> day's
+                            <?php else: ?>
+                            Due today
+                            <?php endif; ?>
+                    </div>
                 </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+        </div>
+
+
+        <!-- Column for In Progress tasks -->
+        <div class="task-column" id="invoice_sent" data-status="invoice_sent">
+            <div class="invoicesent-heading">
+                <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                <h3>Payment Details Sent</h3>
             </div>
 
-
-            <!-- Column for In Progress tasks -->
-            <div class="task-column" id="invoice_sent" data-status="invoice_sent">
-                <div class="invoicesent-heading">
-                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
-                    <h3>Payment Details Sent</h3>
-                </div>
-
-                <div class="task-list">
+            <div class="task-list">
                 <?php $__currentLoopData = $payments->where('status', 'invoice_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
+                <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
                     <div class="task-name">
-                            <p><?php echo e($payment->company_name); ?></p>
-                        </div>
-                        <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        <p><?php echo e($payment->company_name); ?></p>
+                    </div>
+                    <div class="category">
+                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
-                        </div>
+                    </div>
 
-                        <div class="inquiry-date">
+                    <div class="inquiry-date">
                         NPR: <?php echo e($payment->amount); ?>
 
-                        </div>
-                        <div class="probability">
-                            <?php if(is_null($payment->due_days)): ?>
-                                N/A
-                            <?php elseif($payment->due_days < 0): ?>
-                                Due in <?php echo e(abs($payment->due_days)); ?> day's
-                            <?php elseif($payment->due_days > 0): ?>
-                                Overdue by <?php echo e($payment->due_days); ?> day's
-                            <?php else: ?>
-                                Due today
-                            <?php endif; ?>
-                        </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <div class="probability">
+                        <?php if(is_null($payment->due_days)): ?>
+                        N/A
+                        <?php elseif($payment->due_days < 0): ?>
+                            Due in <?php echo e(abs($payment->due_days)); ?> day's
+                            <?php elseif($payment->due_days > 0): ?>
+                            Overdue by <?php echo e($payment->due_days); ?> day's
+                            <?php else: ?>
+                            Due today
+                            <?php endif; ?>
+                    </div>
                 </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
+        </div>
 
-            <!-- Column for QA tasks -->
-            <div class="task-column" id="vatbill_sent" data-status="vatbill_sent">
-                <div class="vatbillsent-heading">
-                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
-                    <h3>Vat Bill Sent</h3>
-                </div>
-                <div class="task-list">
+        <!-- Column for QA tasks -->
+        <div class="task-column" id="vatbill_sent" data-status="vatbill_sent">
+            <div class="vatbillsent-heading">
+                <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                <h3>Vat Bill Sent</h3>
+            </div>
+            <div class="task-list">
                 <?php $__currentLoopData = $payments->where('status', 'vatbill_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
+                <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
                     <div class="task-name">
-                            <p><?php echo e($payment->company_name); ?></p>
-                        </div>
-                        <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        <p><?php echo e($payment->company_name); ?></p>
+                    </div>
+                    <div class="category">
+                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
-                        </div>
+                    </div>
 
-                        <div class="inquiry-date">
+                    <div class="inquiry-date">
                         NPR: <?php echo e($payment->amount); ?>
 
-                        </div>
-                        <div class="probability">
-                            <?php if(is_null($payment->due_days)): ?>
-                                N/A
-                            <?php elseif($payment->due_days < 0): ?>
-                                Due in <?php echo e(abs($payment->due_days)); ?> day's
-                            <?php elseif($payment->due_days > 0): ?>
-                                Overdue by <?php echo e($payment->due_days); ?> day's
-                            <?php else: ?>
-                                Due today
-                            <?php endif; ?>
-                        </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <div class="probability">
+                        <?php if(is_null($payment->due_days)): ?>
+                        N/A
+                        <?php elseif($payment->due_days < 0): ?>
+                            Due in <?php echo e(abs($payment->due_days)); ?> day's
+                            <?php elseif($payment->due_days > 0): ?>
+                            Overdue by <?php echo e($payment->due_days); ?> day's
+                            <?php else: ?>
+                            Due today
+                            <?php endif; ?>
+                    </div>
                 </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
+        </div>
 
-            <!-- Column for Completed tasks -->
-            <div class="task-column" id="paid" data-status="paid">
-                <div class="paid-heading">
-                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
-                    <h3>Paid</h3>
-                </div>
-                <div class="task-list">
+        <!-- Column for Completed tasks -->
+        <div class="task-column" id="paid" data-status="paid">
+            <div class="paid-heading">
+                <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                <h3>Paid</h3>
+            </div>
+            <div class="task-list">
                 <?php $__currentLoopData = $payments->where('status', 'paid'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
+                <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
                     <div class="task-name">
-                            <p><?php echo e($payment->company_name); ?></p>
-                        </div>
-                        <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        <p><?php echo e($payment->company_name); ?></p>
+                    </div>
+                    <div class="category">
+                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
-                        </div>
+                    </div>
 
-                        <div class="inquiry-date">
+                    <div class="inquiry-date">
                         NPR: <?php echo e($payment->amount); ?>
 
-                        </div>
-                        <div class="probability">
-                            <?php if(is_null($payment->due_days)): ?>
-                                N/A
-                            <?php elseif($payment->due_days < 0): ?>
-                                Due in <?php echo e(abs($payment->due_days)); ?> day's
-                            <?php elseif($payment->due_days > 0): ?>
-                                Overdue by <?php echo e($payment->due_days); ?> day's
-                            <?php else: ?>
-                                Due today
-                            <?php endif; ?>
-                        </div>
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <div class="probability">
+                        <?php if(is_null($payment->due_days)): ?>
+                        N/A
+                        <?php elseif($payment->due_days < 0): ?>
+                            Due in <?php echo e(abs($payment->due_days)); ?> day's
+                            <?php elseif($payment->due_days > 0): ?>
+                            Overdue by <?php echo e($payment->due_days); ?> day's
+                            <?php else: ?>
+                            Due today
+                            <?php endif; ?>
+                    </div>
                 </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
+        </div>
     </div>
     <tfoot>
-            <tr>
-                <td colspan="3" style="text-align: right; font-weight: bold;"><?php echo e($totalDuesText); ?></td>
-                <td colspan="3" style="font-weight: bold;">
-                    <?php echo e(number_format($filteredTotalAmount)); ?>
+        <tr>
+            <td colspan="3" style="text-align: right; font-weight: bold;"><?php echo e($totalDuesText); ?></td>
+            <td colspan="3" style="font-weight: bold;">
+                <?php echo e(number_format($filteredTotalAmount)); ?>
 
-                </td>
-            </tr>
-        </tfoot>
-   
+            </td>
+        </tr>
+    </tfoot>
+
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
         <div class="details-modal-content">
@@ -378,38 +381,38 @@
         </div>
     </div>
 
-    
+
     <!-- View Activities Modal -->
     <div id="view-activities-modal" class="modal">
-    <div class="modal-content">
-        <h3>Activities</h3>
-        <div id="activities-list">
-            <!-- Activities will be populated here -->
-        </div>
+        <div class="modal-content">
+            <h3>Activities</h3>
+            <div id="activities-list">
+                <!-- Activities will be populated here -->
+            </div>
 
-        <!-- Sticky Add Activity Section -->
-        <div id="add-activity-section" class="sticky-section">
-            <form id="add-activity-form" action="<?php echo e(route('payments-activities.store')); ?>" method="POST">
-                <?php echo csrf_field(); ?>
-                <input type="hidden" name="payments_id" id="activity-payments-id">
-                <input type="text" name="details" id="activity-details" placeholder="Add Comments..." required>
-                <div id="suggestions"></div>
-                <div class="form-buttons">
-                    <button type="submit" class="btn-submit">Add<div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
-                    <img src="<?php echo e(url('frontend/images/spinner.gif')); ?>" alt="Loading...">
-                </div>
-                </button>
-                </div>
-            </form>
-        </div>
+            <!-- Sticky Add Activity Section -->
+            <div id="add-activity-section" class="sticky-section">
+                <form id="add-activity-form" action="<?php echo e(route('payments-activities.store')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" name="payments_id" id="activity-payments-id">
+                    <input type="text" name="details" id="activity-details" placeholder="Add Comments..." required>
+                    <div id="suggestions"></div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-submit">Add<div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
+                                <img src="<?php echo e(url('frontend/images/spinner.gif')); ?>" alt="Loading...">
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-        <div class="modal-buttons">
-            <button type="button" class="btn-cancel" onclick="closeViewActivitiesModal()">Close</button>
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel" onclick="closeViewActivitiesModal()">Close</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         // open create payments
@@ -470,69 +473,69 @@
             });
         });
 
-       
+
 
         function viewActivities(paymentsId) {
-    // Set the hidden input for payments_id in the Add Activity form
-    document.getElementById('activity-payments-id').value = paymentsId;
+            // Set the hidden input for payments_id in the Add Activity form
+            document.getElementById('activity-payments-id').value = paymentsId;
 
-    // Fetch activities and populate them
-    fetch(`/payments/${paymentsId}/activities`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const activitiesList = document.getElementById('activities-list');
-            activitiesList.innerHTML = ''; // Clear previous activities
+            // Fetch activities and populate them
+            fetch(`/payments/${paymentsId}/activities`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const activitiesList = document.getElementById('activities-list');
+                    activitiesList.innerHTML = ''; // Clear previous activities
 
-            if (data.activities && data.activities.length > 0) {
-                data.activities.reverse().forEach(activity => {
-                    const utcDate = new Date(activity.created_at); // Parse the UTC timestamp
-                    const localTime = utcDate.toLocaleString('en-US', {
-                        weekday: 'long', // Show the day of the week
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: undefined, // Omit seconds if not needed
-                        hour12: true, // Display in 12-hour format
-                    });
+                    if (data.activities && data.activities.length > 0) {
+                        data.activities.reverse().forEach(activity => {
+                            const utcDate = new Date(activity.created_at); // Parse the UTC timestamp
+                            const localTime = utcDate.toLocaleString('en-US', {
+                                weekday: 'long', // Show the day of the week
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: undefined, // Omit seconds if not needed
+                                hour12: true, // Display in 12-hour format
+                            });
 
-                    // Create a card-like structure for each activity
-                    const activityCard = document.createElement('div');
-                    activityCard.className = 'activity-card';
-                    activityCard.innerHTML = `
+                            // Create a card-like structure for each activity
+                            const activityCard = document.createElement('div');
+                            activityCard.className = 'activity-card';
+                            activityCard.innerHTML = `
                         <p>${localTime}</p>
                         <p><strong>${activity.username}</strong>: ${activity.details}</p>
                     `;
-                    activitiesList.appendChild(activityCard); // Append the card to the list
-                });
-            } else {
-                activitiesList.innerHTML = '<p>No activities found.</p>'; // Message if no activities
-            }
+                            activitiesList.appendChild(activityCard); // Append the card to the list
+                        });
+                    } else {
+                        activitiesList.innerHTML = '<p>No activities found.</p>'; // Message if no activities
+                    }
 
-            // Display the modal
-            // Display the modal
-            const modal = document.getElementById('view-activities-modal');
-            modal.style.display = 'block';
+                    // Display the modal
+                    // Display the modal
+                    const modal = document.getElementById('view-activities-modal');
+                    modal.style.display = 'block';
 
-            // Add event listener to close modal when clicking outside
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeViewActivitiesModal();
-                }
-            });
-        })
-        .catch(error => console.error('Error fetching activities:', error));
-}
+                    // Add event listener to close modal when clicking outside
+                    modal.addEventListener('click', (event) => {
+                        if (event.target === modal) {
+                            closeViewActivitiesModal();
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching activities:', error));
+        }
 
-function closeViewActivitiesModal() {
-    document.getElementById('view-activities-modal').style.display = 'none';
-}
+        function closeViewActivitiesModal() {
+            document.getElementById('view-activities-modal').style.display = 'none';
+        }
 
 
         // delete payments data
@@ -625,196 +628,201 @@ function closeViewActivitiesModal() {
 
 
 
- // JavaScript for drag-and-drop functionality
+        // JavaScript for drag-and-drop functionality
         const tasks = document.querySelectorAll('.task');
-const columns = document.querySelectorAll('.task-column');
+        const columns = document.querySelectorAll('.task-column');
 
-// Enable drag-and-drop
-tasks.forEach(task => {
-    task.addEventListener('dragstart', () => {
-        task.classList.add('dragging');
-    });
+        // Enable drag-and-drop
+        tasks.forEach(task => {
+            task.addEventListener('dragstart', () => {
+                task.classList.add('dragging');
+            });
 
-    task.addEventListener('dragend', () => {
-        task.classList.remove('dragging');
-    });
-});
+            task.addEventListener('dragend', () => {
+                task.classList.remove('dragging');
+            });
+        });
 
-// Update task status on drop
-columns.forEach(column => {
-    column.addEventListener('dragover', (e) => {
-        e.preventDefault();
-    });
+        // Update task status on drop
+        columns.forEach(column => {
+            column.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
 
-    column.addEventListener('drop', (e) => {
-        e.preventDefault();
-        const draggingTask = document.querySelector('.dragging');
-        const taskId = draggingTask.getAttribute('data-task-id');
-        const taskType = draggingTask.getAttribute('data-task-type');
-        const newStatus = column.getAttribute('data-status');
+            column.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const draggingTask = document.querySelector('.dragging');
+                const taskId = draggingTask.getAttribute('data-task-id');
+                const taskType = draggingTask.getAttribute('data-task-type');
+                const newStatus = column.getAttribute('data-status');
 
-        // Move task to new column
-        column.querySelector('.task-list').appendChild(draggingTask);
+                // Move task to new column
+                column.querySelector('.task-list').appendChild(draggingTask);
 
-        // AJAX request to update task status in the database
-        fetch("<?php echo e(route('payments.updateStatus')); ?>", {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
-    },
-    body: JSON.stringify({ taskId, status: newStatus })
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        console.log(`Task ${taskId} status updated to ${newStatus}`);
-    } else {
-        console.error("Failed to update task status");
-    }
-})
-.catch(error => console.error("Error:", error));
+                // AJAX request to update task status in the database
+                fetch("<?php echo e(route('payments.updateStatus')); ?>", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+                        },
+                        body: JSON.stringify({
+                            taskId,
+                            status: newStatus
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log(`Task ${taskId} status updated to ${newStatus}`);
+                        } else {
+                            console.error("Failed to update task status");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
 
-    });
-});
+            });
+        });
 
-// mention script
+        // mention script
 
-$(document).ready(function() {
-    // Detect '@' and fetch suggestions
-    $('#activity-details').on('keyup', function(e) {
-        const value = $(this).val();
-        const atIndex = value.lastIndexOf('@');
+        $(document).ready(function() {
+            // Detect '@' and fetch suggestions
+            $('#activity-details').on('keyup', function(e) {
+                const value = $(this).val();
+                const atIndex = value.lastIndexOf('@');
 
-        // Show suggestions when '@' is typed and it's the last character
-        if (atIndex !== -1 && (value.length === atIndex + 1)) {
-            $.ajax({
-                url: '/api/users/search',
-                method: 'GET',
-                data: { query: '' }, // Empty query fetches all usernames
-                success: function(data) {
-                    $('#suggestions').empty();
-                    if (data.length > 0) {
-                        data.forEach(function(user) {
-                            $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
+                // Show suggestions when '@' is typed and it's the last character
+                if (atIndex !== -1 && (value.length === atIndex + 1)) {
+                    $.ajax({
+                        url: '/api/users/search',
+                        method: 'GET',
+                        data: {
+                            query: ''
+                        }, // Empty query fetches all usernames
+                        success: function(data) {
+                            $('#suggestions').empty();
+                            if (data.length > 0) {
+                                data.forEach(function(user) {
+                                    $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
+                                });
+                                $('#suggestions').show();
+                            } else {
+                                $('#suggestions').hide();
+                            }
+                        }
+                    });
+                } else if (atIndex !== -1) {
+                    const query = value.substring(atIndex + 1);
+                    if (query.length > 0) {
+                        $.ajax({
+                            url: '/api/users/search',
+                            method: 'GET',
+                            data: {
+                                query: query
+                            },
+                            success: function(data) {
+                                $('#suggestions').empty();
+                                if (data.length > 0) {
+                                    data.forEach(function(user) {
+                                        $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
+                                    });
+                                    $('#suggestions').show();
+                                } else {
+                                    $('#suggestions').hide();
+                                }
+                            }
                         });
-                        $('#suggestions').show();
                     } else {
                         $('#suggestions').hide();
                     }
+                } else {
+                    $('#suggestions').hide();
                 }
             });
-        } else if (atIndex !== -1) {
-            const query = value.substring(atIndex + 1);
-            if (query.length > 0) {
+
+            // Add username to message when clicked from suggestions
+            $(document).on('click', '#suggestions div', function() {
+                const username = $(this).data('username');
+                const message = $('#activity-details').val();
+                const atIndex = message.lastIndexOf('@');
+
+                const fullMessage = message.substring(0, atIndex + 1) + username + ' ';
+                $('#activity-details').val(fullMessage);
+                $('#suggestions').hide();
+            });
+
+            // Form submission handler
+            $('#add-activity-form').on('submit', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                const message = $('#activity-details').val();
+                const mentionedUser = extractMentionedUser(message); // Extract mentioned user
+                const paymentsId = $('#activity-payments-id').val();
+
+                // Show loading spinner
+                $('#loading-spinner').show();
+
                 $.ajax({
-                    url: '/api/users/search',
-                    method: 'GET',
-                    data: { query: query },
-                    success: function(data) {
-                        $('#suggestions').empty();
-                        if (data.length > 0) {
-                            data.forEach(function(user) {
-                                $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
-                            });
-                            $('#suggestions').show();
-                        } else {
-                            $('#suggestions').hide();
-                        }
+                    url: $(this).attr('action'), // Use form's action URL
+                    method: 'POST',
+                    data: {
+                        message: message,
+                        mentioned_user: mentionedUser, // Include mentioned user
+                        payments_id: paymentsId, // Payment ID
+                        _token: $('input[name="_token"]').val() // CSRF token
+                    },
+                    success: function(response) {
+                        // Dynamically display success message
+                        $('#success-message').text('Activity added and notification sent successfully!').show();
+
+                        // Clear input field and hide suggestions
+                        $('#activity-details').val('');
+                        $('#suggestions').hide();
+
+                        // Hide the success message after 5 seconds
+                        setTimeout(function() {
+                            $('#success-message').fadeOut();
+                        }, 5000);
+
+                        // Hide loading spinner
+                        $('#loading-spinner').hide();
+                    },
+                    error: function(xhr) {
+                        console.error('Error submitting message:', xhr.responseText); // Log errors
+
+                        // Hide loading spinner
+                        $('#loading-spinner').hide();
                     }
                 });
-            } else {
-                $('#suggestions').hide();
-            }
-        } else {
-            $('#suggestions').hide();
-        }
-    });
+            });
 
-    // Add username to message when clicked from suggestions
-    $(document).on('click', '#suggestions div', function() {
-        const username = $(this).data('username');
-        const message = $('#activity-details').val();
-        const atIndex = message.lastIndexOf('@');
+            // Submit message on Enter keypress
+            $('#activity-details').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault(); // Prevent default new line
+                    $('#add-activity-form').submit(); // Trigger form submission
+                }
+            });
 
-        const fullMessage = message.substring(0, atIndex + 1) + username + ' ';
-        $('#activity-details').val(fullMessage);
-        $('#suggestions').hide();
-    });
-
-    // Form submission handler
-    $('#add-activity-form').on('submit', function(e) {
-        e.preventDefault(); // Prevent default form submission
-
-        const message = $('#activity-details').val();
-        const mentionedUser = extractMentionedUser(message); // Extract mentioned user
-        const paymentsId = $('#activity-payments-id').val();
-
-        // Show loading spinner
-        $('#loading-spinner').show();
-
-        $.ajax({
-            url: $(this).attr('action'), // Use form's action URL
-            method: 'POST',
-            data: {
-                message: message,
-                mentioned_user: mentionedUser, // Include mentioned user
-                payments_id: paymentsId, // Payment ID
-                _token: $('input[name="_token"]').val() // CSRF token
-            },
-            success: function(response) {
-                // Dynamically display success message
-                $('#success-message').text('Activity added and notification sent successfully!').show();
-
-                // Clear input field and hide suggestions
-                $('#activity-details').val('');
-                $('#suggestions').hide();
-
-                // Hide the success message after 5 seconds
-                setTimeout(function() {
-                    $('#success-message').fadeOut();
-                }, 5000);
-
-                // Hide loading spinner
-                $('#loading-spinner').hide();
-            },
-            error: function(xhr) {
-                console.error('Error submitting message:', xhr.responseText); // Log errors
-
-                // Hide loading spinner
-                $('#loading-spinner').hide();
-            }
+            // Hide suggestions when clicking outside
+            $(document).click(function(e) {
+                if (!$(e.target).closest('#suggestions, #activity-details').length) {
+                    $('#suggestions').hide();
+                }
+            });
         });
-    });
 
-    // Submit message on Enter keypress
-    $('#activity-details').on('keypress', function(e) {
-        if (e.which === 13) { // Enter key
-            e.preventDefault(); // Prevent default new line
-            $('#add-activity-form').submit(); // Trigger form submission
+        // Helper function to extract the mentioned user from the message
+        function extractMentionedUser(message) {
+            const mentionRegex = /@(\w+)/; // Regex to match @username
+            const match = message.match(mentionRegex);
+
+            if (match && match[1]) {
+                return match[1]; // Return the username or identifier
+            }
+            return null; // Return null if no mention found
         }
-    });
-
-    // Hide suggestions when clicking outside
-    $(document).click(function(e) {
-        if (!$(e.target).closest('#suggestions, #activity-details').length) {
-            $('#suggestions').hide();
-        }
-    });
-});
-
-// Helper function to extract the mentioned user from the message
-function extractMentionedUser(message) {
-    const mentionRegex = /@(\w+)/; // Regex to match @username
-    const match = message.match(mentionRegex);
-
-    if (match && match[1]) {
-        return match[1]; // Return the username or identifier
-    }
-    return null; // Return null if no mention found
-}
-
-
     </script>
 
 </div>

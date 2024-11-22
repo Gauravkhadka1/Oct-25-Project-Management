@@ -7,163 +7,204 @@ use Carbon\Carbon;
 <main>
     <div class="project-page">
         <div class="project-heading">
+            <div class="project-h2">
             <h2>Projects</h2>
-        </div>
-        <div class="projects">
-            <div class="ongoing-project" id="ongoing-project">
-                <div class="create-filter-search-project">
-                    <div class="create-project">
-                        <button onclick="openCreateProjectModal()"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""> Project</button>
+            </div>
+            <div class="create-filter-search-project">
+                <div class="create-project">
+                    <button onclick="openCreateProjectModal()"><img src="<?php echo e(url ('/frontend/images/add-new.png')); ?>" alt=""> </button>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-projects" onclick="toggleFilterList()">
+                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <div class="filter-count">
+                            <?php if($filterCount > 0): ?>
+                            <p><?php echo e($filterCount); ?></p>
+                            <?php endif; ?>
+                        </div>
+                        Filter
                     </div>
-                    <div class="filter-section">
-                        <div class="filter-projects" onclick="toggleFilterList()">
-                            <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                            <div class="filter-count">
-                                <?php if($filterCount > 0): ?>
-                                <p><?php echo e($filterCount); ?></p>
-                                <?php endif; ?>
+                    <div class="filter-options" style="display: none;">
+                        <form action="<?php echo e(route('projects.index')); ?>" method="GET">
+                            <!-- Inquiry Date Filter -->
+                            <div class="filter-item">
+                                <label for="start-date">Start Date:</label>
+                                <select id="start-date" name="start_date" class="filter-select" onchange="handleDateRange(this)">
+                                    <option value="">Select Options</option>
+                                    <option value="recent" <?php echo e(request('start_date') == 'recent' ? 'selected' : ''); ?>>Recent</option>
+                                    <option value="oldest" <?php echo e(request('start_date') == 'oldest' ? 'selected' : ''); ?>>Oldest</option>
+                                    <option value="date-range" <?php echo e(request('start_date') == 'date-range' ? 'selected' : ''); ?>>Choose Date Range</option>
+                                </select>
+                                <div id="date-range-picker" class="date-range-picker" style="display: <?php echo e(request('inquiry-date') == 'date-range' ? 'block' : 'none'); ?>">
+                                    <label for="from-date">From:</label>
+                                    <input type="date" id="from-date" name="from_date" value="<?php echo e(request('from_date')); ?>">
+                                    <label for="to-date">To:</label>
+                                    <input type="date" id="to-date" name="to_date" value="<?php echo e(request('to_date')); ?>">
+                                </div>
                             </div>
-                            Filter
-                        </div>
-                        <div class="filter-options" style="display: none;">
-                            <form action="<?php echo e(route('projects.index')); ?>" method="GET">
-                                <!-- Inquiry Date Filter -->
-                                <div class="filter-item">
-                                    <label for="start-date">Start Date:</label>
-                                    <select id="start-date" name="start_date" class="filter-select" onchange="handleDateRange(this)">
-                                        <option value="">Select Options</option>
-                                        <option value="recent" <?php echo e(request('start_date') == 'recent' ? 'selected' : ''); ?>>Recent</option>
-                                        <option value="oldest" <?php echo e(request('start_date') == 'oldest' ? 'selected' : ''); ?>>Oldest</option>
-                                        <option value="date-range" <?php echo e(request('start_date') == 'date-range' ? 'selected' : ''); ?>>Choose Date Range</option>
-                                    </select>
-                                    <div id="date-range-picker" class="date-range-picker" style="display: <?php echo e(request('inquiry-date') == 'date-range' ? 'block' : 'none'); ?>">
-                                        <label for="from-date">From:</label>
-                                        <input type="date" id="from-date" name="from_date" value="<?php echo e(request('from_date')); ?>">
-                                        <label for="to-date">To:</label>
-                                        <input type="date" id="to-date" name="to_date" value="<?php echo e(request('to_date')); ?>">
-                                    </div>
+
+                            <div class="filter-item">
+                                <label for="due-date">Due Date:</label>
+                                <select id="due-date" name="due_date" class="filter-select" onchange="handleDateRange(this)">
+                                    <option value="">Select Options</option>
+                                    <option value="Less-Time" <?php echo e(request('due_date') == 'Less-Time' ? 'selected' : ''); ?>>Less Time</option>
+                                    <option value="More-Time" <?php echo e(request('due_date') == 'More-Time' ? 'selected' : ''); ?>>More Time</option>
+                                    <option value="date-range" <?php echo e(request('due_date') == 'date-range' ? 'selected' : ''); ?>>Choose Date Range</option>
+                                </select>
+                                <div id="date-range-picker" class="date-range-picker" style="display: <?php echo e(request('inquiry-date') == 'date-range' ? 'block' : 'none'); ?>">
+                                    <label for="from-date">From:</label>
+                                    <input type="date" id="from-date" name="from_date" value="<?php echo e(request('from_date')); ?>">
+                                    <label for="to-date">To:</label>
+                                    <input type="date" id="to-date" name="to_date" value="<?php echo e(request('to_date')); ?>">
                                 </div>
-
-                                <div class="filter-item">
-                                    <label for="due-date">Due Date:</label>
-                                    <select id="due-date" name="due_date" class="filter-select" onchange="handleDateRange(this)">
-                                        <option value="">Select Options</option>
-                                        <option value="Less-Time" <?php echo e(request('due_date') == 'Less-Time' ? 'selected' : ''); ?>>Less Time</option>
-                                        <option value="More-Time" <?php echo e(request('due_date') == 'More-Time' ? 'selected' : ''); ?>>More Time</option>
-                                        <option value="date-range" <?php echo e(request('due_date') == 'date-range' ? 'selected' : ''); ?>>Choose Date Range</option>
-                                    </select>
-                                    <div id="date-range-picker" class="date-range-picker" style="display: <?php echo e(request('inquiry-date') == 'date-range' ? 'block' : 'none'); ?>">
-                                        <label for="from-date">From:</label>
-                                        <input type="date" id="from-date" name="from_date" value="<?php echo e(request('from_date')); ?>">
-                                        <label for="to-date">To:</label>
-                                        <input type="date" id="to-date" name="to_date" value="<?php echo e(request('to_date')); ?>">
-                                    </div>
-                                </div>
-
-                                <!-- Status Filter -->
-                                <div class="filter-item">
-                                    <label for="status">Status:</label>
-                                    <select id="status" name="sort_status" class="filter-select">
-                                        <option value="">Select Options</option>
-                                        <option value="Design" <?php echo e(request('sort_status') == 'Design' ? 'selected' : ''); ?>>Design</option>
-                                        <option value="Development" <?php echo e(request('sort_status') == 'Development' ? 'selected' : ''); ?>>Development</option>
-                                        <option value="QA" <?php echo e(request('sort_status') == 'QA' ? 'selected' : ''); ?>>QA</option>
-                                        <option value="Content Fillup" <?php echo e(request('sort_status') == 'Content Fillup' ? 'selected' : ''); ?>>Content Fillup</option>
-                                        <option value="Completed" <?php echo e(request('sort_status') == 'Completed' ? 'selected' : ''); ?>>Completed</option>
-                                        <option value="Closed" <?php echo e(request('sort_status') == 'Closed' ? 'selected' : ''); ?>>Closed</option>
-                                        <option value="Other" <?php echo e(request('sort_status') == 'Other' ? 'selected' : ''); ?>>Other</option>
-
-                                    </select>
-                                </div>
-
-                                <button type="submit">Apply Filter</button>
-                            </form>
-                        </div>
-
-                    </div>
-                    <div class="search-projects">
-                        <div class="search-icon">
-                            <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
-                        </div>
-                        <form action="<?php echo e(route('projects.index')); ?>" method="GET" id="search-form">
-                            <div class="search-text-area">
-                                <input type="text" name="search" placeholder="search projects" value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
                             </div>
+
+                            <!-- Status Filter -->
+                            <div class="filter-item">
+                                <label for="status">Status:</label>
+                                <select id="status" name="sort_status" class="filter-select">
+                                    <option value="">Select Options</option>
+                                    <option value="Design" <?php echo e(request('sort_status') == 'Design' ? 'selected' : ''); ?>>Design</option>
+                                    <option value="Development" <?php echo e(request('sort_status') == 'Development' ? 'selected' : ''); ?>>Development</option>
+                                    <option value="QA" <?php echo e(request('sort_status') == 'QA' ? 'selected' : ''); ?>>QA</option>
+                                    <option value="Content Fillup" <?php echo e(request('sort_status') == 'Content Fillup' ? 'selected' : ''); ?>>Content Fillup</option>
+                                    <option value="Completed" <?php echo e(request('sort_status') == 'Completed' ? 'selected' : ''); ?>>Completed</option>
+                                    <option value="Closed" <?php echo e(request('sort_status') == 'Closed' ? 'selected' : ''); ?>>Closed</option>
+                                    <option value="Other" <?php echo e(request('sort_status') == 'Other' ? 'selected' : ''); ?>>Other</option>
+
+                                </select>
+                            </div>
+
+                            <button type="submit">Apply Filter</button>
                         </form>
                     </div>
 
                 </div>
-                <table class="modern-payments-table">
-                    <thead>
-                        <tr>
-                            <th>SN</th>
-                            <th>
-                                Projects
-                            </th>
-                            <th>
-                                Start Date
-                            </th>
-                            <th>
-                                Due Date
-                            </th>
-                            <th>
-                                Status
-                            <th>
-                                Time Left
-                            </th>
-                            <th>Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <tr>
-                            <td><?php echo e($key + 1); ?></td>
-                            <td><?php echo e($project->name); ?>
+                <div class="search-projects">
+                    <div class="search-icon">
+                        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                    </div>
+                    <form action="<?php echo e(route('projects.index')); ?>" method="GET" id="search-form">
+                        <div class="search-text-area">
+                            <input type="text" name="search" placeholder="search projects..." value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="projects">
+            <div class="ongoing-project" id="ongoing-project">
+                <div class="task-board">
+                    <!-- Column for To Do tasks -->
+                    <div class="task-column" id="new" data-status="design">
+                        <div class="todo-heading-prospect">
+                            <img src="<?php echo e(url ('frontend/images/new.png')); ?>" alt="">
+                            <h3>Design</h3>
+                        </div>
 
-                                <div class="projects-name-buttons">
-                                    <button class="btn-create" id="task-create" onclick="openAddTaskModal(<?php echo e($project->id); ?>)"><img src="<?php echo e(url ('/frontend/images/plus.png')); ?>" alt=""> Task</button>
-                                    <button class="btn-view-activities-p" onclick="openTaskDetailsModal(<?php echo e(json_encode($project)); ?>)"><img src="<?php echo e(url ('/frontend/images/view.png')); ?>" alt="">Tasks</button>
+                        <div class="task-list">
+                            <?php $__currentLoopData = $projects->where('status', 'design'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
+                                <div class="task-name">
+                                    <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
+                                        <p><?php echo e($project->name); ?></p>
+                                    </a>
+
                                 </div>
-                            </td>
+                                <div class="category">
+                                    Status:
+                                </div>
+
+                                <div class="inquiry-date">
+                                    Due in :
+                                </div>
+                            </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                    </div>
 
 
-                            <td><?php echo e($project->start_date); ?></td>
-                            <td><?php echo e($project->due_date); ?></td>
-                            <td><?php echo e($project->status); ?></td>
-                            <td>
-                                <?php if(is_null($project->start_date) || is_null($project->due_date)): ?>
-                                N/A
-                                <?php else: ?>
-                                <?php
-                                $startDate = \Carbon\Carbon::parse($project->start_date);
-                                $dueDate = \Carbon\Carbon::parse($project->due_date);
-                                $currentDate = \Carbon\Carbon::now();
-                                $daysLeft = $currentDate->startOfDay()->diffInDays($dueDate, false);
-                                ?>
+                    <!-- Column for In Progress tasks -->
+                    <div class="task-column" id="dealing" data-status="development">
+                        <div class="inprogress-heading">
+                            <img src="<?php echo e(url ('frontend/images/dealing.png')); ?>" alt="">
+                            <h3>Development</h3>
+                        </div>
 
-                                <?php if($daysLeft > 0): ?>
-                                <?php echo e($daysLeft); ?> days left
-                                <?php elseif($daysLeft === 0): ?>
-                                Due today
-                                <?php else: ?>
-                                Overdue by <?php echo e(abs($daysLeft)); ?> days
-                                <?php endif; ?>
-                                <?php endif; ?>
-                            </td>
-                            <!-- Add a button to add tasks for each project -->
-                            <td>
+                        <div class="task-list">
+                            <?php $__currentLoopData = $projects->where('status', 'development'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
+                                <div class="task-name">
+                                    <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
+                                        <p><?php echo e($project->name); ?></p>
+                                    </a>
 
-                                <button class="btn-edit" onclick="openEditProjectModal(<?php echo e(json_encode($project)); ?>)"><img src="<?php echo e(url ('/frontend/images/edit.png')); ?>" alt=""></button>
-                                <!-- <form action="<?php echo e(route('project.destroy', $project->id)); ?>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                                        <?php echo csrf_field(); ?>
-                                        <?php echo method_field('DELETE'); ?>
-                                        <button type="submit" class="btn-cancel">Delete</button>
-                                    </form> -->
-                            </td>
-                        </tr>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </tbody>
-                </table>
+                                </div>
+                                <div class="category">
+                                    Status:
+                                </div>
+
+                                <div class="inquiry-date">
+                                    Due in :
+                                </div>
+                            </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                    </div>
+
+                    <!-- Column for QA tasks -->
+                    <div class="task-column" id="quote_sent" data-status="content_fillup">
+                        <div class="qs-heading">
+                            <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                            <h3> Content Fill up</h3>
+                        </div>
+                        <div class="task-list">
+                            <?php $__currentLoopData = $projects->where('status', 'content_fillup'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
+                                <div class="task-name">
+                                    <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
+                                        <p><?php echo e($project->name); ?></p>
+                                    </a>
+
+                                </div>
+                                <div class="category">
+                                    Status:
+                                </div>
+
+                                <div class="inquiry-date">
+                                    Due in :
+                                </div>
+                            </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                    </div>
+                    <div class="task-column" id="converted" data-status="completed">
+                        <div class="closed-heading-prospect">
+                            <img src="<?php echo e(url ('frontend/images/completed.png')); ?>" alt="">
+                            <h3>Completed</h3>
+                        </div>
+                        <div class="task-list">
+                            <?php $__currentLoopData = $projects->where('status', 'completed'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
+                                <div class="task-name">
+                                    <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
+                                        <p><?php echo e($project->name); ?></p>
+                                    </a>
+
+                                </div>
+                                <div class="category">
+                                    Status:
+                                </div>
+
+                                <div class="inquiry-date">
+                                    Due in :
+                                </div>
+                            </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -184,11 +225,10 @@ use Carbon\Carbon;
 
                     <label for="assignee">Status</label>
                     <select name="status" id="status">
-                        <option value="Design">Design</option>
-                        <option value="Development">Development</option>
-                        <option value="QA">QA</option>
-                        <option value="Content fillup">Content fillup</option>
-                        <option value="Content fillup">Other</option>
+                        <option value="design">Design</option>
+                        <option value="development">Development</option>
+                        <option value="content_fillup">Content Fill up</option>
+                        <option value="completed">Completed</option>
                     </select>
 
                     <button type="submit">Add Project</button>
@@ -476,6 +516,63 @@ use Carbon\Carbon;
 
                 window.location.href = url.toString();
             }
+
+
+            // JavaScript for drag-and-drop functionality
+            const tasks = document.querySelectorAll('.task');
+            const columns = document.querySelectorAll('.task-column');
+
+            // Enable drag-and-drop
+            tasks.forEach(task => {
+                task.addEventListener('dragstart', () => {
+                    task.classList.add('dragging');
+                });
+
+                task.addEventListener('dragend', () => {
+                    task.classList.remove('dragging');
+                });
+            });
+
+            // Update task status on drop
+            columns.forEach(column => {
+                column.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+
+                column.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const draggingTask = document.querySelector('.dragging');
+                    const taskId = draggingTask.getAttribute('data-task-id');
+                    const taskType = draggingTask.getAttribute('data-task-type');
+                    const newStatus = column.getAttribute('data-status');
+
+                    // Move task to new column
+                    column.querySelector('.task-list').appendChild(draggingTask);
+
+                    // AJAX request to update task status in the database
+                    fetch("<?php echo e(route('projects.updateStatus')); ?>", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+                            },
+                            body: JSON.stringify({
+                                taskId,
+                                status: newStatus
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log(`Task ${taskId} status updated to ${newStatus}`);
+                            } else {
+                                console.error("Failed to update task status");
+                            }
+                        })
+                        .catch(error => console.error("Error:", error));
+
+                });
+            });
         </script>
 
 

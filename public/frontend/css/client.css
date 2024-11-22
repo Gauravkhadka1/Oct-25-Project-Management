@@ -1,15 +1,18 @@
 .client-page-heading {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 20px 0 0 10;
+    justify-content: space-between;
+    padding: 15px 20px;
 }
 .client-page-heading h2 {
     font-size: 30px;
+
 }
 .create-clients button{
-    background-color: #45A049;
-    color: white;
+   background-color: transparent;
+}
+.create-clients button:hover{
+   background-color: rgb(238, 235, 235);
 }
 .create-clients button a {
     display: flex;
@@ -17,4 +20,29 @@
     justify-content: center;
     color: white;
     text-decoration: none;
+}
+.create-filter-search-clients {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-clients {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border: 1px solid gray;
+    width: 40%;
+    padding: 8px;
+    border-radius: 10px;
+}
+.number-category {
+    padding: 10px 20px 0;
+}
+/* .create-clients .btn-create {
+    background-color: transparent;
+} */
+.modern-payments-table {
+    padding: 0 20px;
+    border-radius: 20px;
 }

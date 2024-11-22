@@ -7,17 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $fillable = [
-        'name',
-        'assigned_to',
-        'assigned_by',
-        'start_date',
-        'due_date',
-        'priority',
-        'project_id',
-        'status',
-        'comment',
-    ];
+
+        protected $fillable = [
+            'name',
+            'assigned_to',
+            'project_id',
+            'due_date',
+            'priority',
+        ];
+        
+
 
     // Task belongs to a project
     public function project()

@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -113,22 +114,34 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id)
     {
+        Log::debug('Request Data:', $request->all());  // Log all request data
         $request->validate([
             'name' => 'required|string|max:255',
             'start_date' => 'required|date',
             'due_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|string',
+            'sub-status' => 'nullable|string|max:255', // Validate sub-status if it's being updated
         ]);
-
+    
         $project = Project::findOrFail($id);
-        $project->update($request->all());
-
+    
+        // Update fields manually
+        $project->name = $request->input('name');
+        $project->start_date = $request->input('start_date');
+        $project->due_date = $request->input('due_date');
+        $project->status = $request->input('status');
+        $project->sub_status = $request->input('sub-status'); // Manually update sub-status
+    
+        // Save updated project
+        $project->save();
+    
         // Recalculate and save the updated time_left value
         $project->time_left = $this->calculateTimeLeft($project);
         $project->save();
-
+    
         return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
     }
+    
 
     public function showTasks($projectId)
     {
@@ -154,4 +167,49 @@ class ProjectController extends Controller
         $dueDate = Carbon::parse($project->due_date);
         return $currentDate->diffInDays($dueDate, false);
     }
+
+    public function updateStatus(Request $request)
+    {
+        $validatedData = $request->validate([
+            'taskId' => 'required|integer|exists:projects,id',
+            'status' => 'required|string|max:255'
+        ]);
+    
+        // Find the prospect by ID and update the status
+        $project = Project::findOrFail($validatedData['taskId']);
+        $project->status = $validatedData['status'];
+        $project->save();
+    
+        // Send notifications to specified emails
+        // $emails = ['gaurav@webtech.com.np'];
+        // Notification::route('mail', $emails)->notify(new ProjectStatusUpdated($project, $validatedData['status']));
+    
+        // Return a success response
+        return response()->json(['success' => true, 'message' => 'Status updated successfully']);
+    }
+
+
+    public function showdetails($id)
+    {
+        // Fetch the project by ID
+        $project = Project::with(['tasks' => function ($query) {
+            // Eager load tasks for all statuses
+            $query->orderBy('status');
+        }])->findOrFail($id);
+    
+        // Fetch all users for task assignment
+        $users = User::all();
+    
+        // Separate tasks by status
+        $todoTasks = $project->tasks->where('status', null); // For "To Do" tasks (status = null)
+        $inProgressTasks = $project->tasks->where('status', 'In Progress'); // For "In Progress" tasks
+        $qaTasks = $project->tasks->where('status', 'QA'); // For "QA" tasks
+        $completedTasks = $project->tasks->where('status', 'Completed'); // For "Completed" tasks
+    
+        // Pass the data to the view
+        return view('frontends.project-details-page', compact('project', 'users', 'todoTasks', 'inProgressTasks', 'qaTasks', 'completedTasks'));
+    }
+    
+
+    
 }

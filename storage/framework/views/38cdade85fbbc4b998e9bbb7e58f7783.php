@@ -1,4 +1,15 @@
 <?php $__env->startSection('main-container'); ?>
+<?php if(session('success')): ?>
+<div id="success-message" style="position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #28a745; color: white; padding: 15px; border-radius: 5px; z-index: 9999;">
+    <?php echo e(session('success')); ?>
+
+</div>
+
+<?php endif; ?>
+
+<div id="success-message" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #28a745; color: white; padding: 15px; border-radius: 5px; z-index: 9999;">
+    <!-- Success message will be dynamically inserted here -->
+</div>
 
 <div class="payment-detail-page">
     <div class="payment-detail">

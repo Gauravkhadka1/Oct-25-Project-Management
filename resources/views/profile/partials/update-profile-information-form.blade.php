@@ -16,17 +16,17 @@
                     @csrf
                 </form>
 
-                <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="updtprfform">
+                <form method="post" action="{{ route('profile.updateProfile') }}" enctype="multipart/form-data" class="updtprfform">
                     @csrf
                     @method('patch')
 
-                    <div class="updnam">
+                    <!-- <div class="updnam">
                         <x-input-label for="name" :value="__('Name')" />
                         <x-text-input  name="name" type="text" class="upname" :value="old('name', $user->name)" required autofocus autocomplete="name" />
                         <x-input-error class="mt-2" :messages="$errors->get('name')" />
-                    </div>
+                    </div> -->
 
-                    <div class="updemail">
+                    <!-- <div class="updemail">
                         <x-input-label for="email" :value="__('Email')" />
                         <x-text-input name="email" type="email" class="pemail" :value="old('email', $user->email)" required autocomplete="username" />
                         <x-input-error class="mt-2" :messages="$errors->get('email')" />
@@ -54,7 +54,7 @@
                         <x-input-label for="address" :value="__('Address')" />
                         <x-text-input name="address" type="text" class="uaddre" :value="old('address', $user->address)" autofocus autocomplete="address" />
                         <x-input-error class="mt-2" :messages="$errors->get('address')" />
-                    </div>
+                    </div> -->
 
                     <div class="updprfpic">
                         <x-input-label for="profilepic" :value="__('Profile Pic')" />

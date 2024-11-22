@@ -13,6 +13,12 @@ class ClientsController extends Controller
         $query = Clients::query();
         $filterCount = 0;
     
+        $filters = [
+            'category' => null,
+            'subcategory' => null,
+            'additional_subcategory' => null
+        ];
+    
         // Search functionality
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
@@ -22,19 +28,35 @@ class ClientsController extends Controller
         // Filter by Category, Subcategory, and Additional Subcategory
         if ($request->has('filter_category') && !empty($request->filter_category)) {
             $query->where('category', $request->filter_category);
+            $filters['category'] = $request->filter_category;
             $filterCount++;
         }
         if ($request->has('filter_subcategory') && !empty($request->filter_subcategory)) {
             $query->where('subcategory', $request->filter_subcategory);
+            $filters['subcategory'] = $request->filter_subcategory;
             $filterCount++;
         }
         if ($request->has('filter_additional_subcategory') && !empty($request->filter_additional_subcategory)) {
             $query->where('additional_subcategory', $request->filter_additional_subcategory);
+            $filters['additional_subcategory'] = $request->filter_additional_subcategory;
             $filterCount++;
         }
     
         $clients = $query->get();
-        return view('frontends.clients', compact('clients', 'filterCount'));
+    
+        // Build a descriptive filter label
+        $lastSelectedFilter = null;
+        if ($filters['category']) {
+            $lastSelectedFilter = $filters['category'];
+            if ($filters['subcategory']) {
+                $lastSelectedFilter .= ' / ' . $filters['subcategory'];
+                if ($filters['additional_subcategory']) {
+                    $lastSelectedFilter .= ' / ' . $filters['additional_subcategory'];
+                }
+            }
+        }
+    
+        return view('frontends.clients', compact('clients', 'filterCount', 'lastSelectedFilter'));
     }
     
 

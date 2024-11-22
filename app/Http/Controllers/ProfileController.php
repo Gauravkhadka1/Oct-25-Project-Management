@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
 use App\Models\Task;
 use App\Models\PaymentTask;
@@ -16,6 +19,8 @@ use App\Models\PaymentTaskSession;
 use App\Models\ProspectTaskSession;
 use Carbon\Carbon;
 use DateTimeZone;
+use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 use DateTime;
 
 class ProfileController extends Controller
@@ -28,64 +33,64 @@ class ProfileController extends Controller
         $user = auth()->user();
         $userEmail = $user->email;
         $username = $user->username;
-    
+
         // Get the selected date from the request or default to today's date
         $selectedDate = $request->input('date', Carbon::now('Asia/Kathmandu')->toDateString());
-    
+
         // Load tasks, prospect tasks, and payment tasks assigned to the user
         $tasks = Task::with('assignedBy', 'project')
             ->where('assigned_to', $user->id)
             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
             ->get();
-    
+
         $prospectTasks = ProspectTask::with('assignedBy', 'prospect')
             ->where('assigned_to', $user->id)
             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
             ->get();
-    
+
         $paymentTasks = PaymentTask::with('assignedBy', 'payment')
             ->where('assigned_to', $user->id)
             ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
             ->get();
-    
+
         // Retrieve projects, prospects, and payments, including only tasks assigned to the user
         $projects = Project::with(['tasks' => function ($query) use ($user) {
             $query->where('assigned_to', $user->id);
         }])->get();
-    
+
         $prospects = Prospect::with(['prospect_tasks' => function ($query) use ($user) {
             $query->where('assigned_to', $user->id);
         }])->get();
-    
+
         $payments = Payments::with(['payment_tasks' => function ($query) use ($user) {
             $query->where('assigned_to', $user->id);
         }])->get();
-    
+
         // Define the Nepali timezone and calculate the UTC start and end of the selected date
         $nepaliTimeZone = new DateTimeZone('Asia/Kathmandu');
         $nepaliStartOfDay = Carbon::parse($selectedDate, $nepaliTimeZone)->startOfDay();
         $utcStartOfDay = $nepaliStartOfDay->copy()->setTimezone('UTC');
         $utcEndOfDay = $nepaliStartOfDay->copy()->endOfDay()->setTimezone('UTC');
-    
+
         // Fetch sessions for all task categories within the selected date
         $taskSessions = TaskSession::where('user_id', $user->id)
             ->whereBetween('started_at', [$utcStartOfDay, $utcEndOfDay])
             ->with(['task', 'project'])
             ->get();
-    
+
         $prospectTaskSessions = ProspectTaskSession::where('user_id', $user->id)
             ->whereBetween('started_at', [$utcStartOfDay, $utcEndOfDay])
             ->with(['prospectTask', 'prospect'])
             ->get();
-    
+
         $paymentTaskSessions = PaymentTaskSession::where('user_id', $user->id)
             ->whereBetween('started_at', [$utcStartOfDay, $utcEndOfDay])
             ->with(['paymentTask', 'payment'])
             ->get();
-    
+
         // Combine all task sessions
         $allSessions = $taskSessions->merge($prospectTaskSessions)->merge($paymentTaskSessions);
-    
+
         // If there are no sessions, set default values to avoid errors
         if ($allSessions->isEmpty()) {
             $hourlySessionsData = [];
@@ -107,29 +112,29 @@ class ProfileController extends Controller
                 'selectedDate'
             ));
         }
-    
+
         // Initialize hourly sessions data array and task summary data
         $hourlySessionsData = [];
         $taskSummaryData = [];
         $totalTimeSpentAcrossTasks = 0;
-    
+
         // Get the earliest start and latest end times of all sessions
         $startTimes = $allSessions->map(fn($session) => $session->started_at->copy()->setTimezone($nepaliTimeZone));
         $endTimes = $allSessions->map(fn($session) => ($session->paused_at ?? now())->copy()->setTimezone($nepaliTimeZone));
         $minStartTime = $startTimes->min();
         $maxEndTime = $endTimes->max();
-    
+
         // Iterate over each hour from the earliest start to the latest end
         $startHour = $minStartTime->hour;
         $endHour = $maxEndTime->hour;
-    
+
         foreach (range($startHour, $endHour) as $hour) {
             $startInterval = $minStartTime->copy()->startOfDay()->addHours($hour);
             $endInterval = $startInterval->copy()->addHour();
-    
+
             // Generate the interval label
             $intervalLabel = $startInterval->format('g A') . ' - ' . $endInterval->format('g A');
-    
+
             // Filter sessions that overlap with this interval
             $hourlyData = $allSessions->filter(function ($session) use ($startInterval, $endInterval, $nepaliTimeZone) {
                 $sessionStart = $session->started_at->copy()->setTimezone($nepaliTimeZone);
@@ -151,7 +156,7 @@ class ProfileController extends Controller
                     'time_spent' => $formattedTime,
                 ];
             });
-    
+
             // Include the hour in the results, even if no tasks were active
             $hourlySessionsData[$intervalLabel] = !$hourlyData->isEmpty() ? $hourlyData : collect([
                 [
@@ -161,7 +166,7 @@ class ProfileController extends Controller
                 ]
             ]);
         }
-    
+
         // Calculate total time spent per task and overall total
         foreach ($hourlySessionsData as $interval => $tasks) {
             foreach ($tasks as $taskId => $taskData) {
@@ -177,13 +182,13 @@ class ProfileController extends Controller
                 $totalTimeSpentAcrossTasks += $timeSpentInSeconds;
             }
         }
-    
+
         // Format total time spent back to HH:MM:SS for display
         foreach ($taskSummaryData as &$summary) {
             $summary['total_time_spent'] = $this->formatDuration($summary['total_time_spent']);
         }
         $totalTimeSpentAcrossTasksFormatted = $this->formatDuration($totalTimeSpentAcrossTasks);
-    
+
         // Return view with calculated data
         return view('frontends.dashboard', compact(
             'projects',
@@ -201,52 +206,40 @@ class ProfileController extends Controller
             'selectedDate'
         ));
     }
-    
-
-
-/**
- * Convert a duration string (HH:MM:SS) to seconds.
- */
-/**
- * Convert a duration string (HH:MM:SS) to seconds.
- */
-protected function parseDurationToSeconds($duration)
-{
-    if (strpos($duration, 'minute') !== false || strpos($duration, 'second') !== false) {
-        preg_match_all('/(\d+)\s?(hour|minute|second)/', $duration, $matches, PREG_SET_ORDER);
-        $seconds = 0;
-        foreach ($matches as $match) {
-            if (strpos($match[2], 'hour') !== false) $seconds += $match[1] * 3600;
-            if (strpos($match[2], 'minute') !== false) $seconds += $match[1] * 60;
-            if (strpos($match[2], 'second') !== false) $seconds += $match[1];
+    protected function parseDurationToSeconds($duration)
+    {
+        if (strpos($duration, 'minute') !== false || strpos($duration, 'second') !== false) {
+            preg_match_all('/(\d+)\s?(hour|minute|second)/', $duration, $matches, PREG_SET_ORDER);
+            $seconds = 0;
+            foreach ($matches as $match) {
+                if (strpos($match[2], 'hour') !== false) $seconds += $match[1] * 3600;
+                if (strpos($match[2], 'minute') !== false) $seconds += $match[1] * 60;
+                if (strpos($match[2], 'second') !== false) $seconds += $match[1];
+            }
+            return $seconds;
         }
-        return $seconds;
+        return 0;
     }
-    return 0;
-}
 
 
-/**
- * Helper function to format duration from seconds to human-readable format.
- */
-protected function formatDuration($totalTimeInSeconds)
-{
-    if ($totalTimeInSeconds < 60) {
-        return "{$totalTimeInSeconds} seconds";
-    } elseif ($totalTimeInSeconds < 3600) {
-        $minutes = floor($totalTimeInSeconds / 60);
-        $seconds = str_pad($totalTimeInSeconds % 60, 2, '0', STR_PAD_LEFT);
-        return "{$minutes} minute" . ($minutes > 1 ? 's' : '') . " {$seconds} seconds";
-    } else {
-        $hours = floor($totalTimeInSeconds / 3600);
-        $minutes = floor(($totalTimeInSeconds % 3600) / 60);
-        $seconds = str_pad($totalTimeInSeconds % 60, 2, '0', STR_PAD_LEFT);
-        return "{$hours} hour" . ($hours > 1 ? 's' : '') . " {$minutes} minute" . ($minutes > 1 ? 's' : '') . " {$seconds} seconds";
+    /**
+     * Helper function to format duration from seconds to human-readable format.
+     */
+    protected function formatDuration($totalTimeInSeconds)
+    {
+        if ($totalTimeInSeconds < 60) {
+            return "{$totalTimeInSeconds} seconds";
+        } elseif ($totalTimeInSeconds < 3600) {
+            $minutes = floor($totalTimeInSeconds / 60);
+            $seconds = str_pad($totalTimeInSeconds % 60, 2, '0', STR_PAD_LEFT);
+            return "{$minutes} minute" . ($minutes > 1 ? 's' : '') . " {$seconds} seconds";
+        } else {
+            $hours = floor($totalTimeInSeconds / 3600);
+            $minutes = floor(($totalTimeInSeconds % 3600) / 60);
+            $seconds = str_pad($totalTimeInSeconds % 60, 2, '0', STR_PAD_LEFT);
+            return "{$hours} hour" . ($hours > 1 ? 's' : '') . " {$minutes} minute" . ($minutes > 1 ? 's' : '') . " {$seconds} seconds";
+        }
     }
-}
-
-
-
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -257,32 +250,29 @@ protected function formatDuration($totalTimeInSeconds)
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function updateProfile(Request $request)
     {
-        $user = $request->user();
-        $data = $request->validated();
-
+        $user = Auth::user();
         if ($request->hasFile('profilepic')) {
-            // Delete old profile picture if exists
-            if ($user->profilepic) {
-                Storage::delete($user->profilepic);
-            }
-
-            // Store new profile picture
-            $data['profilepic'] = $request->file('profilepic')->store('profilepics', 'public');
+            $file = $request->file('profilepic');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('profile_pictures', $filename, 'public');
+    
+            // Update the user's profile picture in the database
+            $user->profilepic = $filename;
+            $user->save();
         }
-
-
-        $user->fill($data);
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    
+        return back()->with('status', 'Profile updated successfully!');
     }
+    
+    public function rules()
+{
+    return [
+        'profilepic' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust max size if needed
+        // Other rules...
+    ];
+}
 
     /**
      * Delete the user's account.
@@ -327,6 +317,4 @@ protected function formatDuration($totalTimeInSeconds)
 
         return response()->json($usernames);
     }
-
-
 }

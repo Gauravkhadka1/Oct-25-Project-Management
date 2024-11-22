@@ -19,70 +19,83 @@
         </div>
         <?php endif; ?>
         <div class="client-page-heading">
-            <h2>All Clients</h2>
-        </div>
-        <div class="create-filter-search">
-            <div class="create-clients">
-                <button class="btn-create"> <a href="<?php echo e(url ('add-new-clients')); ?>"><img src="<?php echo e(url ('/frontend/images/add.png')); ?>" alt=""> Clients</a> </button>
+            <div class="client-page-heading-h2">
+                <h2>All Clients</h2>
             </div>
-            <div class="filter-section">
-                <div class="filter-payments" onclick="toggleFilterList()">
-                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
-                    <div class="filter-count">
-                    <?php if($filterCount > 0): ?>
-                    <p><?php echo e($filterCount); ?></p>
-                    <?php endif; ?>
-                    </div>
-                    Filter
+            <div class="create-filter-search-clients">
+                <div class="create-clients">
+                    <button class="btn-create">
+                        <a href="<?php echo e(url('add-new-clients')); ?>">
+                            <img src="<?php echo e(url('/frontend/images/add-new.png')); ?>" alt="">
+                        </a>
+                    </button>
                 </div>
-                <div class="filter-options" style="display: none;">
-                    <form action="<?php echo e(route('clients.index')); ?>" method="GET">
-                        <!-- Category Filter -->
-                        <div class="filter-item">
-                            <label for="category">Category:</label>
-                            <select id="category" name="filter_category" class="filter-select" onchange="updateSubcategoryFilterOptions()">
-                                <option value="">Select Category</option>
-                                <option value="Website" <?php echo e(request('filter_category') == 'Website' ? 'selected' : ''); ?>>Website</option>
-                                <option value="Microsoft" <?php echo e(request('filter_category') == 'Microsoft' ? 'selected' : ''); ?>>Microsoft</option>
-                                <option value="Hosting" <?php echo e(request('filter_category') == 'Hosting' ? 'selected' : ''); ?>>Hosting</option>
-                                <option value="Other" <?php echo e(request('filter_category') == 'Other' ? 'selected' : ''); ?>>Other</option>
-                            </select>
+                <div class="filter-section">
+                    <div class="filter-payments" onclick="toggleFilterList()">
+                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <div class="filter-count">
+                            <?php if($filterCount > 0): ?>
+                            <p><?php echo e($filterCount); ?></p>
+                            <?php endif; ?>
                         </div>
+                        Filter
+                    </div>
+                    <div class="filter-options" style="display: none;">
+                        <form action="<?php echo e(route('clients.index')); ?>" method="GET">
+                            <!-- Category Filter -->
+                            <div class="filter-item">
+                                <label for="category">Category:</label>
+                                <select id="category" name="filter_category" class="filter-select" onchange="updateSubcategoryFilterOptions()">
+                                    <option value="">Select Category</option>
+                                    <option value="Website" <?php echo e(request('filter_category') == 'Website' ? 'selected' : ''); ?>>Website</option>
+                                    <option value="Microsoft" <?php echo e(request('filter_category') == 'Microsoft' ? 'selected' : ''); ?>>Microsoft</option>
+                                    <option value="Hosting" <?php echo e(request('filter_category') == 'Hosting' ? 'selected' : ''); ?>>Hosting</option>
+                                    <option value="Other" <?php echo e(request('filter_category') == 'Other' ? 'selected' : ''); ?>>Other</option>
+                                </select>
+                            </div>
 
-                        <!-- Subcategory Filter -->
-                        <div class="filter-item" id="subcategory-filter-container">
-                            <label for="subcategory">Subcategory:</label>
-                            <select id="subcategory-filter" name="filter_subcategory" class="filter-select" onchange="updateAdditionalSubcategoryFilterOptions()">
-                                <option value="">Select Subcategory</option>
-                                <!-- Subcategory options will be dynamically populated -->
-                            </select>
+                            <!-- Subcategory Filter -->
+                            <div class="filter-item" id="subcategory-filter-container">
+                                <label for="subcategory">Subcategory:</label>
+                                <select id="subcategory-filter" name="filter_subcategory" class="filter-select" onchange="updateAdditionalSubcategoryFilterOptions()">
+                                    <option value="">Select Subcategory</option>
+                                    <!-- Subcategory options will be dynamically populated -->
+                                </select>
+                            </div>
+
+                            <!-- Additional Subcategory Filter -->
+                            <div class="filter-item" id="additional-subcategory-filter-container">
+                                <label for="additional_subcategory">Additional Subcategory:</label>
+                                <select id="additional-subcategory-filter" name="filter_additional_subcategory" class="filter-select">
+                                    <option value="">Select Additional Subcategory</option>
+                                    <!-- Additional subcategory options will be dynamically populated -->
+                                </select>
+                            </div>
+
+                            <button type="submit">Apply Filter</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="search-clients">
+                    <div class="search-icon">
+                        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                    </div>
+                    <form action="<?php echo e(route('clients.index')); ?>" method="GET" id="search-form">
+                        <div class="search-text-area">
+                            <input type="text" name="search" placeholder="search clients..." value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
                         </div>
-
-                        <!-- Additional Subcategory Filter -->
-                        <div class="filter-item" id="additional-subcategory-filter-container">
-                            <label for="additional_subcategory">Additional Subcategory:</label>
-                            <select id="additional-subcategory-filter" name="filter_additional_subcategory" class="filter-select">
-                                <option value="">Select Additional Subcategory</option>
-                                <!-- Additional subcategory options will be dynamically populated -->
-                            </select>
-                        </div>
-
-                        <button type="submit">Apply Filter</button>
                     </form>
                 </div>
-
-
             </div>
-            <div class="search-payments">
-                <div class="search-icon">
-                    <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
-                </div>
-                <form action="<?php echo e(route('clients.index')); ?>" method="GET" id="search-form">
-                    <div class="search-text-area">
-                        <input type="text" name="search" placeholder="search clients..." value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
-                    </div>
-                </form>
-            </div>
+        </div>
+
+        <!-- Number Category Section -->
+        <div class="number-category">
+            <?php if($lastSelectedFilter): ?>
+            <p>Total number of <?php echo e($lastSelectedFilter); ?> Clients - <?php echo e($clients->count()); ?></p>
+            <?php else: ?>
+            <p> <strong> Total number of Clients -</strong> <?php echo e($clients->count()); ?></p>
+            <?php endif; ?>
         </div>
         <div class="modern-payments-table">
             <table>
@@ -107,12 +120,12 @@
                         <td><?php echo e($client->company_name ?? ''); ?></td>
                         <td>
                             <?php if(!empty($client->website)): ?>
-                                <?php
-                                    $url = preg_match('/^(http|https):\/\//', $client->website) ? $client->website : 'http://' . $client->website;
-                                ?>
-                                <a href="<?php echo e($url); ?>" target="_blank" rel="noopener noreferrer"><?php echo e($client->website); ?></a>
+                            <?php
+                            $url = preg_match('/^(http|https):\/\//', $client->website) ? $client->website : 'http://' . $client->website;
+                            ?>
+                            <a href="<?php echo e($url); ?>" target="_blank" rel="noopener noreferrer"><?php echo e($client->website); ?></a>
                             <?php else: ?>
-                                No Website
+                            No Website
                             <?php endif; ?>
                         </td>
 
@@ -143,7 +156,7 @@
                         <label for="company_name">Company Name:</label>
                         <input type="text" id="company_name" name="company_name" nullable>
                     </div>
-                    
+
 
                     <div class="form-group">
                         <label for="category">Category:</label>
@@ -211,7 +224,7 @@
     </div>
     </div>
     <script>
-         function toggleFilterList() {
+        function toggleFilterList() {
             const filterOptions = document.querySelector('.filter-options');
             filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
         }
@@ -244,7 +257,7 @@
         function closeAddClientsModal() {
             document.getElementById('add-clients-modal').style.display = 'none';
         }
-       
+
         // For adding multiple Categories 
         document.addEventListener('DOMContentLoaded', function() {
             const categoryData = {
@@ -253,6 +266,7 @@
                     "NGO/ INGO": [],
                     "Tourism": [],
                     "Education": ["Edu Consultancy", "School", "College", "Other"],
+                    "News": [""],
                     "eCommerce": ["Product Catlog", "ecommerce", "Other"],
                     "Hospitality": ["Hotel & Cafe", "Resort", "Other"],
                     "other": [""]
@@ -334,24 +348,23 @@
         });
 
         subcategorySelect.addEventListener('change', function() {
-        const selectedCategory = categorySelect.value;
-        const selectedSubcategory = subcategorySelect.value;
-        additionalSubcategorySelect.innerHTML = '<option value="">Select Additional Subcategory</option>';
+            const selectedCategory = categorySelect.value;
+            const selectedSubcategory = subcategorySelect.value;
+            additionalSubcategorySelect.innerHTML = '<option value="">Select Additional Subcategory</option>';
 
-        if (selectedSubcategory && categoryData[selectedCategory][selectedSubcategory]) {
-            additionalSubcategoryContainer.style.display = 'block';
-            const additionalSubcategories = categoryData[selectedCategory][selectedSubcategory];
-            additionalSubcategories.forEach(function(additionalSubcategory) {
-                const option = document.createElement('option');
-                option.value = additionalSubcategory;
-                option.text = additionalSubcategory;
-                additionalSubcategorySelect.appendChild(option);
-            });
-        } else {
-            additionalSubcategoryContainer.style.display = 'none';
-        }
+            if (selectedSubcategory && categoryData[selectedCategory][selectedSubcategory]) {
+                additionalSubcategoryContainer.style.display = 'block';
+                const additionalSubcategories = categoryData[selectedCategory][selectedSubcategory];
+                additionalSubcategories.forEach(function(additionalSubcategory) {
+                    const option = document.createElement('option');
+                    option.value = additionalSubcategory;
+                    option.text = additionalSubcategory;
+                    additionalSubcategorySelect.appendChild(option);
+                });
+            } else {
+                additionalSubcategoryContainer.style.display = 'none';
+            }
         });
-   
     </script>
 </main>
 <?php $__env->stopSection(); ?>
