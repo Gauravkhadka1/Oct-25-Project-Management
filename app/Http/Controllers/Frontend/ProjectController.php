@@ -190,26 +190,29 @@ class ProjectController extends Controller
 
 
     public function showdetails($id)
-    {
-        // Fetch the project by ID
-        $project = Project::with(['tasks' => function ($query) {
-            // Eager load tasks for all statuses
-            $query->orderBy('status');
-        }])->findOrFail($id);
-    
-        // Fetch all users for task assignment
-        $users = User::all();
-    
-        // Separate tasks by status
-        $todoTasks = $project->tasks->where('status', null); // For "To Do" tasks (status = null)
-        $inProgressTasks = $project->tasks->where('status', 'In Progress'); // For "In Progress" tasks
-        $qaTasks = $project->tasks->where('status', 'QA'); // For "QA" tasks
-        $completedTasks = $project->tasks->where('status', 'Completed'); // For "Completed" tasks
-    
-        // Pass the data to the view
-        return view('frontends.project-details-page', compact('project', 'users', 'todoTasks', 'inProgressTasks', 'qaTasks', 'completedTasks'));
-    }
-    
+{
+    // Fetch the project by ID
+    $project = Project::with(['tasks.assignedUser' => function ($query) {
+        $query->select('id', 'username', 'profilepic'); // Fetch only necessary columns
+    }])->findOrFail($id);
+
+    // Fetch all users for task assignment
+    $users = User::all();
+
+    // Separate tasks by status
+    $todoTasks = $project->tasks->filter(function ($task) {
+        return $task->status === null || $task->status === 'To Do';
+    });
+
+    $inProgressTasks = $project->tasks->where('status', 'In Progress'); // For "In Progress" tasks
+    $qaTasks = $project->tasks->where('status', 'QA'); // For "QA" tasks
+    $completedTasks = $project->tasks->where('status', 'Completed'); // For "Completed" tasks
+
+    // Pass the data to the view
+    return view('frontends.project-details-page', compact('project', 'users', 'todoTasks', 'inProgressTasks', 'qaTasks', 'completedTasks'));
+}
+
+
 
     
 }

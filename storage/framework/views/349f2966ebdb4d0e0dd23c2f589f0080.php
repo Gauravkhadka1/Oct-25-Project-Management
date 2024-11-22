@@ -19,15 +19,17 @@
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/client.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/payment-detail-page.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/prospect-details-page.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('frontend/css/profile.css')); ?>">
 
 
   <?php
   use App\Models\User;
-  $users = User::select('id', 'username')->get();
+  $users = User::select('id', 'username', 'profilepic')->get();
 
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
   $username = $user->username;
+
   ?>
 
 </head>
@@ -194,10 +196,19 @@
           <ul class="task-dropdown">
             <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <li class="username-item" data-username="<?php echo e($user->username); ?>">
-              <a href="<?php echo e(route('user.dashboard', ['username' => $user->username])); ?>"><?php echo e($user->username); ?></a>
+                <a href="<?php echo e(route('user.dashboard', ['username' => $user->username])); ?>">
+                    <img src="<?php echo e(Storage::url('profile_pictures/' . $user->profilepic)); ?>" 
+                        alt="<?php echo e($user->username); ?>'s Profile Picture" class="profile-pic">
+                        <p>
+                        <?php echo e($user->username); ?>
+
+                        </p>
+                    
+                </a>
             </li>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-          </ul>
+        </ul>
+
         </li>
         <?php endif; ?>
         <li class="dropdown">

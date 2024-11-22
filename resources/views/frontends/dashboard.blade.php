@@ -58,211 +58,74 @@
                 $tasksQA = $tasks->where('status', 'QA');
                 $tasksCompleted = $tasks->where('status', 'Completed');
                 $tasksClosed = $tasks->where('status', 'Closed');
+                $columnNames = [
+            'To Do' => $tasksToDo,
+            'In Progress' => $tasksInProgress,
+            'QA' => $tasksQA,
+            'Completed' => $tasksCompleted,
+            'Closed' => $tasksClosed
+        ];
             @endphp
 
-            <!-- Column for To Do tasks -->
-            <div class="task-column" id="todo" data-status="To Do">
-                <div class="todo-heading">
-                    <img src="{{url ('frontend/images/todo.png')}}" alt="">
-                    <h3>To Do</h3>
-                </div>
-                
-                <div class="task-list">
-                    @foreach ($tasksToDo as $task)
+            @foreach ($columnNames as $status => $tasksCollection)
+        <div class="task-column" id="{{ strtolower(str_replace(' ', '', $status)) }}" data-status="{{ $status }}">
+            <div class="{{ strtolower(str_replace(' ', '', $status)) }}-heading">
+                <img src="{{ url('frontend/images/' . strtolower(str_replace(' ', '', $status)) . '.png') }}" alt="">
+                <h3>{{ $status }}</h3>
+            </div>
+
+            <div class="task-list">
+                @if ($tasksCollection->isEmpty())
+                    <div class="no-tasks" style="height: 40px; background-color: white; display: flex; align-items: center; justify-content: center; border:none; margin-top: 10px;">
+                        <p>No task in {{ $status }}</p>
+                    </div>
+                @else
+                    @foreach ($tasksCollection as $task)
                         <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                             <div class="task-name">
-                            @if($task->category == 'Payment')
+                                @if ($task->category == 'Payment')
                                     <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
-                                @elseif($task->category == 'Prospect')
+                                @elseif ($task->category == 'Prospect')
                                     <a href="{{ route('prospect_task.detail', ['id' => $task->id]) }}">
                                 @else
                                     <a href="{{ route('task.detail', ['id' => $task->id]) }}">
                                 @endif
                                     <p>{{ $task->name }}</p>
                                 </a>
-
                             </div>
-                            <div class="in-project">
-                            in {{ $task->category_name }}
-                            </div>
+                            <div class="in-project">in {{ $task->category_name }}</div>
                             <div class="assigne">
-                                <img src="{{url ('frontend/images/assignedby.png')}}" alt="">  by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
+                                @if ($task->assignedBy)
+                                <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> 
+                                    by: <img src="{{ asset('storage/profile_pictures/' . $task->assignedBy->profilepic) }}" 
+                                    alt="{{ $task->assignedBy->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedBy->username }}
+                                @else
+                                    <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
+                                    by: N/A
+                                @endif
                             </div>
                             <div class="due-date">
-                            <img src="{{url ('frontend/images/duedate.png')}}" alt=""> : {{ $task->due_date }}
+                                <img src="{{ url('frontend/images/duedate.png') }}" alt=""> 
+                                : {{ $task->due_date }}
                             </div>
                             <div class="priority">
-                            <img src="{{url ('frontend/images/priority.png')}}" alt="">: {{ $task->priority }}
+                                <img src="{{ url('frontend/images/priority.png') }}" alt=""> 
+                                : {{ $task->priority }}
                             </div>
                             <div class="time-details">
                                 <div class="start-pause">
-                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
+                                    <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">
+                                        <img src="{{ url('frontend/images/play.png') }}" alt="">
+                                    </button>
                                 </div>
-                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
-                                </div>
+                                <div class="time-data" id="time-{{ $task->id }}">00:00:00</div>
                             </div>
                         </div>
                     @endforeach
-                </div>
+                @endif
             </div>
-
-
-            <!-- Column for In Progress tasks -->
-            <div class="task-column" id="inprogress" data-status="In Progress">
-                <div class="inprogress-heading">
-                    <img src="{{url ('frontend/images/inprogress.png')}}" alt="">
-                    <h3>In Progress</h3>
-                </div>
-             
-                <div class="task-list">
-                    @foreach ($tasksInProgress as $task)
-                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
-                        <div class="task-name">
-                        <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                                <p>{{ $task->name }}</p>
-                            </a>
-                            </div>
-                            <div class="in-project">
-                            in {{ $task->category_name }}
-                            </div>
-                            <div class="assigne">
-                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
-                            </div>
-                            <div class="due-date">
-                            Due Date:{{ $task->due_date }}
-                            </div>
-                            <div class="priority">
-                            Priority: {{ $task->priority }}
-                            </div>
-                            <div class="time-details">
-                                <div class="start-pause">
-                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
-                                </div>
-                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
-                                </div>
-                            </div>
-                            <!-- Additional task details here -->
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Column for QA tasks -->
-            <div class="task-column" id="qa" data-status="QA">
-                <div class="qa-heading">
-                    <img src="{{url ('frontend/images/qa.png')}}" alt="">
-                    <h3>QA</h3>
-                </div>
-                <div class="task-list">
-                    @foreach ($tasksQA as $task)
-                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
-                        <div class="task-name">
-                        <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                                <p>{{ $task->name }}</p>
-                            </a>
-                            </div>
-                            <div class="in-project">
-                            in {{ $task->category_name }}
-                            </div>
-                            <div class="assigne">
-                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
-                            </div>
-                            <div class="due-date">
-                            Due Date:{{ $task->due_date }}
-                            </div>
-                            <div class="priority">
-                            Priority: {{ $task->priority }}
-                            </div>
-                            <div class="time-details">
-                                <div class="start-pause">
-                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
-                                </div>
-                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
-                                </div>
-                            </div>
-                            <!-- Additional task details here -->
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Column for Completed tasks -->
-            <div class="task-column" id="completed" data-status="Completed">
-                <div class="completed-heading">
-                    <img src="{{url ('frontend/images/completed.png')}}" alt="">
-                    <h3>Completed</h3>
-                </div>
-                <div class="task-list">
-                    @foreach ($tasksCompleted as $task)
-                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
-                        <div class="task-name">
-                        <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                                <p>{{ $task->name }}</p>
-                            </a>
-                            </div>
-                            <div class="in-project">
-                            in {{ $task->category_name }}
-                            </div>
-                            <div class="assigne">
-                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
-                            </div>
-                            <div class="due-date">
-                            Due Date:{{ $task->due_date }}
-                            </div>
-                            <div class="priority">
-                            Priority: {{ $task->priority }}
-                            </div>
-                            <div class="time-details">
-                                <div class="start-pause">
-                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
-                                </div>
-                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
-                                </div>
-                            </div>
-                            <!-- Additional task details here -->
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Column for Closed tasks -->
-            <div class="task-column" id="closed" data-status="Closed">
-                <div class="closed-heading">
-                    <img src="{{url ('frontend/images/closed.png')}}" alt="">
-                    <h3>Closed</h3>
-                </div>
-                <div class="task-list">
-                    @foreach ($tasksClosed as $task)
-                        <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
-                        <div class="task-name">
-                        <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                                <p>{{ $task->name }}</p>
-                            </a>
-                            </div>
-                            <div class="in-project">
-                            in {{ $task->category_name }}
-                            </div>
-                            <div class="assigne">
-                                Assigned by: {{ $task->assignedBy ? $task->assignedBy->username : 'N/A' }}
-                            </div>
-                            <div class="due-date">
-                            Due Date:{{ $task->due_date }}
-                            </div>
-                            <div class="priority">
-                            Priority: {{ $task->priority }}
-                            </div>
-                            <div class="time-details">
-                                <div class="start-pause">
-                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')"><img src="{{url ('frontend/images/play.png')}}" alt=""></button>
-                                </div>
-                                <div class="time-data"id="time-{{ $task->id }}">00:00:00
-                                </div>
-                            </div>
-                            <!-- Additional task details here -->
-                        </div>
-                    @endforeach
-                </div>
-            </div>
+        </div>
+    @endforeach
         </div>
    
  

@@ -211,5 +211,20 @@ margin-bottom: 5px;
     width: 22px;
     margin-right: 5px;
 }
+.task-column .no-tasks {
+    border: 1px dashed #ccc;
+    font-size: 14px;
+    color: #999;
+    text-align: center;
+}
+
+.task-column .task {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: grab;
+}
 
 

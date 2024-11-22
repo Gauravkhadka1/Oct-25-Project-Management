@@ -19,15 +19,17 @@
   <link rel="stylesheet" href="{{url('frontend/css/client.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/payment-detail-page.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/prospect-details-page.css')}}">
+  <link rel="stylesheet" href="{{url('frontend/css/profile.css')}}">
 
 
   @php
   use App\Models\User;
-  $users = User::select('id', 'username')->get();
+  $users = User::select('id', 'username', 'profilepic')->get();
 
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
   $username = $user->username;
+
   @endphp
 
 </head>
@@ -193,10 +195,18 @@
           <ul class="task-dropdown">
             @foreach ($users as $user)
             <li class="username-item" data-username="{{ $user->username }}">
-              <a href="{{ route('user.dashboard', ['username' => $user->username]) }}">{{ $user->username }}</a>
+                <a href="{{ route('user.dashboard', ['username' => $user->username]) }}">
+                    <img src="{{ Storage::url('profile_pictures/' . $user->profilepic) }}" 
+                        alt="{{ $user->username }}'s Profile Picture" class="profile-pic">
+                        <p>
+                        {{ $user->username }}
+                        </p>
+                    
+                </a>
             </li>
             @endforeach
-          </ul>
+        </ul>
+
         </li>
         @endif
         <li class="dropdown">

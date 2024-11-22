@@ -82,10 +82,16 @@
                         </a>
                     </div>
                     <div class="assigne">
-                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
-                        to: <?php echo e($task->assignedUser->username ?? 'Unassigned'); ?>
-
+                        <?php if($task->assignedUser): ?>
+                           
+                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to:  <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedUser->profilepic)); ?>" 
+                            alt="<?php echo e($task->assignedUser->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedUser->username); ?>  
+                        <?php else: ?>
+                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
+                            to: Unassigned
+                        <?php endif; ?>
                     </div>
+
                     <div class="due-date">
                         <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
 
@@ -119,9 +125,14 @@
                         </a>
                     </div>
                     <div class="assigne">
-                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
-                        to: <?php echo e($task->assignedUser->username ?? 'Unassigned'); ?>
-
+                        <?php if($task->assignedUser): ?>
+                           
+                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to:  <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedUser->profilepic)); ?>" 
+                            alt="<?php echo e($task->assignedUser->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedUser->username); ?>  
+                        <?php else: ?>
+                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
+                            to: Unassigned
+                        <?php endif; ?>
                     </div>
                     <div class="due-date">
                         <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
@@ -156,9 +167,14 @@
                         </a>
                     </div>
                     <div class="assigne">
-                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
-                        to: <?php echo e($task->assignedUser->username ?? 'Unassigned'); ?>
-
+                        <?php if($task->assignedUser): ?>
+                           
+                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to:  <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedUser->profilepic)); ?>" 
+                            alt="<?php echo e($task->assignedUser->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedUser->username); ?>  
+                        <?php else: ?>
+                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
+                            to: Unassigned
+                        <?php endif; ?>
                     </div>
                     <div class="due-date">
                         <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
@@ -193,9 +209,14 @@
                         </a>
                     </div>
                     <div class="assigne">
-                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
-                        to: <?php echo e($task->assignedUser->username ?? 'Unassigned'); ?>
-
+                        <?php if($task->assignedUser): ?>
+                           
+                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to:  <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedUser->profilepic)); ?>" 
+                            alt="<?php echo e($task->assignedUser->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedUser->username); ?>  
+                        <?php else: ?>
+                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
+                            to: Unassigned
+                        <?php endif; ?>
                     </div>
                     <div class="due-date">
                         <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>

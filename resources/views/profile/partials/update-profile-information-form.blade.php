@@ -1,32 +1,50 @@
 @extends('frontends.layouts.main')
 
 @section('main-container')
-    <main>
-       <div class="updtprof">
-            <section class="profieinf">
-                    <h2>
-                        {{ __('Profile Information') }}
-                    </h2>
+@php
+  use App\Models\User;
+  $users = User::select('id', 'username')->get();
 
-                    <p>
-                        {{ __("Update your account's profile information and email address.") }}
-                    </p>
+  $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
+  $user = auth()->user();
+  $username = $user->username;
+  @endphp
+<main>
+    <div class="updtprof">
+        <section class="profieinf">
+            <!-- <h2>
+                {{ __('Profile Information') }}
+            </h2> -->
+            <div class="user-image">
+            @if(auth()->user() && auth()->user()->profilepic)
+                      <img src="{{ asset('storage/profile_pictures/' . auth()->user()->profilepic) }}" alt="User Profile Picture" class="user-profile-pic">
+                  @else
+                      <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="user-profile-pic">
+                  @endif
+            </div>
+            <div class="user-name">
+            <p>{{ $username }}</p>
+            </div>
 
-                <form id="send-verification" method="post" action="{{ route('verification.send') }}">
-                    @csrf
-                </form>
+            <p>
+                {{ __("Update your account.") }}
+            </p>
 
-                <form method="post" action="{{ route('profile.updateProfile') }}" enctype="multipart/form-data" class="updtprfform">
-                    @csrf
-                    @method('patch')
+            <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+                @csrf
+            </form>
 
-                    <!-- <div class="updnam">
+            <form method="post" action="{{ route('profile.updateProfile') }}" enctype="multipart/form-data" class="updtprfform">
+                @csrf
+                @method('patch')
+
+                <!-- <div class="updnam">
                         <x-input-label for="name" :value="__('Name')" />
                         <x-text-input  name="name" type="text" class="upname" :value="old('name', $user->name)" required autofocus autocomplete="name" />
                         <x-input-error class="mt-2" :messages="$errors->get('name')" />
                     </div> -->
 
-                    <!-- <div class="updemail">
+                <!-- <div class="updemail">
                         <x-input-label for="email" :value="__('Email')" />
                         <x-text-input name="email" type="email" class="pemail" :value="old('email', $user->email)" required autocomplete="username" />
                         <x-input-error class="mt-2" :messages="$errors->get('email')" />
@@ -56,35 +74,35 @@
                         <x-input-error class="mt-2" :messages="$errors->get('address')" />
                     </div> -->
 
-                    <div class="updprfpic">
-                        <x-input-label for="profilepic" :value="__('Profile Pic')" />
-                        <x-text-input name="profilepic" type="file" class="uppp" autofocus autocomplete="profilepic" />
-                        <x-input-error class="mt-2" :messages="$errors->get('profilepic')" />
-                    </div>
+                <div class="updprfpic">
+                    <x-input-label for="profilepic" :value="__('Profile Pic')" />
+                    <x-text-input name="profilepic" type="file" class="uppp" autofocus autocomplete="profilepic" />
+                    <x-input-error class="mt-2" :messages="$errors->get('profilepic')" />
+                </div>
 
-                    <div class="updtpsave">
-                        <button>{{ __('Save') }}</button>
+                <div class="updtpsave">
+                    <button>{{ __('Save') }}</button>
 
-                        @if (session('status') === 'profile-updated')
-                            <p
-                                x-data="{ show: true }"
-                                x-show="show"
-                                x-transition
-                                x-init="setTimeout(() => show = false, 4000)"
-                                class="profileupdated"
-                            >{{ __('Profile Updated') }}</p>
-                        @endif
-                    </div>
-                </form>
-            </section>
-         <section class="updatepswd">
-                <h2>
-                    {{ __('Update Password') }}
-                </h2>
+                    @if (session('status') === 'profile-updated')
+                    <p
+                        x-data="{ show: true }"
+                        x-show="show"
+                        x-transition
+                        x-init="setTimeout(() => show = false, 4000)"
+                        class="profileupdated">{{ __('Profile Updated') }}</p>
+                    @endif
+                </div>
+            </form>
+        </section>
+        
+        <section class="updatepswd">
+            <h2>
+                {{ __('Update Password') }}
+            </h2>
 
-                <p>
-                    {{ __('Ensure your account is using a long, random password to stay secure.') }}
-                </p>
+            <p>
+                {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            </p>
 
             <form method="post" action="{{ route('password.update') }}" class="updtpswd">
                 @csrf
@@ -112,18 +130,17 @@
                     <button>{{ __('Save') }}</button>
 
                     @if (session('status') === 'password-updated')
-                        <p
-                            x-data="{ show: true }"
-                            x-show="show"
-                            x-transition
-                            x-init="setTimeout(() => show = false, 2000)"
-                            class="profileupdated"
-                        >{{ __('Saved.') }}</p>
+                    <p
+                        x-data="{ show: true }"
+                        x-show="show"
+                        x-transition
+                        x-init="setTimeout(() => show = false, 2000)"
+                        class="profileupdated">{{ __('Saved.') }}</p>
                     @endif
                 </div>
             </form>
-         </section>
-         <!-- <section class="deleteuserp">
+        </section>
+        <!-- <section class="deleteuserp">
                 <div class="deleteuserph">
                     <h2>
                         {{ __('Delete Account') }}
@@ -176,7 +193,7 @@
                     </div>
                 </form>
          </section> -->
-       </div>
+    </div>
 
-    </main>
+</main>
 @endsection

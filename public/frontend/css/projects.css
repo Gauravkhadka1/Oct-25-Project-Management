@@ -477,3 +477,58 @@ font-weight: 520;
     width: 100%;
     padding: 0 20px;
 }
+.todo-heading-project {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e16b16;
+    width: 105px; 
+    padding: 5px;
+    border-radius: 7px;
+}
+.todo-heading-project img {
+    width: 20px;
+    margin-right: 7px;
+}
+.developement-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f7b04f;
+    width: 160px; 
+    padding: 5px;
+    border-radius: 7px;
+}
+.developement-heading img {
+    width: 20px;
+    margin-right: 10px;
+}
+.content-fillup-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4f72f3;
+    width: 180px; 
+    padding: 5px;
+    border-radius: 7px;
+}
+.content-fillup-heading img {
+    width: 20px;
+    margin-right: 10px;
+}
+.completed-heading-project {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #318945;
+    width: 135px; 
+    padding: 5px;
+    border-radius: 7px;
+}
+.completed-heading-project img {
+    width: 18px;
+    margin-right: 10px;
+}
+#assigned-pic {
+    margin-left: 5px;
+}

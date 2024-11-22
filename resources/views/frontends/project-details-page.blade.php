@@ -81,9 +81,16 @@
                         </a>
                     </div>
                     <div class="assigne">
-                        <img src="{{ url('frontend/images/assignedby.png') }}" alt="">
-                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
+                        @if ($task->assignedUser)
+                           
+                        <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> to:  <img src="{{ asset('storage/profile_pictures/' . $task->assignedUser->profilepic) }}" 
+                            alt="{{ $task->assignedUser->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedUser->username }}  
+                        @else
+                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
+                            to: Unassigned
+                        @endif
                     </div>
+
                     <div class="due-date">
                         <img src="{{ url('frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
                     </div>
@@ -115,8 +122,14 @@
                         </a>
                     </div>
                     <div class="assigne">
-                        <img src="{{ url('frontend/images/assignedby.png') }}" alt="">
-                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
+                        @if ($task->assignedUser)
+                           
+                        <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> to:  <img src="{{ asset('storage/profile_pictures/' . $task->assignedUser->profilepic) }}" 
+                            alt="{{ $task->assignedUser->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedUser->username }}  
+                        @else
+                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
+                            to: Unassigned
+                        @endif
                     </div>
                     <div class="due-date">
                         <img src="{{ url('frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
@@ -149,8 +162,14 @@
                         </a>
                     </div>
                     <div class="assigne">
-                        <img src="{{ url('frontend/images/assignedby.png') }}" alt="">
-                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
+                        @if ($task->assignedUser)
+                           
+                        <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> to:  <img src="{{ asset('storage/profile_pictures/' . $task->assignedUser->profilepic) }}" 
+                            alt="{{ $task->assignedUser->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedUser->username }}  
+                        @else
+                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
+                            to: Unassigned
+                        @endif
                     </div>
                     <div class="due-date">
                         <img src="{{ url('frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
@@ -183,8 +202,14 @@
                         </a>
                     </div>
                     <div class="assigne">
-                        <img src="{{ url('frontend/images/assignedby.png') }}" alt="">
-                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
+                        @if ($task->assignedUser)
+                           
+                        <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> to:  <img src="{{ asset('storage/profile_pictures/' . $task->assignedUser->profilepic) }}" 
+                            alt="{{ $task->assignedUser->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedUser->username }}  
+                        @else
+                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
+                            to: Unassigned
+                        @endif
                     </div>
                     <div class="due-date">
                         <img src="{{ url('frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}

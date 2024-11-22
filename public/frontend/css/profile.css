@@ -1,0 +1,160 @@
+/* General Styles */
+
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.updtprof p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+}
+
+/* Main Container */
+.updtprof {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Information Section */
+.profieinf {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Profile Picture */
+.user-image {
+    margin-bottom: 1rem;
+}
+
+.user-profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* border: 3px solid #4caf50; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-name p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #34495e;
+    margin-top: 0.5rem;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+form button {
+    width: 100%;
+    max-width: 200px;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background: #4caf50;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+form button:hover {
+    background: #45a049;
+}
+
+/* Input Fields */
+x-input-label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+    text-align: left;
+    color: #2c3e50;
+}
+
+x-text-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+x-text-input:focus {
+    outline: none;
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Update Password Section */
+.updatepswd {
+    margin-top: 2rem;
+}
+
+.pswdsvbtn {
+    text-align: center;
+}
+
+.pswdsvbtn button {
+    background: #007bff;
+}
+
+.pswdsvbtn button:hover {
+    background: #0056b3;
+}
+
+/* Success Messages */
+.profileupdated {
+    margin-top: 1rem;
+    color: #28a745;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .updtprof {
+        padding: 1.5rem;
+    }
+
+    form {
+        gap: 1rem;
+    }
+
+    x-text-input {
+        width: 100%;
+    }
+
+    form button {
+        max-width: 100%;
+    }
+}
+
+

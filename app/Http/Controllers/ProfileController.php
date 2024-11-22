@@ -38,20 +38,27 @@ class ProfileController extends Controller
         $selectedDate = $request->input('date', Carbon::now('Asia/Kathmandu')->toDateString());
 
         // Load tasks, prospect tasks, and payment tasks assigned to the user
-        $tasks = Task::with('assignedBy', 'project')
-            ->where('assigned_to', $user->id)
-            ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
-            ->get();
-
-        $prospectTasks = ProspectTask::with('assignedBy', 'prospect')
-            ->where('assigned_to', $user->id)
-            ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
-            ->get();
-
-        $paymentTasks = PaymentTask::with('assignedBy', 'payment')
-            ->where('assigned_to', $user->id)
-            ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
-            ->get();
+        $tasks = Task::with(['assignedBy' => function ($query) {
+            $query->select('id', 'username', 'profilepic'); // Include profilepic and username
+        }, 'project'])
+        ->where('assigned_to', $user->id)
+        ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
+        ->get();
+        
+        $prospectTasks = ProspectTask::with(['assignedBy' => function ($query) {
+            $query->select('id', 'username', 'profilepic');
+        }, 'prospect'])
+        ->where('assigned_to', $user->id)
+        ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
+        ->get();
+        
+        $paymentTasks = PaymentTask::with(['assignedBy' => function ($query) {
+            $query->select('id', 'username', 'profilepic');
+        }, 'payment'])
+        ->where('assigned_to', $user->id)
+        ->select('id', 'name', 'assigned_by', 'start_date', 'due_date', 'priority')
+        ->get();
+        
 
         // Retrieve projects, prospects, and payments, including only tasks assigned to the user
         $projects = Project::with(['tasks' => function ($query) use ($user) {

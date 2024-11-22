@@ -99,8 +99,8 @@ use Carbon\Carbon;
                 <div class="task-board">
                     <!-- Column for To Do tasks -->
                     <div class="task-column" id="new" data-status="design">
-                        <div class="todo-heading-prospect">
-                            <img src="{{url ('frontend/images/new.png')}}" alt="">
+                        <div class="todo-heading-project">
+                            <img src="{{url ('frontend/images/design.png')}}" alt="">
                             <h3>Design</h3>
                         </div>
 
@@ -128,8 +128,8 @@ use Carbon\Carbon;
 
                     <!-- Column for In Progress tasks -->
                     <div class="task-column" id="dealing" data-status="development">
-                        <div class="inprogress-heading">
-                            <img src="{{url ('frontend/images/dealing.png')}}" alt="">
+                        <div class="developement-heading">
+                            <img src="{{url ('frontend/images/developement.png')}}" alt="">
                             <h3>Development</h3>
                         </div>
 
@@ -156,8 +156,8 @@ use Carbon\Carbon;
 
                     <!-- Column for QA tasks -->
                     <div class="task-column" id="quote_sent" data-status="content_fillup">
-                        <div class="qs-heading">
-                            <img src="{{url ('frontend/images/sentsent.png')}}" alt="">
+                        <div class="content-fillup-heading">
+                            <img src="{{url ('frontend/images/content-fillup.png')}}" alt="">
                             <h3> Content Fill up</h3>
                         </div>
                         <div class="task-list">
@@ -181,7 +181,7 @@ use Carbon\Carbon;
                         </div>
                     </div>
                     <div class="task-column" id="converted" data-status="completed">
-                        <div class="closed-heading-prospect">
+                        <div class="completed-heading-project">
                             <img src="{{url ('frontend/images/completed.png')}}" alt="">
                             <h3>Completed</h3>
                         </div>
