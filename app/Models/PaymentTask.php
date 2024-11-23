@@ -23,7 +23,7 @@ class PaymentTask extends Model
     {
         return $this->belongsTo(PaymentTask::class);
     }
-    public function assignedUser()
+    public function assignedTo()
     {
         return $this->belongsTo(User::class, 'assigned_to', 'id');
     }

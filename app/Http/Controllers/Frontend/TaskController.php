@@ -16,6 +16,7 @@ use App\Models\Task;
 use App\Models\PaymentTask;
 use App\Models\ProspectTask;
 use App\Models\User;
+use App\Models\Project;
 use App\Models\TaskSession;
 use App\Models\ProspectTaskSession;
 use App\Models\PaymentTaskSession;
@@ -40,12 +41,14 @@ class TaskController extends Controller {
            'due_date' => 'nullable|date',
            'priority' => 'nullable|string',
        ]);
+       $validatedData['assigned_by'] = auth()->id();
        
         // $assignedByUserId = auth()->id();
        // Create the task
        $task = Task::create([
            'name' => $validatedData['name'],
            'assigned_to' => $validatedData['assigned_to'],
+           'assigned_by' => $validatedData['assigned_by'],
            'project_id' => $validatedData['project_id'],
            'due_date' => $validatedData['due_date'],
            'priority' => $validatedData['priority'],
@@ -73,10 +76,6 @@ return redirect()->back()->with('success', 'Task created successfully.');
    }
    
    
-
-   
-
-
 public function startTimer(Request $request, $taskId)
 {
     $taskCategory = $request->input('task_category');
@@ -132,9 +131,6 @@ public function startTimer(Request $request, $taskId)
         return response()->json(['error' => 'Internal Server Error'], 500);
     }
 }
-
-
-
 
 public function pauseTimer(Request $request, $taskId)
 {
@@ -315,10 +311,14 @@ public function addComment(Request $request)
     return response()->json(['success' => true]);
 }
 
-public function show($id)
+public function show($id, Request $request)
+
 {
     $task = Task::findOrFail($id); // or respective model for each controller
-    return view('frontends.taskdetail', compact('task'));
+    $users = User::all();
+    $query = Project::query();
+    $project = $query->get();
+    return view('frontends.taskdetail', compact('task', 'users', 'project'));
 }
 
 

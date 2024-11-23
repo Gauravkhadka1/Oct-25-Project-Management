@@ -29,6 +29,7 @@
                             @endif
                         </div>
         </div>
+        <hr>
 
         <div class="add-payment-task">
             <div class="payment-contact-details">
@@ -37,10 +38,41 @@
                 <p><strong>C. Person Phone:</strong> {{ $payment->phone }}</p>
                 <p><strong>C. Person Email:</strong> {{ $payment->email }}</p>
             </div>
-            <button class="btn-create" id="task-create" onclick="openAddTaskModal({{ $payment->id }})">
-                <h2>Add Task</h2>
-            </button>
+            
         </div>
+        <div class="task-section">
+    <h2>Tasks</h2>
+    <button class="btn-create" id="task-create" onclick="openAddTaskModal({{ $payment->id }})">
+        <h2>Add Task</h2>
+    </button>
+
+    <table class="subtask-table">
+        <thead>
+            <tr>
+                <th>Task Name</th>
+                <th>Assigned To</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+            </tr>
+        </thead>
+        <tbody>
+    @forelse ($payment->payment_tasks as $task)
+        <tr>
+            <td>{{ $task->name }}</td>
+            <td>{{ $task->assignedTo->username ?? 'Unassigned' }}</td>
+            <td>{{ $task->due_date ? $task->due_date->format('Y-m-d') : 'No Due Date' }}</td>
+            <td>{{ ucfirst($task->priority) }}</td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="4">No tasks found for this payment.</td>
+        </tr>
+    @endforelse
+</tbody>
+
+    </table>
+</div>
+
     </div>
 
       <!-- Modal for Adding New Task -->

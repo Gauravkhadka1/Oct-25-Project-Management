@@ -2,13 +2,13 @@
 
 @section('main-container')
 @php
-  use App\Models\User;
-  $users = User::select('id', 'username')->get();
+use App\Models\User;
+$users = User::select('id', 'username')->get();
 
-  $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
-  $user = auth()->user();
-  $username = $user->username;
-  @endphp
+$allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
+$user = auth()->user();
+$username = $user->username;
+@endphp
 <main>
     <div class="updtprof">
         <section class="profieinf">
@@ -16,14 +16,14 @@
                 {{ __('Profile Information') }}
             </h2> -->
             <div class="user-image">
-            @if(auth()->user() && auth()->user()->profilepic)
-                      <img src="{{ asset('storage/profile_pictures/' . auth()->user()->profilepic) }}" alt="User Profile Picture" class="user-profile-pic">
-                  @else
-                      <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="user-profile-pic">
-                  @endif
+                @if(auth()->user() && auth()->user()->profilepic)
+                <img src="{{ asset('storage/profile_pictures/' . auth()->user()->profilepic) }}" alt="User Profile Picture" class="user-profile-pic">
+                @else
+                <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile Picture" class="user-profile-pic">
+                @endif
             </div>
             <div class="user-name">
-            <p>{{ $username }}</p>
+                <p>{{ $username }}</p>
             </div>
 
             <p>
@@ -94,7 +94,7 @@
                 </div>
             </form>
         </section>
-        
+
         <section class="updatepswd">
             <h2>
                 {{ __('Update Password') }}

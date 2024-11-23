@@ -28,6 +28,7 @@
                             <?php endif; ?>
                         </div>
         </div>
+        <hr>
 
         <div class="add-payment-task">
             <div class="payment-contact-details">
@@ -36,10 +37,41 @@
                 <p><strong>C. Person Phone:</strong> <?php echo e($payment->phone); ?></p>
                 <p><strong>C. Person Email:</strong> <?php echo e($payment->email); ?></p>
             </div>
-            <button class="btn-create" id="task-create" onclick="openAddTaskModal(<?php echo e($payment->id); ?>)">
-                <h2>Add Task</h2>
-            </button>
+            
         </div>
+        <div class="task-section">
+    <h2>Tasks</h2>
+    <button class="btn-create" id="task-create" onclick="openAddTaskModal(<?php echo e($payment->id); ?>)">
+        <h2>Add Task</h2>
+    </button>
+
+    <table class="subtask-table">
+        <thead>
+            <tr>
+                <th>Task Name</th>
+                <th>Assigned To</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+            </tr>
+        </thead>
+        <tbody>
+    <?php $__empty_1 = true; $__currentLoopData = $payment->payment_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+        <tr>
+            <td><?php echo e($task->name); ?></td>
+            <td><?php echo e($task->assignedTo->username ?? 'Unassigned'); ?></td>
+            <td><?php echo e($task->due_date ? $task->due_date->format('Y-m-d') : 'No Due Date'); ?></td>
+            <td><?php echo e(ucfirst($task->priority)); ?></td>
+        </tr>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+        <tr>
+            <td colspan="4">No tasks found for this payment.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
+    </table>
+</div>
+
     </div>
 
       <!-- Modal for Adding New Task -->

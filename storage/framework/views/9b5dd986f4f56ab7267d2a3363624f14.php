@@ -23,7 +23,8 @@
             </div>
             <div class="filter-section">
                 <div class="filter-payments" onclick="toggleFilterList()">
-                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                <img src="<?php echo e(asset('frontend/images/bars-filter.png')); ?>" alt="" class="barfilter">
+
                     <div class="filter-count">
                         <?php if($filterCount > 0): ?>
                         <p><?php echo e($filterCount); ?></p>
@@ -141,7 +142,9 @@
                 <?php $__currentLoopData = $payments->where('status', 'invoice_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
                     <div class="task-name">
-                        <p><?php echo e($payment->company_name); ?></p>
+                    <a href="<?php echo e(url ('paymentdetails/' .$payment->id)); ?>">
+                            <p><?php echo e($payment->company_name); ?></p>
+                        </a>
                     </div>
                     <div class="category">
                         <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
@@ -178,7 +181,9 @@
                 <?php $__currentLoopData = $payments->where('status', 'vatbill_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
                     <div class="task-name">
-                        <p><?php echo e($payment->company_name); ?></p>
+                    <a href="<?php echo e(url ('paymentdetails/' .$payment->id)); ?>">
+                            <p><?php echo e($payment->company_name); ?></p>
+                        </a>
                     </div>
                     <div class="category">
                         <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
@@ -215,7 +220,9 @@
                 <?php $__currentLoopData = $payments->where('status', 'paid'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true" data-task-id="<?php echo e($payment->id); ?>" data-task-type="<?php echo e(strtolower($payment->category)); ?>">
                     <div class="task-name">
-                        <p><?php echo e($payment->company_name); ?></p>
+                    <a href="<?php echo e(url ('paymentdetails/' .$payment->id)); ?>">
+                            <p><?php echo e($payment->company_name); ?></p>
+                        </a>
                     </div>
                     <div class="category">
                         <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
@@ -823,6 +830,7 @@
             }
             return null; // Return null if no mention found
         }
+      
     </script>
 
 </div>

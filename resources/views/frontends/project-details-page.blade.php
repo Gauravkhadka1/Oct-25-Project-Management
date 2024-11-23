@@ -76,9 +76,10 @@
             @foreach ($todoTasks as $task)
                 <div class="task" draggable="true">
                     <div class="task-name">
-                        <a href="">
-                            <p>{{ $task->name }}</p>
-                        </a>
+                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                        <p>{{ $task->name }}</p>
+                    </a>
+
                     </div>
                     <div class="assigne">
                         @if ($task->assignedUser)
@@ -96,6 +97,10 @@
                     </div>
                     <div class="priority">
                         <img src="{{ url('frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
+                    </div>
+                    <div class="priority">
+                    Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
+
                     </div>
                 </div>
             @endforeach

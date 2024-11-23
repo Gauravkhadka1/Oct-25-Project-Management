@@ -24,7 +24,8 @@
             </div>
             <div class="filter-section">
                 <div class="filter-payments" onclick="toggleFilterList()">
-                    <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                <img src="{{ asset('frontend/images/bars-filter.png') }}" alt="" class="barfilter">
+
                     <div class="filter-count">
                         @if($filterCount > 0)
                         <p>{{ $filterCount }}</p>
@@ -140,7 +141,9 @@
                 @foreach ($payments->where('status', 'invoice_sent') as $payment)
                 <div class="task" draggable="true" data-task-id="{{ $payment->id }}" data-task-type="{{ strtolower($payment->category) }}">
                     <div class="task-name">
-                        <p>{{ $payment->company_name }}</p>
+                    <a href="{{url ('paymentdetails/' .$payment->id)}}">
+                            <p>{{ $payment->company_name }}</p>
+                        </a>
                     </div>
                     <div class="category">
                         <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
@@ -175,7 +178,9 @@
                 @foreach ($payments->where('status', 'vatbill_sent') as $payment)
                 <div class="task" draggable="true" data-task-id="{{ $payment->id }}" data-task-type="{{ strtolower($payment->category) }}">
                     <div class="task-name">
-                        <p>{{ $payment->company_name }}</p>
+                    <a href="{{url ('paymentdetails/' .$payment->id)}}">
+                            <p>{{ $payment->company_name }}</p>
+                        </a>
                     </div>
                     <div class="category">
                         <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
@@ -210,7 +215,9 @@
                 @foreach ($payments->where('status', 'paid') as $payment)
                 <div class="task" draggable="true" data-task-id="{{ $payment->id }}" data-task-type="{{ strtolower($payment->category) }}">
                     <div class="task-name">
-                        <p>{{ $payment->company_name }}</p>
+                    <a href="{{url ('paymentdetails/' .$payment->id)}}">
+                            <p>{{ $payment->company_name }}</p>
+                        </a>
                     </div>
                     <div class="category">
                         <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
@@ -815,6 +822,7 @@
             }
             return null; // Return null if no mention found
         }
+      
     </script>
 
 </div>

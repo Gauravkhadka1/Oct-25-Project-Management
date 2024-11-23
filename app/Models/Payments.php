@@ -23,6 +23,6 @@ class Payments extends Model
     ];
     public function payment_tasks()
     {
-        return $this->hasMany(PaymentTask::class);
+        return $this->hasMany(PaymentTask::class, 'payments_id', 'id');
     }
 }

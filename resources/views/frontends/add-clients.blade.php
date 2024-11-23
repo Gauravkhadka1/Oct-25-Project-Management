@@ -94,6 +94,7 @@
             "News": [],
             "eCommerce": ["Product Catlog", "ecommerce", "Other"],
             "Hospitality": ["Hotel & Cafe", "Resort", "Other"],
+            "Personal Portfolio": [""],
             "other": [""]
         },
         "Microsoft": {

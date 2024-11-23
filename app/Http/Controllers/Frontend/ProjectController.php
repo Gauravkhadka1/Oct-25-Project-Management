@@ -19,6 +19,11 @@ class ProjectController extends Controller
 
         // Start a query for projects
         $query = Project::with(['tasks.assignedUser', 'tasks.assignedBy']); // Load related tasks and users
+        // Fetch projects and calculate time left for each
+    $projects = $query->get()->map(function ($project) {
+        $project->time_left = $this->calculateTimeLeft($project);
+        return $project;
+    });
 
 
         // Filtering by Start Date

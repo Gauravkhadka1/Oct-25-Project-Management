@@ -115,8 +115,14 @@ use Carbon\Carbon;
                                     Status:
                                 </div>
 
-                                <div class="inquiry-date">
-                                    Due in :
+                                <div class="due-date">
+                                    Due in : 
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue'); ?>
+
+                                    <?php else: ?>
+                                        N?A
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -144,8 +150,14 @@ use Carbon\Carbon;
                                     Status:
                                 </div>
 
-                                <div class="inquiry-date">
-                                    Due in :
+                                <div class="due-date">
+                                    Due in : 
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue'); ?>
+
+                                    <?php else: ?>
+                                        No due date set
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -171,8 +183,14 @@ use Carbon\Carbon;
                                     Status:
                                 </div>
 
-                                <div class="inquiry-date">
-                                    Due in :
+                                <div class="due-date">
+                                    Due in : 
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue'); ?>
+
+                                    <?php else: ?>
+                                        No due date set
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -196,8 +214,14 @@ use Carbon\Carbon;
                                     Status:
                                 </div>
 
-                                <div class="inquiry-date">
-                                    Due in :
+                                <div class="due-date">
+                                    Due in : 
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue'); ?>
+
+                                    <?php else: ?>
+                                        No due date set
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -1,7 +1,7 @@
 /* General Styles */
 
 
-h2 {
+.updtprof h2 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
     color: #2c3e50;
@@ -53,14 +53,14 @@ h2 {
 }
 
 /* Form Styles */
-form {
+.updtprof form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
 }
 
-form button {
+.updtprof form button {
     width: 100%;
     max-width: 200px;
     padding: 0.75rem;
@@ -73,7 +73,7 @@ form button {
     transition: background 0.3s ease;
 }
 
-form button:hover {
+.updtprof form button:hover {
     background: #45a049;
 }
 

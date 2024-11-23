@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('main-container'); ?>
 
 <?php if(session('success')): ?>
@@ -77,9 +75,10 @@
             <?php $__currentLoopData = $todoTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
                     <div class="task-name">
-                        <a href="">
-                            <p><?php echo e($task->name); ?></p>
-                        </a>
+                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                        <p><?php echo e($task->name); ?></p>
+                    </a>
+
                     </div>
                     <div class="assigne">
                         <?php if($task->assignedUser): ?>
@@ -98,6 +97,11 @@
                     </div>
                     <div class="priority">
                         <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
+
+                    </div>
+                    <div class="priority">
+                    Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
+
 
                     </div>
                 </div>

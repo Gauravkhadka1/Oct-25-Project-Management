@@ -117,8 +117,13 @@ use Carbon\Carbon;
                                     Status:
                                 </div>
 
-                                <div class="inquiry-date">
-                                    Due in :
+                                <div class="due-date">
+                                    Due in : 
+                                    @if ($project->time_left !== null)
+                                        {{ $project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue' }}
+                                    @else
+                                        N?A
+                                    @endif
                                 </div>
                             </div>
                             @endforeach
@@ -146,8 +151,13 @@ use Carbon\Carbon;
                                     Status:
                                 </div>
 
-                                <div class="inquiry-date">
-                                    Due in :
+                                <div class="due-date">
+                                    Due in : 
+                                    @if ($project->time_left !== null)
+                                        {{ $project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue' }}
+                                    @else
+                                        No due date set
+                                    @endif
                                 </div>
                             </div>
                             @endforeach
@@ -173,8 +183,13 @@ use Carbon\Carbon;
                                     Status:
                                 </div>
 
-                                <div class="inquiry-date">
-                                    Due in :
+                                <div class="due-date">
+                                    Due in : 
+                                    @if ($project->time_left !== null)
+                                        {{ $project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue' }}
+                                    @else
+                                        No due date set
+                                    @endif
                                 </div>
                             </div>
                             @endforeach
@@ -198,8 +213,13 @@ use Carbon\Carbon;
                                     Status:
                                 </div>
 
-                                <div class="inquiry-date">
-                                    Due in :
+                                <div class="due-date">
+                                    Due in : 
+                                    @if ($project->time_left !== null)
+                                        {{ $project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue' }}
+                                    @else
+                                        No due date set
+                                    @endif
                                 </div>
                             </div>
                             @endforeach

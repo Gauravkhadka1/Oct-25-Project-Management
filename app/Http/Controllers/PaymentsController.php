@@ -14,72 +14,72 @@ use Carbon\Carbon;
 class PaymentsController extends Controller
 {
     public function index(Request $request)
-{
-    // Fetch and filter payments
-    $query = Payments::query();
-    $filterCount = 0;
+    {
+        // Fetch and filter payments
+        $query = Payments::query();
+        $filterCount = 0;
 
-    // Filtering by Category
-    if ($request->filled('filter_category')) {
-        $query->where('category', $request->filter_category);
-        $filterCount++;
-    }
-
-    // Filtering by Amount
-    if ($request->filled('amount')) {
-        if ($request->amount == 'high-to-low') {
-            $query->orderBy('amount', 'desc');
-        } elseif ($request->amount == 'low-to-high') {
-            $query->orderBy('amount', 'asc');
+        // Filtering by Category
+        if ($request->filled('filter_category')) {
+            $query->where('category', $request->filter_category);
+            $filterCount++;
         }
-        $filterCount++;
-    }
 
-    // Search functionality
-    if ($request->has('search') && !empty($request->search)) {
-        $query->where('company_name', 'like', "%{$request->search}%");
-    }
-
-    // Fetch and calculate due_days
-    $payments = $query->get()->map(function ($payment) {
-        $now = Carbon::now();
-    
-        if ($payment->due_date) {
-            $dueDate = Carbon::parse($payment->due_date);
-            $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false); // Ensure days only
-        } else {
-            $payment->due_days = null; // Set null explicitly
+        // Filtering by Amount
+        if ($request->filled('amount')) {
+            if ($request->amount == 'high-to-low') {
+                $query->orderBy('amount', 'desc');
+            } elseif ($request->amount == 'low-to-high') {
+                $query->orderBy('amount', 'asc');
+            }
+            $filterCount++;
         }
-    
-        return $payment;
-    });
-    
-    
-    // Sorting by Days Remaining or Overdue
-    if ($request->filled('due_date')) {
-        if ($request->due_date == 'less-days') {
-            // Sort by overdue days, highest first
-            $payments = $payments->sortByDesc('due_days');
-        } elseif ($request->due_date == 'more-days') {
-            // Sort by remaining days, highest first
-            $payments = $payments->sortBy('due_days');
+
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('company_name', 'like', "%{$request->search}%");
         }
-        $filterCount++;
+
+        // Fetch and calculate due_days
+        $payments = $query->get()->map(function ($payment) {
+            $now = Carbon::now();
+
+            if ($payment->due_date) {
+                $dueDate = Carbon::parse($payment->due_date);
+                $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false); // Ensure days only
+            } else {
+                $payment->due_days = null; // Set null explicitly
+            }
+
+            return $payment;
+        });
+
+
+        // Sorting by Days Remaining or Overdue
+        if ($request->filled('due_date')) {
+            if ($request->due_date == 'less-days') {
+                // Sort by overdue days, highest first
+                $payments = $payments->sortByDesc('due_days');
+            } elseif ($request->due_date == 'more-days') {
+                // Sort by remaining days, highest first
+                $payments = $payments->sortBy('due_days');
+            }
+            $filterCount++;
+        }
+
+
+        // Calculate total dues text and filtered amount
+        $filteredTotalAmount = $payments->sum('amount');
+        $totalDuesText = $request->filled('filter_category')
+            ? "Total {$request->filter_category} Dues:"
+            : 'Total Dues from All Categories:';
+
+        // Fetch all users
+        $users = User::all();
+
+        // Return view
+        return view('frontends.payments', compact('payments', 'users', 'filteredTotalAmount', 'totalDuesText', 'filterCount'));
     }
-
-
-    // Calculate total dues text and filtered amount
-    $filteredTotalAmount = $payments->sum('amount');
-    $totalDuesText = $request->filled('filter_category')
-        ? "Total {$request->filter_category} Dues:"
-        : 'Total Dues from All Categories:';
-
-    // Fetch all users
-    $users = User::all();
-
-    // Return view
-    return view('frontends.payments', compact('payments', 'users', 'filteredTotalAmount', 'totalDuesText', 'filterCount'));
-}
 
 
     // payments store
@@ -151,57 +151,65 @@ class PaymentsController extends Controller
             'taskId' => 'required|integer|exists:payments,id',
             'status' => 'required|string|max:255'
         ]);
-    
+
         // Find the prospect by ID and update the status
         $payment = Payments::findOrFail($validatedData['taskId']);
         $payment->status = $validatedData['status'];
         $payment->save();
-    
+
         // Send notifications to specified emails
         $emails = ['gaurav@webtech.com.np'];
         Notification::route('mail', $emails)->notify(new PaymentsStatusUpdated($payment, $validatedData['status']));
-    
+
         // Return a success response
         return response()->json(['success' => true, 'message' => 'Status updated successfully']);
     }
 
-    public function paymentDetails (Request $request) {
+    public function paymentDetails(Request $request)
+    {
         $query = Payments::query();
-         // Fetch and calculate due_days
-    $payments = $query->get()->map(function ($payment) {
-        $now = Carbon::now();
-    
-        if ($payment->due_date) {
-            $dueDate = Carbon::parse($payment->due_date);
-            $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false); // Ensure days only
-        } else {
-            $payment->due_days = null; // Set null explicitly
-        }
-    
-        return $payment;
-    });
-    $users = User::all();
+        // Fetch and calculate due_days
+        $payments = $query->get()->map(function ($payment) {
+            $now = Carbon::now();
+
+            if ($payment->due_date) {
+                $dueDate = Carbon::parse($payment->due_date);
+                $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false); // Ensure days only
+            } else {
+                $payment->due_days = null; // Set null explicitly
+            }
+
+            return $payment;
+        });
+        $users = User::all();
 
         return view('frontends.payment-details', compact('payments', 'users'));
     }
     public function show($id)
-{
-    // Fetch the specific payment by ID
-    $payment = Payments::findOrFail($id);
+    {
+        // Fetch the specific payment by ID
+        $payment = Payments::findOrFail($id);
 
-    // Calculate due_days for this specific payment
-    $now = Carbon::now();
-    if ($payment->due_date) {
-        $dueDate = Carbon::parse($payment->due_date);
-        $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false);
-    } else {
-        $payment->due_days = null; // Explicitly set null
+        // Calculate due_days for this specific payment
+        $now = Carbon::now();
+        if ($payment->due_date) {
+            $dueDate = Carbon::parse($payment->due_date);
+            $payment->due_days = $dueDate->startOfDay()->diffInDays($now->startOfDay(), false);
+        } else {
+            $payment->due_days = null; // Explicitly set null
+        }
+
+        $users = User::all();
+
+        // Pass the data to the view
+        return view('frontends.payment-details', compact('payment', 'users'));
     }
+    public function showPaymentTasks($paymentId)
+{
+    $payment = Payments::with('payment_tasks.assignedTo') // Assuming the tasks table has an `assigned_user_id`
+        ->findOrFail($paymentId);
 
-    $users = User::all();
-
-    // Pass the data to the view
-    return view('frontends.payment-details', compact('payment', 'users'));
+    return view('frontends.payment-details', compact('payment'));
 }
 
 }
