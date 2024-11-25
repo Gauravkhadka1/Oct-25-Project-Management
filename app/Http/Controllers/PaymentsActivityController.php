@@ -18,6 +18,13 @@ class PaymentsActivityController extends Controller
         $activity->payments_id = $request->input('payments_id');
         $activity->details = $request->input('message'); // Store the message with the mention
         $activity->user_id = Auth::id();  // Store the authenticated user's ID
+        $user = Auth::user();
+      // Store the relative path to profile picture
+$activity->profile_pic = $user && $user->profilepic
+? 'profile_pictures/' . $user->profilepic  // Store the relative path in the database
+: null;
+
+    
         $activity->save();
 
         // Extract the mentioned user's username from the message
@@ -61,6 +68,14 @@ class PaymentsActivityController extends Controller
         $activities = PaymentsActivity::where('payments_id', $paymentsId)
             ->with('user') // Load the user data (username)
             ->get();
+            $activities = $activities->map(function ($activity) {
+                // Make sure profile picture is accessible publicly
+                $activity->profile_pic = $activity->profile_pic
+                    ? url('storage/' . $activity->profile_pic)  // Prefix with 'storage' to make it publicly accessible
+                    : url('images/default-profile.png'); // Fallback to default profile picture
+                $activity->username = $activity->user->username ?? 'Unknown'; // Add username
+                return $activity;
+            });
 
         return response()->json([
             'success' => true,

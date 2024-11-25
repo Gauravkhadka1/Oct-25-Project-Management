@@ -176,23 +176,45 @@
                 data.activities.reverse().forEach(activity => {
                     const utcDate = new Date(activity.created_at);
                     const localTime = utcDate.toLocaleString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: true
-                    });
+                        month: 'short', // Displays abbreviated month (e.g., Nov)
+                        day: 'numeric', // Displays the day (e.g., 11)
+                        hour: 'numeric', // Displays the hour (e.g., 8)
+                        minute: '2-digit', // Displays the minute with two digits (e.g., 50)
+                        hour12: true // Ensures 12-hour format (e.g., pm)
+                    }).replace(',', ' at'); // Replace the default comma with "at"
+
+
+            // Highlight mentioned usernames
+            const highlightedDetails = activity.details.replace(
+                /@(\w+)/g, // Regex to find @username
+                `<strong>@$1</strong>` // Wrap username in <strong>
+            );
 
                     // Create a card for each activity
+                    const profilePic = activity.profile_pic 
+                    ? `/storage/${activity.profile_pic}` // Correct path
+                    : '/images/default-profile.png'; // Fallback image
+
+
                     const activityCard = document.createElement('div');
                     activityCard.className = 'activity-card';
                     activityCard.innerHTML = `
-                        <p>${localTime}</p>
-                        <p><strong>${activity.username}</strong>: ${activity.details}</p>
+                        <div class="activity-header">
+                            <div class="usernameandpic">
+                               <img src="${profilePic}" alt="Profile Picture" class="profile-pic">
+                               <p class="username"><strong>${activity.username}</strong></p>
+                            </div>
+                            <div class="activity-meta">
+                                <p class="timestamp">${localTime}</p>
+                            </div>
+                        </div>
+                        
+                         <div class="activity-comment">
+                            <p>${highlightedDetails}</p>
+                        </div>
                     `;
                     activitiesList.appendChild(activityCard);
+
                 });
             } else {
                 activitiesList.innerHTML = '<p>No activities found.</p>';
@@ -218,7 +240,13 @@ $(document).ready(function() {
                     $('#suggestions').empty();
                     if (data.length > 0) {
                         data.forEach(function(user) {
-                            $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
+                            $('#suggestions').append(`
+                                <div data-username="${user.username}" class="suggestion-item">
+                                    <img src="${user.profilepic ? '/storage/profile_pictures/' + user.profilepic : '/images/default-profile.png'}" 
+                                         alt="${user.username}'s Profile Picture" class="suggestion-pic">
+                                    <span>${user.username}</span>
+                                </div>
+                            `);
                         });
                         $('#suggestions').show();
                     } else {
@@ -237,8 +265,14 @@ $(document).ready(function() {
                         $('#suggestions').empty();
                         if (data.length > 0) {
                             data.forEach(function(user) {
-                                $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
-                            });
+                            $('#suggestions').append(`
+                                <div data-username="${user.username}" class="suggestion-item">
+                                    <img src="${user.profilepic ? '/storage/profile_pictures/' + user.profilepic : '/images/default-profile.png'}" 
+                                         alt="${user.username}'s Profile Picture" class="suggestion-pic">
+                                    <span>${user.username}</span>
+                                </div>
+                            `);
+                        });
                             $('#suggestions').show();
                         } else {
                             $('#suggestions').hide();

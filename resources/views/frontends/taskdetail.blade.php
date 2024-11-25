@@ -14,7 +14,7 @@
 <div class="project-task-detail-page">
     <div class="ptask-name">
         <p>
-      <p>{{ $task->name }}</p>
+      <p>{{ $project->name }}/ {{ $task->name }}</p>
         </p>
     </div>
     <div class="pcomments">

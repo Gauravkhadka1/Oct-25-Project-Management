@@ -162,23 +162,68 @@ margin-top: 20px;
 border: 1px solid #ccc;
 padding: 15px;
 border-radius: 5px;
-background-color: #f9f9f9;
+background-color: #FBFBFC;
 }
 
 .activity-card {
-border: 1px solid #ddd;
-padding: 10px;
-margin-bottom: 10px;
-border-radius: 4px;
-background-color: #ffffff;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
 }
 
-.activity-card p {
-margin: 0;
-font-size: 14px;
-color: #333;
+.activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 6px;
 }
+.usernameandpic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile-pic {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.activity-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.username {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.timestamp {
+    margin: 0;
+    font-size: 12px;
+    color: #888;
+}
+
+.activity-comment {
+    font-size: 14px;
+    color: #333;
+    margin-top: 15px;
+    margin-left: 5px;
+    padding: 0 6px 6px 6px;
+}
+
+.activity-comment P{
+    color: #2A2E34;
+}
+
 
 .sticky-section {
 margin-top: 20px;
@@ -221,3 +266,7 @@ background-color: #f0f0f0;
     margin-bottom: 10px;
 }
 
+.activity-comment strong {
+    color: #007bff; /* Optional: make the mention blue */
+    font-weight: bold;
+}

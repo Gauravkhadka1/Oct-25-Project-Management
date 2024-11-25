@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentsActivity extends Model
 {
-    protected $fillable = ['payments_id', 'details', 'username', 'date', 'user_id'];
+    protected $fillable = ['payments_id', 'details', 'username', 'date', 'user_id', 'profile_pic'];
 
 
     public function user()

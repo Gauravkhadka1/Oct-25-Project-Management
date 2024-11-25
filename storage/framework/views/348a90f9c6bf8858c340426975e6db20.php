@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('main-container'); ?>
 <?php if(session('success')): ?>
 <div id="success-message" style="position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #28a745; color: white; padding: 15px; border-radius: 5px; z-index: 9999;">

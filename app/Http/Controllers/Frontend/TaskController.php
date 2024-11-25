@@ -317,7 +317,7 @@ public function show($id, Request $request)
     $task = Task::findOrFail($id); // or respective model for each controller
     $users = User::all();
     $query = Project::query();
-    $project = $query->get();
+    $project = $task->project; 
     return view('frontends.taskdetail', compact('task', 'users', 'project'));
 }
 

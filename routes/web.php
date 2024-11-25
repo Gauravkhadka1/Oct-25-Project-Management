@@ -151,7 +151,7 @@ Route::resource('clients', ClientsController::class);
 Route::get('/subcategories/{categoryId}', [CategoryController::class, 'getSubcategories']);
 Route::get('/additional-subcategories/{subcategoryId}', [CategoryController::class, 'getAdditionalSubcategories']);
 
-Route::get('/task/detail/{id}', [TaskController::class, 'show'])->name('task.detail');
+Route::get('/task/detail/{id}}', [TaskController::class, 'show'])->name('task.detail');
 Route::get('/prospect_task/detail/{id}', [ProspectTaskController::class, 'show'])->name('prospect_task.detail');
 Route::get('/payment_task/detail/{id}', [PaymentTaskController::class, 'show'])->name('payment_task.detail');
 

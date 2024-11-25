@@ -13,7 +13,7 @@
 <div class="project-task-detail-page">
     <div class="ptask-name">
         <p>
-      <p><?php echo e($task->name); ?></p>
+      <p><?php echo e($project->name); ?>/ <?php echo e($task->name); ?></p>
         </p>
     </div>
     <div class="pcomments">
