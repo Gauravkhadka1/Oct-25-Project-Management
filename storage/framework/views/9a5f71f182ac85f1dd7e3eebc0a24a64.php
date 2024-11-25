@@ -13,7 +13,7 @@
 <div class="project-task-detail-page">
     <div class="ptask-name">
         <p>
-            Project task name
+      <p><?php echo e($task->name); ?></p>
         </p>
     </div>
     <div class="pcomments">
@@ -25,10 +25,12 @@
 
             <!-- Sticky Add Activity Section -->
             <div id="add-activity-section" class="sticky-section">
-                <form id="add-activity-form" action="" method="POST">
+                <form id="add-activity-form" action="<?php echo e(route('projectsActivities.store')); ?>" method="POST">
                     <?php echo csrf_field(); ?>
-                    <input type="hidden" name="payments_id" id="activity-payments-id" value="">
-                    <input type="text" name="details" id="activity-details" placeholder="Add Comments..." required>
+                    <input type="hidden" name="task_id" id="activity-task-id" value="<?php echo e($task->id ?? ''); ?>">
+                    <input type="hidden" name="project_id" value="<?php echo e($task->project->id); ?>">
+
+                    <input type="text" name="comments" id="activity-details" placeholder="Add Comments..." required>
                     <div id="suggestions"></div>
                     <div class="form-buttons">
                         <button type="submit" class="btn-submit">Add
@@ -43,6 +45,40 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+         document.addEventListener('DOMContentLoaded', () => {
+    const taskId = document.getElementById('activity-task-id').value;
+
+    // Fetch and display activities
+    fetch(`/projecttasks/${taskId}/activities`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch activities');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const activitiesList = document.getElementById('activities-list');
+            activitiesList.innerHTML = ''; // Clear previous activities
+
+            if (data.activities && data.activities.length > 0) {
+                data.activities.forEach(activity => {
+                    // Create a card for each activity
+                    const activityCard = document.createElement('div');
+                    activityCard.className = 'activity-card';
+                    activityCard.innerHTML = `
+                        <p><strong>${activity.username}</strong>: ${activity.comments}</p>
+                        <p>Date: ${activity.date} (${activity.dayname})</p>
+                        <p>Time: ${new Date(activity.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                    `;
+                    activitiesList.appendChild(activityCard);
+                });
+            } else {
+                activitiesList.innerHTML = '<p>No activities found.</p>';
+            }
+        })
+        .catch(error => console.error('Error loading activities:', error));
+});
+
         // mention script
 
 $(document).ready(function() {
@@ -111,9 +147,12 @@ $(document).ready(function() {
     $('#add-activity-form').on('submit', function(e) {
         e.preventDefault(); // Prevent default form submission
 
+        const projectId = $('#project-id').val();
+        const taskId = $('#activity-task-id').val(); // Fetch task_id value
+        const comments = $('#activity-details').val(); // Fetch comments value
         const message = $('#activity-details').val();
         const mentionedUser = extractMentionedUser(message); // Extract mentioned user
-        const paymentsId = $('#activity-payments-id').val();
+       
 
         // Show loading spinner
         $('#loading-spinner').show();
@@ -122,9 +161,10 @@ $(document).ready(function() {
             url: $(this).attr('action'), // Use form's action URL
             method: 'POST',
             data: {
-                message: message,
+                project_id: projectId,
+                task_id: taskId,
+                comments: comments,
                 mentioned_user: mentionedUser, // Include mentioned user
-                payments_id: paymentsId, // Payment ID
                 _token: $('input[name="_token"]').val() // CSRF token
             },
             success: function(response) {

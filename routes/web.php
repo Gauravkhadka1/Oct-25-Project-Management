@@ -9,6 +9,7 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\PaymentTaskController;
 use App\Http\Controllers\Frontend\ProspectController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ProjectsActivityController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentsActivityController;
@@ -62,6 +63,7 @@ Route::get('/prospects/{id}/activities', [ActivityController::class, 'showActivi
 Route::get('/payments/{Id}/activities', [PaymentsActivityController::class, 'showActivities']);
 Route::get('/prospects/{prospectId}/activities', [ActivityController::class, 'getActivitiesByProspect']);
 Route::get('/payments/{paymentsId}/activities', [PaymentsActivityController::class, 'getActivitiesByProspect']);
+Route::get('/projecttasks/{taskId}/activities', [ProjectsActivityController::class, 'getActivitiesByProjecttask']);
 Route::delete('/prospects/{id}', [ProspectController::class, 'destroy'])->name('prospects.destroy');
 });
 
@@ -78,6 +80,7 @@ Route::post('/timer/stop', [TimeController::class, 'stop'])->name('timer.stop');
 
 // routes/web.php
 Route::post('/activities', [ActivityController::class, 'store'])->name('activities.store');
+Route::post('/projectsactivities', [ProjectsActivityController::class, 'store'])->name('projectsActivities.store');
 
 
 

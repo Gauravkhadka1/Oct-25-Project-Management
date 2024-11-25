@@ -252,3 +252,9 @@ tbody tr:nth-child(odd) {
     border-color: #4e73df;
 }
 
+.task-name a {
+    text-decoration: none;
+}
+.task-name a:hover {
+   color: darkblue;
+}

@@ -64,11 +64,11 @@
             'QA' => $tasksQA,
             'Completed' => $tasksCompleted,
             'Closed' => $tasksClosed
-        ];
+            ];
             @endphp
 
             @foreach ($columnNames as $status => $tasksCollection)
-        <div class="task-column" id="{{ strtolower(str_replace(' ', '', $status)) }}" data-status="{{ $status }}">
+            <div class="task-column" id="{{ strtolower(str_replace(' ', '', $status)) }}" data-status="{{ $status }}">
             <div class="{{ strtolower(str_replace(' ', '', $status)) }}-heading">
                 <img src="{{ url('frontend/images/' . strtolower(str_replace(' ', '', $status)) . '.png') }}" alt="">
                 <h3>{{ $status }}</h3>
@@ -124,8 +124,8 @@
                     @endforeach
                 @endif
             </div>
-        </div>
-    @endforeach
+            </div>
+            @endforeach
         </div>
    
  

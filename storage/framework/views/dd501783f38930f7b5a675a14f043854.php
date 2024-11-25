@@ -62,11 +62,11 @@
             'QA' => $tasksQA,
             'Completed' => $tasksCompleted,
             'Closed' => $tasksClosed
-        ];
+            ];
             ?>
 
             <?php $__currentLoopData = $columnNames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status => $tasksCollection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <div class="task-column" id="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>" data-status="<?php echo e($status); ?>">
+            <div class="task-column" id="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>" data-status="<?php echo e($status); ?>">
             <div class="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>-heading">
                 <img src="<?php echo e(url('frontend/images/' . strtolower(str_replace(' ', '', $status)) . '.png')); ?>" alt="">
                 <h3><?php echo e($status); ?></h3>
@@ -125,8 +125,8 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <?php endif; ?>
             </div>
-        </div>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
    
  

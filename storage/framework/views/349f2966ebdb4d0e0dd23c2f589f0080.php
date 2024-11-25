@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/payment-detail-page.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/prospect-details-page.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/profile.css')); ?>">
+ 
+
 
 
   <?php

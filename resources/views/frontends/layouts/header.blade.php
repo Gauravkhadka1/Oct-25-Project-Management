@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="{{url('frontend/css/payment-detail-page.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/prospect-details-page.css')}}">
   <link rel="stylesheet" href="{{url('frontend/css/profile.css')}}">
+ 
+
 
 
   @php

@@ -87,12 +87,15 @@
                 <input type="text" name="name" id="task-name" class="custom-input" required>
 
                 <label for="assigned-to" class="custom-label">Assigned To:</label>
-                <select name="assigned_to" id="assigned-to" class="custom-select" required>
-                    <option value="">Select User</option>
-                    <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <option value="<?php echo e($user->email); ?>"><?php echo e($user->username); ?></option>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </select>
+                    <select name="assigned_to" id="assigned-to" class="custom-select" required>
+                        <option value="">Select User</option>
+                        <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($user->email); ?>" 
+                                <?php echo e($user->username); ?> 
+                            </option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+
 
                 <label for="start-date" class="custom-label">Start Date:</label>
                 <input type="datetime-local" name="start_date" id="start-date" class="custom-input">
@@ -332,7 +335,6 @@ function extractMentionedUser(message) {
     }
     return null; // Return null if no mention found
 }
-
     </script>
     <?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontends.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/payment-details.blade.php ENDPATH**/ ?>

@@ -122,9 +122,9 @@
             @foreach ($inProgressTasks as $task)
                 <div class="task" draggable="true">
                     <div class="task-name">
-                        <a href="">
-                            <p>{{ $task->name }}</p>
-                        </a>
+                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                        <p>{{ $task->name }}</p>
+                    </a>
                     </div>
                     <div class="assigne">
                         @if ($task->assignedUser)
@@ -162,9 +162,9 @@
             @foreach ($qaTasks as $task)
                 <div class="task" draggable="true">
                     <div class="task-name">
-                        <a href="">
-                            <p>{{ $task->name }}</p>
-                        </a>
+                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                        <p>{{ $task->name }}</p>
+                    </a>
                     </div>
                     <div class="assigne">
                         @if ($task->assignedUser)
@@ -202,9 +202,9 @@
             @foreach ($completedTasks as $task)
                 <div class="task" draggable="true">
                     <div class="task-name">
-                        <a href="">
-                            <p>{{ $task->name }}</p>
-                        </a>
+                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                        <p>{{ $task->name }}</p>
+                    </a>
                     </div>
                     <div class="assigne">
                         @if ($task->assignedUser)

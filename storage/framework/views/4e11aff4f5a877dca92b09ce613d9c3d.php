@@ -124,9 +124,9 @@
             <?php $__currentLoopData = $inProgressTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
                     <div class="task-name">
-                        <a href="">
-                            <p><?php echo e($task->name); ?></p>
-                        </a>
+                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                        <p><?php echo e($task->name); ?></p>
+                    </a>
                     </div>
                     <div class="assigne">
                         <?php if($task->assignedUser): ?>
@@ -166,9 +166,9 @@
             <?php $__currentLoopData = $qaTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
                     <div class="task-name">
-                        <a href="">
-                            <p><?php echo e($task->name); ?></p>
-                        </a>
+                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                        <p><?php echo e($task->name); ?></p>
+                    </a>
                     </div>
                     <div class="assigne">
                         <?php if($task->assignedUser): ?>
@@ -208,9 +208,9 @@
             <?php $__currentLoopData = $completedTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
                     <div class="task-name">
-                        <a href="">
-                            <p><?php echo e($task->name); ?></p>
-                        </a>
+                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                        <p><?php echo e($task->name); ?></p>
+                    </a>
                     </div>
                     <div class="assigne">
                         <?php if($task->assignedUser): ?>

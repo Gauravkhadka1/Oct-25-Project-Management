@@ -529,3 +529,20 @@ margin: 5px 0 10px 0 ;
 #suggestions div:hover {
     background-color: #f0f0f0;
 }
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestion-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
