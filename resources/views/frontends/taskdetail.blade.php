@@ -63,13 +63,44 @@
 
             if (data.activities && data.activities.length > 0) {
                 data.activities.forEach(activity => {
+                    const utcDate = new Date(activity.created_at);
+                    const localTime = utcDate.toLocaleString('en-US', {
+                        month: 'short', // Displays abbreviated month (e.g., Nov)
+                        day: 'numeric', // Displays the day (e.g., 11)
+                        hour: 'numeric', // Displays the hour (e.g., 8)
+                        minute: '2-digit', // Displays the minute with two digits (e.g., 50)
+                        hour12: true // Ensures 12-hour format (e.g., pm)
+                    }).replace(',', ' at'); // Replace the default comma with "at"
+
+                     // Highlight mentioned usernames
+                     const details = activity.details || ''; // Use empty string if details are undefined
+            const highlightedDetails = activity.details.replace(
+                /@(\w+)/g, // Regex to find @username
+                `<strong>@$1</strong>` // Wrap username in <strong>
+            );
+
+                    // Create a card for each activity
+                    const profilePic = activity.profile_pic 
+                    ? `/storage/${activity.profile_pic}` // Correct path
+                    : '/images/default-profile.png'; // Fallback image
+
                     // Create a card for each activity
                     const activityCard = document.createElement('div');
                     activityCard.className = 'activity-card';
                     activityCard.innerHTML = `
-                        <p><strong>${activity.username}</strong>: ${activity.comments}</p>
-                        <p>Date: ${activity.date} (${activity.dayname})</p>
-                        <p>Time: ${new Date(activity.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+                        <div class="activity-header">
+                            <div class="usernameandpic">
+                               <img src="${profilePic}" alt="Profile Picture" class="profile-pic">
+                               <p class="username"><strong>${activity.username}</strong></p>
+                            </div>
+                            <div class="activity-meta">
+                                <p class="timestamp">${localTime}</p>
+                            </div>
+                        </div>
+                        
+                         <div class="activity-comment">
+                            <p>${highlightedDetails}</p>
+                        </div>
                     `;
                     activitiesList.appendChild(activityCard);
                 });

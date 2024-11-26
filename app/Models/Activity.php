@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activity extends Model
 {
-    protected $fillable = ['prospect_id', 'details', 'username', 'date', 'user_id'];
+    protected $fillable = ['prospect_id', 'details', 'username', 'date', 'user_id', 'profile_pic'];
 
 
     public function user()

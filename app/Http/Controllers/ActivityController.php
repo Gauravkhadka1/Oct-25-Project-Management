@@ -22,6 +22,12 @@ class ActivityController extends Controller
         $activity->prospect_id = $request->input('prospect_id');
         $activity->details = $request->input('message');
         $activity->user_id = Auth::id();  // Store the authenticated user's ID
+        $user = Auth::user();
+         // Store the relative path to profile picture
+        $activity->profile_pic = $user && $user->profilepic
+        ? 'profile_pictures/' . $user->profilepic  // Store the relative path in the database
+        : null;
+
         $activity->save();
     
 
@@ -66,6 +72,14 @@ class ActivityController extends Controller
     $activities = Activity::where('prospect_id', $prospectId)
                     ->with('user') // Load the user data (username)
                     ->get();
+                    $activities = $activities->map(function ($activity) {
+                        // Make sure profile picture is accessible publicly
+                        $activity->profile_pic = $activity->profile_pic
+                            ? url('storage/' . $activity->profile_pic)  // Prefix with 'storage' to make it publicly accessible
+                            : url('images/default-profile.png'); // Fallback to default profile picture
+                        $activity->username = $activity->user->username ?? 'Unknown'; // Add username
+                        return $activity;
+                    });
 
     return response()->json([
         'success' => true,

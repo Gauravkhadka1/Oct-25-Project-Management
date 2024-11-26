@@ -9,7 +9,7 @@ class ProjectsActivity extends Model
 
 {
    
-    protected $fillable = ['task_id', 'comments', 'username', 'date', 'user_id'];
+    protected $fillable = ['task_id', 'details', 'username', 'date', 'user_id', 'profile_pic'];
    
 
 

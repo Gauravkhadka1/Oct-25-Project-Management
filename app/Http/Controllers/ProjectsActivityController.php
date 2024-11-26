@@ -25,8 +25,14 @@ class ProjectsActivityController extends Controller
         $projectsActivity = new ProjectsActivity();
         $projectsActivity->task_id = $request->input('task_id');
         $projectsActivity->project_id = $task->project_id; // Save the project_id
-        $projectsActivity->comments = $request->input('comments'); // Store the message with the mention
+        $projectsActivity->details = $request->input('comments'); // Store the message with the mention
         $projectsActivity->user_id = Auth::id();  // Store the authenticated user's ID
+        $user = Auth::user();
+          // Store the relative path to profile picture
+        $projectsActivity->profile_pic = $user && $user->profilepic
+        ? 'profile_pictures/' . $user->profilepic  // Store the relative path in the database
+        : null;
+
         $projectsActivity->save();
 
         // Extract the mentioned user's username from the message
@@ -72,15 +78,17 @@ class ProjectsActivityController extends Controller
     $activities = ProjectsActivity::where('task_id', $taskId)
         ->with('user') // Ensure the user relationship is loaded
         
-        ->get()
-        ->map(function ($activity) {
-            return [
-                'username' => $activity->user->username ?? 'Unknown', // User's username
-                'comments' => $activity->comments,                   // Activity comments
-                'date' => $activity->created_at->toDateString(),      // Date (Y-m-d format)
-                'dayname' => $activity->created_at->format('l'),      // Day name (e.g., Monday)
-                'created_at' => $activity->created_at,               // Full timestamp
-            ];
+        ->get();
+        $activities = $activities->map(function ($activity) {
+            // Ensure profile_pic is correctly formatted
+            $activity->profile_pic = filter_var($activity->profile_pic, FILTER_VALIDATE_URL)
+                ? $activity->profile_pic // If already a valid URL, use it as is
+                : ($activity->profile_pic 
+                    ? url('storage/' . $activity->profile_pic) // Otherwise, prepend 'storage'
+                    : url('images/default-profile.png')); // Fallback to default profile picture
+    
+            $activity->username = $activity->user->username ?? 'Unknown'; // Add username
+            return $activity;
         });
 
     return response()->json([
