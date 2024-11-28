@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -21,7 +22,6 @@ class TaskAssignedNotification extends Notification
      */
     public function __construct($task)
     {
-        // Ensure that the task is a valid instance of Task, PaymentTask, or ProspectTask
         if (!($task instanceof Task || $task instanceof PaymentTask || $task instanceof ProspectTask)) {
             throw new \InvalidArgumentException("Invalid task type");
         }
@@ -30,54 +30,80 @@ class TaskAssignedNotification extends Notification
     }
 
     /**
-     * Define how the notification will be delivered (via mail and database)
-     *
-     * @param mixed $notifiable
-     * @return array
+     * Notification delivery channels
      */
     public function via($notifiable)
     {
-        // Send both mail and database notifications
         return ['mail', 'database'];
     }
 
     /**
-     * Define the notification data to be stored in the database
-     *
-     * @param mixed $notifiable
-     * @return array
+     * Format the database notification data
      */
     public function toDatabase($notifiable)
     {
-        // Log the notification to verify it's being triggered
-        \Log::debug('Sending notification for task: ' . class_basename($this->task));
-
-        $taskType = class_basename($this->task); // Dynamically get the class name of the task
+        $taskType = strtolower(class_basename($this->task));
+        $assignedBy = $this->task->assignedBy->username ?? 'System';
+        $relatedName = $this->getRelatedName();
 
         return [
             'task_id' => $this->task->id,
             'task_name' => $this->task->name,
-            'task_type' => $taskType, // Add the task type to distinguish between Task, PaymentTask, and ProspectTask
-            'assigned_by' => $this->task->assignedBy->username ?? 'System', // Assuming `assignedBy` is an attribute
-            'message' => 'A new ' . strtolower($taskType) . ' has been assigned to you: ' . $this->task->name,
+            'task_type' => $taskType,
+            'assigned_by' => $assignedBy,
+            'related_name' => $relatedName,
+            'message' => $this->formatMessage($taskType, $assignedBy, $relatedName),
         ];
     }
 
     /**
-     * Define the email content for the notification
-     *
-     * @param mixed $notifiable
-     * @return MailMessage
+     * Format the email notification content
      */
     public function toMail($notifiable)
     {
-        // Dynamically get the task type (Task, PaymentTask, ProspectTask)
-        $taskType = class_basename($this->task);
+        $taskType = strtolower(class_basename($this->task));
+        $assignedBy = $this->task->assignedBy->username ?? 'System';
+        $relatedName = $this->getRelatedName();
 
         return (new MailMessage)
-            ->subject('New ' . $taskType . ' Assigned')
-            ->line('A ' . strtolower($taskType) . ' has been assigned to you: ' . $this->task->name)
-            ->action('View Task', url('dashboard/'))
+            ->subject('New ' . ucfirst($taskType) . ' Assigned')
+            ->line($this->formatMessage($taskType, $assignedBy, $relatedName))
+            // ->action('View Task', url('/dashboard/'))
             ->line('Please check the task and complete it by the due date.');
+    }
+
+    /**
+     * Generate the formatted message
+     *
+     * @param string $taskType
+     * @param string $assignedBy
+     * @param string $relatedName
+     * @return string
+     */
+    protected function formatMessage($taskType, $assignedBy, $relatedName)
+    {
+        return "{$assignedBy} has assigned you a new {$taskType} '{$this->task->name}' in {$relatedName}.";
+    }
+
+    /**
+     * Get the related name based on the task type
+     *
+     * @return string
+     */
+    protected function getRelatedName()
+    {
+        if ($this->task instanceof Task) {
+            return $this->task->project->name ?? 'No project'; // Assuming Task has a `project` relationship
+        }
+
+        if ($this->task instanceof PaymentTask) {
+            return $this->task->payment->company_name ?? 'No payment company'; // Assuming PaymentTask has a `payment` relationship
+        }
+
+        if ($this->task instanceof ProspectTask) {
+            return $this->task->prospect->company_name ?? 'No prospect company'; // Assuming ProspectTask has a `prospect` relationship
+        }
+
+        return 'Unknown';
     }
 }

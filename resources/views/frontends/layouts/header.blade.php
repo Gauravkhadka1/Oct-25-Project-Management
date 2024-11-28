@@ -118,6 +118,9 @@
           </a>
           <ul class="task-dropdown">
             <li><a href="{{url('/payments')}}">All Payments</a></li>
+            <li><a href="{{url('/payments')}}">Today Payments</a></li>
+            <li><a href="{{url('/payments')}}">This Week Payments</a></li>
+            <li><a href="{{url('/payments')}}">This Month Payments</a></li>
           </ul>
         </li>
 

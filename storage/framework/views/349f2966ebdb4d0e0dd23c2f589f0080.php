@@ -119,6 +119,9 @@
           </a>
           <ul class="task-dropdown">
             <li><a href="<?php echo e(url('/payments')); ?>">All Payments</a></li>
+            <li><a href="<?php echo e(url('/payments')); ?>">Today Payments</a></li>
+            <li><a href="<?php echo e(url('/payments')); ?>">This Week Payments</a></li>
+            <li><a href="<?php echo e(url('/payments')); ?>">This Month Payments</a></li>
           </ul>
         </li>
 

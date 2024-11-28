@@ -66,10 +66,10 @@ class PaymentsController extends Controller
             }
             $filterCount++;
         }
-
+        $filteredPayments = $payments->filter(fn($payment) => $payment->status !== 'paid');
 
         // Calculate total dues text and filtered amount
-        $filteredTotalAmount = $payments->sum('amount');
+        $filteredTotalAmount = $filteredPayments->sum('amount');
         $totalDuesText = $request->filled('filter_category')
             ? "Total {$request->filter_category} Dues:"
             : 'Total Dues from All Categories:';
