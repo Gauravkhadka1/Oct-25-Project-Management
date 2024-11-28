@@ -1583,3 +1583,21 @@
 #56 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #57 {main}
 "} 
+[2024-11-28 00:24:16] local.INFO: Incoming project_id: 77  
+[2024-11-28 00:24:16] local.INFO: Task Created Successfully:  {"name":"mailtest","assigned_to":"45","assigned_by":45,"project_id":"77","due_date":"2024-11-29","priority":"Normal","updated_at":"2024-11-28T00:24:16.000000Z","created_at":"2024-11-28T00:24:16.000000Z","id":190} 
+[2024-11-28 00:25:35] local.INFO: Incoming prospect_id: 60  
+[2024-11-28 00:25:35] local.INFO: Request data: {"_token":"jDi2x7XjykCZuC77qmyhKo7ziLyf4Buf7UG03dXl","prospect_id":"60","name":"prospect task","assigned_to":"gaurav@webtech.com.np","start_date":null,"due_date":null,"priority":"Normal"} 
+[2024-11-28 00:25:55] local.DEBUG: Sending notification for task: ProspectTask  
+[2024-11-28 00:38:55] local.INFO: Incoming project_id: 77  
+[2024-11-28 00:38:55] local.INFO: Task Created Successfully:  {"name":"re","assigned_to":"45","assigned_by":45,"project_id":"77","due_date":"2024-11-29","priority":"Normal","updated_at":"2024-11-28T00:38:55.000000Z","created_at":"2024-11-28T00:38:55.000000Z","id":191} 
+[2024-11-28 00:43:25] local.INFO: Incoming project_id: 77  
+[2024-11-28 00:49:35] local.INFO: Incoming project_id: 77  
+[2024-11-28 00:50:02] local.INFO: Incoming project_id: 77  
+[2024-11-28 00:53:14] local.INFO: Incoming project_id: 77  
+[2024-11-28 00:53:42] local.INFO: Incoming project_id: 77  
+[2024-11-28 00:59:42] local.INFO: Incoming project_id: 77  
+[2024-11-28 00:59:42] local.INFO: Task store method invoked  
+[2024-11-28 00:59:42] local.INFO: Request data: {"_token":"jDi2x7XjykCZuC77qmyhKo7ziLyf4Buf7UG03dXl","project_id":"77","name":"vd","assigned_to":"45","due_date":"2024-11-29","priority":"Normal"} 
+[2024-11-28 01:02:58] local.INFO: Incoming project_id: 77  
+[2024-11-28 01:02:58] local.INFO: Task store method invoked  
+[2024-11-28 01:02:58] local.INFO: Request data: {"_token":"jDi2x7XjykCZuC77qmyhKo7ziLyf4Buf7UG03dXl","project_id":"77","name":"re2","assigned_to":"45","due_date":"2024-11-30","priority":"Normal"} 

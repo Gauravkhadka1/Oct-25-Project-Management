@@ -74,15 +74,15 @@
 
             </div>
             <div class="search-payments">
-                <div class="search-icon">
-                    <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
-                </div>
-                <form action="{{ route('payments.index') }}" method="GET" id="search-form">
-                    <div class="search-text-area">
-                        <input type="text" name="search" placeholder="search payments" value="{{ request('search') }}" oninput="this.form.submit()">
-                    </div>
-                </form>
-            </div>
+    <div class="search-icon">
+        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+    </div>
+    <form action="{{ route('payments.index') }}" method="GET" id="search-form">
+        <div class="search-text-area">
+            <input type="text" id="search-input" name="search" placeholder="Search payments" value="{{ request('search') }}">
+        </div>
+    </form>
+</div>
         </div>
     </div>
 
@@ -822,7 +822,14 @@
             }
             return null; // Return null if no mention found
         }
-      
+        let debounceTimeout;
+
+    document.getElementById('search-input').addEventListener('input', function () {
+        clearTimeout(debounceTimeout); // Clear the previous timeout
+        debounceTimeout = setTimeout(() => {
+            document.getElementById('search-form').submit(); // Submit the form after 3 seconds
+        }, 1000); // 3000ms = 3 seconds
+    });
     </script>
 
 </div>

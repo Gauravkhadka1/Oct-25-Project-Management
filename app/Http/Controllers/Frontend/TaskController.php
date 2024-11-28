@@ -32,6 +32,9 @@ class TaskController extends Controller {
    public function store(Request $request)
    {
        \Log::info("Incoming project_id: " . $request->input('project_id'));
+       \Log::info('Task store method invoked');
+       \Log::info('Request data:', $request->all());
+
    
        // Validate the request data
        $validatedData = $request->validate([
@@ -42,8 +45,9 @@ class TaskController extends Controller {
            'priority' => 'nullable|string',
        ]);
        $validatedData['assigned_by'] = auth()->id();
+       $assignedToUser = User::where('email', $request->input('assigned_to'))->firstOrFail();
        
-        // $assignedByUserId = auth()->id();
+        $assignedByUserId = auth()->id();
        // Create the task
        $task = Task::create([
            'name' => $validatedData['name'],
@@ -64,14 +68,14 @@ class TaskController extends Controller {
                'task' => $task,
            ]);
        }
-        // $assignedToUser = User::where('email', $request->input('assigned_to'))->firstOrFail();
+      
          // Send a notification to the assigned user
 //    $assignedToUser->notify(new TaskAssignedNotification($task));
 
    // Send an email to the assigned user
-//    Mail::to($assignedToUser->email)->send(new TaskAssignedMail($task));
+//    Mail::to($request->input('assigned_to'))->send(new TaskAssignedMail($task, $request->input('assigned_to')));
    
-return redirect()->back()->with('success', 'Task created successfully.');
+   return redirect(url('/projects'))->with('success', 'Payment Task created successfully.');
 
    }
    
@@ -320,8 +324,4 @@ public function show($id, Request $request)
     $project = $task->project; 
     return view('frontends.taskdetail', compact('task', 'users', 'project'));
 }
-
-
-
-
 }

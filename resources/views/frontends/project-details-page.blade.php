@@ -431,6 +431,10 @@ columns.forEach(column => {
         background-color: #007bff;
         color: white;
     }
+    .btn-save-task:hover {
+        background-color: #002aee !important;
+        color: white;
+    }
 
     .btn-cancel-task {
         background-color: #dc3545;

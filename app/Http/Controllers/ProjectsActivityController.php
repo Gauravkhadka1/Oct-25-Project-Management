@@ -84,8 +84,8 @@ class ProjectsActivityController extends Controller
             $activity->profile_pic = filter_var($activity->profile_pic, FILTER_VALIDATE_URL)
                 ? $activity->profile_pic // If already a valid URL, use it as is
                 : ($activity->profile_pic 
-                    ? url('storage/' . $activity->profile_pic) // Otherwise, prepend 'storage'
-                    : url('images/default-profile.png')); // Fallback to default profile picture
+                    ? ( $activity->profile_pic) // Otherwise, prepend 'storage'
+                    : ('images/default-profile.png')); // Fallback to default profile picture
     
             $activity->username = $activity->user->username ?? 'Unknown'; // Add username
             return $activity;
