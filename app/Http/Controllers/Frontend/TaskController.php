@@ -28,56 +28,46 @@ use App\Notifications\TaskCommentAdded;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller {
+     /**
+     * Store a new task and notify the assigned user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
    // In TaskController
    public function store(Request $request)
    {
        \Log::info("Incoming project_id: " . $request->input('project_id'));
-       \Log::info('Task store method invoked');
-       \Log::info('Request data:', $request->all());
-
    
        // Validate the request data
-       $validatedData = $request->validate([
-           'name' => 'required|string|max:255',
-           'assigned_to' => 'required|exists:users,id',
-           'project_id' => 'required|exists:projects,id',
-           'due_date' => 'nullable|date',
-           'priority' => 'nullable|string',
-       ]);
-       $validatedData['assigned_by'] = auth()->id();
-       $assignedToUser = User::where('email', $request->input('assigned_to'))->firstOrFail();
-       
-        $assignedByUserId = auth()->id();
+       $request->validate([
+        'name' => 'required|string|max:255',
+            'assigned_to' => 'required|integer|exists:users,id', // Ensure the assigned user exists
+            'project_id' => 'required|exists:projects,id',
+            'due_date' => 'nullable|date', // Optional due date validation
+            'priority' => 'nullable|string|in:Normal,High,Urgent', // Optional priority validation
+    ]);
+
+    $assignedByUserId = Auth::id();
        // Create the task
        $task = Task::create([
-           'name' => $validatedData['name'],
-           'assigned_to' => $validatedData['assigned_to'],
-           'assigned_by' => $validatedData['assigned_by'],
-           'project_id' => $validatedData['project_id'],
-           'due_date' => $validatedData['due_date'],
-           'priority' => $validatedData['priority'],
-       ]);
+        'name' => $request->input('name'),
+        'assigned_to' => $request->input('assigned_to'),
+        'assigned_by' => $assignedByUserId,
+        'project_id' => $request->input('project_id'),
+        'due_date' => $request->input('due_date'),
+        'priority' => $request->input('priority'),
+    ]);
    
-       \Log::info('Task Created Successfully: ', $task->toArray());
- 
-   
-       // Return JSON response for AJAX
-       if ($request->expectsJson()) {
-           return response()->json([
-               'message' => 'Task created successfully.',
-               'task' => $task,
-           ]);
-       }
-      
-         // Send a notification to the assigned user
-//    $assignedToUser->notify(new TaskAssignedNotification($task));
+       // Send a notification to the assigned user
+       $assignedToUser = User::find($task->assigned_to);
+       $assignedToUser->notify(new TaskAssignedNotification($task));
 
-   // Send an email to the assigned user
-//    Mail::to($request->input('assigned_to'))->send(new TaskAssignedMail($task, $request->input('assigned_to')));
-   
-   return redirect(url('/projects'))->with('success', 'Payment Task created successfully.');
+       \Log::info('Task created and notification sent to user: ' . $assignedToUser->id);
 
+       return redirect()->back()->with('success', 'Task created successfully.');
    }
+   
    
    
 public function startTimer(Request $request, $taskId)
