@@ -258,3 +258,14 @@ tbody tr:nth-child(odd) {
 .task-name a:hover {
    color: darkblue;
 }
+.status-add-new {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.add-new-task {
+    margin-right: 10px;
+}
+.add-new-task img {
+    width: 17px;
+}

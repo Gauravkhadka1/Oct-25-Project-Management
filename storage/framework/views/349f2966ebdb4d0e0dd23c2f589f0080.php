@@ -20,9 +20,6 @@
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/prospect-details-page.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/profile.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('frontend/css/payment-detail-page.css')); ?>">
- 
-
-
 
   <?php
   use App\Models\User;

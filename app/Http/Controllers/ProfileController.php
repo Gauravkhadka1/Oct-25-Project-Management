@@ -34,6 +34,7 @@ class ProfileController extends Controller
         $userEmail = $user->email;
         $username = $user->username;
 
+
         // Get the selected date from the request or default to today's date
         $selectedDate = $request->input('date', Carbon::now('Asia/Kathmandu')->toDateString());
 
@@ -195,15 +196,20 @@ class ProfileController extends Controller
             $summary['total_time_spent'] = $this->formatDuration($summary['total_time_spent']);
         }
         $totalTimeSpentAcrossTasksFormatted = $this->formatDuration($totalTimeSpentAcrossTasks);
+        $projects = Project::all();
+        $users = User::all();
+   
 
         // Return view with calculated data
         return view('frontends.dashboard', compact(
+            'projects',
             'projects',
             'payments',
             'prospects',
             'username',
             'userEmail',
             'user',
+            'users',          
             'tasks',
             'prospectTasks',
             'paymentTasks',

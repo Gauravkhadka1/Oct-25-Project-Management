@@ -18,6 +18,9 @@
 <!-- Your custom At.js initialization file -->
 <script src="<?php echo e(url('frontend/js/at.js')); ?>"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="<?php echo e(url('frontend/js/usernamemention.js')); ?>"></script>
+
 
 </body>
 </html><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/layouts/footer.blade.php ENDPATH**/ ?>
