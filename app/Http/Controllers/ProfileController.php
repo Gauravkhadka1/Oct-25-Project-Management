@@ -74,6 +74,7 @@ class ProfileController extends Controller
         $payments = Payments::with(['payment_tasks' => function ($query) use ($user) {
             $query->where('assigned_to', $user->id);
         }])->get();
+      
 
         // Define the Nepali timezone and calculate the UTC start and end of the selected date
         $nepaliTimeZone = new DateTimeZone('Asia/Kathmandu');

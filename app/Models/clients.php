@@ -22,4 +22,5 @@ class Clients extends Model
         'subcategory',
         'additional_subcategory',
     ];
+ 
 }

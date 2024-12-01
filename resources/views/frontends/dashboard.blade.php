@@ -46,6 +46,7 @@
             $tasks->push($task); // Add prospect tasks to the collection
             }
             }
+          
 
             // Flag to check if there are any tasks
             $hasTasks = $tasks->isNotEmpty();
@@ -532,39 +533,36 @@ fetch("{{ route('tasks.updateStatusComment') }}", {
 
 // Open Add Task Modal
 
-let currentOpenColumn = null;
+let currentOpenModal = null;  // Track the currently open modal
 
 function openAddTaskModal(columnId) {
     const modal = document.getElementById('add-task-modal');
     if (!modal) return;
 
     // Close the existing modal if it's open
-    if (currentOpenColumn) {
+    if (currentOpenModal && currentOpenModal !== modal) {
         closeAddTaskModal();
     }
 
-    // Find the task list container for the corresponding column
-    const taskList = document.querySelector(`#${columnId} .task-list`);
+    // Move the modal to the correct column
+    const column = document.getElementById(columnId);
+    const taskList = column.querySelector('.task-list');
     if (taskList) {
-        // Move the modal to the start of the task list
         taskList.insertBefore(modal, taskList.firstChild);
     }
 
     // Update the hidden input field with the column's status
     const columnField = document.getElementById('task-status');
     if (columnField) {
-        columnField.value = document
-            .querySelector(`#${columnId}`)
-            .getAttribute('data-status'); // Ensure it uses the correct status from the column
-        console.log(`Setting status: ${columnField.value}`); // Debugging: log the value being set
+        columnField.value = column.getAttribute('data-status');  // Ensure it uses the correct status from the column
     }
 
     // Show the modal
     modal.classList.remove('hidden');
     modal.style.display = 'block';
 
-    // Keep track of the currently open column
-    currentOpenColumn = columnId;
+    // Set the current open modal to prevent multiple modals in one column
+    currentOpenModal = modal;
 
     // Add event listener to close the modal when clicking outside
     setTimeout(() => document.addEventListener('click', handleOutsideClick), 0);
@@ -577,12 +575,9 @@ function closeAddTaskModal() {
     modal.classList.add('hidden');
     modal.style.display = 'none';
 
-    // Remove the modal from the DOM to avoid it being stuck in one column
+    // Reattach the modal to the body to ensure it's not stuck in one column
     const body = document.querySelector('body');
-    body.appendChild(modal); // Reattach the modal to the body
-
-    // Clear the current open column reference
-    currentOpenColumn = null;
+    body.appendChild(modal);
 
     // Reset the modal fields
     document.getElementById('task-name').value = '';
@@ -591,21 +586,24 @@ function closeAddTaskModal() {
     document.getElementById('priority').value = 'Normal';
     document.getElementById('task-status').value = '';
 
+    // Clear the current open modal reference
+    currentOpenModal = null;
+
     // Remove event listener for outside clicks
     document.removeEventListener('click', handleOutsideClick);
 }
 
-
 function handleOutsideClick(event) {
     const modal = document.getElementById('add-task-modal');
     const isClickInsideModal = modal.contains(event.target);
-    const isClickInsideColumn = currentOpenColumn && document.getElementById(currentOpenColumn).contains(event.target);
+    const isClickInsideColumn = currentOpenModal && document.getElementById(currentOpenModal.id).contains(event.target);
 
     // Close the modal if the click is outside the modal and the column
     if (!isClickInsideModal && !isClickInsideColumn) {
         closeAddTaskModal();
     }
 }
+
 
 
 
@@ -723,6 +721,7 @@ function searchClients() {
         item.style.display = projectName.includes(input) ? 'block' : 'none';
     });
 }
+
 
 
 
