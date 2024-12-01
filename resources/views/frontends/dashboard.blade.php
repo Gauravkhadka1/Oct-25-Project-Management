@@ -67,6 +67,8 @@
             ];
             use App\Models\User;
             $users = User::all();
+            use App\Models\Clients;
+            $clients = Clients::all();
             @endphp
 
             @foreach ($columnNames as $status => $tasksCollection)
@@ -84,9 +86,12 @@
                     </div>
                 </div>
                 <div id="add-task-modal" class="hidden">
-                    <form action="{{ route('tasks.store') }}" method="POST" class="custom-form">
+                    <form action="{{ route('clientstasks.store') }}" method="POST" class="custom-form">
                         @csrf
                         <input type="hidden" id="task-status" name="status" value="">
+                        <input type="hidden" id="client-id" name="client_id">
+
+
 
                         <div class="task-name">
                             <input type="text" id="task-name" name="name" class="task-input" placeholder="Task Name" required />
@@ -94,13 +99,27 @@
                         </div>
                         <div class="in">
                             <img src="" alt="">
-                            <select id="" name="" class="task-input" required>
-                                <option value="">In</option>
-                                @foreach($projects as $project)
-                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                @endforeach
-                            </select>
+                            <div class="custom-dropdown">
+                                <!-- Search bar -->
+                                <input type="text" id="project-search" class="task-input" placeholder="Search projects..." onkeyup="searchProjects()" style="display:none;" />
+
+                                <!-- Custom select dropdown -->
+                                <div id="project-dropdown" class="dropdown-label" onclick="toggleDropdown()">
+                                    <span id="selected-project">Select Project</span>
+                                </div>
+
+                                <!-- List of projects -->
+                                <div id="project-list" class="dropdown-list" style="display:none;">
+                                    @foreach($clients as $client)
+                                        <div class="dropdown-item" data-id="{{ $client->id }}" onclick="selectProject('{{ $client->id }}', '{{ $client->company_name }}')">
+                                            {{ $client->company_name }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
+
+
                         <div class="assigne">
                             <img src="{{ url('frontend/images/assignedby.png') }}" alt="">
                             <select id="assigned-to" name="assigned_to" class="task-input" required>
@@ -642,6 +661,46 @@ body: JSON.stringify(data),
 }
 
 
+// Toggle dropdown visibility
+function toggleDropdown() {
+    var projectList = document.getElementById('project-list');
+    var searchInput = document.getElementById('project-search');
+
+    // Toggle visibility of the project list and search bar
+    projectList.style.display = projectList.style.display === 'none' ? 'block' : 'none';
+    searchInput.style.display = searchInput.style.display === 'none' ? 'block' : 'none';
+}
+
+// Select a project and update the label
+function selectProject(projectId, projectName) {
+    document.getElementById('selected-project').textContent = projectName;
+    document.getElementById('project-list').style.display = 'none';
+    document.getElementById('project-search').style.display = 'none'; // Hide the search bar after selection
+    // Optionally, set the selected project ID as a hidden input
+    // document.getElementById('selected-project-id').value = projectId;
+}
+
+// Search through projects dynamically
+function searchProjects() {
+    var input = document.getElementById('project-search').value.toLowerCase();
+    var items = document.getElementsByClassName('dropdown-item');
+    
+    // Filter project items based on the search input
+    for (var i = 0; i < items.length; i++) {
+        var projectName = items[i].textContent.toLowerCase();
+        if (projectName.includes(input)) {
+            items[i].style.display = 'block';
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+}
+
+function selectProject(id, name) {
+    document.getElementById('client-id').value = id; // Set the client ID
+    document.getElementById('selected-project').textContent = name; // Display the selected name
+    toggleDropdown();
+}
 
 
 
@@ -705,6 +764,53 @@ body: JSON.stringify(data),
             background-color: #dc3545;
             color: white;
         }
+
+        /* select in project style  */
+        /* Container for the custom dropdown */
+.custom-dropdown {
+    position: relative;
+}
+
+/* The dropdown label (button) */
+.dropdown-label {
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+/* The search input box */
+#project-search {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* The dropdown list container */
+.dropdown-list {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    z-index: 999;
+}
+
+/* The individual project items */
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
     </style>
 </main>
 @endsection

@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Middleware\CheckAllowedEmails;
+use App\Http\Controllers\ClientTaskController;
 
 
 Route::get('/',[HomeController::class, 'index']);
@@ -163,5 +164,7 @@ Route::get('prospectdetails/{id}', [ProspectController::class, 'show'])->name('p
 Route::get('projectdetails/{id}', [ProjectController::class, 'showdetails'])->name('projectdetails.show');
 Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projects.update');
 
+Route::get('/tasks/create', [ClientTaskController::class, 'create'])->name('clientstasks.create');
+Route::post('/tasks/store', [ClientTaskController::class, 'store'])->name('clientstasks.store');
 
 

@@ -65,6 +65,8 @@
             ];
             use App\Models\User;
             $users = User::all();
+            use App\Models\Clients;
+            $clients = Clients::all();
             ?>
 
             <?php $__currentLoopData = $columnNames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status => $tasksCollection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -82,9 +84,12 @@
                     </div>
                 </div>
                 <div id="add-task-modal" class="hidden">
-                    <form action="<?php echo e(route('tasks.store')); ?>" method="POST" class="custom-form">
+                    <form action="<?php echo e(route('clientstasks.store')); ?>" method="POST" class="custom-form">
                         <?php echo csrf_field(); ?>
                         <input type="hidden" id="task-status" name="status" value="">
+                        <input type="hidden" id="client-id" name="client_id">
+
+
 
                         <div class="task-name">
                             <input type="text" id="task-name" name="name" class="task-input" placeholder="Task Name" required />
@@ -92,13 +97,28 @@
                         </div>
                         <div class="in">
                             <img src="" alt="">
-                            <select id="" name="" class="task-input" required>
-                                <option value="">In</option>
-                                <?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($project->id); ?>"><?php echo e($project->name); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </select>
+                            <div class="custom-dropdown">
+                                <!-- Search bar -->
+                                <input type="text" id="project-search" class="task-input" placeholder="Search projects..." onkeyup="searchProjects()" style="display:none;" />
+
+                                <!-- Custom select dropdown -->
+                                <div id="project-dropdown" class="dropdown-label" onclick="toggleDropdown()">
+                                    <span id="selected-project">Select Project</span>
+                                </div>
+
+                                <!-- List of projects -->
+                                <div id="project-list" class="dropdown-list" style="display:none;">
+                                    <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <div class="dropdown-item" data-id="<?php echo e($client->id); ?>" onclick="selectProject('<?php echo e($client->id); ?>', '<?php echo e($client->company_name); ?>')">
+                                            <?php echo e($client->company_name); ?>
+
+                                        </div>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </div>
+                            </div>
                         </div>
+
+
                         <div class="assigne">
                             <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
                             <select id="assigned-to" name="assigned_to" class="task-input" required>
@@ -516,31 +536,35 @@ fetch("<?php echo e(route('tasks.updateStatusComment')); ?>", {
 // Track the currently open modal's column
 let currentOpenColumn = null;
 
-function openAddTaskModal(columnId) {
+function openAddTaskModal(status) {
     const modal = document.getElementById('add-task-modal');
     if (!modal) return;
 
     // Find the task list container for the corresponding column
-    const taskList = document.querySelector(`#${columnId} .task-list`);
-    if (taskList) {
-        // Move the modal to the start of the task list
-        taskList.insertBefore(modal, taskList.firstChild);
+    const column = document.querySelector(`[data-status="${status}"]`);
+    if (column) {
+        const taskList = column.querySelector('.task-list');
+        if (taskList) {
+            // Move the modal to the start of the task list
+            taskList.insertBefore(modal, taskList.firstChild);
+        }
     }
 
     // Update the hidden input field with the column's status
     const columnField = document.getElementById('task-status');
-    if (columnField) columnField.value = columnId;
+    if (columnField) columnField.value = status;
 
     // Show the modal
     modal.classList.remove('hidden');
     modal.style.display = 'block';
 
     // Keep track of the currently open column
-    currentOpenColumn = columnId;
+    currentOpenColumn = status;
 
     // Add event listener to close the modal when clicking outside
     setTimeout(() => document.addEventListener('click', handleOutsideClick), 0);
 }
+
 
 function closeAddTaskModal() {
     const modal = document.getElementById('add-task-modal');
@@ -643,6 +667,46 @@ body: JSON.stringify(data),
 }
 
 
+// Toggle dropdown visibility
+function toggleDropdown() {
+    var projectList = document.getElementById('project-list');
+    var searchInput = document.getElementById('project-search');
+
+    // Toggle visibility of the project list and search bar
+    projectList.style.display = projectList.style.display === 'none' ? 'block' : 'none';
+    searchInput.style.display = searchInput.style.display === 'none' ? 'block' : 'none';
+}
+
+// Select a project and update the label
+function selectProject(projectId, projectName) {
+    document.getElementById('selected-project').textContent = projectName;
+    document.getElementById('project-list').style.display = 'none';
+    document.getElementById('project-search').style.display = 'none'; // Hide the search bar after selection
+    // Optionally, set the selected project ID as a hidden input
+    // document.getElementById('selected-project-id').value = projectId;
+}
+
+// Search through projects dynamically
+function searchProjects() {
+    var input = document.getElementById('project-search').value.toLowerCase();
+    var items = document.getElementsByClassName('dropdown-item');
+    
+    // Filter project items based on the search input
+    for (var i = 0; i < items.length; i++) {
+        var projectName = items[i].textContent.toLowerCase();
+        if (projectName.includes(input)) {
+            items[i].style.display = 'block';
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+}
+
+function selectProject(id, name) {
+    document.getElementById('client-id').value = id; // Set the client ID
+    document.getElementById('selected-project').textContent = name; // Display the selected name
+    toggleDropdown();
+}
 
 
 
@@ -706,6 +770,53 @@ body: JSON.stringify(data),
             background-color: #dc3545;
             color: white;
         }
+
+        /* select in project style  */
+        /* Container for the custom dropdown */
+.custom-dropdown {
+    position: relative;
+}
+
+/* The dropdown label (button) */
+.dropdown-label {
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+/* The search input box */
+#project-search {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* The dropdown list container */
+.dropdown-list {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    z-index: 999;
+}
+
+/* The individual project items */
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
     </style>
 </main>
 <?php $__env->stopSection(); ?>

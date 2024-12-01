@@ -13,6 +13,7 @@ use App\Models\PaymentTask;
 use App\Models\ProspectTask;
 use App\Models\Project;
 use App\Models\Prospect;
+use App\Models\Clients;
 use App\Models\Payments;
 use App\Models\TaskSession;
 use App\Models\PaymentTaskSession;
@@ -198,6 +199,7 @@ class ProfileController extends Controller
         $totalTimeSpentAcrossTasksFormatted = $this->formatDuration($totalTimeSpentAcrossTasks);
         $projects = Project::all();
         $users = User::all();
+        $clients = Clients::all();
    
 
         // Return view with calculated data
@@ -210,6 +212,7 @@ class ProfileController extends Controller
             'userEmail',
             'user',
             'users',          
+            'clients',          
             'tasks',
             'prospectTasks',
             'paymentTasks',
