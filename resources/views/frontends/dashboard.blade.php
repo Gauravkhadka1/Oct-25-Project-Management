@@ -18,6 +18,10 @@
 
         <div class="task-board">
             @php
+            use App\Models\User;
+            $users = User::all();
+            use App\Models\Clients;
+            $clients = Clients::all();
             $tasks = collect(); // Create an empty collection to hold all tasks
 
             // Add tasks from payments first
@@ -46,7 +50,14 @@
             $tasks->push($task); // Add prospect tasks to the collection
             }
             }
-          
+            // Add tasks from clients
+            foreach ($clients as $client) {
+                foreach ($client->client_tasks as $task) {
+                    $task->category = 'Client';
+                    $task->category_name = $client->company_name; // Store client company name in 'category_name'
+                    $tasks->push($task);
+                }
+            }
 
             // Flag to check if there are any tasks
             $hasTasks = $tasks->isNotEmpty();
@@ -66,10 +77,7 @@
             'Completed' => $tasksCompleted,
             'Closed' => $tasksClosed
             ];
-            use App\Models\User;
-            $users = User::all();
-            use App\Models\Clients;
-            $clients = Clients::all();
+           
             @endphp
 
             @foreach ($columnNames as $status => $tasksCollection)
@@ -156,13 +164,16 @@
                     @foreach ($tasksCollection as $task)
                     <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
-                            @if ($task->category == 'Payment')
-                            <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
-                                @elseif ($task->category == 'Prospect')
-                                <a href="{{ route('prospect_task.detail', ['id' => $task->id]) }}">
-                                    @else
-                                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                                        @endif
+                        @if ($task->category == 'Payment')
+    <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
+@elseif ($task->category == 'Prospect')
+    <a href="{{ route('prospect_task.detail', ['id' => $task->id]) }}">
+@elseif ($task->category == 'Client')
+    <a href="{{ route('client_task.detail', ['id' => $task->id]) }}">
+@else
+    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+@endif
+
                                         <p>{{ $task->name }}</p>
                                     </a>
                         </div>

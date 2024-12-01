@@ -16,6 +16,10 @@
 
         <div class="task-board">
             <?php
+            use App\Models\User;
+            $users = User::all();
+            use App\Models\Clients;
+            $clients = Clients::all();
             $tasks = collect(); // Create an empty collection to hold all tasks
 
             // Add tasks from payments first
@@ -44,7 +48,14 @@
             $tasks->push($task); // Add prospect tasks to the collection
             }
             }
-          
+            // Add tasks from clients
+            foreach ($clients as $client) {
+                foreach ($client->client_tasks as $task) {
+                    $task->category = 'Client';
+                    $task->category_name = $client->company_name; // Store client company name in 'category_name'
+                    $tasks->push($task);
+                }
+            }
 
             // Flag to check if there are any tasks
             $hasTasks = $tasks->isNotEmpty();
@@ -64,10 +75,7 @@
             'Completed' => $tasksCompleted,
             'Closed' => $tasksClosed
             ];
-            use App\Models\User;
-            $users = User::all();
-            use App\Models\Clients;
-            $clients = Clients::all();
+           
             ?>
 
             <?php $__currentLoopData = $columnNames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status => $tasksCollection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -155,13 +163,16 @@
                     <?php $__currentLoopData = $tasksCollection; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
-                            <?php if($task->category == 'Payment'): ?>
-                            <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
-                                <?php elseif($task->category == 'Prospect'): ?>
-                                <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
-                                    <?php else: ?>
-                                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
-                                        <?php endif; ?>
+                        <?php if($task->category == 'Payment'): ?>
+    <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
+<?php elseif($task->category == 'Prospect'): ?>
+    <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
+<?php elseif($task->category == 'Client'): ?>
+    <a href="<?php echo e(route('client_task.detail', ['id' => $task->id])); ?>">
+<?php else: ?>
+    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+<?php endif; ?>
+
                                         <p><?php echo e($task->name); ?></p>
                                     </a>
                         </div>
@@ -311,6 +322,19 @@ window.addEventListener("load", () => {
 
 <?php $__currentLoopData = $prospects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <?php $__currentLoopData = $prospect->prospect_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    timers[<?php echo e($task->id); ?>] = {
+        elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
+        running: false
+    };
+    console.log("Timer initialized for prospect task ID:", <?php echo e($task->id); ?>);
+    updateTimerDisplay(<?php echo e($task->id); ?>);
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+// Initialize timers for Clients tasks
+
+<?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<?php $__currentLoopData = $client->client_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     timers[<?php echo e($task->id); ?>] = {
         elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
         running: false
