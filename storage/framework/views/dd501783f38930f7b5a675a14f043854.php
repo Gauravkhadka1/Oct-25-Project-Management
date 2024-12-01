@@ -87,35 +87,36 @@
                     <form action="<?php echo e(route('clientstasks.store')); ?>" method="POST" class="custom-form">
                         <?php echo csrf_field(); ?>
                         <input type="hidden" id="task-status" name="status" value="">
-                        <input type="hidden" id="client-id" name="client_id">
-
-
-
                         <div class="task-name">
                             <input type="text" id="task-name" name="name" class="task-input" placeholder="Task Name" required />
                             <button type="submit" class="btn-save-task">Save</button>
                         </div>
                         <div class="in">
                             <img src="" alt="">
+                           <!-- Dropdown for Client Selection -->
                             <div class="custom-dropdown">
-                                <!-- Search bar -->
-                                <input type="text" id="project-search" class="task-input" placeholder="Search projects..." onkeyup="searchProjects()" style="display:none;" />
+                                <!-- Search Bar -->
+                                <input type="text" id="project-search" class="task-input" placeholder="Search clients..." onkeyup="searchClients()" style="display:none;" />
 
-                                <!-- Custom select dropdown -->
+                                <!-- Dropdown Label -->
                                 <div id="project-dropdown" class="dropdown-label" onclick="toggleDropdown()">
-                                    <span id="selected-project">Select Project</span>
+                                    <span id="selected-project">Select Client</span>
                                 </div>
 
-                                <!-- List of projects -->
+                                <!-- List of Clients -->
                                 <div id="project-list" class="dropdown-list" style="display:none;">
                                     <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <div class="dropdown-item" data-id="<?php echo e($client->id); ?>" onclick="selectProject('<?php echo e($client->id); ?>', '<?php echo e($client->company_name); ?>')">
-                                            <?php echo e($client->company_name); ?>
+                                    <div class="dropdown-item" data-id="<?php echo e($client->id); ?>" onclick="selectClient('<?php echo e($client->id); ?>', '<?php echo e($client->company_name); ?>')">
+                                        <?php echo e($client->company_name); ?>
 
-                                        </div>
+                                    </div>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
                             </div>
+
+                            <!-- Hidden Input for Selected Client ID -->
+                            <input type="hidden" id="client-id" name="client_id">
+
                         </div>
 
 
@@ -533,38 +534,43 @@ fetch("<?php echo e(route('tasks.updateStatusComment')); ?>", {
 
 // Open Add Task Modal
 
-// Track the currently open modal's column
 let currentOpenColumn = null;
 
-function openAddTaskModal(status) {
+function openAddTaskModal(columnId) {
     const modal = document.getElementById('add-task-modal');
     if (!modal) return;
 
+    // Close the existing modal if it's open
+    if (currentOpenColumn) {
+        closeAddTaskModal();
+    }
+
     // Find the task list container for the corresponding column
-    const column = document.querySelector(`[data-status="${status}"]`);
-    if (column) {
-        const taskList = column.querySelector('.task-list');
-        if (taskList) {
-            // Move the modal to the start of the task list
-            taskList.insertBefore(modal, taskList.firstChild);
-        }
+    const taskList = document.querySelector(`#${columnId} .task-list`);
+    if (taskList) {
+        // Move the modal to the start of the task list
+        taskList.insertBefore(modal, taskList.firstChild);
     }
 
     // Update the hidden input field with the column's status
     const columnField = document.getElementById('task-status');
-    if (columnField) columnField.value = status;
+    if (columnField) {
+        columnField.value = document
+            .querySelector(`#${columnId}`)
+            .getAttribute('data-status'); // Ensure it uses the correct status from the column
+        console.log(`Setting status: ${columnField.value}`); // Debugging: log the value being set
+    }
 
     // Show the modal
     modal.classList.remove('hidden');
     modal.style.display = 'block';
 
     // Keep track of the currently open column
-    currentOpenColumn = status;
+    currentOpenColumn = columnId;
 
     // Add event listener to close the modal when clicking outside
     setTimeout(() => document.addEventListener('click', handleOutsideClick), 0);
 }
-
 
 function closeAddTaskModal() {
     const modal = document.getElementById('add-task-modal');
@@ -580,9 +586,17 @@ function closeAddTaskModal() {
     // Clear the current open column reference
     currentOpenColumn = null;
 
+    // Reset the modal fields
+    document.getElementById('task-name').value = '';
+    document.getElementById('assigned-to').value = '';
+    document.getElementById('due-date').value = '';
+    document.getElementById('priority').value = 'Normal';
+    document.getElementById('task-status').value = '';
+
     // Remove event listener for outside clicks
     document.removeEventListener('click', handleOutsideClick);
 }
+
 
 function handleOutsideClick(event) {
     const modal = document.getElementById('add-task-modal');
@@ -599,113 +613,117 @@ function handleOutsideClick(event) {
 
 // Save Task and Update Column
 function saveTask() {
-const taskName = document.getElementById('task-name').value;
-const assignedTo = document.getElementById('assigned-to').value;
-const dueDate = document.getElementById('due-date').value;
-const priority = document.getElementById('priority').value;
-const status = document.getElementById('task-status').value;
+    const taskName = document.getElementById('task-name').value;
+    const assignedTo = document.getElementById('assigned-to').value;
+    const dueDate = document.getElementById('due-date').value;
+    const priority = document.getElementById('priority').value;
+    const status = document.getElementById('task-status').value;
 
-if (!taskName || !assignedTo || !dueDate || !priority || !status) {
-alert('Please fill in all fields!');
-return;
-}
+    console.log(`Saving task with status: ${status}`); // Debugging: log the status being sent
 
-const data = {
-name: taskName,
-assigned_to: assignedTo,
-due_date: dueDate,
-priority: priority,
-status: status,
-_token: '<?php echo e(csrf_token()); ?>',
-};
-
-fetch('<?php echo e(route('tasks.store')); ?>', {
-method: 'POST',
-headers: {
-    'Content-Type': 'application/json',
-},
-body: JSON.stringify(data),
-})
-.then(response => {
-    if (!response.ok) throw new Error('Failed to save task.');
-    return response.json();
-})
-.then(task => {
-    const taskList = document.querySelector(`#${status} .task-list`);
-    if (taskList) {
-        const newTask = `
-            <div class="task" draggable="true" data-task-id="${task.id}">
-                <div class="task-name">
-                    <a href="">
-                        <p>${task.name}</p>
-                    </a>
-                </div>
-                <div class="assigne">
-                    <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to: ${task.assigned_to_username}
-                </div>
-                <div class="due-date">
-                    <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : ${task.due_date}
-                </div>
-                <div class="priority">
-                    <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt=""> : ${task.priority}
-                </div>
-            </div>
-        `;
-        taskList.insertAdjacentHTML('afterbegin', newTask);
+    if (!taskName || !assignedTo || !dueDate || !priority || !status) {
+        alert('Please fill in all fields!');
+        return;
     }
 
-    closeAddTaskModal();
-    document.getElementById('task-name').value = '';
-    document.getElementById('assigned-to').value = '';
-    document.getElementById('due-date').value = '';
-    document.getElementById('priority').value = 'Normal';
-})
-.catch(error => {
-    console.error('Error:', error);
-    alert('Failed to save task. Please try again.');
-});
+    const data = {
+        name: taskName,
+        assigned_to: assignedTo,
+        due_date: dueDate,
+        priority: priority,
+        status: status,
+        _token: '<?php echo e(csrf_token()); ?>',
+    };
+
+    fetch('<?php echo e(route('tasks.store')); ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to save task.');
+        return response.json();
+    })
+    .then(task => {
+        console.log('Task saved successfully:', task); // Debugging: log the saved task
+        const taskList = document.querySelector(`#${status} .task-list`);
+        if (taskList) {
+            const newTask = `
+                <div class="task" draggable="true" data-task-id="${task.id}">
+                    <div class="task-name">
+                        <a href="">
+                            <p>${task.name}</p>
+                        </a>
+                    </div>
+                    <div class="assigne">
+                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to: ${task.assigned_to_username}
+                    </div>
+                    <div class="due-date">
+                        <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : ${task.due_date}
+                    </div>
+                    <div class="priority">
+                        <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt=""> : ${task.priority}
+                    </div>
+                </div>
+            `;
+            taskList.insertAdjacentHTML('afterbegin', newTask);
+        }
+
+        closeAddTaskModal();
+
+        // Reset the modal fields
+        document.getElementById('task-name').value = '';
+        document.getElementById('assigned-to').value = '';
+        document.getElementById('due-date').value = '';
+        document.getElementById('priority').value = 'Normal';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to save task. Please try again.');
+    });
 }
+
 
 
 // Toggle dropdown visibility
+// Toggle dropdown visibility
 function toggleDropdown() {
-    var projectList = document.getElementById('project-list');
-    var searchInput = document.getElementById('project-search');
+    const projectList = document.getElementById('project-list');
+    const searchInput = document.getElementById('project-search');
 
     // Toggle visibility of the project list and search bar
     projectList.style.display = projectList.style.display === 'none' ? 'block' : 'none';
     searchInput.style.display = searchInput.style.display === 'none' ? 'block' : 'none';
 }
 
-// Select a project and update the label
-function selectProject(projectId, projectName) {
-    document.getElementById('selected-project').textContent = projectName;
+// Select a client and update the label
+function selectClient(clientId, clientName) {
+    // Update the hidden input with the selected client's ID
+    document.getElementById('client-id').value = clientId;
+
+    // Update the dropdown label with the selected client's name
+    document.getElementById('selected-project').textContent = clientName;
+
+    // Hide the dropdown list and search bar
     document.getElementById('project-list').style.display = 'none';
-    document.getElementById('project-search').style.display = 'none'; // Hide the search bar after selection
-    // Optionally, set the selected project ID as a hidden input
-    // document.getElementById('selected-project-id').value = projectId;
-}
-
-// Search through projects dynamically
-function searchProjects() {
-    var input = document.getElementById('project-search').value.toLowerCase();
-    var items = document.getElementsByClassName('dropdown-item');
+    document.getElementById('project-search').style.display = 'none';
     
-    // Filter project items based on the search input
-    for (var i = 0; i < items.length; i++) {
-        var projectName = items[i].textContent.toLowerCase();
-        if (projectName.includes(input)) {
-            items[i].style.display = 'block';
-        } else {
-            items[i].style.display = 'none';
-        }
-    }
+    // Reset search input value after client selection
+    document.getElementById('project-search').value = '';
 }
 
-function selectProject(id, name) {
-    document.getElementById('client-id').value = id; // Set the client ID
-    document.getElementById('selected-project').textContent = name; // Display the selected name
-    toggleDropdown();
+// Filter the client list based on search input
+function searchClients() {
+    const input = document.getElementById('project-search').value.toLowerCase();
+    const items = document.getElementsByClassName('dropdown-item');
+
+    // Loop through the items and display/hide based on match
+    Array.from(items).forEach(item => {
+        const projectName = item.textContent.toLowerCase();
+        item.style.display = projectName.includes(input) ? 'block' : 'none';
+    });
 }
 
 

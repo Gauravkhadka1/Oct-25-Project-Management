@@ -4702,3 +4702,7 @@
 #54 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #55 {main}
 "} 
+[2024-12-01 12:39:18] local.INFO: Task Status: {"status":"In Progress"} 
+[2024-12-01 12:39:58] local.INFO: Task Status: {"status":"In Progress"} 
+[2024-12-01 12:40:14] local.INFO: Task Status: {"status":"In Progress"} 
+[2024-12-01 12:41:22] local.INFO: Task Status: {"status":"To Do"} 
