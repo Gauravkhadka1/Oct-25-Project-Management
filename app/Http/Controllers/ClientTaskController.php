@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClientTask;
+use App\Models\ProspectTask;
+use App\Models\PaymentTask;
 use App\Models\Clients;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,6 +44,33 @@ class ClientTaskController extends Controller
 
     // Return a JSON response for frontend integration
     return redirect()->back()->with('success', 'Task created successfully!');
+}
+public function updateElapsedTime(Request $request, $taskId)
+{
+    $task = ClientTask::findOrFail($taskId);
+    $task->elapsed_time = $request->elapsed_time;
+    $task->save();
+
+    return response()->json(['success' => true, 'message' => 'Elapsed time updated successfully.']);
+}
+public function updateStatusComment(Request $request)
+{
+    $taskId = $request->taskId;
+    $status = $request->status;
+    $taskType = $request->taskType;
+
+    if ($taskType === 'payment') {
+        $task = PaymentTask::findOrFail($taskId);
+    } elseif ($taskType === 'prospect') {
+        $task = ProspectTask::findOrFail($taskId);
+    } else {
+        $task = ClientTask::findOrFail($taskId);
+    }
+
+    $task->status = $status;
+    $task->save();
+
+    return response()->json(['success' => true, 'message' => 'Task status updated.']);
 }
 
 }

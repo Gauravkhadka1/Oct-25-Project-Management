@@ -167,6 +167,7 @@ Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projec
 Route::get('/tasks/create', [ClientTaskController::class, 'create'])->name('clientstasks.create');
 Route::post('/tasks/store', [ClientTaskController::class, 'store'])->name('clientstasks.store');
 Route::get('/client-task/{id}/detail', [ClientTaskController::class, 'show'])->name('client_task.detail');
+Route::post('/tasks/{id}/pause-timer', [TaskController::class, 'updateElapsedTime']);
 
 
 

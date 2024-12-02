@@ -164,14 +164,14 @@
                     <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
                         <div class="task-name">
                         <?php if($task->category == 'Payment'): ?>
-    <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
-<?php elseif($task->category == 'Prospect'): ?>
-    <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
-<?php elseif($task->category == 'Client'): ?>
-    <a href="<?php echo e(route('client_task.detail', ['id' => $task->id])); ?>">
-<?php else: ?>
-    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
-<?php endif; ?>
+                                <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
+                            <?php elseif($task->category == 'Prospect'): ?>
+                                <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
+                            <?php elseif($task->category == 'Client'): ?>
+                                <a href="<?php echo e(route('client_task.detail', ['id' => $task->id])); ?>">
+                            <?php else: ?>
+                                <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                            <?php endif; ?>
 
                                         <p><?php echo e($task->name); ?></p>
                                     </a>
@@ -295,54 +295,25 @@ return message;  // For some older browsers (rarely used now)
 // Load the saved time from the database when the page loads
 window.addEventListener("load", () => {
 // Initialize timers for Project tasks
-<?php $__currentLoopData = $projects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<?php $__currentLoopData = $project->tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    timers[<?php echo e($task->id); ?>] = {
-        elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
-        running: false
-    };
-    console.log("Timer initialized for project task ID:", <?php echo e($task->id); ?>);
-    updateTimerDisplay(<?php echo e($task->id); ?>);
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+function initializeTimers(tasks, category) {
+    tasks.forEach(task => {
+        timers[task.id] = {
+            elapsedTime: task.elapsed_time * 1000,
+            running: false
+        };
+        console.log(`Timer initialized for ${category} task ID:`, task.id);
+        updateTimerDisplay(task.id);
+    });
+}
 
-// Initialize timers for Payment tasks
-<?php $__currentLoopData = $payments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<?php $__currentLoopData = $payment->payment_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    timers[<?php echo e($task->id); ?>] = {
-        elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
-        running: false
-    };
-    console.log("Timer initialized for payment task ID:", <?php echo e($task->id); ?>);
-    updateTimerDisplay(<?php echo e($task->id); ?>);
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+window.addEventListener("load", () => {
+    initializeTimers(<?php echo json_encode(collect($projects)->flatMap(function($p) { return $p->tasks; })->toArray(), 15, 512) ?>, 'Project');
+initializeTimers(<?php echo json_encode(collect($payments)->flatMap(function($p) { return $p->payment_tasks; })->toArray(), 15, 512) ?>, 'Payment');
+initializeTimers(<?php echo json_encode(collect($prospects)->flatMap(function($p) { return $p->prospect_tasks; })->toArray(), 15, 512) ?>, 'Prospect');
+initializeTimers(<?php echo json_encode(collect($clients)->flatMap(function($p) { return $p->client_tasks; })->toArray(), 15, 512) ?>, 'Client');
 
-// Initialize timers for Prospect tasks
+});
 
-<?php $__currentLoopData = $prospects; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<?php $__currentLoopData = $prospect->prospect_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    timers[<?php echo e($task->id); ?>] = {
-        elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
-        running: false
-    };
-    console.log("Timer initialized for prospect task ID:", <?php echo e($task->id); ?>);
-    updateTimerDisplay(<?php echo e($task->id); ?>);
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-// Initialize timers for Clients tasks
-
-<?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<?php $__currentLoopData = $client->client_tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    timers[<?php echo e($task->id); ?>] = {
-        elapsedTime: <?php echo e($task->elapsed_time * 1000); ?>,
-        running: false
-    };
-    console.log("Timer initialized for prospect task ID:", <?php echo e($task->id); ?>);
-    updateTimerDisplay(<?php echo e($task->id); ?>);
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 });
 
 
@@ -446,11 +417,12 @@ console.error("Error updating timer:", error);
 
 
 // Handle status change for task, payment task, and prospect task
-document.querySelectorAll('.task-status, .payment-task-status, .prospect-task-status').forEach(statusElement => {
+document.querySelectorAll('.task-status, .payment-task-status, .prospect-task-status, .client-task-status').forEach(statusElement => {
 statusElement.addEventListener('change', function () {
 const taskId = this.name.match(/\d+/)[0];
 const status = this.value;
 const taskType = this.classList.contains('payment-task-status') ? 'payment' : 
+                 this.classList.contains('client-task-status') ? 'client' :
                  this.classList.contains('prospect-task-status') ? 'prospect' : 'task'; // Determine the task type
 
 fetch(`/tasks/update-status-comment`, {
@@ -749,13 +721,11 @@ function searchClients() {
 }
 
 
-
-
-    </script>
+</script>
 
 
 
-    <style>
+<style>
     #add-task-modal {
     position: relative; /* Align within its new column */
     z-index: 1000;
@@ -765,100 +735,100 @@ function searchClients() {
     padding: 20px;
     margin-bottom: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        }
 
-.hidden {
-    display: none !important;
-}
-
-
+        .hidden {
+            display: none !important;
+        }
 
 
-        .task-input {
-            width: calc(100% - 30px);
-            padding: 2px;
-            margin: 5px 0;
+
+
+                .task-input {
+                    width: calc(100% - 30px);
+                    padding: 2px;
+                    margin: 5px 0;
+                    border: none;
+                    background-color: transparent;
+                    border-radius: 4px;
+                }
+
+                .task-actions {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 10px;
+                }
+
+                .btn-save-task,
+                .btn-cancel-task {
+                    padding: 5px 10px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+
+                .btn-save-task {
+                    background-color: #007bff;
+                    color: white;
+                }
+
+                .btn-save-task:hover {
+                    background-color: #002aee !important;
+                    color: white;
+                }
+
+                .btn-cancel-task {
+                    background-color: #dc3545;
+                    color: white;
+                }
+
+                /* select in project style  */
+                /* Container for the custom dropdown */
+        .custom-dropdown {
+            position: relative;
+        }
+
+        /* The dropdown label (button) */
+        .dropdown-label {
+            padding: 5px;
+            margin: 5px;
             border: none;
-            background-color: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
+        /* The search input box */
+        #project-search {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
             border-radius: 4px;
         }
 
-        .task-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
+        /* The dropdown list container */
+        .dropdown-list {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            z-index: 999;
         }
 
-        .btn-save-task,
-        .btn-cancel-task {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
+        /* The individual project items */
+        .dropdown-item {
+            padding: 10px;
             cursor: pointer;
         }
 
-        .btn-save-task {
-            background-color: #007bff;
-            color: white;
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
         }
 
-        .btn-save-task:hover {
-            background-color: #002aee !important;
-            color: white;
-        }
-
-        .btn-cancel-task {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        /* select in project style  */
-        /* Container for the custom dropdown */
-.custom-dropdown {
-    position: relative;
-}
-
-/* The dropdown label (button) */
-.dropdown-label {
-    padding: 5px;
-    margin: 5px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: #fff;
-}
-
-/* The search input box */
-#project-search {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* The dropdown list container */
-.dropdown-list {
-    position: absolute;
-    width: 100%;
-    border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: white;
-    z-index: 999;
-}
-
-/* The individual project items */
-.dropdown-item {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.dropdown-item:hover {
-    background-color: #f0f0f0;
-}
-
-    </style>
+</style>
 </main>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontends.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/dashboard.blade.php ENDPATH**/ ?>

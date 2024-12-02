@@ -165,14 +165,14 @@
                     <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
                         <div class="task-name">
                         @if ($task->category == 'Payment')
-    <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
-@elseif ($task->category == 'Prospect')
-    <a href="{{ route('prospect_task.detail', ['id' => $task->id]) }}">
-@elseif ($task->category == 'Client')
-    <a href="{{ route('client_task.detail', ['id' => $task->id]) }}">
-@else
-    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-@endif
+                                <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
+                            @elseif ($task->category == 'Prospect')
+                                <a href="{{ route('prospect_task.detail', ['id' => $task->id]) }}">
+                            @elseif ($task->category == 'Client')
+                                <a href="{{ route('client_task.detail', ['id' => $task->id]) }}">
+                            @else
+                                <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                            @endif
 
                                         <p>{{ $task->name }}</p>
                                     </a>
@@ -293,41 +293,25 @@ return message;  // For some older browsers (rarely used now)
 // Load the saved time from the database when the page loads
 window.addEventListener("load", () => {
 // Initialize timers for Project tasks
-@foreach($projects as $project)
-@foreach($project->tasks as $task)
-    timers[{{ $task->id }}] = {
-        elapsedTime: {{ $task->elapsed_time * 1000 }},
-        running: false
-    };
-    console.log("Timer initialized for project task ID:", {{ $task->id }});
-    updateTimerDisplay({{ $task->id }});
-@endforeach
-@endforeach
+function initializeTimers(tasks, category) {
+    tasks.forEach(task => {
+        timers[task.id] = {
+            elapsedTime: task.elapsed_time * 1000,
+            running: false
+        };
+        console.log(`Timer initialized for ${category} task ID:`, task.id);
+        updateTimerDisplay(task.id);
+    });
+}
 
-// Initialize timers for Payment tasks
-@foreach($payments as $payment)
-@foreach($payment->payment_tasks as $task)
-    timers[{{ $task->id }}] = {
-        elapsedTime: {{ $task->elapsed_time * 1000 }},
-        running: false
-    };
-    console.log("Timer initialized for payment task ID:", {{ $task->id }});
-    updateTimerDisplay({{ $task->id }});
-@endforeach
-@endforeach
+window.addEventListener("load", () => {
+    initializeTimers(@json(collect($projects)->flatMap(function($p) { return $p->tasks; })->toArray()), 'Project');
+initializeTimers(@json(collect($payments)->flatMap(function($p) { return $p->payment_tasks; })->toArray()), 'Payment');
+initializeTimers(@json(collect($prospects)->flatMap(function($p) { return $p->prospect_tasks; })->toArray()), 'Prospect');
+initializeTimers(@json(collect($clients)->flatMap(function($p) { return $p->client_tasks; })->toArray()), 'Client');
 
-// Initialize timers for Prospect tasks
+});
 
-@foreach($prospects as $prospect)
-@foreach($prospect->prospect_tasks as $task)
-    timers[{{ $task->id }}] = {
-        elapsedTime: {{ $task->elapsed_time * 1000 }},
-        running: false
-    };
-    console.log("Timer initialized for prospect task ID:", {{ $task->id }});
-    updateTimerDisplay({{ $task->id }});
-@endforeach
-@endforeach
 });
 
 
@@ -431,11 +415,12 @@ console.error("Error updating timer:", error);
 
 
 // Handle status change for task, payment task, and prospect task
-document.querySelectorAll('.task-status, .payment-task-status, .prospect-task-status').forEach(statusElement => {
+document.querySelectorAll('.task-status, .payment-task-status, .prospect-task-status, .client-task-status').forEach(statusElement => {
 statusElement.addEventListener('change', function () {
 const taskId = this.name.match(/\d+/)[0];
 const status = this.value;
 const taskType = this.classList.contains('payment-task-status') ? 'payment' : 
+                 this.classList.contains('client-task-status') ? 'client' :
                  this.classList.contains('prospect-task-status') ? 'prospect' : 'task'; // Determine the task type
 
 fetch(`/tasks/update-status-comment`, {
@@ -734,13 +719,11 @@ function searchClients() {
 }
 
 
-
-
-    </script>
+</script>
 
 
 
-    <style>
+<style>
     #add-task-modal {
     position: relative; /* Align within its new column */
     z-index: 1000;
@@ -750,99 +733,99 @@ function searchClients() {
     padding: 20px;
     margin-bottom: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        }
 
-.hidden {
-    display: none !important;
-}
-
-
+        .hidden {
+            display: none !important;
+        }
 
 
-        .task-input {
-            width: calc(100% - 30px);
-            padding: 2px;
-            margin: 5px 0;
+
+
+                .task-input {
+                    width: calc(100% - 30px);
+                    padding: 2px;
+                    margin: 5px 0;
+                    border: none;
+                    background-color: transparent;
+                    border-radius: 4px;
+                }
+
+                .task-actions {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 10px;
+                }
+
+                .btn-save-task,
+                .btn-cancel-task {
+                    padding: 5px 10px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+
+                .btn-save-task {
+                    background-color: #007bff;
+                    color: white;
+                }
+
+                .btn-save-task:hover {
+                    background-color: #002aee !important;
+                    color: white;
+                }
+
+                .btn-cancel-task {
+                    background-color: #dc3545;
+                    color: white;
+                }
+
+                /* select in project style  */
+                /* Container for the custom dropdown */
+        .custom-dropdown {
+            position: relative;
+        }
+
+        /* The dropdown label (button) */
+        .dropdown-label {
+            padding: 5px;
+            margin: 5px;
             border: none;
-            background-color: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
+        /* The search input box */
+        #project-search {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
             border-radius: 4px;
         }
 
-        .task-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
+        /* The dropdown list container */
+        .dropdown-list {
+            position: absolute;
+            width: 100%;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            z-index: 999;
         }
 
-        .btn-save-task,
-        .btn-cancel-task {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
+        /* The individual project items */
+        .dropdown-item {
+            padding: 10px;
             cursor: pointer;
         }
 
-        .btn-save-task {
-            background-color: #007bff;
-            color: white;
+        .dropdown-item:hover {
+            background-color: #f0f0f0;
         }
 
-        .btn-save-task:hover {
-            background-color: #002aee !important;
-            color: white;
-        }
-
-        .btn-cancel-task {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        /* select in project style  */
-        /* Container for the custom dropdown */
-.custom-dropdown {
-    position: relative;
-}
-
-/* The dropdown label (button) */
-.dropdown-label {
-    padding: 5px;
-    margin: 5px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: #fff;
-}
-
-/* The search input box */
-#project-search {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* The dropdown list container */
-.dropdown-list {
-    position: absolute;
-    width: 100%;
-    border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: white;
-    z-index: 999;
-}
-
-/* The individual project items */
-.dropdown-item {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.dropdown-item:hover {
-    background-color: #f0f0f0;
-}
-
-    </style>
+</style>
 </main>
 @endsection
