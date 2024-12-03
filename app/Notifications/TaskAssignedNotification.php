@@ -8,6 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\Task;
 use App\Models\PaymentTask;
 use App\Models\ProspectTask;
+use App\Models\ClientTask;
 
 class TaskAssignedNotification extends Notification
 {
@@ -18,11 +19,11 @@ class TaskAssignedNotification extends Notification
     /**
      * Constructor accepts any of the Task types
      *
-     * @param Task|PaymentTask|ProspectTask $task
+     * @param Task|PaymentTask|ProspectTask|ClientTask $task
      */
     public function __construct($task)
     {
-        if (!($task instanceof Task || $task instanceof PaymentTask || $task instanceof ProspectTask)) {
+        if (!($task instanceof Task || $task instanceof PaymentTask || $task instanceof ProspectTask|| $task instanceof ClientTask)) {
             throw new \InvalidArgumentException("Invalid task type");
         }
 
@@ -102,6 +103,9 @@ class TaskAssignedNotification extends Notification
 
         if ($this->task instanceof ProspectTask) {
             return $this->task->prospect->company_name ?? 'No prospect company'; // Assuming ProspectTask has a `prospect` relationship
+        }
+        if ($this->task instanceof ClientTask) {
+            return $this->task->client->company_name ?? 'No client company'; // Assuming ProspectTask has a `prospect` relationship
         }
 
         return 'Unknown';

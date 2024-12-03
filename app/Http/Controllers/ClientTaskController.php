@@ -8,6 +8,7 @@ use App\Models\PaymentTask;
 use App\Models\Clients;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Notifications\TaskAssignedNotification;
 
 class ClientTaskController extends Controller
 {
@@ -31,19 +32,24 @@ class ClientTaskController extends Controller
         'priority' => 'required|in:Normal,High,Urgent',
         'status' => 'required|string', // Validate the status field
     ]);
-
+    $assignedByUserId = auth()->id();
     // Create the task using the validated data
     $task = ClientTask::create([
         'name' => $validated['name'],
         'client_id' => $validated['client_id'],
         'assigned_to' => $validated['assigned_to'],
+        'assigned_by' => $assignedByUserId, 
         'due_date' => $validated['due_date'],
         'priority' => $validated['priority'],
         'status' => $validated['status'], // Store the status
     ]);
+// Send a notification to the assigned user
+$assignedToUser = User::find($task->assigned_to);
+$assignedToUser->notify(new TaskAssignedNotification($task));
 
-    // Return a JSON response for frontend integration
-    return redirect()->back()->with('success', 'Task created successfully!');
+\Log::info('Task created and notification sent to user: ' . $assignedToUser->id);
+
+return redirect()->back()->with('success', 'Task created successfully.');
 }
 public function updateElapsedTime(Request $request, $taskId)
 {

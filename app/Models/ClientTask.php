@@ -10,6 +10,6 @@ class ClientTask extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'client_id', 'assigned_to', 'due_date', 'priority', 'status',
+        'name', 'client_id', 'assigned_to', 'assigned_by','due_date', 'priority', 'status',
     ];
 }

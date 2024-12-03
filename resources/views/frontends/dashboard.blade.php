@@ -94,7 +94,66 @@
 
                     </div>
                 </div>
-                <div id="add-task-modal" class="hidden">
+         
+
+                <div class="task-list">
+                    @if ($tasksCollection->isEmpty())
+                    <div class="no-tasks" style="height: 40px; background-color: white; display: flex; align-items: center; justify-content: center; border:none; margin-top: 10px;">
+                        <p>No task in {{ $status }}</p>
+                    </div>
+
+                    @else
+                    @foreach ($tasksCollection as $task)
+                    <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
+                        <div class="task-name">
+                        @if ($task->category == 'Payment')
+                                <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
+                            @elseif ($task->category == 'Prospect')
+                                <a href="{{ route('prospect_task.detail', ['id' => $task->id]) }}">
+                            @elseif ($task->category == 'Client')
+                                <a href="{{ route('client_task.detail', ['id' => $task->id]) }}">
+                            @else
+                                <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                            @endif
+
+                                        <p>{{ $task->name }}</p>
+                                    </a>
+                        </div>
+                        <div class="in-project">in {{ $task->category_name }}</div>
+                        <div class="assigne">
+                            @if ($task->assignedBy)
+                            <img src="{{ url('frontend/images/assignedby.png') }}" alt="">
+                            by: <img src="{{ asset('storage/profile_pictures/' . $task->assignedBy->profilepic) }}"
+                                alt="{{ $task->assignedBy->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedBy->username }}
+                            @else
+                            <img src="{{ url('frontend/images/assignedby.png') }}" alt="Unassigned">
+                            by: N/A
+                            @endif
+                        </div>
+                        <div class="due-date">
+                            <img src="{{ url('frontend/images/duedate.png') }}" alt="">
+                            : {{ $task->due_date }}
+                        </div>
+                        <div class="priority">
+                            <img src="{{ url('frontend/images/priority.png') }}" alt="">
+                            : {{ $task->priority }}
+                        </div>
+                        <div class="time-details">
+                            <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">
+                                    <img src="{{ url('frontend/images/play.png') }}" alt="">
+                                </button>
+                            </div>
+                            <div class="time-data" id="time-{{ $task->id }}">00:00:00</div>
+                        </div>
+                    </div>
+                    @endforeach
+                    @endif
+                </div>
+            </div>
+            @endforeach
+        </div>
+        <div id="add-task-modal" class="hidden">
                     <form action="{{ route('clientstasks.store') }}" method="POST" class="custom-form">
                         @csrf
                         <input type="hidden" id="task-status" name="status" value="">
@@ -106,8 +165,11 @@
                             <img src="" alt="">
                            <!-- Dropdown for Client Selection -->
                             <div class="custom-dropdown">
-                                <!-- Search Bar -->
-                                <input type="text" id="project-search" class="task-input" placeholder="Search clients..." onkeyup="searchClients()" style="display:none;" />
+                                <!-- Search Bar with Icon -->
+                                <div class="search-container" style="display: none;">
+                                    <img src="{{ url('frontend/images/search-icon.png') }}" alt="Search Icon" class="search-icon-client">
+                                    <input type="text" id="project-search" class="task-input-client" placeholder="Search clients..." onkeyup="searchClients()" />
+                                </div>
 
                                 <!-- Dropdown Label -->
                                 <div id="project-dropdown" class="dropdown-label" onclick="toggleDropdown()">
@@ -115,7 +177,7 @@
                                 </div>
 
                                 <!-- List of Clients -->
-                                <div id="project-list" class="dropdown-list" style="display:none;">
+                                <div id="project-list" class="dropdown-list" style="display: none;">
                                     @foreach($clients as $client)
                                     <div class="dropdown-item" data-id="{{ $client->id }}" onclick="selectClient('{{ $client->id }}', '{{ $client->company_name }}')">
                                         {{ $client->company_name }}
@@ -153,65 +215,6 @@
                         </div>
                     </form>
                 </div>
-
-                <div class="task-list">
-                    @if ($tasksCollection->isEmpty())
-                    <div class="no-tasks" style="height: 40px; background-color: white; display: flex; align-items: center; justify-content: center; border:none; margin-top: 10px;">
-                        <p>No task in {{ $status }}</p>
-                    </div>
-
-                    @else
-                    @foreach ($tasksCollection as $task)
-                    <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
-                        <div class="task-name">
-                        @if ($task->category == 'Payment')
-                                <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
-                            @elseif ($task->category == 'Prospect')
-                                <a href="{{ route('prospect_task.detail', ['id' => $task->id]) }}">
-                            @elseif ($task->category == 'Client')
-                                <a href="{{ route('client_task.detail', ['id' => $task->id]) }}">
-                            @else
-                                <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                            @endif
-
-                                        <p>{{ $task->name }}</p>
-                                    </a>
-                        </div>
-                        <div class="in-project">in {{ $task->category_name }}</div>
-                        <div class="assigne">
-                            @if ($task->assignedBy)
-                            <img src="{{ url('frontend/images/assignedby.png') }}" alt="">
-                            by: <img src="{{ asset('storage/profile_pictures/' . $task->assignedBy->profilepic) }}"
-                                alt="{{ $task->assignedBy->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedBy->username }}
-                            @else
-                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
-                            by: N/A
-                            @endif
-                        </div>
-                        <div class="due-date">
-                            <img src="{{ url('frontend/images/duedate.png') }}" alt="">
-                            : {{ $task->due_date }}
-                        </div>
-                        <div class="priority">
-                            <img src="{{ url('frontend/images/priority.png') }}" alt="">
-                            : {{ $task->priority }}
-                        </div>
-                        <div class="time-details">
-                            <div class="start-pause">
-                                <button class="btn-toggle start" id="toggle-{{ $task->id }}" onclick="toggleTimer({{ $task->id }}, '{{ $task->category }}')">
-                                    <img src="{{ url('frontend/images/play.png') }}" alt="">
-                                </button>
-                            </div>
-                            <div class="time-data" id="time-{{ $task->id }}">00:00:00</div>
-                        </div>
-                    </div>
-                    @endforeach
-                    @endif
-                </div>
-            </div>
-            @endforeach
-        </div>
-
 
         <div class="schedule-table">
             <div class="schedule-table-heading">
@@ -535,33 +538,31 @@ function openAddTaskModal(columnId) {
     const modal = document.getElementById('add-task-modal');
     if (!modal) return;
 
-    // Close the existing modal if it's open
-    if (currentOpenModal && currentOpenModal !== modal) {
-        closeAddTaskModal();
+    // Only open the modal if it's not already open
+    if (!currentOpenModal) {
+        // Move the modal to the correct column
+        const column = document.getElementById(columnId);
+        const taskList = column.querySelector('.task-list');
+        if (taskList) {
+            taskList.insertBefore(modal, taskList.firstChild);
+        }
+
+        // Update the hidden input field with the column's status
+        const columnField = document.getElementById('task-status');
+        if (columnField) {
+            columnField.value = column.getAttribute('data-status');  // Ensure it uses the correct status from the column
+        }
+
+        // Show the modal
+        modal.classList.remove('hidden');
+        modal.style.display = 'block';
+
+        // Set the current open modal to prevent multiple modals in one column
+        currentOpenModal = modal;
+
+        // Add event listener to close the modal when clicking outside
+        setTimeout(() => document.addEventListener('click', handleOutsideClick), 0);
     }
-
-    // Move the modal to the correct column
-    const column = document.getElementById(columnId);
-    const taskList = column.querySelector('.task-list');
-    if (taskList) {
-        taskList.insertBefore(modal, taskList.firstChild);
-    }
-
-    // Update the hidden input field with the column's status
-    const columnField = document.getElementById('task-status');
-    if (columnField) {
-        columnField.value = column.getAttribute('data-status');  // Ensure it uses the correct status from the column
-    }
-
-    // Show the modal
-    modal.classList.remove('hidden');
-    modal.style.display = 'block';
-
-    // Set the current open modal to prevent multiple modals in one column
-    currentOpenModal = modal;
-
-    // Add event listener to close the modal when clicking outside
-    setTimeout(() => document.addEventListener('click', handleOutsideClick), 0);
 }
 
 function closeAddTaskModal() {
@@ -592,15 +593,13 @@ function closeAddTaskModal() {
 function handleOutsideClick(event) {
     const modal = document.getElementById('add-task-modal');
     const isClickInsideModal = modal.contains(event.target);
-    const isClickInsideColumn = currentOpenModal && document.getElementById(currentOpenModal.id).contains(event.target);
+    const isClickInsideButton = document.querySelector('.btn-create-new').contains(event.target); // Check if the click is inside the button
 
-    // Close the modal if the click is outside the modal and the column
-    if (!isClickInsideModal && !isClickInsideColumn) {
+    // Close the modal if the click is outside the modal and the button
+    if (!isClickInsideModal && !isClickInsideButton) {
         closeAddTaskModal();
     }
 }
-
-
 
 
 // Save Task and Update Column
@@ -683,11 +682,12 @@ function saveTask() {
 // Toggle dropdown visibility
 function toggleDropdown() {
     const projectList = document.getElementById('project-list');
-    const searchInput = document.getElementById('project-search');
+    const searchContainer = document.querySelector('.search-container');
 
     // Toggle visibility of the project list and search bar
-    projectList.style.display = projectList.style.display === 'none' ? 'block' : 'none';
-    searchInput.style.display = searchInput.style.display === 'none' ? 'block' : 'none';
+    const isVisible = projectList.style.display === 'block';
+    projectList.style.display = isVisible ? 'none' : 'block';
+    searchContainer.style.display = isVisible ? 'none' : 'flex'; // Use 'flex' to match CSS
 }
 
 // Select a client and update the label
@@ -720,112 +720,5 @@ function searchClients() {
 
 
 </script>
-
-
-
-<style>
-    #add-task-modal {
-    position: relative; /* Align within its new column */
-    z-index: 1000;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-
-
-
-                .task-input {
-                    width: calc(100% - 30px);
-                    padding: 2px;
-                    margin: 5px 0;
-                    border: none;
-                    background-color: transparent;
-                    border-radius: 4px;
-                }
-
-                .task-actions {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 10px;
-                }
-
-                .btn-save-task,
-                .btn-cancel-task {
-                    padding: 5px 10px;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-
-                .btn-save-task {
-                    background-color: #007bff;
-                    color: white;
-                }
-
-                .btn-save-task:hover {
-                    background-color: #002aee !important;
-                    color: white;
-                }
-
-                .btn-cancel-task {
-                    background-color: #dc3545;
-                    color: white;
-                }
-
-                /* select in project style  */
-                /* Container for the custom dropdown */
-        .custom-dropdown {
-            position: relative;
-        }
-
-        /* The dropdown label (button) */
-        .dropdown-label {
-            padding: 5px;
-            margin: 5px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background-color: #fff;
-        }
-
-        /* The search input box */
-        #project-search {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        /* The dropdown list container */
-        .dropdown-list {
-            position: absolute;
-            width: 100%;
-            border: 1px solid #ccc;
-            max-height: 200px;
-            overflow-y: auto;
-            background-color: white;
-            z-index: 999;
-        }
-
-        /* The individual project items */
-        .dropdown-item {
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f0f0f0;
-        }
-
-</style>
 </main>
 @endsection

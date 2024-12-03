@@ -4,7 +4,7 @@
     justify-content: center;
     flex-direction: column;
     /* text-align: center; */
-    background-color: #F8F9FA;
+    background-color: #f8f9fa;
     padding-top: 30px;
     /* height: 100vh; */
 }
@@ -17,7 +17,7 @@
 }
 .user-span.active {
     background-color: #28a745; /* Green background */
-    color: white;              /* White text color */
+    color: white; /* White text color */
 }
 .active {
     background-color: #28a745; /* Green background */
@@ -67,7 +67,8 @@
     min-width: 900px; /* Sets a minimum width */
 }
 
-.task-table th, .task-table td {
+.task-table th,
+.task-table td {
     padding: 10px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -111,8 +112,8 @@
     background-color: #dc3545; /* Red for Pause */
 }
 
-
-select, textarea {
+select,
+textarea {
     width: 100%;
     padding: 4px;
     font-size: 0.9rem;
@@ -127,7 +128,8 @@ select, textarea {
     margin-top: 20px;
 }
 
-.edit-profile a, .logout a {
+.edit-profile a,
+.logout a {
     display: inline-block;
     padding: 8px 16px;
     margin: 0 10px;
@@ -137,7 +139,8 @@ select, textarea {
     text-decoration: none;
 }
 
-.edit-profile a:hover, .logout a:hover {
+.edit-profile a:hover,
+.logout a:hover {
     background-color: #0056b3;
 }
 
@@ -161,14 +164,15 @@ table {
     border-collapse: collapse; /* Collapsed borders */
 }
 
-th, td {
+th,
+td {
     padding: 12px; /* Padding for table cells */
     text-align: left; /* Left align text */
     border-bottom: 1px solid #ddd; /* Subtle bottom border */
 }
 
 th {
-    background-color: #4CAF50; /* Header background color */
+    background-color: #4caf50; /* Header background color */
     color: white; /* Header text color */
 }
 
@@ -184,7 +188,8 @@ tbody tr:nth-child(odd) {
     background-color: #ffffff; /* White for odd rows */
 }
 
-.btn-add-comments img, .btn-view-comments img {
+.btn-add-comments img,
+.btn-view-comments img {
     width: 20px;
 }
 
@@ -197,14 +202,14 @@ tbody tr:nth-child(odd) {
 }
 .label-payment {
     color: white; /* Green for Project */
-    background-color: #2196F3;
+    background-color: #2196f3;
     padding: 5px;
     border-radius: 7px;
     font-weight: bold;
 }
 .label-prospect {
     color: white; /* Green for Project */
-    background-color: #FF9800;
+    background-color: #ff9800;
     padding: 5px;
     border-radius: 7px;
     font-weight: bold;
@@ -256,7 +261,7 @@ tbody tr:nth-child(odd) {
     text-decoration: none;
 }
 .task-name a:hover {
-   color: darkblue;
+    color: darkblue;
 }
 .status-add-new {
     display: flex;
@@ -268,4 +273,134 @@ tbody tr:nth-child(odd) {
 }
 .add-new-task img {
     width: 17px;
+}
+/* add task modal  */
+#add-task-modal {
+    position: relative; /* Align within its new column */
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+    display: none !important;
+}
+.task-input {
+    width: calc(100% - 30px);
+    padding: 2px;
+    margin: 5px 0;
+    border: none;
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+.task-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.btn-save-task,
+.btn-cancel-task {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-save-task {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-save-task:hover {
+    background-color: #002aee !important;
+    color: white;
+}
+
+.btn-cancel-task {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* select in project style  */
+/* Container for the custom dropdown */
+.custom-dropdown {
+    position: relative;
+}
+
+/* The dropdown label (button) */
+.dropdown-label {
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+/* The search input box */
+#project-search {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: none;
+    border-radius: 4px;
+}
+
+/* The dropdown list container */
+.dropdown-list {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: white;
+    z-index: 999;
+}
+
+/* The individual project items */
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+.search-container {
+    position: relative;
+    display: flex; /* Align icon and input horizontally */
+    align-items: center; /* Vertically center icon with input */
+    width: 100%;
+    border: 1px solid gray;
+    padding: 0 0 0 7px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.search-icon-client {
+    width: 20px; /* Adjust the size of the icon */
+    height: 20px;
+    margin-right: 8px; /* Space between the icon and input */
+    pointer-events: none; /* Ensure clicks pass through the icon */
+}
+
+.task-input-client {
+    flex: 1; /* Allow the input to take remaining space */
+    padding: 8px 0;
+    border: none;
+    font-size: 14px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+.task-input-client:focus {
+    outline: none;
 }

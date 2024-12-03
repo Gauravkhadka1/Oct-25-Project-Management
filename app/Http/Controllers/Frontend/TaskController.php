@@ -19,7 +19,7 @@ use App\Models\PaymentTask;
 use App\Models\ProspectTask;
 use App\Models\User;
 use App\Models\Project;
-use App\Models\TaskSession;
+use App\Models\ClientTaskSession;
 use App\Models\ProspectTaskSession;
 use App\Models\PaymentTaskSession;
 use Illuminate\Support\Facades\Log;
@@ -105,15 +105,15 @@ class TaskController extends Controller
                     ]);
                     break;
 
-                case 'Project':
-                    $task = Task::find($taskId);
+                case 'Client':
+                    $task = ClientTask::find($taskId);
                     if (!$task) return response()->json(['error' => 'Task not found'], 404);
 
                     // Create TaskSession
-                    TaskSession::create([
+                    ClientTaskSession::create([
                         'user_id' => auth()->id(),
                         'task_id' => $task->id,
-                        'project_id' => $task->project_id,
+                        'client_id' => $task->client_id,
                         'started_at' => now(),
                     ]);
                     break;
@@ -210,11 +210,11 @@ class TaskController extends Controller
         }
 
         // Retrieve tasks for all types: Project, Payment, and Prospect
-        $tasks = Task::where('assigned_to', $user->id)
+        $clientTasks = ClientTask::where('assigned_to', $user->id)
             ->get()
             ->map(function ($task) {
-                $task->category = 'Project';  // Set category type as Project
-                $task->category_name = $task->project->name ?? 'N/A';  // Set category name from related project
+                $task->category = 'Client';  // Set category type as Project
+                $task->category_name = $task->client->company_name ?? 'N/A';  // Set category name from related project
                 $task->assignedBy = $task->assignedBy->username ?? 'N/A';  // Get assigned by username
                 return $task;
             });
@@ -243,7 +243,7 @@ class TaskController extends Controller
 
 
         // Combine all tasks into one collection
-        $allTasks = $tasks->merge($prospectTasks)->merge($paymentTasks);
+        $allTasks = $clientTasks->merge($prospectTasks)->merge($paymentTasks);
 
         return response()->json($allTasks);
     }

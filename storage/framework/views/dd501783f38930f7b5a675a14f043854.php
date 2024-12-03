@@ -92,7 +92,69 @@
 
                     </div>
                 </div>
-                <div id="add-task-modal" class="hidden">
+         
+
+                <div class="task-list">
+                    <?php if($tasksCollection->isEmpty()): ?>
+                    <div class="no-tasks" style="height: 40px; background-color: white; display: flex; align-items: center; justify-content: center; border:none; margin-top: 10px;">
+                        <p>No task in <?php echo e($status); ?></p>
+                    </div>
+
+                    <?php else: ?>
+                    <?php $__currentLoopData = $tasksCollection; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
+                        <div class="task-name">
+                        <?php if($task->category == 'Payment'): ?>
+                                <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
+                            <?php elseif($task->category == 'Prospect'): ?>
+                                <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
+                            <?php elseif($task->category == 'Client'): ?>
+                                <a href="<?php echo e(route('client_task.detail', ['id' => $task->id])); ?>">
+                            <?php else: ?>
+                                <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                            <?php endif; ?>
+
+                                        <p><?php echo e($task->name); ?></p>
+                                    </a>
+                        </div>
+                        <div class="in-project">in <?php echo e($task->category_name); ?></div>
+                        <div class="assigne">
+                            <?php if($task->assignedBy): ?>
+                            <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
+                            by: <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedBy->profilepic)); ?>"
+                                alt="<?php echo e($task->assignedBy->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedBy->username); ?>
+
+                            <?php else: ?>
+                            <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="Unassigned">
+                            by: N/A
+                            <?php endif; ?>
+                        </div>
+                        <div class="due-date">
+                            <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt="">
+                            : <?php echo e($task->due_date); ?>
+
+                        </div>
+                        <div class="priority">
+                            <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt="">
+                            : <?php echo e($task->priority); ?>
+
+                        </div>
+                        <div class="time-details">
+                            <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">
+                                    <img src="<?php echo e(url('frontend/images/play.png')); ?>" alt="">
+                                </button>
+                            </div>
+                            <div class="time-data" id="time-<?php echo e($task->id); ?>">00:00:00</div>
+                        </div>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </div>
+        <div id="add-task-modal" class="hidden">
                     <form action="<?php echo e(route('clientstasks.store')); ?>" method="POST" class="custom-form">
                         <?php echo csrf_field(); ?>
                         <input type="hidden" id="task-status" name="status" value="">
@@ -104,8 +166,11 @@
                             <img src="" alt="">
                            <!-- Dropdown for Client Selection -->
                             <div class="custom-dropdown">
-                                <!-- Search Bar -->
-                                <input type="text" id="project-search" class="task-input" placeholder="Search clients..." onkeyup="searchClients()" style="display:none;" />
+                                <!-- Search Bar with Icon -->
+                                <div class="search-container" style="display: none;">
+                                    <img src="<?php echo e(url('frontend/images/search-icon.png')); ?>" alt="Search Icon" class="search-icon-client">
+                                    <input type="text" id="project-search" class="task-input-client" placeholder="Search clients..." onkeyup="searchClients()" />
+                                </div>
 
                                 <!-- Dropdown Label -->
                                 <div id="project-dropdown" class="dropdown-label" onclick="toggleDropdown()">
@@ -113,7 +178,7 @@
                                 </div>
 
                                 <!-- List of Clients -->
-                                <div id="project-list" class="dropdown-list" style="display:none;">
+                                <div id="project-list" class="dropdown-list" style="display: none;">
                                     <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <div class="dropdown-item" data-id="<?php echo e($client->id); ?>" onclick="selectClient('<?php echo e($client->id); ?>', '<?php echo e($client->company_name); ?>')">
                                         <?php echo e($client->company_name); ?>
@@ -152,68 +217,6 @@
                         </div>
                     </form>
                 </div>
-
-                <div class="task-list">
-                    <?php if($tasksCollection->isEmpty()): ?>
-                    <div class="no-tasks" style="height: 40px; background-color: white; display: flex; align-items: center; justify-content: center; border:none; margin-top: 10px;">
-                        <p>No task in <?php echo e($status); ?></p>
-                    </div>
-
-                    <?php else: ?>
-                    <?php $__currentLoopData = $tasksCollection; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
-                        <div class="task-name">
-                        <?php if($task->category == 'Payment'): ?>
-                                <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
-                            <?php elseif($task->category == 'Prospect'): ?>
-                                <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
-                            <?php elseif($task->category == 'Client'): ?>
-                                <a href="<?php echo e(route('client_task.detail', ['id' => $task->id])); ?>">
-                            <?php else: ?>
-                                <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
-                            <?php endif; ?>
-
-                                        <p><?php echo e($task->name); ?></p>
-                                    </a>
-                        </div>
-                        <div class="in-project">in <?php echo e($task->category_name); ?></div>
-                        <div class="assigne">
-                            <?php if($task->assignedBy): ?>
-                            <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
-                            by: <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedBy->profilepic)); ?>"
-                                alt="<?php echo e($task->assignedBy->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedBy->username); ?>
-
-                            <?php else: ?>
-                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
-                            by: N/A
-                            <?php endif; ?>
-                        </div>
-                        <div class="due-date">
-                            <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt="">
-                            : <?php echo e($task->due_date); ?>
-
-                        </div>
-                        <div class="priority">
-                            <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt="">
-                            : <?php echo e($task->priority); ?>
-
-                        </div>
-                        <div class="time-details">
-                            <div class="start-pause">
-                                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">
-                                    <img src="<?php echo e(url('frontend/images/play.png')); ?>" alt="">
-                                </button>
-                            </div>
-                            <div class="time-data" id="time-<?php echo e($task->id); ?>">00:00:00</div>
-                        </div>
-                    </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    <?php endif; ?>
-                </div>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </div>
-
 
         <div class="schedule-table">
             <div class="schedule-table-heading">
@@ -537,33 +540,31 @@ function openAddTaskModal(columnId) {
     const modal = document.getElementById('add-task-modal');
     if (!modal) return;
 
-    // Close the existing modal if it's open
-    if (currentOpenModal && currentOpenModal !== modal) {
-        closeAddTaskModal();
+    // Only open the modal if it's not already open
+    if (!currentOpenModal) {
+        // Move the modal to the correct column
+        const column = document.getElementById(columnId);
+        const taskList = column.querySelector('.task-list');
+        if (taskList) {
+            taskList.insertBefore(modal, taskList.firstChild);
+        }
+
+        // Update the hidden input field with the column's status
+        const columnField = document.getElementById('task-status');
+        if (columnField) {
+            columnField.value = column.getAttribute('data-status');  // Ensure it uses the correct status from the column
+        }
+
+        // Show the modal
+        modal.classList.remove('hidden');
+        modal.style.display = 'block';
+
+        // Set the current open modal to prevent multiple modals in one column
+        currentOpenModal = modal;
+
+        // Add event listener to close the modal when clicking outside
+        setTimeout(() => document.addEventListener('click', handleOutsideClick), 0);
     }
-
-    // Move the modal to the correct column
-    const column = document.getElementById(columnId);
-    const taskList = column.querySelector('.task-list');
-    if (taskList) {
-        taskList.insertBefore(modal, taskList.firstChild);
-    }
-
-    // Update the hidden input field with the column's status
-    const columnField = document.getElementById('task-status');
-    if (columnField) {
-        columnField.value = column.getAttribute('data-status');  // Ensure it uses the correct status from the column
-    }
-
-    // Show the modal
-    modal.classList.remove('hidden');
-    modal.style.display = 'block';
-
-    // Set the current open modal to prevent multiple modals in one column
-    currentOpenModal = modal;
-
-    // Add event listener to close the modal when clicking outside
-    setTimeout(() => document.addEventListener('click', handleOutsideClick), 0);
 }
 
 function closeAddTaskModal() {
@@ -594,15 +595,13 @@ function closeAddTaskModal() {
 function handleOutsideClick(event) {
     const modal = document.getElementById('add-task-modal');
     const isClickInsideModal = modal.contains(event.target);
-    const isClickInsideColumn = currentOpenModal && document.getElementById(currentOpenModal.id).contains(event.target);
+    const isClickInsideButton = document.querySelector('.btn-create-new').contains(event.target); // Check if the click is inside the button
 
-    // Close the modal if the click is outside the modal and the column
-    if (!isClickInsideModal && !isClickInsideColumn) {
+    // Close the modal if the click is outside the modal and the button
+    if (!isClickInsideModal && !isClickInsideButton) {
         closeAddTaskModal();
     }
 }
-
-
 
 
 // Save Task and Update Column
@@ -685,11 +684,12 @@ function saveTask() {
 // Toggle dropdown visibility
 function toggleDropdown() {
     const projectList = document.getElementById('project-list');
-    const searchInput = document.getElementById('project-search');
+    const searchContainer = document.querySelector('.search-container');
 
     // Toggle visibility of the project list and search bar
-    projectList.style.display = projectList.style.display === 'none' ? 'block' : 'none';
-    searchInput.style.display = searchInput.style.display === 'none' ? 'block' : 'none';
+    const isVisible = projectList.style.display === 'block';
+    projectList.style.display = isVisible ? 'none' : 'block';
+    searchContainer.style.display = isVisible ? 'none' : 'flex'; // Use 'flex' to match CSS
 }
 
 // Select a client and update the label
@@ -722,113 +722,6 @@ function searchClients() {
 
 
 </script>
-
-
-
-<style>
-    #add-task-modal {
-    position: relative; /* Align within its new column */
-    z-index: 1000;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-
-
-
-                .task-input {
-                    width: calc(100% - 30px);
-                    padding: 2px;
-                    margin: 5px 0;
-                    border: none;
-                    background-color: transparent;
-                    border-radius: 4px;
-                }
-
-                .task-actions {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 10px;
-                }
-
-                .btn-save-task,
-                .btn-cancel-task {
-                    padding: 5px 10px;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-
-                .btn-save-task {
-                    background-color: #007bff;
-                    color: white;
-                }
-
-                .btn-save-task:hover {
-                    background-color: #002aee !important;
-                    color: white;
-                }
-
-                .btn-cancel-task {
-                    background-color: #dc3545;
-                    color: white;
-                }
-
-                /* select in project style  */
-                /* Container for the custom dropdown */
-        .custom-dropdown {
-            position: relative;
-        }
-
-        /* The dropdown label (button) */
-        .dropdown-label {
-            padding: 5px;
-            margin: 5px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background-color: #fff;
-        }
-
-        /* The search input box */
-        #project-search {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        /* The dropdown list container */
-        .dropdown-list {
-            position: absolute;
-            width: 100%;
-            border: 1px solid #ccc;
-            max-height: 200px;
-            overflow-y: auto;
-            background-color: white;
-            z-index: 999;
-        }
-
-        /* The individual project items */
-        .dropdown-item {
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .dropdown-item:hover {
-            background-color: #f0f0f0;
-        }
-
-</style>
 </main>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontends.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/dashboard.blade.php ENDPATH**/ ?>
