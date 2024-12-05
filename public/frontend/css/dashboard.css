@@ -297,6 +297,10 @@ tbody tr:nth-child(odd) {
     background-color: transparent;
     border-radius: 4px;
 }
+.task-input:focus {
+    outline: none;
+}
+
 
 .task-actions {
     display: flex;
@@ -329,12 +333,12 @@ tbody tr:nth-child(odd) {
 
 /* select in project style  */
 /* Container for the custom dropdown */
-.custom-dropdown {
+.custom-client-dropdown {
     position: relative;
 }
 
 /* The dropdown label (button) */
-.dropdown-label {
+#client-dropdown {
     padding: 5px;
     margin: 5px;
     border: none;
@@ -344,7 +348,7 @@ tbody tr:nth-child(odd) {
 }
 
 /* The search input box */
-#project-search {
+#client-search {
     width: 100%;
     padding: 8px;
     margin-bottom: 5px;
@@ -353,7 +357,7 @@ tbody tr:nth-child(odd) {
 }
 
 /* The dropdown list container */
-.dropdown-list {
+#client-list {
     position: absolute;
     width: 100%;
     border: 1px solid #ccc;
@@ -364,16 +368,17 @@ tbody tr:nth-child(odd) {
     z-index: 999;
 }
 
-/* The individual project items */
-.dropdown-item {
+/* The individual client items */
+.client-dropdown-item {
     padding: 10px;
     cursor: pointer;
 }
 
-.dropdown-item:hover {
+.client-dropdown-item:hover {
     background-color: #f0f0f0;
 }
-.search-container {
+
+.client-search-container {
     position: relative;
     display: flex; /* Align icon and input horizontally */
     align-items: center; /* Vertically center icon with input */

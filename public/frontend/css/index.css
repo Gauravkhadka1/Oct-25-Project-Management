@@ -369,7 +369,32 @@
     border: none;
     cursor: pointer;
 }
+.nodropdown{
+/* background-color: red; */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 210px;
+}
+.nodropdown img{
+margin-right: 10px;
+}
+#nodropdown-project  {
+  margin-bottom: 10px !important;
+}
 
-
+.username-item a {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.username-item p {
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ width: 100px;
+ /* background-color: red; */
+ margin-left: 10px;
+}
 
   

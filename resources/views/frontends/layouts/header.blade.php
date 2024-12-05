@@ -105,23 +105,35 @@
         <li><a href="{{url('/dashboard')}}"> <img src="{{url('frontend/images/wtn-logo-black.svg')}}" class="logo-img"></a></li>
         @if(auth()->check() && in_array(auth()->user()->email, $allowedEmails))
         <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
-              <img src="{{url('frontend/images/time.png')}}" alt=""> Payments
-            </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
-          </a>
-          <ul class="task-dropdown">
-            <li><a href="{{url('/payments')}}">All Payments</a></li>
-            <li><a href="{{url('/payments')}}">Today Payments</a></li>
-            <li><a href="{{url('/payments')}}">This Week Payments</a></li>
-            <li><a href="{{url('/payments')}}">This Month Payments</a></li>
-          </ul>
-        </li>
+    <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+        <div class="icon-text">
+            <img src="{{ url('public/frontend/images/time.png') }}" alt=""> Payments
+        </div>
+        <div class="dropdown-arrow-div">
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+        </div>
+    </a>
+    <ul class="task-dropdown">
+        <!-- Redirect "All Payments" to the previous functionality -->
+        <li><a href="{{ url('/payments') }}">All Payments</a></li>
 
-        <li class="dropdown">
+        <!-- Redirect "Today Paid" to Paid Payments -->
+        <li><a href="{{ route('paid-payments.index', ['filter_date' => 'today']) }}">Today Paid</a></li>
+
+        <!-- Redirect "This Week Paid" to Paid Payments -->
+        <li><a href="{{ route('paid-payments.index', ['filter_date' => 'this_week']) }}">This Week Paid</a></li>
+
+        <!-- Custom Days Input -->
+        <li>
+            <form method="GET" action="{{ route('paid-payments.index') }}" class="days-filter-form">
+                <input type="number" name="days" placeholder="Enter days" required min="1" class="days-input" />
+                <button type="submit" class="days-submit">Show</button>
+            </form>
+        </li>
+    </ul>
+</li>
+
+        <!-- <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
               <img src="{{url('frontend/images/renewable.png')}}" alt=""> Renewals
@@ -140,51 +152,21 @@
             <li><a href="{{url('/tasks/my')}}">3 days</a></li>
             <li><a href="{{url('/tasks/my')}}">Expired</a></li>
           </ul>
+        </li> -->
+        <li class="dropdown" id="nodropdown-project">
+            <a href="{{url('/projects')}}">
+              <div class="nodropdown" >
+                <img src="{{url('frontend/images/blueprint.png')}}" alt=""> Projects
+              </div>
+            </a>
         </li>
         <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
-              <img src="{{url('frontend/images/customer.png')}}" alt=""> Clients
-            </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
-          </a>
-          <ul class="task-dropdown">
-            <li><a href="{{url('/all-clients')}}">All Clients</a></li>
-            <li><a href="{{url('/tasks/all')}}">Website</a></li>
-            <li><a href="{{url('/tasks/my')}}">Microsoft</a></li>
-            <li><a href="{{url('add-new-clients')}}">Add New</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
+          <a href="{{url('/prospects')}}">
+            <div class="nodropdown">
               <img src="{{url('frontend/images/group.png')}}" alt=""> Prospects
             </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
           </a>
-          <ul class="task-dropdown">
-            <li><a href="{{url('/prospects')}}">All </a></li>
-          </ul>
         </li>
-
-        <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
-              <img src="{{url('frontend/images/blueprint.png')}}" alt=""> Projects
-            </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
-          </a>
-          <ul class="task-dropdown">
-            <li><a href="{{url('/projects')}}">New</a></li>
-          </ul>
-        </li>
-
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
@@ -210,6 +192,19 @@
         </ul>
 
         </li>
+
+        <li class="dropdown">
+          <a href="/clients">
+            <div class="nodropdown">
+              <img src="{{url('frontend/images/customer.png')}}" alt=""> Clients
+            </div>
+          </a>
+        </li>
+        
+
+        
+
+       
         @endif
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
@@ -342,6 +337,7 @@
         });
     });
 });
+
 
 
   </script>

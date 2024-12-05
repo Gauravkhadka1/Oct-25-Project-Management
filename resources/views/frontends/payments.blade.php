@@ -207,9 +207,24 @@
 
         <!-- Column for Completed tasks -->
         <div class="task-column" id="paid" data-status="paid">
-            <div class="paid-heading">
-                <img src="{{url ('frontend/images/sentsent.png')}}" alt="">
-                <h3>Paid</h3>
+            <div class="payment-heading">
+                <div class="paid-heading">
+                    <img src="{{url ('frontend/images/sentsent.png')}}" alt="">
+                    <h3>Paid</h3>
+                </div>
+                <div class="bar-payment-filter" style="display: none;">
+                    <img src="frontend/images/bars-filter.png" alt="">
+                    <form method="GET" action="{{ url('/payments') }}">
+                    <select name="filter_category" onchange="this.form.submit()">
+                        <option value="" disabled>Select Category</option>
+                        <option value="Website" {{ $selectedCategory == 'Website' ? 'selected' : '' }}>Website</option>
+                        <option value="Microsoft" {{ $selectedCategory == 'Microsoft' ? 'selected' : '' }}>Microsoft</option>
+                        <option value="Other" {{ $selectedCategory == 'Other' ? 'selected' : '' }}>Other</option>
+                    </select>
+
+                    </form>
+                </div>
+
             </div>
             <div class="task-list">
                 @foreach ($payments->where('status', 'paid') as $payment)
@@ -220,26 +235,25 @@
                         </a>
                     </div>
                     <div class="category">
-                        <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
+                        <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
                     </div>
 
                     <div class="inquiry-date">
-                        NPR: {{ $payment->amount }}
+                          <strong style="margin-right: 4px;">NPR: </strong> {{ $payment->amount }}
                     </div>
-                    <div class="probability">
-                        @if (is_null($payment->due_days))
-                        N/A
-                        @elseif ($payment->due_days < 0)
-                            Due in {{ abs($payment->due_days) }} day's
-                            @elseif ($payment->due_days > 0)
-                            Overdue by {{ $payment->due_days }} day's
-                            @else
-                            Due today
-                            @endif
+                   
+                    <div class="paid-date"> 
+                        <strong>Paid on:</strong> {{ $payment->paid_date }}
                     </div>
+                    
                 </div>
                 @endforeach
             </div>
+            @if($filterDateText && $filterDateText != 'All Data')
+                <div class="total-amounts-paid">
+                    <h4>{{ $filterDateText }}: {{ number_format($totalPaidAmount) }}</h4>
+                </div>
+            @endif
         </div>
     </div>
     <tfoot>
@@ -250,7 +264,6 @@
             </td>
         </tr>
     </tfoot>
-
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
         <div class="details-modal-content">
@@ -830,8 +843,33 @@
             document.getElementById('search-form').submit(); // Submit the form after 3 seconds
         }, 1000); // 3000ms = 3 seconds
     });
-    </script>
 
+    // Paid payment filter bar 
+    document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const filterDate = urlParams.get('filter_date');
+    const days = urlParams.get('days');
+
+    const barPaymentFilter = document.querySelector('.bar-payment-filter');
+
+    if ((filterDate === 'today' || filterDate === 'this_week' || days) && barPaymentFilter) {
+        barPaymentFilter.style.display = 'block';
+    } else if (barPaymentFilter) {
+        barPaymentFilter.style.display = 'none';
+    }
+});
+
+    </script>
+  <style>
+        .total-amounts-paid {
+    margin-top: 10px;
+    padding-top: 5px;
+    font-weight: bold;
+    color: #007bff;
+    padding-left:5px;
+}
+    </style>
 </div>
 
 

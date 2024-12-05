@@ -13,7 +13,9 @@
             ?>
         </div>
 
-
+        <!-- <div class="your-task">
+        <h2><?php echo e($loggedInUser); ?> Task</h2> 
+        </div> -->
         <div class="task-board">
             <?php
             use App\Models\User;
@@ -62,18 +64,18 @@
             $serialNo = 1;
 
             $tasksToDo = $tasks->filter(function ($task) {
-            return $task->status === 'To Do' || $task->status === null;
+            return $task->status === 'TO DO' || $task->status === null;
             });
-            $tasksInProgress = $tasks->where('status', 'In Progress');
+            $tasksInProgress = $tasks->where('status', 'IN PROGRESS');
             $tasksQA = $tasks->where('status', 'QA');
-            $tasksCompleted = $tasks->where('status', 'Completed');
-            $tasksClosed = $tasks->where('status', 'Closed');
+            $tasksCompleted = $tasks->where('status', 'COMPLETED');
+            $tasksClosed = $tasks->where('status', 'CLOSED');
             $columnNames = [
-            'To Do' => $tasksToDo,
-            'In Progress' => $tasksInProgress,
+            'TO DO' => $tasksToDo,
+            'IN PROGRESS' => $tasksInProgress,
             'QA' => $tasksQA,
-            'Completed' => $tasksCompleted,
-            'Closed' => $tasksClosed
+            'COMPLETED' => $tasksCompleted,
+            'CLOSED' => $tasksClosed
             ];
            
             ?>
@@ -139,14 +141,14 @@
                             : <?php echo e($task->priority); ?>
 
                         </div>
-                        <div class="time-details">
+                        <!-- <div class="time-details">
                             <div class="start-pause">
                                 <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">
                                     <img src="<?php echo e(url('frontend/images/play.png')); ?>" alt="">
                                 </button>
                             </div>
                             <div class="time-data" id="time-<?php echo e($task->id); ?>">00:00:00</div>
-                        </div>
+                        </div> -->
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     <?php endif; ?>
@@ -155,70 +157,70 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
         <div id="add-task-modal" class="hidden">
-                    <form action="<?php echo e(route('clientstasks.store')); ?>" method="POST" class="custom-form">
-                        <?php echo csrf_field(); ?>
-                        <input type="hidden" id="task-status" name="status" value="">
-                        <div class="task-name">
-                            <input type="text" id="task-name" name="name" class="task-input" placeholder="Task Name" required />
-                            <button type="submit" class="btn-save-task">Save</button>
-                        </div>
-                        <div class="in">
-                            <img src="" alt="">
-                           <!-- Dropdown for Client Selection -->
-                            <div class="custom-dropdown">
-                                <!-- Search Bar with Icon -->
-                                <div class="search-container" style="display: none;">
-                                    <img src="<?php echo e(url('frontend/images/search-icon.png')); ?>" alt="Search Icon" class="search-icon-client">
-                                    <input type="text" id="project-search" class="task-input-client" placeholder="Search clients..." onkeyup="searchClients()" />
-                                </div>
-
-                                <!-- Dropdown Label -->
-                                <div id="project-dropdown" class="dropdown-label" onclick="toggleDropdown()">
-                                    <span id="selected-project">Select Client</span>
-                                </div>
-
-                                <!-- List of Clients -->
-                                <div id="project-list" class="dropdown-list" style="display: none;">
-                                    <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <div class="dropdown-item" data-id="<?php echo e($client->id); ?>" onclick="selectClient('<?php echo e($client->id); ?>', '<?php echo e($client->company_name); ?>')">
-                                        <?php echo e($client->company_name); ?>
-
-                                    </div>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </div>
-                            </div>
-
-                            <!-- Hidden Input for Selected Client ID -->
-                            <input type="hidden" id="client-id" name="client_id">
-
-                        </div>
-
-
-                        <div class="assigne">
-                            <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
-                            <select id="assigned-to" name="assigned_to" class="task-input" required>
-                                <option value="">Assign to</option>
-                                <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($user->id); ?>"><?php echo e($user->username); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </select>
-                        </div>
-                        <div class="due-date">
-                            <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt="">
-                            <input type="date" id="due-date" name="due_date" class="task-input" required />
-                        </div>
-                        <div class="priority">
-                            <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt="">
-                            <select id="priority" name="priority" class="task-input" required>
-                                <option value="Normal">Normal</option>
-                                <option value="High">High</option>
-                                <option value="Urgent">Urgent</option>
-                            </select>
-                        </div>
-                    </form>
+    <form action="<?php echo e(route('clientstasks.store')); ?>" method="POST" class="custom-form">
+        <?php echo csrf_field(); ?>
+        <input type="hidden" id="task-status" name="status" value="">
+        <div class="task-name">
+            <input type="text" id="task-name" name="name" class="task-input" placeholder="Task Name" required />
+            <button type="submit" class="btn-save-task">Save</button>
+        </div>
+        <div class="in">
+            <img src="" alt="">
+            <!-- Dropdown for Client Selection -->
+            <div class="custom-client-dropdown">
+                <!-- Search Bar with Icon -->
+                <div class="client-search-container" style="display: none;">
+                    <img src="<?php echo e(url('frontend/images/search-icon.png')); ?>" alt="Search Icon" class="search-icon-client">
+                    <input type="text" id="client-search" class="task-input-client" placeholder="Search clients..." onkeyup="searchClientDropdown()" />
                 </div>
 
-        <div class="schedule-table">
+                <!-- Dropdown Label -->
+                <div id="client-dropdown" class="dropdown-label" onclick="toggleClientDropdown()">
+                    <span id="selected-client">Select Client</span>
+                </div>
+
+                <!-- List of Clients -->
+                <div id="client-list" class="dropdown-list" style="display: none;">
+                    <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="client-dropdown-item" data-id="<?php echo e($client->id); ?>" onclick="selectClientDropdown('<?php echo e($client->id); ?>', '<?php echo e($client->company_name); ?>')">
+                            <?php echo e($client->company_name); ?>
+
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+
+            <!-- Hidden Input for Selected Client ID -->
+            <input type="hidden" id="client-id" name="client_id">
+        </div>
+
+        <!-- Other Form Fields -->
+        <div class="assigne">
+            <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
+            <select id="assigned-to" name="assigned_to" class="task-input" required>
+                <option value="">Assign to</option>
+                <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($user->id); ?>"><?php echo e($user->username); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
+        </div>
+        <div class="due-date">
+            <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt="">
+            <input type="date" id="due-date" name="due_date" class="task-input" required />
+        </div>
+        <div class="priority">
+            <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt="">
+            <select id="priority" name="priority" class="task-input" required>
+                <option value="Normal">Normal</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+            </select>
+        </div>
+    </form>
+</div>
+
+
+        <!-- <div class="schedule-table">
             <div class="schedule-table-heading">
                 <h2><?php echo e($username); ?> Today Schedule</h2>
                 <form method="GET" action="<?php echo e(route('dashboard')); ?>">
@@ -274,7 +276,7 @@
                     </tr>
                 </tfoot>
             </table>
-        </div>
+        </div> -->
     </div>
     </div>
 
@@ -681,44 +683,45 @@ function saveTask() {
 
 
 // Toggle dropdown visibility
-// Toggle dropdown visibility
-function toggleDropdown() {
-    const projectList = document.getElementById('project-list');
-    const searchContainer = document.querySelector('.search-container');
+// Toggle client dropdown visibility
+function toggleClientDropdown() {
+    const clientList = document.getElementById('client-list');
+    const clientSearchContainer = document.querySelector('.client-search-container');
 
-    // Toggle visibility of the project list and search bar
-    const isVisible = projectList.style.display === 'block';
-    projectList.style.display = isVisible ? 'none' : 'block';
-    searchContainer.style.display = isVisible ? 'none' : 'flex'; // Use 'flex' to match CSS
+    // Toggle visibility of the client list and search bar
+    const isVisible = clientList.style.display === 'block';
+    clientList.style.display = isVisible ? 'none' : 'block';
+    clientSearchContainer.style.display = isVisible ? 'none' : 'flex'; // Use 'flex' to match CSS
 }
 
-// Select a client and update the label
-function selectClient(clientId, clientName) {
+// Select a client and update the label and hidden input
+function selectClientDropdown(clientId, clientName) {
     // Update the hidden input with the selected client's ID
     document.getElementById('client-id').value = clientId;
 
     // Update the dropdown label with the selected client's name
-    document.getElementById('selected-project').textContent = clientName;
+    document.getElementById('selected-client').textContent = clientName;
 
     // Hide the dropdown list and search bar
-    document.getElementById('project-list').style.display = 'none';
-    document.getElementById('project-search').style.display = 'none';
-    
+    document.getElementById('client-list').style.display = 'none';
+    document.querySelector('.client-search-container').style.display = 'none';
+
     // Reset search input value after client selection
-    document.getElementById('project-search').value = '';
+    document.getElementById('client-search').value = '';
 }
 
 // Filter the client list based on search input
-function searchClients() {
-    const input = document.getElementById('project-search').value.toLowerCase();
-    const items = document.getElementsByClassName('dropdown-item');
+function searchClientDropdown() {
+    const input = document.getElementById('client-search').value.toLowerCase();
+    const items = document.getElementsByClassName('client-dropdown-item');
 
     // Loop through the items and display/hide based on match
     Array.from(items).forEach(item => {
-        const projectName = item.textContent.toLowerCase();
-        item.style.display = projectName.includes(input) ? 'block' : 'none';
+        const clientName = item.textContent.toLowerCase();
+        item.style.display = clientName.includes(input) ? 'block' : 'none';
     });
 }
+
 
 
 </script>

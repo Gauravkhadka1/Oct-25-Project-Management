@@ -546,3 +546,12 @@ margin: 5px 0 10px 0 ;
     border-radius: 50%;
     margin-right: 10px;
 }
+.payment-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.bar-payment-filter img {
+    width: 20px;
+    margin-right: 10px;
+}

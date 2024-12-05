@@ -212,9 +212,24 @@
 
         <!-- Column for Completed tasks -->
         <div class="task-column" id="paid" data-status="paid">
-            <div class="paid-heading">
-                <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
-                <h3>Paid</h3>
+            <div class="payment-heading">
+                <div class="paid-heading">
+                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
+                    <h3>Paid</h3>
+                </div>
+                <div class="bar-payment-filter" style="display: none;">
+                    <img src="frontend/images/bars-filter.png" alt="">
+                    <form method="GET" action="<?php echo e(url('/payments')); ?>">
+                    <select name="filter_category" onchange="this.form.submit()">
+                        <option value="" disabled>Select Category</option>
+                        <option value="Website" <?php echo e($selectedCategory == 'Website' ? 'selected' : ''); ?>>Website</option>
+                        <option value="Microsoft" <?php echo e($selectedCategory == 'Microsoft' ? 'selected' : ''); ?>>Microsoft</option>
+                        <option value="Other" <?php echo e($selectedCategory == 'Other' ? 'selected' : ''); ?>>Other</option>
+                    </select>
+
+                    </form>
+                </div>
+
             </div>
             <div class="task-list">
                 <?php $__currentLoopData = $payments->where('status', 'paid'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -225,28 +240,28 @@
                         </a>
                     </div>
                     <div class="category">
-                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        <img src="<?php echo e(url ('public/frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
                     </div>
 
                     <div class="inquiry-date">
-                        NPR: <?php echo e($payment->amount); ?>
+                          <strong style="margin-right: 4px;">NPR: </strong> <?php echo e($payment->amount); ?>
 
                     </div>
-                    <div class="probability">
-                        <?php if(is_null($payment->due_days)): ?>
-                        N/A
-                        <?php elseif($payment->due_days < 0): ?>
-                            Due in <?php echo e(abs($payment->due_days)); ?> day's
-                            <?php elseif($payment->due_days > 0): ?>
-                            Overdue by <?php echo e($payment->due_days); ?> day's
-                            <?php else: ?>
-                            Due today
-                            <?php endif; ?>
+                   
+                    <div class="paid-date"> 
+                        <strong>Paid on:</strong> <?php echo e($payment->paid_date); ?>
+
                     </div>
+                    
                 </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
+            <?php if($filterDateText && $filterDateText != 'All Data'): ?>
+                <div class="total-amounts-paid">
+                    <h4><?php echo e($filterDateText); ?>: <?php echo e(number_format($totalPaidAmount)); ?></h4>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     <tfoot>
@@ -258,7 +273,6 @@
             </td>
         </tr>
     </tfoot>
-
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
         <div class="details-modal-content">
@@ -838,8 +852,33 @@
             document.getElementById('search-form').submit(); // Submit the form after 3 seconds
         }, 1000); // 3000ms = 3 seconds
     });
-    </script>
 
+    // Paid payment filter bar 
+    document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const filterDate = urlParams.get('filter_date');
+    const days = urlParams.get('days');
+
+    const barPaymentFilter = document.querySelector('.bar-payment-filter');
+
+    if ((filterDate === 'today' || filterDate === 'this_week' || days) && barPaymentFilter) {
+        barPaymentFilter.style.display = 'block';
+    } else if (barPaymentFilter) {
+        barPaymentFilter.style.display = 'none';
+    }
+});
+
+    </script>
+  <style>
+        .total-amounts-paid {
+    margin-top: 10px;
+    padding-top: 5px;
+    font-weight: bold;
+    color: #007bff;
+    padding-left:5px;
+}
+    </style>
 </div>
 
 

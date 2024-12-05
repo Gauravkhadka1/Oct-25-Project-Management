@@ -106,23 +106,35 @@
         <li><a href="<?php echo e(url('/dashboard')); ?>"> <img src="<?php echo e(url('frontend/images/wtn-logo-black.svg')); ?>" class="logo-img"></a></li>
         <?php if(auth()->check() && in_array(auth()->user()->email, $allowedEmails)): ?>
         <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
-              <img src="<?php echo e(url('frontend/images/time.png')); ?>" alt=""> Payments
-            </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
-          </a>
-          <ul class="task-dropdown">
-            <li><a href="<?php echo e(url('/payments')); ?>">All Payments</a></li>
-            <li><a href="<?php echo e(url('/payments')); ?>">Today Payments</a></li>
-            <li><a href="<?php echo e(url('/payments')); ?>">This Week Payments</a></li>
-            <li><a href="<?php echo e(url('/payments')); ?>">This Month Payments</a></li>
-          </ul>
-        </li>
+    <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+        <div class="icon-text">
+            <img src="<?php echo e(url('public/frontend/images/time.png')); ?>" alt=""> Payments
+        </div>
+        <div class="dropdown-arrow-div">
+            <i class="fas fa-chevron-right dropdown-arrow"></i>
+        </div>
+    </a>
+    <ul class="task-dropdown">
+        <!-- Redirect "All Payments" to the previous functionality -->
+        <li><a href="<?php echo e(url('/payments')); ?>">All Payments</a></li>
 
-        <li class="dropdown">
+        <!-- Redirect "Today Paid" to Paid Payments -->
+        <li><a href="<?php echo e(route('paid-payments.index', ['filter_date' => 'today'])); ?>">Today Paid</a></li>
+
+        <!-- Redirect "This Week Paid" to Paid Payments -->
+        <li><a href="<?php echo e(route('paid-payments.index', ['filter_date' => 'this_week'])); ?>">This Week Paid</a></li>
+
+        <!-- Custom Days Input -->
+        <li>
+            <form method="GET" action="<?php echo e(route('paid-payments.index')); ?>" class="days-filter-form">
+                <input type="number" name="days" placeholder="Enter days" required min="1" class="days-input" />
+                <button type="submit" class="days-submit">Show</button>
+            </form>
+        </li>
+    </ul>
+</li>
+
+        <!-- <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
               <img src="<?php echo e(url('frontend/images/renewable.png')); ?>" alt=""> Renewals
@@ -141,51 +153,21 @@
             <li><a href="<?php echo e(url('/tasks/my')); ?>">3 days</a></li>
             <li><a href="<?php echo e(url('/tasks/my')); ?>">Expired</a></li>
           </ul>
+        </li> -->
+        <li class="dropdown" id="nodropdown-project">
+            <a href="<?php echo e(url('/projects')); ?>">
+              <div class="nodropdown" >
+                <img src="<?php echo e(url('frontend/images/blueprint.png')); ?>" alt=""> Projects
+              </div>
+            </a>
         </li>
         <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
-              <img src="<?php echo e(url('frontend/images/customer.png')); ?>" alt=""> Clients
-            </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
-          </a>
-          <ul class="task-dropdown">
-            <li><a href="<?php echo e(url('/all-clients')); ?>">All Clients</a></li>
-            <li><a href="<?php echo e(url('/tasks/all')); ?>">Website</a></li>
-            <li><a href="<?php echo e(url('/tasks/my')); ?>">Microsoft</a></li>
-            <li><a href="<?php echo e(url('add-new-clients')); ?>">Add New</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
+          <a href="<?php echo e(url('/prospects')); ?>">
+            <div class="nodropdown">
               <img src="<?php echo e(url('frontend/images/group.png')); ?>" alt=""> Prospects
             </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
           </a>
-          <ul class="task-dropdown">
-            <li><a href="<?php echo e(url('/prospects')); ?>">All </a></li>
-          </ul>
         </li>
-
-        <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
-              <img src="<?php echo e(url('frontend/images/blueprint.png')); ?>" alt=""> Projects
-            </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
-          </a>
-          <ul class="task-dropdown">
-            <li><a href="<?php echo e(url('/projects')); ?>">New</a></li>
-          </ul>
-        </li>
-
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
@@ -212,6 +194,19 @@
         </ul>
 
         </li>
+
+        <li class="dropdown">
+          <a href="/clients">
+            <div class="nodropdown">
+              <img src="<?php echo e(url('frontend/images/customer.png')); ?>" alt=""> Clients
+            </div>
+          </a>
+        </li>
+        
+
+        
+
+       
         <?php endif; ?>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
@@ -344,6 +339,7 @@
         });
     });
 });
+
 
 
   </script>

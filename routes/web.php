@@ -25,7 +25,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Middleware\CheckAllowedEmails;
 use App\Http\Controllers\ClientTaskController;
-
+use App\Http\Controllers\PaidPaymentsController;
 
 Route::get('/',[HomeController::class, 'index']);
 Route::get('/mention',[HomeController::class, 'mention']);
@@ -168,6 +168,8 @@ Route::get('/tasks/create', [ClientTaskController::class, 'create'])->name('clie
 Route::post('/tasks/store', [ClientTaskController::class, 'store'])->name('clientstasks.store');
 Route::get('/client-task/{id}/detail', [ClientTaskController::class, 'show'])->name('client_task.detail');
 Route::post('/tasks/{id}/pause-timer', [TaskController::class, 'updateElapsedTime']);
+Route::get('/paid-payments', [PaidPaymentsController::class, 'index'])->name('paid-payments.index');
+
 
 
 
