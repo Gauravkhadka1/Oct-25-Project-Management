@@ -29,7 +29,6 @@
                             @endif
                         </div>
         </div>
-        <hr>
 
         <div class="add-payment-task">
             <div class="payment-contact-details">
@@ -38,41 +37,10 @@
                 <p><strong>C. Person Phone:</strong> {{ $payment->phone }}</p>
                 <p><strong>C. Person Email:</strong> {{ $payment->email }}</p>
             </div>
-            
+            <button class="btn-create" id="task-create" onclick="openAddTaskModal({{ $payment->id }})">
+                <h2>Add Task</h2>
+            </button>
         </div>
-        <div class="task-section">
-    <h2>Tasks</h2>
-    <button class="btn-create" id="task-create" onclick="openAddTaskModal({{ $payment->id }})">
-        <h2>Add Task</h2>
-    </button>
-
-    <table class="subtask-table">
-        <thead>
-            <tr>
-                <th>Task Name</th>
-                <th>Assigned To</th>
-                <th>Due Date</th>
-                <th>Priority</th>
-            </tr>
-        </thead>
-        <tbody>
-    @forelse ($payment->payment_tasks as $task)
-        <tr>
-            <td>{{ $task->name }}</td>
-            <td>{{ $task->assignedTo->username ?? 'Unassigned' }}</td>
-            <td>{{ $task->due_date ? $task->due_date->format('Y-m-d') : 'No Due Date' }}</td>
-            <td>{{ ucfirst($task->priority) }}</td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="4">No tasks found for this payment.</td>
-        </tr>
-    @endforelse
-</tbody>
-
-    </table>
-</div>
-
     </div>
 
       <!-- Modal for Adding New Task -->
@@ -88,15 +56,12 @@
                 <input type="text" name="name" id="task-name" class="custom-input" required>
 
                 <label for="assigned-to" class="custom-label">Assigned To:</label>
-                    <select name="assigned_to" id="assigned-to" class="custom-select" required>
-                        <option value="">Select User</option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->email }}" 
-                                {{ $user->username }} 
-                            </option>
-                        @endforeach
-                    </select>
-
+                <select name="assigned_to" id="assigned-to" class="custom-select" required>
+                    <option value="">Select User</option>
+                    @foreach ($users as $user)
+                    <option value="{{ $user->email }}">{{ $user->username }}</option>
+                    @endforeach
+                </select>
 
                 <label for="start-date" class="custom-label">Start Date:</label>
                 <input type="datetime-local" name="start_date" id="start-date" class="custom-input">
@@ -133,7 +98,7 @@
             <div class="form-buttons">
                 <button type="submit" class="btn-submit">Add
                     <div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
-                        <img src="{{ url('frontend/images/spinner.gif') }}" alt="Loading...">
+                        <img src="{{ url('public/frontend/images/spinner.gif') }}" alt="Loading...">
                     </div>
                 </button>
             </div>
@@ -243,7 +208,7 @@ $(document).ready(function() {
                         data.forEach(function(user) {
                             $('#suggestions').append(`
                                 <div data-username="${user.username}" class="suggestion-item">
-                                    <img src="${user.profilepic ? '/storage/profile_pictures/' + user.profilepic : '/images/default-profile.png'}" 
+                                    <img src="${user.profilepic ? '/storage/profilepics/' + user.profilepic : '/images/default-profile.png'}" 
                                          alt="${user.username}'s Profile Picture" class="suggestion-pic">
                                     <span>${user.username}</span>
                                 </div>
@@ -268,7 +233,7 @@ $(document).ready(function() {
                             data.forEach(function(user) {
                             $('#suggestions').append(`
                                 <div data-username="${user.username}" class="suggestion-item">
-                                    <img src="${user.profilepic ? '/storage/profile_pictures/' + user.profilepic : '/images/default-profile.png'}" 
+                                    <img src="${user.profilepic ? '/storage/profilepics/' + user.profilepic : '/images/default-profile.png'}" 
                                          alt="${user.username}'s Profile Picture" class="suggestion-pic">
                                     <span>${user.username}</span>
                                 </div>

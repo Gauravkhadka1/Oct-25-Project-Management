@@ -20,11 +20,12 @@
         </div>
         <div class="create-filter-search">
             <div class="create-payments">
-                <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="{{url ('/frontend/images/add-new.png')}}" alt=""></button>
+                <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="{{url ('public/frontend/images/add-new.png')}}" alt=""></button>
             </div>
             <div class="filter-section">
                 <div class="filter-payments" onclick="toggleFilterList()">
-                <img src="{{ asset('frontend/images/bars-filter.png') }}" alt="" class="barfilter">
+             <img src="{{ url('public/frontend/images/bars-filter.png') }}" alt="" class="barfilter">
+
 
                     <div class="filter-count">
                         @if($filterCount > 0)
@@ -74,25 +75,25 @@
 
             </div>
             <div class="search-payments">
-    <div class="search-icon">
-        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
-    </div>
-    <form action="{{ route('payments.index') }}" method="GET" id="search-form">
-        <div class="search-text-area">
-            <input type="text" id="search-input" name="search" placeholder="Search payments" value="{{ request('search') }}">
+                <div class="search-icon">
+                    <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
+                </div>
+                <form action="{{ route('payments.index') }}" method="GET" id="search-form">
+                    <div class="search-text-area">
+                        <input type="text" name="search" placeholder="search payments" value="{{ request('search') }}" oninput="this.form.submit()">
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
-</div>
-        </div>
     </div>
 
 
 
-    <div class="task-board">
+    <div class="task-board" style="overflow-x: hidden;">
         <!-- Column for To Do tasks -->
-        <div class="task-column" id="due" data-status="due">
+        <div class="task-column" id="due" data-status="due" >
             <div class="todo-heading-payments">
-                <img src="{{url ('frontend/images/due.png')}}" alt="">
+                <img src="{{url ('public/frontend/images/due.png')}}" alt="">
                 <h3>Dues</h3>
             </div>
 
@@ -107,7 +108,7 @@
 
                     </div>
                     <div class="category">
-                        <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
+                        <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
                     </div>
 
                     <div class="inquiry-date">
@@ -133,20 +134,21 @@
         <!-- Column for In Progress tasks -->
         <div class="task-column" id="invoice_sent" data-status="invoice_sent">
             <div class="invoicesent-heading">
-                <img src="{{url ('frontend/images/sentsent.png')}}" alt="">
+                <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
                 <h3>Payment Details Sent</h3>
             </div>
 
             <div class="task-list">
                 @foreach ($payments->where('status', 'invoice_sent') as $payment)
                 <div class="task" draggable="true" data-task-id="{{ $payment->id }}" data-task-type="{{ strtolower($payment->category) }}">
-                    <div class="task-name">
-                    <a href="{{url ('paymentdetails/' .$payment->id)}}">
+                   <div class="task-name">
+                        <a href="{{url ('paymentdetails/' .$payment->id)}}">
                             <p>{{ $payment->company_name }}</p>
                         </a>
+
                     </div>
                     <div class="category">
-                        <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
+                        <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
                     </div>
 
                     <div class="inquiry-date">
@@ -171,19 +173,20 @@
         <!-- Column for QA tasks -->
         <div class="task-column" id="vatbill_sent" data-status="vatbill_sent">
             <div class="vatbillsent-heading">
-                <img src="{{url ('frontend/images/sentsent.png')}}" alt="">
+                <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
                 <h3>Vat Bill Sent</h3>
             </div>
             <div class="task-list">
                 @foreach ($payments->where('status', 'vatbill_sent') as $payment)
                 <div class="task" draggable="true" data-task-id="{{ $payment->id }}" data-task-type="{{ strtolower($payment->category) }}">
-                    <div class="task-name">
-                    <a href="{{url ('paymentdetails/' .$payment->id)}}">
+                   <div class="task-name">
+                        <a href="{{url ('paymentdetails/' .$payment->id)}}">
                             <p>{{ $payment->company_name }}</p>
                         </a>
+
                     </div>
                     <div class="category">
-                        <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
+                        <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $payment->category}}
                     </div>
 
                     <div class="inquiry-date">
@@ -206,25 +209,10 @@
         </div>
 
         <!-- Column for Completed tasks -->
-        <div class="task-column" id="paid" data-status="paid">
-            <div class="payment-heading">
-                <div class="paid-heading">
-                    <img src="{{url ('frontend/images/sentsent.png')}}" alt="">
-                    <h3>Paid</h3>
-                </div>
-                <div class="bar-payment-filter" style="display: none;">
-                    <img src="frontend/images/bars-filter.png" alt="">
-                    <form method="GET" action="{{ url('/payments') }}">
-                    <select name="filter_category" onchange="this.form.submit()">
-                        <option value="" disabled>Select Category</option>
-                        <option value="Website" {{ $selectedCategory == 'Website' ? 'selected' : '' }}>Website</option>
-                        <option value="Microsoft" {{ $selectedCategory == 'Microsoft' ? 'selected' : '' }}>Microsoft</option>
-                        <option value="Other" {{ $selectedCategory == 'Other' ? 'selected' : '' }}>Other</option>
-                    </select>
-
-                    </form>
-                </div>
-
+      <div class="task-column" id="paid" data-status="paid">
+            <div class="paid-heading">
+                <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
+                <h3>Paid</h3>
             </div>
             <div class="task-list">
                 @foreach ($payments->where('status', 'paid') as $payment)
@@ -264,6 +252,7 @@
             </td>
         </tr>
     </tfoot>
+
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">
         <div class="details-modal-content">
@@ -411,7 +400,7 @@
                     <div id="suggestions"></div>
                     <div class="form-buttons">
                         <button type="submit" class="btn-submit">Add<div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
-                                <img src="{{url('frontend/images/spinner.gif')}}" alt="Loading...">
+                                <img src="{{url('public/frontend/images/spinner.gif')}}" alt="Loading...">
                             </div>
                         </button>
                     </div>
@@ -835,33 +824,8 @@
             }
             return null; // Return null if no mention found
         }
-        let debounceTimeout;
-
-    document.getElementById('search-input').addEventListener('input', function () {
-        clearTimeout(debounceTimeout); // Clear the previous timeout
-        debounceTimeout = setTimeout(() => {
-            document.getElementById('search-form').submit(); // Submit the form after 3 seconds
-        }, 1000); // 3000ms = 3 seconds
-    });
-
-    // Paid payment filter bar 
-    document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    const filterDate = urlParams.get('filter_date');
-    const days = urlParams.get('days');
-
-    const barPaymentFilter = document.querySelector('.bar-payment-filter');
-
-    if ((filterDate === 'today' || filterDate === 'this_week' || days) && barPaymentFilter) {
-        barPaymentFilter.style.display = 'block';
-    } else if (barPaymentFilter) {
-        barPaymentFilter.style.display = 'none';
-    }
-});
-
     </script>
-  <style>
+    <style>
         .total-amounts-paid {
     margin-top: 10px;
     padding-top: 5px;
@@ -870,6 +834,7 @@
     padding-left:5px;
 }
     </style>
+
 </div>
 
 

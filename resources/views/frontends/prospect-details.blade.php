@@ -90,7 +90,7 @@
             <div class="form-buttons">
                 <button type="submit" class="btn-submit">Add
                     <div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
-                        <img src="{{ url('frontend/images/spinner.gif') }}" alt="Loading...">
+                        <img src="{{ url('public/frontend/images/spinner.gif') }}" alt="Loading...">
                     </div>
                 </button>
             </div>
@@ -151,7 +151,7 @@
                const profilePic = activity.profile_pic 
                     ? `/storage/${activity.profile_pic}` // Correct path
                     : '/images/default-profile.png'; // Fallback image
-
+                    
                     // Create a card for each activity
                     const activityCard = document.createElement('div');
                     activityCard.className = 'activity-card';
@@ -199,7 +199,7 @@ $(document).ready(function() {
                         data.forEach(function(user) {
                             $('#suggestions').append(`
                                 <div data-username="${user.username}" class="suggestion-item">
-                                    <img src="${user.profilepic ? '/storage/profile_pictures/' + user.profilepic : '/images/default-profile.png'}" 
+                                    <img src="${user.profilepic ? '/storage/profilepics/' + user.profilepic : '/images/default-profile.png'}" 
                                          alt="${user.username}'s Profile Picture" class="suggestion-pic">
                                     <span>${user.username}</span>
                                 </div>
@@ -224,7 +224,7 @@ $(document).ready(function() {
                             data.forEach(function(user) {
                             $('#suggestions').append(`
                                 <div data-username="${user.username}" class="suggestion-item">
-                                    <img src="${user.profilepic ? '/storage/profile_pictures/' + user.profilepic : '/images/default-profile.png'}" 
+                                    <img src="${user.profilepic ? '/storage/profilepics/' + user.profilepic : '/images/default-profile.png'}" 
                                          alt="${user.username}'s Profile Picture" class="suggestion-pic">
                                     <span>${user.username}</span>
                                 </div>

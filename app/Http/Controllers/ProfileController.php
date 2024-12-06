@@ -13,7 +13,6 @@ use App\Models\PaymentTask;
 use App\Models\ProspectTask;
 use App\Models\Project;
 use App\Models\Prospect;
-use App\Models\Clients;
 use App\Models\Payments;
 use App\Models\TaskSession;
 use App\Models\PaymentTaskSession;
@@ -34,7 +33,6 @@ class ProfileController extends Controller
         $user = auth()->user();
         $userEmail = $user->email;
         $username = $user->username;
-
 
         // Get the selected date from the request or default to today's date
         $selectedDate = $request->input('date', Carbon::now('Asia/Kathmandu')->toDateString());
@@ -74,10 +72,6 @@ class ProfileController extends Controller
         $payments = Payments::with(['payment_tasks' => function ($query) use ($user) {
             $query->where('assigned_to', $user->id);
         }])->get();
-        $clients = clients::with(['client_tasks' => function ($query) use ($user) {
-            $query->where('assigned_to', $user->id);
-        }])->get();
-      
 
         // Define the Nepali timezone and calculate the UTC start and end of the selected date
         $nepaliTimeZone = new DateTimeZone('Asia/Kathmandu');
@@ -201,22 +195,15 @@ class ProfileController extends Controller
             $summary['total_time_spent'] = $this->formatDuration($summary['total_time_spent']);
         }
         $totalTimeSpentAcrossTasksFormatted = $this->formatDuration($totalTimeSpentAcrossTasks);
-        $projects = Project::all();
-        $users = User::all();
-        $clients = Clients::all();
-   
 
         // Return view with calculated data
         return view('frontends.dashboard', compact(
-            'projects',
             'projects',
             'payments',
             'prospects',
             'username',
             'userEmail',
             'user',
-            'users',          
-            'clients',          
             'tasks',
             'prospectTasks',
             'paymentTasks',

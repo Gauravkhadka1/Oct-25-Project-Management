@@ -36,7 +36,7 @@
                     <div class="form-buttons">
                         <button type="submit" class="btn-submit">Add
                             <div id="loading-spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
-                                <img src="{{ url('frontend/images/spinner.gif') }}" alt="Loading...">
+                                <img src="{{ url('public/frontend/images/spinner.gif') }}" alt="Loading...">
                             </div>
                         </button>
                     </div>
@@ -46,7 +46,7 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-         document.addEventListener('DOMContentLoaded', () => {
+          document.addEventListener('DOMContentLoaded', () => {
     const taskId = document.getElementById('activity-task-id').value;
 
     // Fetch and display activities
@@ -105,11 +105,12 @@
                     activitiesList.appendChild(activityCard);
                 });
             } else {
-                activitiesList.innerHTML = '<p>No activities found.</p>';
+                activitiesList.innerHTML = '<p>No comments found.</p>';
             }
         })
         .catch(error => console.error('Error loading activities:', error));
 });
+
 
         // mention script
 
@@ -129,7 +130,13 @@ $(document).ready(function() {
                     $('#suggestions').empty();
                     if (data.length > 0) {
                         data.forEach(function(user) {
-                            $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
+                            $('#suggestions').append(`
+                                <div data-username="${user.username}" class="suggestion-item">
+                                    <img src="${user.profilepic ? '/storage/profilepics/' + user.profilepic : '/images/default-profile.png'}" 
+                                         alt="${user.username}'s Profile Picture" class="suggestion-pic">
+                                    <span>${user.username}</span>
+                                </div>
+                            `);
                         });
                         $('#suggestions').show();
                     } else {
@@ -148,8 +155,14 @@ $(document).ready(function() {
                         $('#suggestions').empty();
                         if (data.length > 0) {
                             data.forEach(function(user) {
-                                $('#suggestions').append('<div data-username="' + user.username + '">' + user.username + '</div>');
-                            });
+                            $('#suggestions').append(`
+                                <div data-username="${user.username}" class="suggestion-item">
+                                    <img src="${user.profilepic ? '/storage/profilepics/' + user.profilepic : '/images/default-profile.png'}" 
+                                         alt="${user.username}'s Profile Picture" class="suggestion-pic">
+                                    <span>${user.username}</span>
+                                </div>
+                            `);
+                        });
                             $('#suggestions').show();
                         } else {
                             $('#suggestions').hide();

@@ -24,12 +24,12 @@
     <div class="task-column" id="todo" data-status="todo">
         <div class="todo-add">
         <div class="todo-heading">
-                    <img src="{{url ('frontend/images/todo.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/todo.png')}}" alt="">
                     <h3>To Do</h3>
                 </div>
             <div class="add-icon">
                 <button class="btn-create-new" id="task-create" onclick="openAddTaskModal({{ $project->id }})">
-                    <img src="{{ url('frontend/images/add-new.png') }}" alt="">
+                    <img src="{{ url('public/frontend/images/add-new.png') }}" alt="">
                 </button>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 <button type="submit" class="btn-save-task">Save</button>
             </div>
             <div class="assigne">
-                <img src="{{ url('frontend/images/assignedby.png') }}" alt="">
+                <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
                 <select id="assigned-to" name="assigned_to" class="task-input" required>
                     <option value="">Assign to</option>
                     @foreach ($users as $user)
@@ -53,17 +53,18 @@
                 </select>
             </div>
             <div class="due-date">
-                <img src="{{ url('frontend/images/duedate.png') }}" alt="">
+                <img src="{{ url('public/frontend/images/duedate.png') }}" alt="">
                 <input type="date" id="due-date" name="due_date" class="task-input" required />
             </div>
             <div class="priority">
-                <img src="{{ url('frontend/images/priority.png') }}" alt="">
+                <img src="{{ url('public/frontend/images/priority.png') }}" alt="">
                 <select id="priority" name="priority" class="task-input" required>
                     <option value="Normal">Normal</option>
                     <option value="High">High</option>
                     <option value="Urgent">Urgent</option>
                 </select>
             </div>
+            
             <!-- <div class="task-actions">
             
                 <button type="button" class="btn-cancel-task" onclick="toggleAddTaskForm()">Cancel</button>
@@ -76,29 +77,21 @@
             @foreach ($todoTasks as $task)
                 <div class="task" draggable="true">
                     <div class="task-name">
-                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                       <a href="{{ route('task.detail', ['id' => $task->id]) }}">
                         <p>{{ $task->name }}</p>
                     </a>
-
                     </div>
                     <div class="assigne">
-                        @if ($task->assignedUser)
-                           
-                        <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> to:  <img src="{{ asset('storage/profile_pictures/' . $task->assignedUser->profilepic) }}" 
-                            alt="{{ $task->assignedUser->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedUser->username }}  
-                        @else
-                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
-                            to: Unassigned
-                        @endif
+                        <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
+                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
                     </div>
-
                     <div class="due-date">
-                        <img src="{{ url('frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
+                        <img src="{{ url('public/frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
                     </div>
                     <div class="priority">
-                        <img src="{{ url('frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
+                        <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
                     </div>
-                    <div class="priority">
+                     <div class="priority">
                     Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
 
                     </div>
@@ -111,7 +104,7 @@
     <div class="task-column" id="in-progress" data-status="in-progress">
         <div class="todo-add">
         <div class="inprogress-heading">
-                    <img src="{{url ('frontend/images/inprogress.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/inprogress.png')}}" alt="">
                     <h3>In Progress</h3>
                 </div>
             
@@ -122,25 +115,23 @@
             @foreach ($inProgressTasks as $task)
                 <div class="task" draggable="true">
                     <div class="task-name">
-                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                      <a href="{{ route('task.detail', ['id' => $task->id]) }}">
                         <p>{{ $task->name }}</p>
                     </a>
                     </div>
                     <div class="assigne">
-                        @if ($task->assignedUser)
-                           
-                        <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> to:  <img src="{{ asset('storage/profile_pictures/' . $task->assignedUser->profilepic) }}" 
-                            alt="{{ $task->assignedUser->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedUser->username }}  
-                        @else
-                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
-                            to: Unassigned
-                        @endif
+                        <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
+                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
                     </div>
                     <div class="due-date">
-                        <img src="{{ url('frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
+                        <img src="{{ url('public/frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
                     </div>
                     <div class="priority">
-                        <img src="{{ url('frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
+                        <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
+                    </div>
+                     <div class="priority">
+                    Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
+
                     </div>
                 </div>
             @endforeach
@@ -151,7 +142,7 @@
     <div class="task-column" id="qa" data-status="qa">
         <div class="todo-add">
         <div class="qa-heading">
-                    <img src="{{url ('frontend/images/qa.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/qa.png')}}" alt="">
                     <h3>QA</h3>
                 </div>
            
@@ -162,25 +153,23 @@
             @foreach ($qaTasks as $task)
                 <div class="task" draggable="true">
                     <div class="task-name">
-                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                       <a href="{{ route('task.detail', ['id' => $task->id]) }}">
                         <p>{{ $task->name }}</p>
                     </a>
                     </div>
                     <div class="assigne">
-                        @if ($task->assignedUser)
-                           
-                        <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> to:  <img src="{{ asset('storage/profile_pictures/' . $task->assignedUser->profilepic) }}" 
-                            alt="{{ $task->assignedUser->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedUser->username }}  
-                        @else
-                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
-                            to: Unassigned
-                        @endif
+                        <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
+                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
                     </div>
                     <div class="due-date">
-                        <img src="{{ url('frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
+                        <img src="{{ url('public/frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
                     </div>
                     <div class="priority">
-                        <img src="{{ url('frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
+                        <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
+                    </div>
+                     <div class="priority">
+                    Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
+
                     </div>
                 </div>
             @endforeach
@@ -191,7 +180,7 @@
     <div class="task-column" id="completed" data-status="completed">
         <div class="todo-add">
         <div class="completed-heading">
-                    <img src="{{url ('frontend/images/completed.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/completed.png')}}" alt="">
                     <h3>Completed</h3>
                 </div>
             
@@ -202,25 +191,23 @@
             @foreach ($completedTasks as $task)
                 <div class="task" draggable="true">
                     <div class="task-name">
-                    <a href="{{ route('task.detail', ['id' => $task->id]) }}">
+                       <a href="{{ route('task.detail', ['id' => $task->id]) }}">
                         <p>{{ $task->name }}</p>
                     </a>
                     </div>
                     <div class="assigne">
-                        @if ($task->assignedUser)
-                           
-                        <img src="{{ url('frontend/images/assignedby.png') }}" alt=""> to:  <img src="{{ asset('storage/profile_pictures/' . $task->assignedUser->profilepic) }}" 
-                            alt="{{ $task->assignedUser->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedUser->username }}  
-                        @else
-                            <img src="{{ url('frontend/images/unassigned.png') }}" alt="Unassigned">
-                            to: Unassigned
-                        @endif
+                        <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
+                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
                     </div>
                     <div class="due-date">
-                        <img src="{{ url('frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
+                        <img src="{{ url('public/frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
                     </div>
                     <div class="priority">
-                        <img src="{{ url('frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
+                        <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
+                    </div>
+                     <div class="priority">
+                    Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
+
                     </div>
                 </div>
             @endforeach
@@ -431,10 +418,11 @@ columns.forEach(column => {
         background-color: #007bff;
         color: white;
     }
-    .btn-save-task:hover {
+     .btn-save-task:hover {
         background-color: #002aee !important;
         color: white;
     }
+
 
     .btn-cancel-task {
         background-color: #dc3545;

@@ -39,9 +39,8 @@ class PaymentsController extends Controller
         if ($request->has('search') && !empty($request->search)) {
             $query->where('company_name', 'like', "%{$request->search}%");
         }
-
-        // Fetch and calculate due_days
-        $payments = $query->get()->map(function ($payment) {
+          // Fetch and calculate due_days
+          $payments = $query->get()->map(function ($payment) {
             $now = Carbon::now();
 
             if ($payment->due_date) {
@@ -76,72 +75,41 @@ class PaymentsController extends Controller
 
         // Fetch all users
         $users = User::all();
-        
+
+
     // Filter by date
-   // Filter by date
-$filterDateText = ''; // Initialize the filter date text
+    $filterDateText = ''; // Initialize the filter date text
+    if ($request->has('filter_date') && $request->filter_date != 'all') {
+        $filterDate = $request->filter_date;
 
-if ($request->has('filter_date') && $request->filter_date != 'all') {
-    $filterDate = $request->filter_date;
-
-    // Filter for "Today"
-    if ($filterDate === 'today') {
-        $query->where('status', 'paid')
-              ->whereDate('paid_date', Carbon::today());
-        $filterDateText = "Total Paid Today";
+        if ($filterDate === 'today') {
+            $query->where('status', 'paid')->whereDate('paid_date', Carbon::today());
+            $filterDateText = "Today"; // Text for the filter
+        } elseif ($filterDate === 'this_week') {
+            $query->where('status', 'paid')->whereBetween('paid_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            $filterDateText = "Last 7 Days"; // Text for the filter
+        } elseif ($filterDate === 'this_month') {
+            $query->where('status', 'paid')->whereMonth('paid_date', Carbon::now()->month)
+                  ->whereYear('paid_date', Carbon::now()->year);
+                  $filterDateText = "This Month"; // Text for the filter
+        }
     }
-    // Filter for "This Week"
-    elseif ($filterDate === 'this_week') {
-        $query->where('status', 'paid')
-              ->whereBetween('paid_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
-        $filterDateText = "Total Paid This Week";
+    // Filter by number of days (custom range)
+    if ($request->has('days')) {
+        $days = $request->input('days');
+        $dateLimit = Carbon::now()->subDays($days); // Subtract the number of days from today
+        $query->where('status', 'paid')->where('paid_date', '>=', $dateLimit); // Payments made in the last X days
+        $filterDateText = "Last {$days} Days"; // Dynamic text based on user input
     }
-    // Filter for "This Month"
-    elseif ($filterDate === 'this_month') {
-        $query->where('status', 'paid')
-              ->whereMonth('paid_date', Carbon::now()->month)
-              ->whereYear('paid_date', Carbon::now()->year);
-        $filterDateText = "Total Paid This Month";
-    }
-}
 
-// Filter by custom number of days
-if ($request->has('days')) {
-    $days = $request->input('days');
-    $dateLimit = Carbon::now()->subDays($days);
+    $payments = $query->get();
+    $totalPaidAmount = $payments->where('status', 'paid')->sum('amount');
 
-    $query->where('status', 'paid')
-          ->where('paid_date', '>=', $dateLimit); // Payments made in the last X days
-    $filterDateText = "Total Paid in the Last {$days} Days";
-}
-
-// Apply category filter (if selected) only after the date filter
-if ($request->filled('filter_category')) {
-    $query->where('category', $request->filter_category);
-    $filterDateText .= " in {$request->filter_category} Category";
-}
-
-// Fetch filtered payments
-$payments = $query->get();
-$totalPaidAmount = $payments->sum('amount');
-    
+      
 
         // Return view
-        return view('frontends.payments', compact(
-            'payments',
-            'users',
-            'filteredTotalAmount',
-            'totalDuesText',
-            'filterCount',
-            'totalPaidAmount',
-            'filterDateText'
-            ))->with([
-                'selectedCategory' => $request->filter_category,
-                'selectedFilterDate' => $request->filter_date,
-                'selectedDays' => $request->days,
-            ]);
-    }        
-
+        return view('frontends.payments', compact('payments', 'users', 'filteredTotalAmount', 'totalDuesText', 'filterCount', 'totalPaidAmount', 'filterDateText'));
+    }
 
 
     // payments store

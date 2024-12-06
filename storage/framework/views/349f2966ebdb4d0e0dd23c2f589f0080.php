@@ -8,18 +8,18 @@
   <title>Project Management</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.atwho/1.3.0/css/jquery.atwho.min.css" />
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/index.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/dashboard.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/projects.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/payments.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/prospects.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/add-client.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/new-dashboard.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/task-detail.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/client.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/prospect-details-page.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/profile.css')); ?>">
-  <link rel="stylesheet" href="<?php echo e(url('frontend/css/payment-detail-page.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(asset('public/frontend/css/index.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/dashboard.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/projects.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/payments.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/prospects.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/add-client.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/new-dashboard.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/task-detail.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/client.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/prospect-details-page.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/profile.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/payment-detail-page.css')); ?>">
 
   <?php
   use App\Models\User;
@@ -40,7 +40,7 @@
         <ul class="horizontal-menu">
           <div class="start">
             <div class="h-menu">
-              <img src="<?php echo e(url('frontend/images/hamburger.png')); ?>" class="menu-icon" onclick="toggleSidebar()">
+              <img src="<?php echo e(url('public/frontend/images/hamburger.png')); ?>" class="menu-icon" onclick="toggleSidebar()">
             </div>
             <div class="greetings">
               <p id="greeting"></p>
@@ -48,7 +48,7 @@
           </div>
           <div class="end">
             <div class="notification">
-              <img src="<?php echo e(url('frontend/images/notification.png')); ?>" alt="Notifications" class="notification-icon" id="notification-icon">
+              <img src="<?php echo e(url('public/frontend/images/notification.png')); ?>" alt="Notifications" class="notification-icon" id="notification-icon">
               <span class="notification-count" id="notification-count">
                 <?php echo e(auth()->user()->unreadNotifications->count()); ?>
 
@@ -75,7 +75,7 @@
               <a href="javascript:void(0);" onclick="toggleDropdown(event)">
               <div class="user-icon">
                   <?php if(auth()->user() && auth()->user()->profilepic): ?>
-                      <img src="<?php echo e(asset('storage/profile_pictures/' . auth()->user()->profilepic)); ?>" alt="User Profile Picture" class="user-profile-pic">
+                      <img src="<?php echo e(asset('storage/profilepics/' . auth()->user()->profilepic)); ?>" alt="User Profile Picture" class="user-profile-pic">
                   <?php else: ?>
                       <img src="<?php echo e(asset('images/default-profile.png')); ?>" alt="Default Profile Picture" class="user-profile-pic">
                   <?php endif; ?>
@@ -87,12 +87,12 @@
                 <div class="name">
                   <p><?php echo e($username); ?></p>
                 </div>
-                <div class="dropdown-icon"><img src="<?php echo e(url('frontend/images/dropdown-arrow.png')); ?>" alt=""></div>
+                <div class="dropdown-icon"><img src="<?php echo e(url('public/frontend/images/dropdown-arrow.png')); ?>" alt=""></div>
               </a>
               <div id="dropdownMenu" class="dropdown-menu">
-                <a href="<?php echo e(route('dashboard')); ?>"><img src="<?php echo e(url('frontend/images/dashboard.png')); ?>" alt=""> Dashboard</a>
-                <a href="<?php echo e(url('profile')); ?>"><img src="<?php echo e(url('frontend/images/profile.png')); ?>" alt=""> My Profile</a>
-                <a href="<?php echo e(route('logout')); ?>"><img src="<?php echo e(url('frontend/images/logout.png')); ?>" alt="">Logout</a>
+                <a href="<?php echo e(route('dashboard')); ?>"><img src="<?php echo e(url('public/frontend/images/dashboard.png')); ?>" alt=""> Dashboard</a>
+                <a href="<?php echo e(url('profile')); ?>"><img src="<?php echo e(url('public/frontend/images/profile.png')); ?>" alt=""> My Profile</a>
+                <a href="<?php echo e(route('logout')); ?>"><img src="<?php echo e(url('public/frontend/images/logout.png')); ?>" alt="">Logout</a>
               </div>
             </div>
           </div>
@@ -103,7 +103,14 @@
     <!-- Sidebar Menu -->
     <div id="sidebar" class="sidebar">
       <ul>
-        <li><a href="<?php echo e(url('/dashboard')); ?>"> <img src="<?php echo e(url('frontend/images/wtn-logo-black.svg')); ?>" class="logo-img"></a></li>
+        <li><a href="<?php echo e(url('/dashboard')); ?>"> <img src="<?php echo e(url('public/frontend/images/wtn-logo-black.svg')); ?>" class="logo-img"></a></li>
+         <li class="dropdown" id="nodropdown-project" style="margin-bottom:0px !important; margin-top:10px;">
+            <a href="<?php echo e(url('/projects')); ?>">
+              <div class="nodropdown" >
+                <img src="<?php echo e(url('public/frontend/images/blueprint.png')); ?>" alt=""> Projects
+              </div>
+            </a>
+        </li>
         <?php if(auth()->check() && in_array(auth()->user()->email, $allowedEmails)): ?>
         <li class="dropdown">
     <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
@@ -154,24 +161,18 @@
             <li><a href="<?php echo e(url('/tasks/my')); ?>">Expired</a></li>
           </ul>
         </li> -->
-        <li class="dropdown" id="nodropdown-project">
-            <a href="<?php echo e(url('/projects')); ?>">
-              <div class="nodropdown" >
-                <img src="<?php echo e(url('frontend/images/blueprint.png')); ?>" alt=""> Projects
-              </div>
-            </a>
-        </li>
+       
         <li class="dropdown">
           <a href="<?php echo e(url('/prospects')); ?>">
             <div class="nodropdown">
-              <img src="<?php echo e(url('frontend/images/group.png')); ?>" alt=""> Prospects
+              <img src="<?php echo e(url('public/frontend/images/group.png')); ?>" alt=""> Prospects
             </div>
           </a>
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
-              <img src="<?php echo e(url('frontend/images/team.png')); ?>" alt=""> Teams
+              <img src="<?php echo e(url('public/frontend/images/team.png')); ?>" alt=""> Teams
             </div>
             <div class="dropdown-arrow-div">
               <i class="fas fa-chevron-right dropdown-arrow"></i>
@@ -181,13 +182,12 @@
             <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <li class="username-item" data-username="<?php echo e($user->username); ?>">
                 <a href="<?php echo e(route('user.dashboard', ['username' => $user->username])); ?>">
-                    <img src="<?php echo e(Storage::url('profile_pictures/' . $user->profilepic)); ?>" 
+                    <img src="<?php echo e(Storage::url('profilepics/' . $user->profilepic)); ?>" 
                         alt="<?php echo e($user->username); ?>'s Profile Picture" class="profile-pic">
                         <p>
                         <?php echo e($user->username); ?>
 
                         </p>
-                    
                 </a>
             </li>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -198,7 +198,7 @@
         <li class="dropdown">
           <a href="/clients">
             <div class="nodropdown">
-              <img src="<?php echo e(url('frontend/images/customer.png')); ?>" alt=""> Clients
+              <img src="<?php echo e(url('public/frontend/images/customer.png')); ?>" alt=""> Clients
             </div>
           </a>
         </li>
@@ -208,19 +208,19 @@
 
        
         <?php endif; ?>
-        <li class="dropdown">
-          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-            <div class="icon-text">
-              <img src="<?php echo e(url('frontend/images/clipboard.png')); ?>" alt=""> Tasks
-            </div>
-            <div class="dropdown-arrow-div">
-              <i class="fas fa-chevron-right dropdown-arrow"></i>
-            </div>
-          </a>
-          <ul class="task-dropdown">
-            <li><a href="<?php echo e(route('dashboard')); ?>">My Tasks</a></li>
-          </ul>
-        </li>
+        <!--<li class="dropdown">-->
+        <!--  <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">-->
+        <!--    <div class="icon-text">-->
+        <!--      <img src="<?php echo e(url('public/frontend/images/clipboard.png')); ?>" alt=""> Tasks-->
+        <!--    </div>-->
+        <!--    <div class="dropdown-arrow-div">-->
+        <!--      <i class="fas fa-chevron-right dropdown-arrow"></i>-->
+        <!--    </div>-->
+        <!--  </a>-->
+        <!--  <ul class="task-dropdown">-->
+        <!--    <li><a href="<?php echo e(route('dashboard')); ?>">My Tasks</a></li>-->
+        <!--  </ul>-->
+        <!--</li>-->
 
         
       </ul>

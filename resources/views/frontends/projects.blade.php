@@ -14,11 +14,11 @@ use Carbon\Carbon;
             </div>
             <div class="create-filter-search-project">
                 <div class="create-project">
-                    <button onclick="openCreateProjectModal()"><img src="{{url ('/frontend/images/add-new.png')}}" alt=""> </button>
+                    <button onclick="openCreateProjectModal()"><img src="{{url ('public/frontend/images/add-new.png')}}" alt=""> </button>
                 </div>
                 <div class="filter-section">
                     <div class="filter-projects" onclick="toggleFilterList()">
-                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
                         <div class="filter-count">
                             @if($filterCount > 0)
                             <p>{{ $filterCount }}</p>
@@ -66,12 +66,12 @@ use Carbon\Carbon;
                                 <label for="status">Status:</label>
                                 <select id="status" name="sort_status" class="filter-select">
                                     <option value="">Select Options</option>
-                                    <option value="Design" {{ request('sort_status') == 'Design' ? 'selected' : '' }}>Design</option>
-                                    <option value="Development" {{ request('sort_status') == 'Development' ? 'selected' : '' }}>Development</option>
+                                    <option value="Design" {{ request('sort_status') == 'design' ? 'selected' : '' }}>Design</option>
+                                    <option value="Development" {{ request('sort_status') == 'development' ? 'selected' : '' }}>Development</option>
                                     <option value="QA" {{ request('sort_status') == 'QA' ? 'selected' : '' }}>QA</option>
-                                    <option value="Content Fillup" {{ request('sort_status') == 'Content Fillup' ? 'selected' : '' }}>Content Fillup</option>
+                                    <option value="Content Fillup" {{ request('sort_status') == 'content-fillup' ? 'selected' : '' }}>Content Fillup</option>
                                     <option value="Completed" {{ request('sort_status') == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                    <option value="Closed" {{ request('sort_status') == 'Closed' ? 'selected' : '' }}>Closed</option>
+                          
                                     <option value="Other" {{ request('sort_status') == 'Other' ? 'selected' : '' }}>Other</option>
 
                                 </select>
@@ -84,7 +84,7 @@ use Carbon\Carbon;
                 </div>
                 <div class="search-projects">
                     <div class="search-icon">
-                        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                        <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
                     </div>
                     <form action="{{ route('projects.index') }}" method="GET" id="search-form">
                         <div class="search-text-area">
@@ -100,7 +100,7 @@ use Carbon\Carbon;
                     <!-- Column for To Do tasks -->
                     <div class="task-column" id="new" data-status="design">
                         <div class="todo-heading-project">
-                            <img src="{{url ('frontend/images/design.png')}}" alt="">
+                            <img src="{{url ('public/frontend/images/design.png')}}" alt="">
                             <h3>Design</h3>
                         </div>
 
@@ -114,15 +114,15 @@ use Carbon\Carbon;
 
                                 </div>
                                 <div class="category">
-                                    Status:
+                                    <strong>Status:</strong> <p>{{ $project->sub_status }}</p>
                                 </div>
 
                                 <div class="due-date">
-                                    Due in : 
+                                    <strong>Due : </strong>
                                     @if ($project->time_left !== null)
-                                        {{ $project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue' }}
+                                        {{ $project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago' }}
                                     @else
-                                        N?A
+                                        No due date set
                                     @endif
                                 </div>
                             </div>
@@ -134,7 +134,7 @@ use Carbon\Carbon;
                     <!-- Column for In Progress tasks -->
                     <div class="task-column" id="dealing" data-status="development">
                         <div class="developement-heading">
-                            <img src="{{url ('frontend/images/developement.png')}}" alt="">
+                            <img src="{{url ('public/frontend/images/developement.png')}}" alt="">
                             <h3>Development</h3>
                         </div>
 
@@ -148,13 +148,13 @@ use Carbon\Carbon;
 
                                 </div>
                                 <div class="category">
-                                    Status:
+                                    <strong>Status:</strong> <p>{{ $project->sub_status }}</p>
                                 </div>
 
-                                <div class="due-date">
-                                    Due in : 
+                                 <div class="due-date">
+                                    <strong>Due : </strong>
                                     @if ($project->time_left !== null)
-                                        {{ $project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue' }}
+                                        {{ $project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago' }}
                                     @else
                                         No due date set
                                     @endif
@@ -165,13 +165,13 @@ use Carbon\Carbon;
                     </div>
 
                     <!-- Column for QA tasks -->
-                    <div class="task-column" id="quote_sent" data-status="content_fillup">
-                        <div class="content-fillup-heading">
-                            <img src="{{url ('frontend/images/content-fillup.png')}}" alt="">
+                    <div class="task-column" id="quote_sent" data-status="content-fillup">
+                       <div class="content-fillup-heading">
+                            <img src="{{url ('public/frontend/images/content-fillup.png')}}" alt="">
                             <h3> Content Fill up</h3>
                         </div>
                         <div class="task-list">
-                            @foreach ($projects->where('status', 'content_fillup') as $project)
+                            @foreach ($projects->where('status', 'content-fillup') as $project)
                             <div class="task" draggable="true" data-task-id="{{ $project->id }}" data-task-type="{{ strtolower($project->category) }}">
                                 <div class="task-name">
                                     <a href="{{url ('projectdetails/' .$project->id)}}">
@@ -179,25 +179,26 @@ use Carbon\Carbon;
                                     </a>
 
                                 </div>
-                                <div class="category">
-                                    Status:
+                                  <div class="category">
+                                    <strong>Status:</strong> <p>{{ $project->sub_status }}</p>
                                 </div>
 
                                 <div class="due-date">
-                                    Due in : 
+                                    <strong>Due : </strong>
                                     @if ($project->time_left !== null)
-                                        {{ $project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue' }}
+                                        {{ $project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago' }}
                                     @else
                                         No due date set
                                     @endif
                                 </div>
+
                             </div>
                             @endforeach
                         </div>
                     </div>
                     <div class="task-column" id="converted" data-status="completed">
-                        <div class="completed-heading-project">
-                            <img src="{{url ('frontend/images/completed.png')}}" alt="">
+                       <div class="completed-heading-project">
+                            <img src="{{url ('public/frontend/images/completed.png')}}" alt="">
                             <h3>Completed</h3>
                         </div>
                         <div class="task-list">
@@ -209,18 +210,20 @@ use Carbon\Carbon;
                                     </a>
 
                                 </div>
-                                <div class="category">
-                                    Status:
+                                 <div class="category">
+                                    <strong>Status:</strong> <p>{{ $project->sub_status }}</p>
                                 </div>
 
-                                <div class="due-date">
-                                    Due in : 
+                               
+                                 <div class="due-date">
+                                    <strong>Due : </strong>
                                     @if ($project->time_left !== null)
-                                        {{ $project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue' }}
+                                        {{ $project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago' }}
                                     @else
                                         No due date set
                                     @endif
                                 </div>
+
                             </div>
                             @endforeach
                         </div>
@@ -249,7 +252,7 @@ use Carbon\Carbon;
                     <select name="status" id="status">
                         <option value="design">Design</option>
                         <option value="development">Development</option>
-                        <option value="content_fillup">Content Fill up</option>
+                        <option value="content-fillup">Content Fill up</option>
                         <option value="completed">Completed</option>
                     </select>
 

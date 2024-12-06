@@ -27,13 +27,13 @@
                 <div class="create-clients">
                     <button class="btn-create">
                         <a href="{{ url('add-new-clients') }}">
-                            <img src="{{ url('/frontend/images/add-new.png') }}" alt="">
+                            <img src="{{ url('public/frontend/images/add-new.png') }}" alt="">
                         </a>
                     </button>
                 </div>
                 <div class="filter-section">
                     <div class="filter-payments" onclick="toggleFilterList()">
-                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
                         <div class="filter-count">
                             @if($filterCount > 0)
                             <p>{{ $filterCount }}</p>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="search-clients">
                     <div class="search-icon">
-                        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                        <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
                     </div>
                     <form action="{{ route('clients.index') }}" method="GET" id="search-form">
                         <div class="search-text-area">

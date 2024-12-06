@@ -1,11 +1,12 @@
 
 <?php $__env->startSection('main-container'); ?>
 <div class="paid-payments-page">
+    
     <div class="task-board">
         <!-- Website Column -->
         <div class="task-column" id="due">
             <div class="todo-heading-payments">
-                <img src="<?php echo e(url('frontend/images/web.png')); ?>" alt="">
+                <img src="<?php echo e(url('/frontend/images/web.png')); ?>" alt="">
                 <h3>Website</h3>
             </div>
             <div class="task-list">
@@ -17,7 +18,7 @@
                         </a>
                     </div>
                     <div class="category">
-                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        <img src="<?php echo e(url ('/frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
                     </div>
 
@@ -41,7 +42,7 @@
         <!-- Microsoft Column -->
         <div class="task-column" id="invoice_sent">
             <div class="invoicesent-heading">
-                <img src="<?php echo e(url('frontend/images/microsoft.png')); ?>" alt="">
+                <img src="<?php echo e(url('/frontend/images/microsoft.png')); ?>" alt="">
                 <h3>Microsoft</h3>
             </div>
             <div class="task-list">
@@ -53,7 +54,7 @@
                         </a>
                     </div>
                     <div class="category">
-                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        <img src="<?php echo e(url ('/frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
                     </div>
 
@@ -77,7 +78,7 @@
         <!-- Renewals Column -->
         <div class="task-column" id="vatbill_sent">
             <div class="vatbillsent-heading">
-                <img src="<?php echo e(url('frontend/images/renew.png')); ?>" alt="">
+                <img src="<?php echo e(url('/frontend/images/renew.png')); ?>" alt="">
                 <h3>Renewals</h3>
             </div>
             <div class="task-list">
@@ -89,7 +90,7 @@
                         </a>
                     </div>
                     <div class="category">
-                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        <img src="<?php echo e(url ('/frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
                     </div>
 
@@ -113,7 +114,7 @@
         <!-- Others Column -->
         <div class="task-column" id="paid">
             <div class="paid-heading">
-                <img src="<?php echo e(url('frontend/images/others.png')); ?>" alt="">
+                <img src="<?php echo e(url('/frontend/images/others.png')); ?>" alt="">
                 <h3>Others</h3>
             </div>
             <div class="task-list">
@@ -125,7 +126,7 @@
                         </a>
                     </div>
                     <div class="category">
-                        <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
+                        <img src="<?php echo e(url ('/frontend/images/category.png')); ?>" alt=""> : <?php echo e($payment->category); ?>
 
                     </div>
 
@@ -155,8 +156,9 @@
 
 
 
+
 <style>
-    .paid-payments-page {
+  .paid-payments-page {
         margin-top: 30px;
     }
     .total-category {
@@ -171,6 +173,8 @@
     width: 95px; 
     padding: 5px;
     border-radius: 7px;
+    margin-top: -7px;
+    margin-bottom: 5px;
 }
 .todo-heading-payments img {
     width: 15px;
@@ -187,6 +191,8 @@
     width: 105px; 
     padding: 5px;
     border-radius: 7px;
+      margin-top: -7px;
+    margin-bottom: 5px;
 }
 .invoicesent-heading img {
     width: 15px;
@@ -203,12 +209,14 @@
     width: 107px; 
     padding: 5px;
     border-radius: 7px;
+      margin-top: -7px;
+    margin-bottom: 5px;
 }
 .vatbillsent-heading img {
     width: 15px;
     margin-right: 10px;
 }
-.vatbillsent-heading h2 {
+.vatbillsent-heading h3 {
    font-size: 14px;
 }
 .paid-heading {
@@ -219,12 +227,14 @@
     width: 85px; 
     padding: 5px;
     border-radius: 7px;
+      margin-top: -7px;
+    margin-bottom: 5px;
 }
 .paid-heading img {
     width: 15px;
     margin-right: 10px;
 }
-.paid-heading h2 {
+.paid-heading h3 {
     font-size: 14px;
 }
 .closed-heading-prospect {
@@ -235,16 +245,18 @@
     width: 125px; 
     padding: 5px;
     border-radius: 7px;
+      margin-top: -7px;
+    margin-bottom: 5px;
 }
 .closed-heading-prospect img {
     width: 15px;
     margin-right: 10px;
 }
-.closed-heading-prospect h2 {
+.closed-heading-prospect h3 {
     font-size: 14px;
-    
 }
- 
+
+  
 
 </style>
 

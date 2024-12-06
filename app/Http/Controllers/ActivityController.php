@@ -25,7 +25,7 @@ class ActivityController extends Controller
         $user = Auth::user();
          // Store the relative path to profile picture
         $activity->profile_pic = $user && $user->profilepic
-        ? 'profile_pictures/' . $user->profilepic  // Store the relative path in the database
+        ? 'profilepics/' . $user->profilepic  // Store the relative path in the database
         : null;
 
         $activity->save();

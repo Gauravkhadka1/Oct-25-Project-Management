@@ -22,10 +22,4 @@ class Clients extends Model
         'subcategory',
         'additional_subcategory',
     ];
- // In Client.php
-public function client_tasks()
-{
-    return $this->hasMany(ClientTask::class, 'client_id', 'id');
-}
-
 }

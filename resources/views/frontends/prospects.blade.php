@@ -17,11 +17,11 @@
             </div>
             <div class="create-filter-search">
                 <div class="create-prospect">
-                    <button class="btn-create" onclick="openCreateProspectModal()"><img src="{{url ('/frontend/images/add-new.png')}}" alt=""></button>
+                    <button class="btn-create" onclick="openCreateProspectModal()"><img src="{{url ('public/frontend/images/add-new.png')}}" alt=""></button>
                 </div>
                 <div class="filter-section">
                     <div class="filter-prospects" onclick="toggleFilterList()">
-                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
                         <div class="filter-count">
                             @if($filterCount > 0)
                             <p>{{ $filterCount }}</p>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="search-prospects">
                     <div class="search-icon">
-                        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                        <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
                     </div>
                     <form action="{{ route('prospects.index') }}" method="GET" id="search-form">
                         <div class="search-text-area">
@@ -93,7 +93,7 @@
             <!-- Column for To Do tasks -->
             <div class="task-column" id="new" data-status="new">
                 <div class="todo-heading-prospect">
-                    <img src="{{url ('frontend/images/new.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/new.png')}}" alt="">
                     <h3>Not Dealt</h3>
                 </div>
 
@@ -107,14 +107,14 @@
 
                         </div>
                         <div class="category">
-                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
+                            <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('public/frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('public/frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -125,7 +125,7 @@
             <!-- Column for In Progress tasks -->
             <div class="task-column" id="dealing" data-status="dealing">
                 <div class="inprogress-heading">
-                    <img src="{{url ('frontend/images/dealing.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/dealing.png')}}" alt="">
                     <h3>Dealing</h3>
                 </div>
 
@@ -139,14 +139,14 @@
 
                         </div>
                         <div class="category">
-                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
+                            <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('public/frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('public/frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -156,7 +156,7 @@
             <!-- Column for QA tasks -->
             <div class="task-column" id="quote_sent" data-status="quote_sent">
                 <div class="qs-heading">
-                    <img src="{{url ('frontend/images/sentsent.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
                     <h3>Quote Sent</h3>
                 </div>
                 <div class="task-list">
@@ -169,14 +169,14 @@
 
                         </div>
                         <div class="category">
-                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
+                            <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('public/frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('public/frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -186,7 +186,7 @@
             <!-- Column for Completed tasks -->
             <div class="task-column" id="aggrement_sent" data-status="aggrement_sent">
                 <div class="aggrement-heading">
-                    <img src="{{url ('frontend/images/sentsent.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
                     <h3>Agreement Sent</h3>
                 </div>
                 <div class="task-list">
@@ -199,14 +199,14 @@
 
                         </div>
                         <div class="category">
-                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
+                            <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('public/frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('public/frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach
@@ -214,7 +214,7 @@
             </div>
             <div class="task-column" id="converted" data-status="converted">
                 <div class="closed-heading-prospect">
-                    <img src="{{url ('frontend/images/completed.png')}}" alt="">
+                    <img src="{{url ('public/frontend/images/completed.png')}}" alt="">
                     <h3>Converted</h3>
                 </div>
                 <div class="task-list">
@@ -227,14 +227,14 @@
 
                         </div>
                         <div class="category">
-                            <img src="{{url ('frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
+                            <img src="{{url ('public/frontend/images/category.png')}}" alt=""> : {{ $prospect->category}}
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="{{url ('frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
+                            <img src="{{url ('public/frontend/images/inquiry.png')}}" alt=""> : {{ $prospect->inquirydate }}
                         </div>
                         <div class="probability">
-                            <img src="{{url ('frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
+                            <img src="{{url ('public/frontend/images/probability.png')}}" alt="">: {{ $prospect->probability }} %
                         </div>
                     </div>
                     @endforeach

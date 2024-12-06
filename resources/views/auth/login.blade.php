@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="{{url('frontend/css/login.css')}}">
+    <link rel="stylesheet" href="{{url('public/frontend/css/login.css')}}">
 </head>
 <body>
     <div class="login-page">
         <div class="loginpageb">
             <div class="loginpageinput">
                 <div class="wtnlogo">
-                    <img src="frontend/images/wtn.png" alt="">
+                    <img src="public/frontend/images/wtn.png" alt="">
                 </div>
                 <div class="loginh">
                     <h1>Login</h1>

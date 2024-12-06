@@ -8,7 +8,7 @@ use Carbon\Carbon;
     <div class="project-page">
         <div class="project-heading">
             <div class="project-h2">
-            <h2>Projects</h2>
+                <h2>Projects</h2>
             </div>
             <div class="create-filter-search-project">
                 <div class="create-project">
@@ -114,16 +114,25 @@ use Carbon\Carbon;
                                 <div class="category">
                                     Status:
                                 </div>
-
                                 <div class="due-date">
-                                    Due in : 
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue'); ?>
+    Due in: 
+    <?php if(!$project->due_date): ?>
+        No due date set
+    <?php elseif(\Carbon\Carbon::now() < \Carbon\Carbon::parse($project->due_date)): ?>
+        <?php echo e(\Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($project->due_date), false)); ?> days
+    <?php elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($project->due_date)): ?>
+        Overdue by <?php echo e(\Carbon\Carbon::parse($project->due_date)->diffInDays(\Carbon\Carbon::now())); ?> days
+    <?php else: ?>
+        Not started yet
+    <?php endif; ?>
+</div>
 
-                                    <?php else: ?>
-                                        N?A
-                                    <?php endif; ?>
-                                </div>
+
+
+
+
+
+
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
@@ -136,7 +145,6 @@ use Carbon\Carbon;
                             <img src="<?php echo e(url ('frontend/images/developement.png')); ?>" alt="">
                             <h3>Development</h3>
                         </div>
-
                         <div class="task-list">
                             <?php $__currentLoopData = $projects->where('status', 'development'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
@@ -149,16 +157,19 @@ use Carbon\Carbon;
                                 <div class="category">
                                     Status:
                                 </div>
-
                                 <div class="due-date">
-                                    Due in : 
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue'); ?>
-
-                                    <?php else: ?>
-                                        No due date set
-                                    <?php endif; ?>
+                                    Due in:
+                                    <?php if(!$project->due_date): ?>
+                                    No due date set
+                                    <?php elseif(\Carbon\Carbon::now() < \Carbon\Carbon::parse($project->due_date)): ?>
+                                        <?php echo e(\Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($project->due_date), false)); ?> days
+                                        <?php elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($project->due_date)): ?>
+                                        Overdue by <?php echo e(\Carbon\Carbon::parse($project->due_date)->diffInDays(\Carbon\Carbon::now())); ?> days
+                                        <?php else: ?>
+                                        Not started yet
+                                        <?php endif; ?>
                                 </div>
+
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
@@ -184,13 +195,16 @@ use Carbon\Carbon;
                                 </div>
 
                                 <div class="due-date">
-                                    Due in : 
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue'); ?>
-
-                                    <?php else: ?>
-                                        No due date set
-                                    <?php endif; ?>
+                                    Due in:
+                                    <?php if(!$project->due_date): ?>
+                                    No due date set
+                                    <?php elseif(\Carbon\Carbon::now() < \Carbon\Carbon::parse($project->due_date)): ?>
+                                        <?php echo e(\Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($project->due_date), false)); ?> days
+                                        <?php elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($project->due_date)): ?>
+                                        Overdue by <?php echo e(\Carbon\Carbon::parse($project->due_date)->diffInDays(\Carbon\Carbon::now())); ?> days
+                                        <?php else: ?>
+                                        Not started yet
+                                        <?php endif; ?>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -215,14 +229,18 @@ use Carbon\Carbon;
                                 </div>
 
                                 <div class="due-date">
-                                    Due in : 
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? $project->time_left . ' days left' : abs($project->time_left) . ' days overdue'); ?>
-
-                                    <?php else: ?>
-                                        No due date set
-                                    <?php endif; ?>
+                                    Due in:
+                                    <?php if(!$project->due_date): ?>
+                                    No due date set
+                                    <?php elseif(\Carbon\Carbon::now() < \Carbon\Carbon::parse($project->due_date)): ?>
+                                        <?php echo e(\Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($project->due_date), false)); ?> days
+                                        <?php elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($project->due_date)): ?>
+                                        Overdue by <?php echo e(\Carbon\Carbon::parse($project->due_date)->diffInDays(\Carbon\Carbon::now())); ?> days
+                                        <?php else: ?>
+                                        Not started yet
+                                        <?php endif; ?>
                                 </div>
+
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
