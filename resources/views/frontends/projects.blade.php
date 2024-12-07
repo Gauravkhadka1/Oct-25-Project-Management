@@ -98,7 +98,42 @@ use Carbon\Carbon;
             <div class="ongoing-project" id="ongoing-project">
                 <div class="task-board">
                     <!-- Column for To Do tasks -->
-                    <div class="task-column" id="new" data-status="design">
+                    <div class="task-column" id="new-project" data-status="new">
+                       <div class="new-project-add-heading">
+                       <div class="new-project-heading">
+                            <h3>New</h3>
+                        </div>
+                        <div class="add-new-project">
+                            <img src="{{url('public/frontend/images/add-new.png')}}" alt="">
+                        </div>
+                       </div>
+
+                        <div class="task-list">
+                            @foreach ($projects->where('status', 'new') as $project)
+                            <div class="task" draggable="true" data-task-id="{{ $project->id }}" data-task-type="{{ strtolower($project->category) }}">
+                                <div class="task-name">
+                                    <a href="{{url ('projectdetails/' .$project->id)}}">
+                                        <p>{{ $project->name }}</p>
+                                    </a>
+
+                                </div>
+                                <div class="category">
+                                    <strong>Status:</strong> <p>{{ $project->sub_status }}</p>
+                                </div>
+
+                                <div class="due-date">
+                                    <strong>Due : </strong>
+                                    @if ($project->time_left !== null)
+                                        {{ $project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago' }}
+                                    @else
+                                        No due date set
+                                    @endif
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="task-column" id="design" data-status="design">
                         <div class="todo-heading-project">
                             <img src="{{url ('public/frontend/images/design.png')}}" alt="">
                             <h3>Design</h3>
@@ -132,7 +167,7 @@ use Carbon\Carbon;
 
 
                     <!-- Column for In Progress tasks -->
-                    <div class="task-column" id="dealing" data-status="development">
+                    <div class="task-column" id="development" data-status="development">
                         <div class="developement-heading">
                             <img src="{{url ('public/frontend/images/developement.png')}}" alt="">
                             <h3>Development</h3>

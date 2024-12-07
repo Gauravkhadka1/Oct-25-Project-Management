@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('main-container'); ?>
 
 <?php if(session('success')): ?>
@@ -23,12 +25,12 @@
     <div class="task-column" id="todo" data-status="todo">
         <div class="todo-add">
         <div class="todo-heading">
-                    <img src="<?php echo e(url ('frontend/images/todo.png')); ?>" alt="">
+                    <img src="<?php echo e(url ('public/frontend/images/todo.png')); ?>" alt="">
                     <h3>To Do</h3>
                 </div>
             <div class="add-icon">
                 <button class="btn-create-new" id="task-create" onclick="openAddTaskModal(<?php echo e($project->id); ?>)">
-                    <img src="<?php echo e(url('frontend/images/add-new.png')); ?>" alt="">
+                    <img src="<?php echo e(url('public/frontend/images/add-new.png')); ?>" alt="">
                 </button>
             </div>
         </div>
@@ -43,7 +45,7 @@
                 <button type="submit" class="btn-save-task">Save</button>
             </div>
             <div class="assigne">
-                <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt="">
+                <img src="<?php echo e(url('public/frontend/images/assignedby.png')); ?>" alt="">
                 <select id="assigned-to" name="assigned_to" class="task-input" required>
                     <option value="">Assign to</option>
                     <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -52,17 +54,18 @@
                 </select>
             </div>
             <div class="due-date">
-                <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt="">
+                <img src="<?php echo e(url('public/frontend/images/duedate.png')); ?>" alt="">
                 <input type="date" id="due-date" name="due_date" class="task-input" required />
             </div>
             <div class="priority">
-                <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt="">
+                <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt="">
                 <select id="priority" name="priority" class="task-input" required>
                     <option value="Normal">Normal</option>
                     <option value="High">High</option>
                     <option value="Urgent">Urgent</option>
                 </select>
             </div>
+            
             <!-- <div class="task-actions">
             
                 <button type="button" class="btn-cancel-task" onclick="toggleAddTaskForm()">Cancel</button>
@@ -75,31 +78,24 @@
             <?php $__currentLoopData = $todoTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
                     <div class="task-name">
-                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
                         <p><?php echo e($task->name); ?></p>
                     </a>
-
                     </div>
                     <div class="assigne">
-                        <?php if($task->assignedUser): ?>
-                           
-                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to:  <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedUser->profilepic)); ?>" 
-                            alt="<?php echo e($task->assignedUser->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedUser->username); ?>  
-                        <?php else: ?>
-                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
-                            to: Unassigned
-                        <?php endif; ?>
-                    </div>
+                        <img src="<?php echo e(url('public/frontend/images/assignedby.png')); ?>" alt="">
+                        to: <?php echo e($task->assignedUser->username ?? 'Unassigned'); ?>
 
+                    </div>
                     <div class="due-date">
-                        <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
+                        <img src="<?php echo e(url('public/frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
 
                     </div>
                     <div class="priority">
-                        <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
+                        <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
 
                     </div>
-                    <div class="priority">
+                     <div class="priority">
                     Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
 
 
@@ -113,7 +109,7 @@
     <div class="task-column" id="in-progress" data-status="in-progress">
         <div class="todo-add">
         <div class="inprogress-heading">
-                    <img src="<?php echo e(url ('frontend/images/inprogress.png')); ?>" alt="">
+                    <img src="<?php echo e(url ('public/frontend/images/inprogress.png')); ?>" alt="">
                     <h3>In Progress</h3>
                 </div>
             
@@ -124,26 +120,26 @@
             <?php $__currentLoopData = $inProgressTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
                     <div class="task-name">
-                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                      <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
                         <p><?php echo e($task->name); ?></p>
                     </a>
                     </div>
                     <div class="assigne">
-                        <?php if($task->assignedUser): ?>
-                           
-                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to:  <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedUser->profilepic)); ?>" 
-                            alt="<?php echo e($task->assignedUser->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedUser->username); ?>  
-                        <?php else: ?>
-                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
-                            to: Unassigned
-                        <?php endif; ?>
+                        <img src="<?php echo e(url('public/frontend/images/assignedby.png')); ?>" alt="">
+                        to: <?php echo e($task->assignedUser->username ?? 'Unassigned'); ?>
+
                     </div>
                     <div class="due-date">
-                        <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
+                        <img src="<?php echo e(url('public/frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
 
                     </div>
                     <div class="priority">
-                        <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
+                        <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
+
+                    </div>
+                     <div class="priority">
+                    Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
+
 
                     </div>
                 </div>
@@ -155,7 +151,7 @@
     <div class="task-column" id="qa" data-status="qa">
         <div class="todo-add">
         <div class="qa-heading">
-                    <img src="<?php echo e(url ('frontend/images/qa.png')); ?>" alt="">
+                    <img src="<?php echo e(url ('public/frontend/images/qa.png')); ?>" alt="">
                     <h3>QA</h3>
                 </div>
            
@@ -166,26 +162,26 @@
             <?php $__currentLoopData = $qaTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
                     <div class="task-name">
-                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
                         <p><?php echo e($task->name); ?></p>
                     </a>
                     </div>
                     <div class="assigne">
-                        <?php if($task->assignedUser): ?>
-                           
-                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to:  <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedUser->profilepic)); ?>" 
-                            alt="<?php echo e($task->assignedUser->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedUser->username); ?>  
-                        <?php else: ?>
-                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
-                            to: Unassigned
-                        <?php endif; ?>
+                        <img src="<?php echo e(url('public/frontend/images/assignedby.png')); ?>" alt="">
+                        to: <?php echo e($task->assignedUser->username ?? 'Unassigned'); ?>
+
                     </div>
                     <div class="due-date">
-                        <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
+                        <img src="<?php echo e(url('public/frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
 
                     </div>
                     <div class="priority">
-                        <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
+                        <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
+
+                    </div>
+                     <div class="priority">
+                    Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
+
 
                     </div>
                 </div>
@@ -197,7 +193,7 @@
     <div class="task-column" id="completed" data-status="completed">
         <div class="todo-add">
         <div class="completed-heading">
-                    <img src="<?php echo e(url ('frontend/images/completed.png')); ?>" alt="">
+                    <img src="<?php echo e(url ('public/frontend/images/completed.png')); ?>" alt="">
                     <h3>Completed</h3>
                 </div>
             
@@ -208,26 +204,26 @@
             <?php $__currentLoopData = $completedTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
                     <div class="task-name">
-                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
                         <p><?php echo e($task->name); ?></p>
                     </a>
                     </div>
                     <div class="assigne">
-                        <?php if($task->assignedUser): ?>
-                           
-                        <img src="<?php echo e(url('frontend/images/assignedby.png')); ?>" alt=""> to:  <img src="<?php echo e(asset('storage/profile_pictures/' . $task->assignedUser->profilepic)); ?>" 
-                            alt="<?php echo e($task->assignedUser->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> <?php echo e($task->assignedUser->username); ?>  
-                        <?php else: ?>
-                            <img src="<?php echo e(url('frontend/images/unassigned.png')); ?>" alt="Unassigned">
-                            to: Unassigned
-                        <?php endif; ?>
+                        <img src="<?php echo e(url('public/frontend/images/assignedby.png')); ?>" alt="">
+                        to: <?php echo e($task->assignedUser->username ?? 'Unassigned'); ?>
+
                     </div>
                     <div class="due-date">
-                        <img src="<?php echo e(url('frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
+                        <img src="<?php echo e(url('public/frontend/images/duedate.png')); ?>" alt=""> : <?php echo e($task->due_date ?? 'No Due Date'); ?>
 
                     </div>
                     <div class="priority">
-                        <img src="<?php echo e(url('frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
+                        <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
+
+                    </div>
+                     <div class="priority">
+                    Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
+
 
                     </div>
                 </div>
@@ -439,10 +435,11 @@ columns.forEach(column => {
         background-color: #007bff;
         color: white;
     }
-    .btn-save-task:hover {
+     .btn-save-task:hover {
         background-color: #002aee !important;
         color: white;
     }
+
 
     .btn-cancel-task {
         background-color: #dc3545;

@@ -16,7 +16,7 @@
         </div>
         
         <div class="your-task">
-            <p>Your Task's</p> 
+            <p>{{$loggedInUser}}- Task's</p> 
         </div>
 
 
@@ -56,18 +56,18 @@
             $serialNo = 1;
             
             $tasksToDo = $tasks->filter(function ($task) {
-                return $task->status === 'To Do' || $task->status === null;
+                return $task->status === 'TO DO' || $task->status === null;
             });
-                $tasksInProgress = $tasks->where('status', 'In Progress');
+                $tasksInProgress = $tasks->where('status', 'IN PROGRESS');
                 $tasksQA = $tasks->where('status', 'QA');
-                $tasksCompleted = $tasks->where('status', 'Completed');
-                $tasksClosed = $tasks->where('status', 'Closed');
+                $tasksCompleted = $tasks->where('status', 'COMPLETED');
+                $tasksClosed = $tasks->where('status', 'CLOSED');
                 $columnNames = [
-            'To Do' => $tasksToDo,
-            'In Progress' => $tasksInProgress,
+            'TO DO' => $tasksToDo,
+            'IN PROGRESS' => $tasksInProgress,
             'QA' => $tasksQA,
-            'Completed' => $tasksCompleted,
-            'Closed' => $tasksClosed
+            'COMPLETED' => $tasksCompleted,
+            'CLOSED' => $tasksClosed
             ];
             @endphp
 
@@ -101,8 +101,8 @@
                             <div class="assigne">
                                 @if ($task->assignedBy)
                                 <img src="{{ url('public/frontend/images/assignedby.png') }}" alt=""> 
-                                    by: <img src="{{ asset('storage/profilepics/' . $task->assignedBy->profilepic) }}" 
-                                    alt="{{ $task->assignedBy->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> {{ $task->assignedBy->username }}
+                                    : <img src="{{ asset('storage/profilepics/' . $task->assignedBy->profilepic) }}" 
+                                    alt="{{ $task->assignedBy->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> 
                                 @else
                                     <img src="{{ url('public/frontend/images/unassigned.png') }}" alt="Unassigned">
                                     by: N/A
@@ -469,9 +469,9 @@ columns.forEach(column => {
         .your-task {
   width: 100%;
   margin-top: -25px;
-  margin-bottom: 30px;
-  padding-left: 10px;
-  font-size: 17.5px;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  font-size: 18px;
   font-weight: 525;
 }
 .nodropdown{
@@ -487,6 +487,8 @@ margin-right: 10px;
   margin-bottom: -10px;
   background-color:transparent !important;
 }
+
+
 
     </style>
 </main>

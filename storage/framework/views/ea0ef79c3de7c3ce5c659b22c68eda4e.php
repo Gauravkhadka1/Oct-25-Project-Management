@@ -8,15 +8,15 @@ use Carbon\Carbon;
     <div class="project-page">
         <div class="project-heading">
             <div class="project-h2">
-                <h2>Projects</h2>
+            <h2>Projects</h2>
             </div>
             <div class="create-filter-search-project">
                 <div class="create-project">
-                    <button onclick="openCreateProjectModal()"><img src="<?php echo e(url ('/frontend/images/add-new.png')); ?>" alt=""> </button>
+                    <button onclick="openCreateProjectModal()"><img src="<?php echo e(url ('public/frontend/images/add-new.png')); ?>" alt=""> </button>
                 </div>
                 <div class="filter-section">
                     <div class="filter-projects" onclick="toggleFilterList()">
-                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
                         <div class="filter-count">
                             <?php if($filterCount > 0): ?>
                             <p><?php echo e($filterCount); ?></p>
@@ -64,12 +64,12 @@ use Carbon\Carbon;
                                 <label for="status">Status:</label>
                                 <select id="status" name="sort_status" class="filter-select">
                                     <option value="">Select Options</option>
-                                    <option value="Design" <?php echo e(request('sort_status') == 'Design' ? 'selected' : ''); ?>>Design</option>
-                                    <option value="Development" <?php echo e(request('sort_status') == 'Development' ? 'selected' : ''); ?>>Development</option>
+                                    <option value="Design" <?php echo e(request('sort_status') == 'design' ? 'selected' : ''); ?>>Design</option>
+                                    <option value="Development" <?php echo e(request('sort_status') == 'development' ? 'selected' : ''); ?>>Development</option>
                                     <option value="QA" <?php echo e(request('sort_status') == 'QA' ? 'selected' : ''); ?>>QA</option>
-                                    <option value="Content Fillup" <?php echo e(request('sort_status') == 'Content Fillup' ? 'selected' : ''); ?>>Content Fillup</option>
+                                    <option value="Content Fillup" <?php echo e(request('sort_status') == 'content-fillup' ? 'selected' : ''); ?>>Content Fillup</option>
                                     <option value="Completed" <?php echo e(request('sort_status') == 'Completed' ? 'selected' : ''); ?>>Completed</option>
-                                    <option value="Closed" <?php echo e(request('sort_status') == 'Closed' ? 'selected' : ''); ?>>Closed</option>
+                          
                                     <option value="Other" <?php echo e(request('sort_status') == 'Other' ? 'selected' : ''); ?>>Other</option>
 
                                 </select>
@@ -82,7 +82,7 @@ use Carbon\Carbon;
                 </div>
                 <div class="search-projects">
                     <div class="search-icon">
-                        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                        <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
                     </div>
                     <form action="<?php echo e(route('projects.index')); ?>" method="GET" id="search-form">
                         <div class="search-text-area">
@@ -96,9 +96,45 @@ use Carbon\Carbon;
             <div class="ongoing-project" id="ongoing-project">
                 <div class="task-board">
                     <!-- Column for To Do tasks -->
-                    <div class="task-column" id="new" data-status="design">
+                    <div class="task-column" id="new-project" data-status="new">
+                       <div class="new-project-add-heading">
+                       <div class="new-project-heading">
+                            <h3>New</h3>
+                        </div>
+                        <div class="add-new-project">
+                            <img src="<?php echo e(url('public/frontend/images/add-new.png')); ?>" alt="">
+                        </div>
+                       </div>
+
+                        <div class="task-list">
+                            <?php $__currentLoopData = $projects->where('status', 'new'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
+                                <div class="task-name">
+                                    <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
+                                        <p><?php echo e($project->name); ?></p>
+                                    </a>
+
+                                </div>
+                                <div class="category">
+                                    <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
+                                </div>
+
+                                <div class="due-date">
+                                    <strong>Due : </strong>
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
+
+                                    <?php else: ?>
+                                        No due date set
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                    </div>
+                    <div class="task-column" id="design" data-status="design">
                         <div class="todo-heading-project">
-                            <img src="<?php echo e(url ('frontend/images/design.png')); ?>" alt="">
+                            <img src="<?php echo e(url ('public/frontend/images/design.png')); ?>" alt="">
                             <h3>Design</h3>
                         </div>
 
@@ -112,27 +148,18 @@ use Carbon\Carbon;
 
                                 </div>
                                 <div class="category">
-                                    Status:
+                                    <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
                                 </div>
+
                                 <div class="due-date">
-    Due in: 
-    <?php if(!$project->due_date): ?>
-        No due date set
-    <?php elseif(\Carbon\Carbon::now() < \Carbon\Carbon::parse($project->due_date)): ?>
-        <?php echo e(\Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($project->due_date), false)); ?> days
-    <?php elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($project->due_date)): ?>
-        Overdue by <?php echo e(\Carbon\Carbon::parse($project->due_date)->diffInDays(\Carbon\Carbon::now())); ?> days
-    <?php else: ?>
-        Not started yet
-    <?php endif; ?>
-</div>
+                                    <strong>Due : </strong>
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
 
-
-
-
-
-
-
+                                    <?php else: ?>
+                                        No due date set
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
@@ -140,11 +167,12 @@ use Carbon\Carbon;
 
 
                     <!-- Column for In Progress tasks -->
-                    <div class="task-column" id="dealing" data-status="development">
+                    <div class="task-column" id="development" data-status="development">
                         <div class="developement-heading">
-                            <img src="<?php echo e(url ('frontend/images/developement.png')); ?>" alt="">
+                            <img src="<?php echo e(url ('public/frontend/images/developement.png')); ?>" alt="">
                             <h3>Development</h3>
                         </div>
+
                         <div class="task-list">
                             <?php $__currentLoopData = $projects->where('status', 'development'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
@@ -155,34 +183,31 @@ use Carbon\Carbon;
 
                                 </div>
                                 <div class="category">
-                                    Status:
-                                </div>
-                                <div class="due-date">
-                                    Due in:
-                                    <?php if(!$project->due_date): ?>
-                                    No due date set
-                                    <?php elseif(\Carbon\Carbon::now() < \Carbon\Carbon::parse($project->due_date)): ?>
-                                        <?php echo e(\Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($project->due_date), false)); ?> days
-                                        <?php elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($project->due_date)): ?>
-                                        Overdue by <?php echo e(\Carbon\Carbon::parse($project->due_date)->diffInDays(\Carbon\Carbon::now())); ?> days
-                                        <?php else: ?>
-                                        Not started yet
-                                        <?php endif; ?>
+                                    <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
                                 </div>
 
+                                 <div class="due-date">
+                                    <strong>Due : </strong>
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
+
+                                    <?php else: ?>
+                                        No due date set
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
 
                     <!-- Column for QA tasks -->
-                    <div class="task-column" id="quote_sent" data-status="content_fillup">
-                        <div class="content-fillup-heading">
-                            <img src="<?php echo e(url ('frontend/images/content-fillup.png')); ?>" alt="">
+                    <div class="task-column" id="quote_sent" data-status="content-fillup">
+                       <div class="content-fillup-heading">
+                            <img src="<?php echo e(url ('public/frontend/images/content-fillup.png')); ?>" alt="">
                             <h3> Content Fill up</h3>
                         </div>
                         <div class="task-list">
-                            <?php $__currentLoopData = $projects->where('status', 'content_fillup'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $projects->where('status', 'content-fillup'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
                                     <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
@@ -190,29 +215,27 @@ use Carbon\Carbon;
                                     </a>
 
                                 </div>
-                                <div class="category">
-                                    Status:
+                                  <div class="category">
+                                    <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
                                 </div>
 
                                 <div class="due-date">
-                                    Due in:
-                                    <?php if(!$project->due_date): ?>
-                                    No due date set
-                                    <?php elseif(\Carbon\Carbon::now() < \Carbon\Carbon::parse($project->due_date)): ?>
-                                        <?php echo e(\Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($project->due_date), false)); ?> days
-                                        <?php elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($project->due_date)): ?>
-                                        Overdue by <?php echo e(\Carbon\Carbon::parse($project->due_date)->diffInDays(\Carbon\Carbon::now())); ?> days
-                                        <?php else: ?>
-                                        Not started yet
-                                        <?php endif; ?>
+                                    <strong>Due : </strong>
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
+
+                                    <?php else: ?>
+                                        No due date set
+                                    <?php endif; ?>
                                 </div>
+
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
                     <div class="task-column" id="converted" data-status="completed">
-                        <div class="completed-heading-project">
-                            <img src="<?php echo e(url ('frontend/images/completed.png')); ?>" alt="">
+                       <div class="completed-heading-project">
+                            <img src="<?php echo e(url ('public/frontend/images/completed.png')); ?>" alt="">
                             <h3>Completed</h3>
                         </div>
                         <div class="task-list">
@@ -224,21 +247,19 @@ use Carbon\Carbon;
                                     </a>
 
                                 </div>
-                                <div class="category">
-                                    Status:
+                                 <div class="category">
+                                    <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
                                 </div>
 
-                                <div class="due-date">
-                                    Due in:
-                                    <?php if(!$project->due_date): ?>
-                                    No due date set
-                                    <?php elseif(\Carbon\Carbon::now() < \Carbon\Carbon::parse($project->due_date)): ?>
-                                        <?php echo e(\Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($project->due_date), false)); ?> days
-                                        <?php elseif(\Carbon\Carbon::now() > \Carbon\Carbon::parse($project->due_date)): ?>
-                                        Overdue by <?php echo e(\Carbon\Carbon::parse($project->due_date)->diffInDays(\Carbon\Carbon::now())); ?> days
-                                        <?php else: ?>
-                                        Not started yet
-                                        <?php endif; ?>
+                               
+                                 <div class="due-date">
+                                    <strong>Due : </strong>
+                                    <?php if($project->time_left !== null): ?>
+                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
+
+                                    <?php else: ?>
+                                        No due date set
+                                    <?php endif; ?>
                                 </div>
 
                             </div>
@@ -269,7 +290,7 @@ use Carbon\Carbon;
                     <select name="status" id="status">
                         <option value="design">Design</option>
                         <option value="development">Development</option>
-                        <option value="content_fillup">Content Fill up</option>
+                        <option value="content-fillup">Content Fill up</option>
                         <option value="completed">Completed</option>
                     </select>
 
