@@ -11,9 +11,6 @@ use Carbon\Carbon;
             <h2>Projects</h2>
             </div>
             <div class="create-filter-search-project">
-                <div class="create-project">
-                    <button onclick="openCreateProjectModal()"><img src="<?php echo e(url ('public/frontend/images/add-new.png')); ?>" alt=""> </button>
-                </div>
                 <div class="filter-section">
                     <div class="filter-projects" onclick="toggleFilterList()">
                         <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
@@ -102,9 +99,44 @@ use Carbon\Carbon;
                             <h3>New</h3>
                         </div>
                         <div class="add-new-project">
+                        <button class="btn-create-new" id="task-create" onclick="openAddTaskModal()">
                             <img src="<?php echo e(url('public/frontend/images/add-new.png')); ?>" alt="">
+                        </button>
                         </div>
                        </div>
+                       <div id="add-task-modal" class="hidden">
+                            <form action="<?php echo e(route('projects.store')); ?>" method="POST" class="custom-form">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" id="project-id" name="project_id" value="">
+                                <input type="hidden" id="status" name="status" value="new">
+
+                                <div class="task-name">
+                                    <input type="text" id="task-name" name="name" class="task-input" placeholder="Select Project" required />
+                                    <button type="submit" class="btn-save-task">Save</button>
+                                </div>
+                                <div class="assigne">
+                                    <img src="<?php echo e(url('public/frontend/images/assignedby.png')); ?>" alt="">
+                                    <select id="assigned-to" name="assigned_to" class="task-input" required>
+                                        <option value="">Assign to</option>
+                                        <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($user->id); ?>"><?php echo e($user->username); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+                                <div class="due-date">
+                                    <img src="<?php echo e(url('public/frontend/images/duedate.png')); ?>" alt="">
+                                    <input type="date" id="due-date" name="due_date" class="task-input" required />
+                                </div>
+                                <div class="priority">
+                                    <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt="">
+                                    <select id="priority" name="priority" class="task-input" required>
+                                        <option value="Normal">Normal</option>
+                                        <option value="High">High</option>
+                                        <option value="Urgent">Urgent</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
 
                         <div class="task-list">
                             <?php $__currentLoopData = $projects->where('status', 'new'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -268,35 +300,6 @@ use Carbon\Carbon;
                     </div>
                 </div>
 
-            </div>
-        </div>
-
-        <!-- Modal for Creating New Project -->
-        <div id="create-project-modal" style="display: none;">
-            <div>
-                <h3>Create New Project</h3>
-                <form action="<?php echo e(route('projects.store')); ?>" method="POST">
-                    <?php echo csrf_field(); ?>
-                    <label for="project-name">Project Name:</label>
-                    <input type="text" name="name" id="project-name">
-
-                    <label for="start-date">Start Date:</label>
-                    <input type="date" name="start_date" id="start_date">
-
-                    <label for="due-date">Due Date:</label>
-                    <input type="date" name="due_date" id="due_date">
-
-                    <label for="assignee">Status</label>
-                    <select name="status" id="status">
-                        <option value="design">Design</option>
-                        <option value="development">Development</option>
-                        <option value="content-fillup">Content Fill up</option>
-                        <option value="completed">Completed</option>
-                    </select>
-
-                    <button type="submit">Add Project</button>
-                    <button type="button" onclick="closeCreateProjectModal()">Cancel</button>
-                </form>
             </div>
         </div>
 
@@ -636,6 +639,116 @@ use Carbon\Carbon;
 
                 });
             });
+
+
+
+
+
+            function openAddTaskModal() {
+    document.getElementById('project-id'); // Set project ID
+    console.log('Opening modal for adding project'); // Debug log
+
+    const modal = document.getElementById('add-task-modal');
+    modal.classList.remove('hidden'); // Remove hidden class
+    modal.style.display = 'block'; // Ensure display is block
+
+    // Add event listener for outside clicks
+    setTimeout(() => document.addEventListener('click', handleOutsideClick), 0);
+}
+
+// Function to close the "Add Task" modal
+function closeAddTaskModal() {
+    const modal = document.getElementById('add-task-modal');
+    modal.classList.add('hidden'); // Add hidden class
+    modal.style.display = 'none'; // Reset display
+
+    // Remove the outside click listener
+    document.removeEventListener('click', handleOutsideClick);
+}
+
+// Handle outside click to close the modal
+function handleOutsideClick(event) {
+    const modal = document.getElementById('add-task-modal');
+    if (!modal.contains(event.target) && !event.target.closest('.custom-form')) {
+        closeAddTaskModal();
+    }
+}
+
+// Function to save the task
+function saveTask() {
+    const taskName = document.getElementById('task-name').value;
+    const assignedTo = document.getElementById('assigned-to').value;
+    const dueDate = document.getElementById('due-date').value;
+    const priority = document.getElementById('priority').value;
+    const projectId = document.getElementById('project-id').value;
+
+    // Validation
+    if (!taskName || !assignedTo || !dueDate || !priority) {
+        alert('Please fill in all fields!');
+        return;
+    }
+
+    // Prepare data to send
+    const data = {
+        name: taskName,
+        assigned_to: assignedTo,
+        project_id: projectId,
+        due_date: dueDate,
+        priority: priority,
+        _token: '<?php echo e(csrf_token()); ?>', // Include CSRF token for Laravel
+    };
+
+    // Send data to server via AJAX
+    fetch('', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to save task.');
+            }
+            return response.json();
+        })
+        .then(task => {
+            // Add task to the UI
+            const taskList = document.querySelector('.task-list');
+            const newTask = `
+                <div class="task" draggable="true">
+                    <div class="task-name">
+                        <a href="">
+                            <p>${task.name}</p>
+                        </a>
+                    </div>
+                    <div class="assigne">
+                        <img src="<?php echo e(url ('frontend/images/assignedby.png')); ?>" alt=""> to: ${task.assigned_to_username}
+                    </div>
+                    <div class="due-date">
+                        <img src="<?php echo e(url ('frontend/images/duedate.png')); ?>" alt=""> : ${task.due_date}
+                    </div>
+                    <div class="priority">
+                        <img src="<?php echo e(url ('frontend/images/priority.png')); ?>" alt=""> : ${task.priority}
+                    </div>
+                </div>
+            `;
+            taskList.insertAdjacentHTML('beforeend', newTask);
+
+            // Reset and hide the form
+            closeAddTaskModal();
+            document.getElementById('task-name').value = '';
+            document.getElementById('assigned-to').value = '';
+            document.getElementById('due-date').value = '';
+            document.getElementById('priority').value = 'Normal';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to save task. Please try again.');
+        });
+}
+
         </script>
 
 

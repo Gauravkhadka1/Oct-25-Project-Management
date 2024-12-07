@@ -101,7 +101,6 @@ class ProjectController extends Controller
         $project = Project::create($validatedData);
 
         // Call calculateTimeLeft and save the time_left to the database
-        $project->time_left = $this->calculateTimeLeft($project);
         $project->save();
 
         return redirect(url('/projects'))->with('success', 'Project created successfully.');
