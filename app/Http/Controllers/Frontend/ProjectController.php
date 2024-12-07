@@ -17,16 +17,11 @@ class ProjectController extends Controller
         $query = Project::query();
         $filterCount = 0;
 
+
         // Start a query for projects
         $query = Project::with(['tasks.assignedUser', 'tasks.assignedBy']); // Load related tasks and users
-        // Fetch projects and calculate time left for each
-    $projects = $query->get()->map(function ($project) {
-        $project->time_left = $this->calculateTimeLeft($project);
-        return $project;
-    });
 
-
-        // Filtering by Start Date
+           // Filtering by Start Date
         if ($request->filled('start_date')) {
             $filterCount++;
             switch ($request->start_date) {
@@ -63,6 +58,7 @@ class ProjectController extends Controller
                     break;
             }
         }
+
         // Filtering by Status
         if ($request->filled('sort_status')) {
             $query->where('status', $request->sort_status);
@@ -75,19 +71,24 @@ class ProjectController extends Controller
             $query->where('name', 'like', "%{$searchTerm}%"); // Search by project name
         }
 
-        // Execute the query to fetch projects
-        $projects = $query->get();
+         // Execute the query to fetch projects
+    $projects = $query->get()->map(function ($project) {
+        // Calculate time left for each project
+        $project->time_left = $this->calculateTimeLeft($project);
+        return $project;
+    });
 
-        // Fetch all users
-        $users = User::all();
+    
 
-        // Initialize $project to null if there are no projects
-        $project = $projects->isEmpty() ? null : $projects;
+    // Fetch all users
+    $users = User::all();
 
+    // Initialize $project to null if there are no projects
+    $project = $projects->isEmpty() ? null : $projects;
 
-        // Pass the initialized $project, $users, and $projects to the view
-        return view('frontends.projects', compact('users', 'projects', 'project', 'filterCount'));
-    }
+    // Return the view with the necessary data
+    return view('frontends.projects', compact('users', 'projects', 'project', 'filterCount'));
+}
 
     public function store(Request $request)
     {
@@ -105,8 +106,6 @@ class ProjectController extends Controller
 
         return redirect(url('/projects'))->with('success', 'Project created successfully.');
     }
-
-
 
     public function destroy($id)
     {
@@ -126,26 +125,25 @@ class ProjectController extends Controller
             'status' => 'required|string',
             'sub-status' => 'nullable|string|max:255', // Validate sub-status if it's being updated
         ]);
-    
+
         $project = Project::findOrFail($id);
-    
+
         // Update fields manually
         $project->name = $request->input('name');
         $project->start_date = $request->input('start_date');
         $project->due_date = $request->input('due_date');
         $project->status = $request->input('status');
         $project->sub_status = $request->input('sub-status'); // Manually update sub-status
-    
+
         // Save updated project
         $project->save();
-    
+
         // Recalculate and save the updated time_left value
         $project->time_left = $this->calculateTimeLeft($project);
         $project->save();
-    
+
         return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
     }
-    
 
     public function showTasks($projectId)
     {
@@ -161,16 +159,43 @@ class ProjectController extends Controller
         $project = Project::with('tasks')->findOrFail($projectId);
         return view('frontends.projects', compact('project'));
     }
+
     // Calculate time_left for sorting
-    private function calculateTimeLeft($project)
-    {
-        if (!$project->due_date) {
-            return null;  // or handle as needed
-        }
-        $currentDate = Carbon::now();
-        $dueDate = Carbon::parse($project->due_date);
-        return $currentDate->diffInDays($dueDate, false);
+
+    
+    public function calculateTimeLeft($project)
+{
+    if (!$project->due_date) {
+        return 'No due date';
     }
+
+    // Parse the due date and set the timezone to Nepali Time (NPT)
+    $dueDate = Carbon::parse($project->due_date)->setTimezone('Asia/Kathmandu')->startOfDay();
+    
+    // Get the current time in Nepali Time (NPT) and set it to midnight (start of the day)
+    $now = Carbon::now('Asia/Kathmandu')->startOfDay();
+
+    // Check if the project is overdue
+    if ($dueDate->isPast()) {
+        // Ensure the number of overdue days is an integer
+        $daysOverdue = $dueDate->diffInDays($now);
+        return "Overdue by {$daysOverdue} day" . ($daysOverdue > 1 ? 's' : '');
+    }
+
+    // Calculate the time left in full days
+    $daysLeft = $now->diffInDays($dueDate);
+
+    // If there are no days left, indicate it's due today
+    if ($daysLeft == 0) {
+        return 'Due today';
+    } else {
+        return "{$daysLeft} day" . ($daysLeft > 1 ? 's' : '') . ' left'; // Format as "X day(s) left"
+    }
+}
+
+
+    
+    
 
     public function updateStatus(Request $request)
     {
@@ -178,45 +203,39 @@ class ProjectController extends Controller
             'taskId' => 'required|integer|exists:projects,id',
             'status' => 'required|string|max:255'
         ]);
-    
-        // Find the prospect by ID and update the status
+
+        // Find the project by ID and update the status
         $project = Project::findOrFail($validatedData['taskId']);
         $project->status = $validatedData['status'];
         $project->save();
-    
-        // Send notifications to specified emails
-        // $emails = ['gaurav@webtech.com.np'];
-        // Notification::route('mail', $emails)->notify(new ProjectStatusUpdated($project, $validatedData['status']));
-    
+
         // Return a success response
         return response()->json(['success' => true, 'message' => 'Status updated successfully']);
     }
 
-
     public function showdetails($id)
-{
-    // Fetch the project by ID
-    $project = Project::with(['tasks.assignedUser' => function ($query) {
-        $query->select('id', 'username', 'profilepic'); // Fetch only necessary columns
-    }])->findOrFail($id);
+    {
+        // Fetch the project by ID
+        $project = Project::with(['tasks.assignedUser' => function ($query) {
+            $query->select('id', 'username', 'profilepic'); // Fetch only necessary columns
+        }])->findOrFail($id);
 
-    // Fetch all users for task assignment
-    $users = User::all();
+        // Fetch all users for task assignment
+        $users = User::all();
 
-    // Separate tasks by status
-    $todoTasks = $project->tasks->filter(function ($task) {
-        return $task->status === null || $task->status === 'To Do';
-    });
+        // Separate tasks by status
+        $todoTasks = $project->tasks->filter(function ($task) {
+            return $task->status === null || $task->status === 'To Do';
+        });
 
-    $inProgressTasks = $project->tasks->where('status', 'In Progress'); // For "In Progress" tasks
-    $qaTasks = $project->tasks->where('status', 'QA'); // For "QA" tasks
-    $completedTasks = $project->tasks->where('status', 'Completed'); // For "Completed" tasks
+        $inProgressTasks = $project->tasks->where('status', 'In Progress'); // For "In Progress" tasks
+        $qaTasks = $project->tasks->where('status', 'QA'); // For "QA" tasks
+        $completedTasks = $project->tasks->where('status', 'Completed'); // For "Completed" tasks
 
-    // Pass the data to the view
-    return view('frontends.project-details-page', compact('project', 'users', 'todoTasks', 'inProgressTasks', 'qaTasks', 'completedTasks'));
-}
-
-
+        // Pass the data to the view
+        return view('frontends.project-details-page', compact('project', 'users', 'todoTasks', 'inProgressTasks', 'qaTasks', 'completedTasks'));
+    }
 
     
+
 }

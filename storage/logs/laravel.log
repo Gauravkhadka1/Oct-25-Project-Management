@@ -12671,3 +12671,1202 @@
 #54 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
 #55 {main}
 "} 
+[2024-12-07 07:55:12] local.ERROR: Property [due_date] does not exist on this collection instance. {"userId":45,"exception":"[object] (Exception(code: 0): Property [due_date] does not exist on this collection instance. at C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Collections\\Traits\\EnumeratesValues.php:1034)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\app\\Http\\Controllers\\Frontend\\ProjectController.php(89): Illuminate\\Support\\Collection->__get('due_date')
+#1 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(46): App\\Http\\Controllers\\Frontend\\ProjectController->index(Object(Illuminate\\Http\\Request))
+#2 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(260): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Frontend\\ProjectController), 'index')
+#3 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(206): Illuminate\\Routing\\Route->runController()
+#4 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(806): Illuminate\\Routing\\Route->run()
+#5 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#6 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#7 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#8 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(88): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#9 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#10 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#11 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#12 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#13 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#14 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#15 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#16 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#17 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(75): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#18 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#19 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#20 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#21 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#22 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#23 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#24 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#25 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#26 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#27 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#28 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#29 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#30 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#31 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#32 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#33 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#37 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#39 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#41 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#42 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#43 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#44 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#45 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
+#46 {main}
+"} 
+[2024-12-07 07:57:25] local.DEBUG: Project Name: P 1  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 2.6684565557986  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: project 2  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: -2.3315434469329  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 4.6684565515278  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 7.6684565501273  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: d  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 10.668456548785  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: duedate  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 22.668456547442  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: Time left  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 2.6684565460417  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: fdf  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 11.668456544676  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: gf  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 4.6684565433333  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: dsfa  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 12.668456542002  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: new  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 20.66845654066  
+[2024-12-07 07:57:25] local.DEBUG: Project Name: New New  
+[2024-12-07 07:57:25] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 07:57:25] local.DEBUG: Time Left: 22.668456539329  
+[2024-12-07 07:57:25] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: P 1  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 2.6636264966898  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: project 2  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: -2.3363735072454  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 4.6636264905787  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 7.6636264882176  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: d  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 10.663626485891  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: duedate  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 22.663626483252  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: Time left  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 2.6636264808912  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: fdf  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 11.663626478472  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: gf  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 4.6636264759954  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: dsfa  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 12.663626473773  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: new  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 20.663626471366  
+[2024-12-07 08:04:22] local.DEBUG: Project Name: New New  
+[2024-12-07 08:04:22] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 08:04:22] local.DEBUG: Time Left: 22.66362646897  
+[2024-12-07 08:04:22] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: P 1  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 2.6633097814468  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: project 2  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: -2.3366902211921  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 4.6633097773264  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 7.6633097759375  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: d  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 10.663309774444  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: duedate  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 22.663309773056  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: Time left  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 2.6633097717245  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: fdf  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 11.663309770312  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: gf  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 4.6633097690278  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: dsfa  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 12.663309767766  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: new  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 20.663309766516  
+[2024-12-07 08:04:50] local.DEBUG: Project Name: New New  
+[2024-12-07 08:04:50] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 08:04:50] local.DEBUG: Time Left: 22.663309765243  
+[2024-12-07 08:04:50] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: P 1  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 2.6623946315394  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: project 2  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: -2.3376053722917  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 4.6623946253704  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 7.6623946231944  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: d  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 10.662394621053  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: duedate  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 22.662394618924  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: Time left  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 2.6623946172685  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: fdf  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 11.662394615718  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: gf  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 4.6623946141435  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: dsfa  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 12.662394612303  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: new  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 20.662394610405  
+[2024-12-07 08:06:09] local.DEBUG: Project Name: New New  
+[2024-12-07 08:06:09] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 08:06:09] local.DEBUG: Time Left: 22.662394608727  
+[2024-12-07 08:06:09] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: P 1  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 2.6622061785648  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: project 2  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: -2.3377938240625  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 4.6622061744329  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 7.6622061731019  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: d  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 10.662206171319  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: duedate  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 22.662206169931  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: Time left  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 2.6622061683565  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: fdf  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 11.662206166759  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: gf  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 4.6622061652546  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: dsfa  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 12.662206163808  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: new  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 20.662206162176  
+[2024-12-07 08:06:25] local.DEBUG: Project Name: New New  
+[2024-12-07 08:06:25] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 08:06:25] local.DEBUG: Time Left: 22.662206160683  
+[2024-12-07 08:06:25] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 2.6165161793634  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: -2.3834838233796  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 4.6165161749306  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 7.6165161733218  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: d  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 10.616516171725  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 22.616516170255  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 2.6165161686458  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 11.616516167118  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: gf  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 4.616516165544  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 12.61651616419  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: new  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 20.616516162674  
+[2024-12-07 09:12:13] local.DEBUG: Project Name: New New  
+[2024-12-07 09:12:13] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:12:13] local.DEBUG: Time Left: 22.616516161088  
+[2024-12-07 09:12:13] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 2.6155135477199  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: -2.3844864552199  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 4.6155135433102  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 7.6155135420023  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: d  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 10.615513540752  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 22.615513539248  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 2.6155135378472  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 11.615513536424  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: gf  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 4.6155135349769  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 12.615513533773  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: new  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 20.615513532569  
+[2024-12-07 09:13:39] local.DEBUG: Project Name: New New  
+[2024-12-07 09:13:39] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:13:39] local.DEBUG: Time Left: 22.615513531389  
+[2024-12-07 09:13:39] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:13:41] local.ERROR: syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" (View: C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views\frontends\projects.blade.php) {"userId":45,"exception":"[object] (Illuminate\\View\\ViewException(code: 0): syntax error, unexpected token \"endforeach\", expecting \"elseif\" or \"else\" or \"endif\" (View: C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\resources\\views\\frontends\\projects.blade.php) at C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\storage\\framework\\views\\ea0ef79c3de7c3ce5c659b22c68eda4e.php:166)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(60): Illuminate\\View\\Engines\\CompilerEngine->handleViewException(Object(ParseError), 1)
+#1 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(73): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#2 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(208): Illuminate\\View\\Engines\\CompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#3 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(191): Illuminate\\View\\View->getContents()
+#4 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(160): Illuminate\\View\\View->renderContents()
+#5 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(70): Illuminate\\View\\View->render()
+#6 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#7 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(918): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 200, Array)
+#8 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(885): Illuminate\\Routing\\Router::toResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#9 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Routing\\Router->prepareResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#10 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#11 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#12 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#13 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(88): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#14 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#15 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#16 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#17 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#18 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#19 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(75): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#24 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#25 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#26 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#27 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#28 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#29 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#30 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#31 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#32 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#47 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#48 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#49 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#50 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
+#51 {main}
+
+[previous exception] [object] (ParseError(code: 0): syntax error, unexpected token \"endforeach\", expecting \"elseif\" or \"else\" or \"endif\" at C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\storage\\framework\\views\\ea0ef79c3de7c3ce5c659b22c68eda4e.php:166)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#1 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('C:\\\\xampp\\\\htdocs...', Array)
+#2 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(73): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#3 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(208): Illuminate\\View\\Engines\\CompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#4 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(191): Illuminate\\View\\View->getContents()
+#5 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(160): Illuminate\\View\\View->renderContents()
+#6 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(70): Illuminate\\View\\View->render()
+#7 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#8 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(918): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 200, Array)
+#9 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(885): Illuminate\\Routing\\Router::toResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#10 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Routing\\Router->prepareResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#11 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#12 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#13 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#14 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(88): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#15 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#16 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#17 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#18 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#20 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#21 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#22 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#23 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(75): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#24 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#25 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#26 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#27 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#28 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#29 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#30 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#31 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#32 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#33 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#39 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#41 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#42 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#43 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#44 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#45 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#46 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#47 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#48 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#49 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#50 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#51 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
+#52 {main}
+"} 
+[2024-12-07 09:14:09] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 2.6151671195139  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: -2.3848328837153  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 4.6151671144907  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 7.6151671130093  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: d  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 10.615167111701  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 22.615167110312  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 2.6151671087269  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 11.615167107361  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: gf  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 4.6151671060648  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 12.615167104329  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: new  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 20.615167102789  
+[2024-12-07 09:14:09] local.DEBUG: Project Name: New New  
+[2024-12-07 09:14:09] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:14:09] local.DEBUG: Time Left: 22.615167101319  
+[2024-12-07 09:14:09] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 2.6148092022106  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: -2.3851908009375  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 4.6148091976968  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 7.6148091964931  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: d  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 10.614809195243  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 22.614809193738  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 2.6148091924306  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 11.614809191134  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: gf  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 4.6148091898727  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 12.614809187593  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: new  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 20.614809185856  
+[2024-12-07 09:14:40] local.DEBUG: Project Name: New New  
+[2024-12-07 09:14:40] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:14:40] local.DEBUG: Time Left: 22.614809184109  
+[2024-12-07 09:14:40] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 2.6136967024306  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: -2.3863033001389  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 4.6136966983102  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 7.6136966969676  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: d  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 10.613696695787  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 22.613696694641  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 2.6136966935301  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 11.613696692419  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: gf  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 4.6136966913079  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 12.613696690197  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: new  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 20.613696689109  
+[2024-12-07 09:16:16] local.DEBUG: Project Name: New New  
+[2024-12-07 09:16:16] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:16:16] local.DEBUG: Time Left: 22.613696687998  
+[2024-12-07 09:16:16] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 2.6086846730671 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Overdue by 2.3913153311343 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 4.6086846660764 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 7.6086846635995 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: d  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 10.608684660926 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 22.608684658414 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 2.6086846554398 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 11.608684652674 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: gf  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 4.6086846412037 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 12.608684637187 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: new  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 20.608684633773 days  
+[2024-12-07 09:23:29] local.DEBUG: Project Name: New New  
+[2024-12-07 09:23:29] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:23:29] local.DEBUG: Time Left: Due in 22.608684626794 days  
+[2024-12-07 09:23:29] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 2.6083582398032 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Overdue by 2.3916417633218 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 4.6083582344097 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 7.6083582325926 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: d  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 10.608358230845 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 22.608358229074 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 2.6083582273727 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 11.608358225822 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: gf  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 4.6083582241667 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 12.608358222477 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: new  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 20.608358220718 days  
+[2024-12-07 09:23:57] local.DEBUG: Project Name: New New  
+[2024-12-07 09:23:57] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:23:57] local.DEBUG: Time Left: Due in 22.608358218588 days  
+[2024-12-07 09:23:57] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 2.607357784294 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Overdue by 2.3926422189005 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 4.6073577792014 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 7.6073577775 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: d  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 10.607357775521 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 22.607357773877 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 2.6073577720602 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 11.607357770185 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: gf  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 4.6073577685532 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 12.607357766806 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: new  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 20.607357764942 days  
+[2024-12-07 09:25:24] local.DEBUG: Project Name: New New  
+[2024-12-07 09:25:24] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:25:24] local.DEBUG: Time Left: Due in 22.607357762859 days  
+[2024-12-07 09:25:24] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:25:24] local.ERROR: compact(): Undefined variable $time_left {"userId":45,"exception":"[object] (ErrorException(code: 0): compact(): Undefined variable $time_left at C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\app\\Http\\Controllers\\Frontend\\ProjectController.php:107)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(256): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'compact(): Unde...', 'C:\\\\xampp\\\\htdocs...', 107)
+#1 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, 'compact(): Unde...', 'C:\\\\xampp\\\\htdocs...', 107)
+#2 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\app\\Http\\Controllers\\Frontend\\ProjectController.php(107): compact('users', 'projects', 'project', 'filterCount', 'time_left')
+#3 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(46): App\\Http\\Controllers\\Frontend\\ProjectController->index(Object(Illuminate\\Http\\Request))
+#4 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(260): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\Frontend\\ProjectController), 'index')
+#5 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(206): Illuminate\\Routing\\Route->runController()
+#6 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(806): Illuminate\\Routing\\Route->run()
+#7 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#8 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#9 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#10 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(88): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#11 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#12 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#13 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#14 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#15 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#16 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#17 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#18 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#19 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(75): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#20 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#21 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#22 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#23 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#24 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#25 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#26 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#27 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#28 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#29 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#30 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#31 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#32 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#37 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#39 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#41 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#42 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#43 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#44 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#45 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#46 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#47 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
+#48 {main}
+"} 
+[2024-12-07 09:25:43] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 2.607141453912 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Overdue by 2.3928585488542 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 4.6071414494444 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 7.6071414478241 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: d  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 10.607141446273 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 22.607141444745 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 2.6071414431481 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 11.607141441481 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: gf  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 4.6071414400347 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 12.607141438634 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: new  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 20.607141437269 days  
+[2024-12-07 09:25:43] local.DEBUG: Project Name: New New  
+[2024-12-07 09:25:43] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:25:43] local.DEBUG: Time Left: Due in 22.607141435775 days  
+[2024-12-07 09:25:43] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:28:47] local.ERROR: Trait "Carbon\Carbon\Carbon" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Carbon\\Carbon\\Carbon\" not found at C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\app\\Http\\Controllers\\Frontend\\ProjectController.php:13)
+[stacktrace]
+#0 {main}
+"} 
+[2024-12-07 09:29:05] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 2.6047957171759 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Overdue by 2.3952042860301 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 4.6047957124537 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 7.6047957108218 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: d  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 10.604795709225 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 22.60479570772 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 2.6047957061806 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 11.604795704653 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: gf  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 4.6047957030556 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 12.604795701273 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: new  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 20.604795699745 days  
+[2024-12-07 09:29:05] local.DEBUG: Project Name: New New  
+[2024-12-07 09:29:05] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:29:05] local.DEBUG: Time Left: Due in 22.604795698183 days  
+[2024-12-07 09:29:05] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 2.604456109919 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Overdue by 2.3955438931134 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 4.6044561049884 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 7.6044561031944 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: d  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 10.604456095868 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 22.604456092384 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 2.6044560883912 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 11.60445608662 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: gf  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 4.6044560846528 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 12.604456082593 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: new  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 20.604456080104 days  
+[2024-12-07 09:29:35] local.DEBUG: Project Name: New New  
+[2024-12-07 09:29:35] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:29:35] local.DEBUG: Time Left: Due in 22.604456078333 days  
+[2024-12-07 09:29:35] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 2.6043638596644 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Overdue by 2.3956361437153 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 4.6043638539931 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 7.604363852037 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: d  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 10.604363850023 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 22.604363848032 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 2.6043638461343 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 11.60436384412 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: gf  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 4.6043638421412 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 12.604363840475 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: new  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 20.604363839109 days  
+[2024-12-07 09:29:42] local.DEBUG: Project Name: New New  
+[2024-12-07 09:29:42] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:29:42] local.DEBUG: Time Left: Due in 22.604363837708 days  
+[2024-12-07 09:29:43] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 2.6027280958681 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Overdue by 2.397271907037 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 4.6027280911574 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 7.6027280896065 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: d  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 10.602728087905 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 22.602728085937 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 2.6027280840394 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 11.602728082211 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: gf  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 4.6027280803009 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 12.60272807816 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: new  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 20.602728076377 days  
+[2024-12-07 09:32:04] local.DEBUG: Project Name: New New  
+[2024-12-07 09:32:04] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:32:04] local.DEBUG: Time Left: Due in 22.602728074514 days  
+[2024-12-07 09:32:04] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 2.6023735748843 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-05  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Overdue by 2.3976264288889 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 4.6023735687037 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-15  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 7.6023735661227 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: d  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-18  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 10.602373563611 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 22.602373561146 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-10  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 2.6023735584838 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-19  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 11.602373556123 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: gf  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-12  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 4.6023735543171 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-20  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 12.602373548646 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: new  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-28  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 20.602373545197 days  
+[2024-12-07 09:32:34] local.DEBUG: Project Name: New New  
+[2024-12-07 09:32:34] local.DEBUG: Due Date: 2024-12-30  
+[2024-12-07 09:32:34] local.DEBUG: Time Left: Due in 22.602373542951 days  
+[2024-12-07 09:32:34] local.DEBUG: First Project Due Date: 2024-12-10  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 2.5978685094444 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Overdue by 2.4021314944213 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 4.5978685027199 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 7.5978685001157 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: d  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 10.597868497523 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 22.597868495012 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 2.5978684926968 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 11.597868490428 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: gf  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 4.5978684878704 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 12.597868485231 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: new  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 20.597868482697 days  
+[2024-12-07 09:39:04] local.DEBUG: Project Name: New New  
+[2024-12-07 09:39:04] local.DEBUG: Time Left: Due in 22.597868480255 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 2.5972525032523 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: Overdue by 2.4027474997338 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 4.5972524981944 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 7.5972524963542 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: d  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 10.597252494699 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 22.597252493079 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 2.597252491331 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 11.597252489572 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: gf  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 4.5972524878588 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 12.59725248625 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: new  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 20.597252484676 days  
+[2024-12-07 09:39:57] local.DEBUG: Project Name: New New  
+[2024-12-07 09:39:57] local.DEBUG: Time Left: 22.597252483113 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 2.5959212345255 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: Overdue by 2.4040787689815 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 4.5959212281019 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 7.5959212260648 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: d  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 10.595921224213 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 22.595921221991 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 2.5959212200579 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 11.595921218148 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: gf  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 4.5959212160417 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 12.595921214086 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: new  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 20.595921212303 days  
+[2024-12-07 09:41:52] local.DEBUG: Project Name: New New  
+[2024-12-07 09:41:52] local.DEBUG: Time Left: 22.595921210359 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: P 1  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 2 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: project 2  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: Overdue by 2.404713999375 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 4 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 7 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: d  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 10 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: duedate  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 22 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: Time left  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 2 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: fdf  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 11 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: gf  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 4 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: dsfa  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 12 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: new  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 20 days  
+[2024-12-07 09:42:47] local.DEBUG: Project Name: New New  
+[2024-12-07 09:42:47] local.DEBUG: Time Left: 22 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: P 1  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 2 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: project 2  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: Overdue by 2.418806027037 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 4 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 7 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: d  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 10 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: duedate  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 22 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: Time left  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 2 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: fdf  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 11 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: gf  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 4 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: dsfa  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 12 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: new  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 20 days  
+[2024-12-07 10:03:04] local.DEBUG: Project Name: New New  
+[2024-12-07 10:03:04] local.DEBUG: Time Left: 22 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: P 1  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 2 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: project 2  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: Overdue by 2.4200023022106 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 4 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 7 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: d  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 10 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: duedate  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 22 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: Time left  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 2 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: fdf  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 11 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: gf  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 4 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: dsfa  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 12 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: new  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 20 days  
+[2024-12-07 10:04:48] local.DEBUG: Project Name: New New  
+[2024-12-07 10:04:48] local.DEBUG: Time Left: 22 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: P 1  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 2 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: project 2  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: Overdue by 2.4203089233565 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: Alpine Treks  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 4 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: Evara Botique  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 7 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: d  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 10 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: duedate  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 22 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: Time left  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 2 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: fdf  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 11 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: gf  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 4 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: dsfa  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 12 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: new  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 20 days  
+[2024-12-07 10:05:14] local.DEBUG: Project Name: New New  
+[2024-12-07 10:05:14] local.DEBUG: Time Left: 22 days  
+[2024-12-07 13:40:20] local.ERROR: syntax error, unexpected end of file (View: C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views\frontends\projects.blade.php) {"userId":45,"exception":"[object] (Illuminate\\View\\ViewException(code: 0): syntax error, unexpected end of file (View: C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\resources\\views\\frontends\\projects.blade.php) at C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\storage\\framework\\views\\ea0ef79c3de7c3ce5c659b22c68eda4e.php:847)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(60): Illuminate\\View\\Engines\\CompilerEngine->handleViewException(Object(ParseError), 1)
+#1 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(73): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#2 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(208): Illuminate\\View\\Engines\\CompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#3 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(191): Illuminate\\View\\View->getContents()
+#4 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(160): Illuminate\\View\\View->renderContents()
+#5 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(70): Illuminate\\View\\View->render()
+#6 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#7 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(918): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 200, Array)
+#8 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(885): Illuminate\\Routing\\Router::toResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#9 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Routing\\Router->prepareResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#10 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#11 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#12 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#13 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(88): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#14 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#15 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#16 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#17 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#18 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#19 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(75): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#24 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#25 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#26 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#27 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#28 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#29 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#30 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#31 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#32 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#36 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#47 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#48 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#49 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#50 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
+#51 {main}
+
+[previous exception] [object] (ParseError(code: 0): syntax error, unexpected end of file at C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\storage\\framework\\views\\ea0ef79c3de7c3ce5c659b22c68eda4e.php:847)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#1 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('C:\\\\xampp\\\\htdocs...', Array)
+#2 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(73): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#3 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(208): Illuminate\\View\\Engines\\CompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#4 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(191): Illuminate\\View\\View->getContents()
+#5 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(160): Illuminate\\View\\View->renderContents()
+#6 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(70): Illuminate\\View\\View->render()
+#7 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#8 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(918): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 200, Array)
+#9 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(885): Illuminate\\Routing\\Router::toResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#10 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Routing\\Router->prepareResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#11 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#12 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#13 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#14 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(88): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#15 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#16 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#17 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#18 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#20 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#21 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#22 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#23 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(75): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#24 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#25 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#26 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#27 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#28 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#29 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#30 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#31 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#32 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#33 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(51): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#38 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#39 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#40 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(110): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#41 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#42 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#43 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#44 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#45 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#46 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#47 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#48 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#49 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1183): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#50 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#51 C:\\xampp\\htdocs\\Oct 29- Live edited-project management\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('C:\\\\xampp\\\\htdocs...')
+#52 {main}
+"} 

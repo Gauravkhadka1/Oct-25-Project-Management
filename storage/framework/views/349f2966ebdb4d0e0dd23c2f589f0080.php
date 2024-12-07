@@ -21,6 +21,9 @@
   <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/profile.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/payment-detail-page.css')); ?>">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
   <?php
   use App\Models\User;
   $users = User::select('id', 'username', 'profilepic')->get();

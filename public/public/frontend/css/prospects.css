@@ -630,6 +630,8 @@ button:hover {
     padding-bottom: 15px;
     margin-top: -5px;
     /* background-color: red; */
+    margin-left: -10px !important;
+    padding-left: 0px !important;
 }
 
 .task-column {
@@ -778,8 +780,8 @@ button:hover {
 .task-name p {
     color: #2A2E34;
     font-weight: bolder;
-    font-weight: 14px;
-margin-bottom: 5px;
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 .time-details {
     display: flex;

@@ -8,7 +8,7 @@ use Carbon\Carbon;
     <div class="project-page">
         <div class="project-heading">
             <div class="project-h2">
-            <h2>Projects</h2>
+                <h2>PROJECTS</h2>
             </div>
             <div class="create-filter-search-project">
                 <div class="filter-section">
@@ -19,7 +19,7 @@ use Carbon\Carbon;
                             <p><?php echo e($filterCount); ?></p>
                             <?php endif; ?>
                         </div>
-                        Filter
+                        <p>Filter</p>
                     </div>
                     <div class="filter-options" style="display: none;">
                         <form action="<?php echo e(route('projects.index')); ?>" method="GET">
@@ -83,7 +83,7 @@ use Carbon\Carbon;
                     </div>
                     <form action="<?php echo e(route('projects.index')); ?>" method="GET" id="search-form">
                         <div class="search-text-area">
-                            <input type="text" name="search" placeholder="search projects..." value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
+                            <input type="text" name="search" placeholder="search..." value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
                         </div>
                     </form>
                 </div>
@@ -96,7 +96,7 @@ use Carbon\Carbon;
                     <div class="task-column" id="new-project" data-status="new">
                        <div class="new-project-add-heading">
                        <div class="new-project-heading">
-                            <h3>New</h3>
+                            <h3>NEW</h3>
                         </div>
                         <div class="add-new-project">
                         <button class="btn-create-new" id="task-create" onclick="openAddTaskModal()">
@@ -111,124 +111,164 @@ use Carbon\Carbon;
                                 <input type="hidden" id="status" name="status" value="new">
 
                                 <div class="task-name">
-                                    <input type="text" id="task-name" name="name" class="task-input" placeholder="Select Project" required />
+                                    <input type="text" id="task-name" name="name" class="task-input" placeholder="Project name" required />
                                     <button type="submit" class="btn-save-task">Save</button>
                                 </div>
-                                <div class="assigne">
-                                    <img src="<?php echo e(url('public/frontend/images/assignedby.png')); ?>" alt="">
-                                    <select id="assigned-to" name="assigned_to" class="task-input" required>
-                                        <option value="">Assign to</option>
-                                        <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($user->id); ?>"><?php echo e($user->username); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
+                                <div class="project-start-date">
+                                    <div class="start-date-input">
+                                        <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">
+                                        <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
+                                    </div>
                                 </div>
-                                <div class="due-date">
-                                    <img src="<?php echo e(url('public/frontend/images/duedate.png')); ?>" alt="">
-                                    <input type="date" id="due-date" name="due_date" class="task-input" required />
-                                </div>
-                                <div class="priority">
-                                    <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt="">
-                                    <select id="priority" name="priority" class="task-input" required>
-                                        <option value="Normal">Normal</option>
-                                        <option value="High">High</option>
-                                        <option value="Urgent">Urgent</option>
-                                    </select>
+
+                                <div class="project-due-date">
+                                    <div class="due-date-input">
+                                        <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">
+                                        <input type="text" id="start-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
+                                    </div>
+                                    
                                 </div>
                             </form>
                         </div>
 
                         <div class="task-list">
+                        <?php if($projects->where('status', 'new')->isEmpty()): ?>
+                                <p>No NEW Projects</p>
+                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'new'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
                                     <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
-                                        <p><?php echo e($project->name); ?></p>
+                                    <p style="font-size:15px;"><?php echo e($project->name); ?></p>
                                     </a>
 
                                 </div>
-                                <div class="category">
+                                <!-- <div class="category">
                                     <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
+                                </div> -->
+                                <div class="project-start-date-view">
+                                    <div class="project-start-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">:
+                                    </div>
+                               
+                                    <?php echo e($project->start_date); ?>
+
                                 </div>
+                                <div class="project-due-date-view">
+                                    <div class="project-due-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->due_date); ?>
 
-                                <div class="due-date">
-                                    <strong>Due : </strong>
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
+                                </div>
+                                <div class="due-in-project-view">
+                                <div class="due-in-project-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->time_left); ?>
 
-                                    <?php else: ?>
-                                        No due date set
-                                    <?php endif; ?>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="task-column" id="design" data-status="design">
-                        <div class="todo-heading-project">
+                        <div class="design-heading-project">
                             <img src="<?php echo e(url ('public/frontend/images/design.png')); ?>" alt="">
-                            <h3>Design</h3>
+                            <h3>DESIGN</h3>
                         </div>
 
                         <div class="task-list">
+                        <?php if($projects->where('status', 'design')->isEmpty()): ?>
+                                <p>No Projects in Design</p>
+                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'design'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
                                     <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
-                                        <p><?php echo e($project->name); ?></p>
+                                    <p style="font-size:15px;"><?php echo e($project->name); ?></p>
                                     </a>
 
                                 </div>
-                                <div class="category">
+                              <!-- <div class="category">
                                     <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
+                                </div> -->
+                                <div class="project-start-date-view">
+                                    <div class="project-start-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">:
+                                    </div>
+                               
+                                    <?php echo e($project->start_date); ?>
+
+                                </div>
+                                <div class="project-due-date-view">
+                                    <div class="project-due-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->due_date); ?>
+
+                                </div>
+                                <div class="due-in-project-view">
+                                <div class="due-in-project-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->time_left); ?>
+
                                 </div>
 
-                                <div class="due-date">
-                                    <strong>Due : </strong>
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
-
-                                    <?php else: ?>
-                                        No due date set
-                                    <?php endif; ?>
-                                </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </div>
                     </div>
-
-
                     <!-- Column for In Progress tasks -->
                     <div class="task-column" id="development" data-status="development">
                         <div class="developement-heading">
                             <img src="<?php echo e(url ('public/frontend/images/developement.png')); ?>" alt="">
-                            <h3>Development</h3>
+                            <h3>DEVELOPMENT</h3>
                         </div>
 
                         <div class="task-list">
+                        <?php if($projects->where('status', 'development')->isEmpty()): ?>
+                                <p>No Projects in Development</p>
+                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'development'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
                                     <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
-                                        <p><?php echo e($project->name); ?></p>
+                                    <p style="font-size:15px;"><?php echo e($project->name); ?></p>
                                     </a>
 
                                 </div>
-                                <div class="category">
+                                <!-- <div class="category">
                                     <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
+                                </div> -->
+                                <div class="project-start-date-view">
+                                    <div class="project-start-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">:
+                                    </div>
+                               
+                                    <?php echo e($project->start_date); ?>
+
                                 </div>
+                                <div class="project-due-date-view">
+                                    <div class="project-due-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->due_date); ?>
 
-                                 <div class="due-date">
-                                    <strong>Due : </strong>
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
+                                </div>
+                                <div class="due-in-project-view">
+                                <div class="due-in-project-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->time_left); ?>
 
-                                    <?php else: ?>
-                                        No due date set
-                                    <?php endif; ?>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -236,66 +276,97 @@ use Carbon\Carbon;
                     <div class="task-column" id="quote_sent" data-status="content-fillup">
                        <div class="content-fillup-heading">
                             <img src="<?php echo e(url ('public/frontend/images/content-fillup.png')); ?>" alt="">
-                            <h3> Content Fill up</h3>
+                            <h3> CONTENT FILL UP</h3>
                         </div>
                         <div class="task-list">
+                        <?php if($projects->where('status', 'content-fillup')->isEmpty()): ?>
+                                <p>No Projects in Content-fillup</p>
+                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'content-fillup'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
                                     <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
-                                        <p><?php echo e($project->name); ?></p>
+                                    <p style="font-size:15px;"><?php echo e($project->name); ?></p>
                                     </a>
 
                                 </div>
-                                  <div class="category">
+                                <!-- <div class="category">
                                     <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
+                                </div> -->
+                                <div class="project-start-date-view">
+                                    <div class="project-start-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">:
+                                    </div>
+                               
+                                    <?php echo e($project->start_date); ?>
+
                                 </div>
+                                <div class="project-due-date-view">
+                                    <div class="project-due-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->due_date); ?>
 
-                                <div class="due-date">
-                                    <strong>Due : </strong>
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
+                                </div>
+                                <div class="due-in-project-view">
+                                <div class="due-in-project-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->time_left); ?>
 
-                                    <?php else: ?>
-                                        No due date set
-                                    <?php endif; ?>
                                 </div>
 
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="task-column" id="converted" data-status="completed">
                        <div class="completed-heading-project">
                             <img src="<?php echo e(url ('public/frontend/images/completed.png')); ?>" alt="">
-                            <h3>Completed</h3>
+                            <h3>COMPLETED</h3>
                         </div>
                         <div class="task-list">
+                        <?php if($projects->where('status', 'completed')->isEmpty()): ?>
+                                <p>No Projects in Completed</p>
+                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'completed'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
                                     <a href="<?php echo e(url ('projectdetails/' .$project->id)); ?>">
-                                        <p><?php echo e($project->name); ?></p>
+                                    <p style="font-size:15px;"><?php echo e($project->name); ?></p>
                                     </a>
 
                                 </div>
-                                 <div class="category">
+                                 <!-- <div class="category">
                                     <strong>Status:</strong> <p><?php echo e($project->sub_status); ?></p>
-                                </div>
-
+                                </div> -->
+                                <div class="project-start-date-view">
+                                    <div class="project-start-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">:
+                                    </div>
                                
-                                 <div class="due-date">
-                                    <strong>Due : </strong>
-                                    <?php if($project->time_left !== null): ?>
-                                        <?php echo e($project->time_left > 0 ? 'in ' . $project->time_left . ' days' :  abs($project->time_left) . ' days ago'); ?>
+                                    <?php echo e($project->start_date); ?>
 
-                                    <?php else: ?>
-                                        No due date set
-                                    <?php endif; ?>
+                                </div>
+                                <div class="project-due-date-view">
+                                    <div class="project-due-date-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->due_date); ?>
+
+                                </div>
+                                <div class="due-in-project-view">
+                                <div class="due-in-project-view-img">
+                                        <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt="">:
+                                    </div>
+                                    <?php echo e($project->time_left); ?>
+
                                 </div>
 
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -403,15 +474,20 @@ use Carbon\Carbon;
                 </form>
             </div>
         </div>
+        
 
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>
-            function openCreateProjectModal() {
-                document.getElementById('create-project-modal').style.display = 'block';
-            }
 
-            function closeCreateProjectModal() {
-                document.getElementById('create-project-modal').style.display = 'none';
-            }
+document.addEventListener("DOMContentLoaded", function() {
+    flatpickr("#start-date", {
+        dateFormat: "Y-m-d",  // Format of the date
+        allowInput: true,      // Allow manual input
+        onChange: function(selectedDates, dateStr, instance) {
+            console.log("Selected date: " + dateStr);
+        }
+    });
+});
 
             function openEditProjectModal(project) {
                 document.getElementById('edit-project-name').value = project.name;
@@ -749,7 +825,10 @@ function saveTask() {
         });
 }
 
+
+
         </script>
+
 
 
 </main>
