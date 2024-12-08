@@ -26,7 +26,11 @@
 
   @php
   use App\Models\User;
+  use App\Models\Project;
+  use App\Models\Prospect;
   $users = User::select('id', 'username', 'profilepic')->get();
+  $projectsCount = Project::where('status', '!=', 'completed')->count();
+  $prospectsCount = Prospect::where('status', '!=', 'converted')->count();
 
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
@@ -57,19 +61,19 @@
               </span>
 
               <div class="notification-dropdown" id="notification-dropdown" style="display: none;">
-    <ul>
-        @forelse(auth()->user()->unreadNotifications as $notification)
-            <li>
-                <!-- Check if 'message' exists, otherwise show a fallback value -->
-                <span>{{ $notification->data['message'] ?? 'No message available' }}</span>
-                <small>{{ $notification->created_at->diffForHumans() }}</small>
-            </li>
-        @empty
-            <li>No new notifications</li>
-        @endforelse
-    </ul>
-    <button id="mark-all-read">Mark All as Read</button>
-</div>
+                <ul>
+                    @forelse(auth()->user()->unreadNotifications as $notification)
+                        <li>
+                            <!-- Check if 'message' exists, otherwise show a fallback value -->
+                            <span>{{ $notification->data['message'] ?? 'No message available' }}</span>
+                            <small>{{ $notification->created_at->diffForHumans() }}</small>
+                        </li>
+                    @empty
+                        <li>No new notifications</li>
+                    @endforelse
+                </ul>
+                <button id="mark-all-read">Mark All as Read</button>
+            </div>
 
             </div>
 
@@ -106,43 +110,21 @@
     <div id="sidebar" class="sidebar">
       <ul>
         <li><a href="{{url('/dashboard')}}"> <img src="{{url('public/frontend/images/wtn-logo-black.svg')}}" class="logo-img"></a></li>
-         <li class="dropdown" id="nodropdown-project" style="margin-bottom:0px !important; margin-top:10px;">
-            <a href="{{url('/projects')}}">
-              <div class="nodropdown" >
-                <img src="{{url('public/frontend/images/blueprint.png')}}" alt=""> Projects
+         <li class="dropdown">
+            <a href="{{url('/projects')}}" class="task-toggle" >
+              <div class="icon-text">
+                  <img src="{{ url('public/frontend/images/blueprint.png') }}" alt=""> Projects
+              </div>
+              <div class="dropdown-arrow-div">
+                <div class="number-count">
+               {{ $projectsCount }}
+                </div>
+                  <!-- <i class="fas fa-chevron-right dropdown-arrow"></i> -->
               </div>
             </a>
         </li>
         @if(auth()->check() && in_array(auth()->user()->email, $allowedEmails))
-        <li class="dropdown">
-    <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
-        <div class="icon-text">
-            <img src="{{ url('public/frontend/images/time.png') }}" alt=""> Payments
-        </div>
-        <div class="dropdown-arrow-div">
-            <i class="fas fa-chevron-right dropdown-arrow"></i>
-        </div>
-    </a>
-    <ul class="task-dropdown">
-        <!-- Redirect "All Payments" to the previous functionality -->
-        <li><a href="{{ url('/payments') }}">All Payments</a></li>
-
-        <!-- Redirect "Today Paid" to Paid Payments -->
-        <li><a href="{{ route('paid-payments.index', ['filter_date' => 'today']) }}">Today Paid</a></li>
-
-        <!-- Redirect "This Week Paid" to Paid Payments -->
-        <li><a href="{{ route('paid-payments.index', ['filter_date' => 'this_week']) }}">This Week Paid</a></li>
-
-        <!-- Custom Days Input -->
-        <li>
-            <form method="GET" action="{{ route('paid-payments.index') }}" class="days-filter-form">
-                <input type="number" name="days" placeholder="Enter days" required min="1" class="days-input" />
-                <button type="submit" class="days-submit">Show</button>
-            </form>
-        </li>
-    </ul>
-</li>
-
+       
         <!-- <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
@@ -163,13 +145,19 @@
             <li><a href="{{url('/tasks/my')}}">Expired</a></li>
           </ul>
         </li> -->
-       
+
         <li class="dropdown">
-          <a href="{{url('/prospects')}}">
-            <div class="nodropdown">
+        <a href="{{url('/prospects')}}" class="task-toggle" >
+              <div class="icon-text">
               <img src="{{url('public/frontend/images/group.png')}}" alt=""> Prospects
-            </div>
-          </a>
+              </div>
+              <div class="dropdown-arrow-div">
+                <div class="number-count">
+                  {{$prospectsCount }}
+                </div>
+                  <!-- <i class="fas fa-chevron-right dropdown-arrow"></i> -->
+              </div>
+            </a>
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
@@ -195,13 +183,44 @@
         </ul>
 
         </li>
+        <li class="dropdown">
+          <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
+              <div class="icon-text">
+                  <img src="{{ url('public/frontend/images/time.png') }}" alt=""> Payments
+              </div>
+              <div class="dropdown-arrow-div">
+                  <i class="fas fa-chevron-right dropdown-arrow"></i>
+              </div>
+          </a>
+            <ul class="task-dropdown">
+                <!-- Redirect "All Payments" to the previous functionality -->
+                <li><a href="{{ url('/payments') }}">All Payments</a></li>
+
+                <!-- Redirect "Today Paid" to Paid Payments -->
+                <li><a href="{{ route('paid-payments.index', ['filter_date' => 'today']) }}">Today Paid</a></li>
+
+                <!-- Redirect "This Week Paid" to Paid Payments -->
+                <li><a href="{{ route('paid-payments.index', ['filter_date' => 'this_week']) }}">This Week Paid</a></li>
+
+                <!-- Custom Days Input -->
+                <li>
+                    <form method="GET" action="{{ route('paid-payments.index') }}" class="days-filter-form">
+                        <input type="number" name="days" placeholder="Enter days" required min="1" class="days-input" />
+                        <button type="submit" class="days-submit">Show</button>
+                    </form>
+                </li>
+            </ul>
+        </li>
 
         <li class="dropdown">
-          <a href="/clients">
-            <div class="nodropdown">
+        <a href="{{url('/clients')}}" class="task-toggle" >
+              <div class="icon-text">
               <img src="{{url('public/frontend/images/customer.png')}}" alt=""> Clients
-            </div>
-          </a>
+              </div>
+              <div class="dropdown-arrow-div">
+                  <i class="fas fa-chevron-right dropdown-arrow"></i>
+              </div>
+            </a>
         </li>
         
 

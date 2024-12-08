@@ -19,7 +19,7 @@ class ProjectController extends Controller
 
 
         // Start a query for projects
-        $query = Project::with(['tasks.assignedUser', 'tasks.assignedBy']); // Load related tasks and users
+        $query = Project::with(['tasks.assignedTo', 'tasks.assignedBy']); // Load related tasks and users
 
            // Filtering by Start Date
         if ($request->filled('start_date')) {
@@ -86,8 +86,14 @@ class ProjectController extends Controller
     // Initialize $project to null if there are no projects
     $project = $projects->isEmpty() ? null : $projects;
 
+    $newProjects = Project::where('status', 'new')->count();
+    $designProjects = Project::where('status', 'design')->count();
+    $developmentProjects = Project::where('status', 'development')->count();
+    $contentfillupProjects = Project::where('status', 'content-fillup')->count();
+    $completedProjects = Project::where('status', 'completed')->count();
+
     // Return the view with the necessary data
-    return view('frontends.projects', compact('users', 'projects', 'project', 'filterCount'));
+    return view('frontends.projects', compact('users', 'projects', 'project', 'filterCount', 'newProjects', 'designProjects', 'developmentProjects', 'contentfillupProjects', 'completedProjects'));
 }
 
     public function store(Request $request)
@@ -215,26 +221,55 @@ class ProjectController extends Controller
 
     public function showdetails($id)
     {
-        // Fetch the project by ID
-        $project = Project::with(['tasks.assignedUser' => function ($query) {
+        // Set the timezone to Nepali time
+        $nepaliTimezone = 'Asia/Kathmandu';
+    
+        // Fetch the project and related tasks with assigned user details
+        $project = Project::with(['tasks.assignedTo' => function ($query) {
             $query->select('id', 'username', 'profilepic'); // Fetch only necessary columns
         }])->findOrFail($id);
-
+    
         // Fetch all users for task assignment
-        $users = User::all();
-
+        $users = User::select('id', 'username')->get(); // Include only needed fields
+    
         // Separate tasks by status
-        $todoTasks = $project->tasks->filter(function ($task) {
-            return $task->status === null || $task->status === 'To Do';
-        });
-
-        $inProgressTasks = $project->tasks->where('status', 'In Progress'); // For "In Progress" tasks
-        $qaTasks = $project->tasks->where('status', 'QA'); // For "QA" tasks
-        $completedTasks = $project->tasks->where('status', 'Completed'); // For "Completed" tasks
-
+        $todoTasks = $project->tasks->filter(fn($task) => $task->status === null || $task->status === 'TO DO');
+        $inProgressTasks = $project->tasks->where('status', 'IN PROGRESS');
+        $qaTasks = $project->tasks->where('status', 'QA');
+        $completedTasks = $project->tasks->where('status', 'COMPLETED');
+    
+        // Calculate remaining time for each task
+        foreach ($project->tasks as $task) {
+            if ($task->due_date) {
+                $now = Carbon::now($nepaliTimezone); // Current time in Nepali timezone
+                $dueDate = Carbon::parse($task->due_date, $nepaliTimezone); // Due date in Nepali timezone
+    
+                if ($now->lessThanOrEqualTo($dueDate)) {
+                    // Calculate remaining days and hours
+                    $totalHours = $now->diffInHours($dueDate, false);
+                    $task->remaining_days = floor($totalHours / 24);
+                    $task->remaining_hours = $totalHours % 24;
+                } else {
+                    // Task is overdue
+                    $overdueHours = $now->diffInHours($dueDate, false);
+                    $task->overdue_days = floor(abs($overdueHours) / 24);
+                    $task->overdue_hours = abs($overdueHours) % 24;
+                }
+            } else {
+                $task->remaining_days = null;
+                $task->remaining_hours = null;
+                $task->overdue_days = null;
+                $task->overdue_hours = null;
+            }
+        }
+    
         // Pass the data to the view
         return view('frontends.project-details-page', compact('project', 'users', 'todoTasks', 'inProgressTasks', 'qaTasks', 'completedTasks'));
     }
+    
+    
+        
+
 
     
 

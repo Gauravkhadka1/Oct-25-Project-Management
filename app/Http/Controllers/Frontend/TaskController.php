@@ -41,32 +41,45 @@ class TaskController extends Controller {
    
        // Validate the request data
        $request->validate([
-        'name' => 'required|string|max:255',
-            'assigned_to' => 'required|integer|exists:users,id', // Ensure the assigned user exists
-            'project_id' => 'required|exists:projects,id',
-            'due_date' => 'nullable|date', // Optional due date validation
-            'priority' => 'nullable|string|in:Normal,High,Urgent', // Optional priority validation
-    ]);
-
-    $assignedByUserId = Auth::id();
+           'name' => 'required|string|max:255',
+           'assigned_to' => 'required|integer|exists:users,id', // Ensure the assigned user exists
+           'project_id' => 'required|exists:projects,id',
+           'start_date' => 'nullable|string', // Accept datetime input as string for further processing
+           'due_date' => 'nullable|string',   // Accept datetime input as string for further processing
+           'priority' => 'nullable|string|in:Normal,High,Urgent', // Optional priority validation
+       ]);
+   
+       $assignedByUserId = Auth::id();
+   
+       // Convert start_date and due_date to MySQL compatible datetime format
+       $startDate = $request->input('start_date') 
+           ? \Carbon\Carbon::createFromFormat('Y-m-d h:i A', $request->input('start_date'))->format('Y-m-d H:i:s') 
+           : null;
+   
+       $dueDate = $request->input('due_date') 
+           ? \Carbon\Carbon::createFromFormat('Y-m-d h:i A', $request->input('due_date'))->format('Y-m-d H:i:s') 
+           : null;
+   
        // Create the task
        $task = Task::create([
-        'name' => $request->input('name'),
-        'assigned_to' => $request->input('assigned_to'),
-        'assigned_by' => $assignedByUserId,
-        'project_id' => $request->input('project_id'),
-        'due_date' => $request->input('due_date'),
-        'priority' => $request->input('priority'),
-    ]);
+           'name' => $request->input('name'),
+           'assigned_to' => $request->input('assigned_to'),
+           'assigned_by' => $assignedByUserId,
+           'project_id' => $request->input('project_id'),
+           'start_date' => $startDate,
+           'due_date' => $dueDate,
+           'priority' => $request->input('priority'),
+       ]);
    
        // Send a notification to the assigned user
        $assignedToUser = User::find($task->assigned_to);
        $assignedToUser->notify(new TaskAssignedNotification($task));
-
+   
        \Log::info('Task created and notification sent to user: ' . $assignedToUser->id);
-
+   
        return redirect()->back()->with('success', 'Task created successfully.');
    }
+   
    
    
    

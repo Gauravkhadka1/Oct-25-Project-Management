@@ -23,10 +23,11 @@ class ProspectTask extends Model
     {
         return $this->belongsTo(Prospect::class);
     }
-    public function assignedUser()
-{
-    return $this->belongsTo(User::class, 'assigned_to', 'id');
-}
+    public function assignedTo()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+    
 
 public function assignedBy()
 {

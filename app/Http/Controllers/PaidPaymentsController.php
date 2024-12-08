@@ -20,7 +20,7 @@ class PaidPaymentsController extends Controller
 
     $today = Carbon::today();
     // Calculate the available days based on the current date
-    $availableDays = 21 + $today->diffInDays(Carbon::parse('2024-12-06')); // Assuming 21 days is for 2024-12-06
+    $availableDays = 21 - $today->diffInDays(Carbon::parse('2024-12-06')); // Assuming 21 days is for 2024-12-06
 
     // Handle 'days' input
     if ($request->has('days')) {

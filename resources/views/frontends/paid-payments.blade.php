@@ -1,6 +1,7 @@
 @extends('frontends.layouts.main')
 @section('main-container')
 <div class="paid-payments-page">
+    
     <div class="task-board">
         <!-- Website Column -->
         <div class="task-column" id="due">
@@ -147,6 +148,7 @@
 <style>
   .paid-payments-page {
         margin-top: 30px;
+        margin-left: 20px
     }
     .total-category {
         margin-top: 10px;
@@ -157,15 +159,15 @@
     align-items: center;
     justify-content: center;
     background-color: #e16b16;
-    width: 95px; 
-    padding: 5px;
+    width: 90px; 
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
-    margin-top: -7px;
+    margin-top: 0px;
     margin-bottom: 5px;
 }
 .todo-heading-payments img {
-    width: 15px;
-    margin-right: 7px;
+    width: 14px;
+
 }
 .todo-heading-payments h3 {
     font-size: 14px;
@@ -175,14 +177,13 @@
     align-items: center;
     justify-content: center;
     background-color: #f7b04f;
-    width: 105px; 
-    padding: 5px;
+    width: 100px; 
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
-      margin-top: -7px;
     margin-bottom: 5px;
 }
 .invoicesent-heading img {
-    width: 15px;
+    width: 14px;
     margin-right: 10px;
 }
 .invoicesent-heading h3 {
@@ -193,14 +194,13 @@
     align-items: center;
     justify-content: center;
     background-color: #4f72f3;
-    width: 107px; 
-    padding: 5px;
+    width: 100px; 
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
-      margin-top: -7px;
     margin-bottom: 5px;
 }
 .vatbillsent-heading img {
-    width: 15px;
+    width: 14px;
     margin-right: 10px;
 }
 .vatbillsent-heading h3 {
@@ -211,14 +211,13 @@
     align-items: center;
     justify-content: center;
     background-color: #318945;
-    width: 85px; 
-    padding: 5px;
+    width: 80px; 
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
-      margin-top: -7px;
     margin-bottom: 5px;
 }
 .paid-heading img {
-    width: 15px;
+    width: 14px;
     margin-right: 10px;
 }
 .paid-heading h3 {
@@ -230,13 +229,13 @@
     justify-content: center;
     background-color: #318945;
     width: 125px; 
-    padding: 5px;
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
       margin-top: -7px;
     margin-bottom: 5px;
 }
 .closed-heading-prospect img {
-    width: 15px;
+    width: 14px;
     margin-right: 10px;
 }
 .closed-heading-prospect h3 {

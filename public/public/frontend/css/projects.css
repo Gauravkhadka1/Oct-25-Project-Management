@@ -652,6 +652,7 @@ font-weight: 520;
     justify-content: flex-start;
     font-size: 14px;
     margin-top: 5px;
+    color: #6b6d70;
 }
 .project-start-date-view:hover {
     background-color: #F0F1F3;
@@ -677,6 +678,7 @@ font-weight: 520;
     justify-content: flex-start;
     font-size: 14px;
     margin-top: 5px;
+    color: #6b6d70;
 }
 .project-due-date-view:hover {
     background-color: #F0F1F3;
@@ -702,7 +704,6 @@ font-weight: 520;
     justify-content: flex-start;
     font-size: 14px;
     margin-top: 5px;
-    font-weight: 500;
 }
 .due-in-project-view:hover {
     background-color: #F0F1F3;
@@ -719,9 +720,17 @@ font-weight: 520;
 }
 .due-in-project-view p {
     margin-right: 5px;
-    font-weight: 500;
 }
 .project-h2 h2{
     font-size: 20px;
     margin-left: -8px;
+}
+.heading-n-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.projects-count {
+    margin-right: 15px;
+    font-weight: 500;
 }

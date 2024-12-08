@@ -89,12 +89,18 @@
             </div>
         </div>
 
-        <div class="task-board">
+        <div class="task-board" id="prospect-board">
             <!-- Column for To Do tasks -->
             <div class="task-column" id="new" data-status="new">
-                <div class="todo-heading-prospect">
-                    <img src="{{url ('public/frontend/images/new.png')}}" alt="">
-                    <h3>Not Dealt</h3>
+                
+                <div class="heading-n-count">
+                    <div class="todo-heading-prospect">
+                        <img src="{{url ('public/frontend/images/new.png')}}" alt="">
+                        <h3>NOT DEALT</h3>
+                    </div>
+                    <div class="projects-count">
+                        {{$newProspects}}
+                    </div>
                 </div>
 
                 <div class="task-list">
@@ -124,10 +130,17 @@
 
             <!-- Column for In Progress tasks -->
             <div class="task-column" id="dealing" data-status="dealing">
-                <div class="inprogress-heading">
-                    <img src="{{url ('public/frontend/images/dealing.png')}}" alt="">
-                    <h3>Dealing</h3>
+               
+                <div class="heading-n-count">
+                    <div class="dealing-heading">
+                        <img src="{{url ('public/frontend/images/dealing.png')}}" alt="">
+                        <h3>DEALING</h3>
+                    </div>
+                    <div class="projects-count">
+                        {{$dealingProspects}}
+                    </div>
                 </div>
+
 
                 <div class="task-list">
                     @foreach ($prospects->where('status', 'dealing') as $prospect)
@@ -155,9 +168,15 @@
 
             <!-- Column for QA tasks -->
             <div class="task-column" id="quote_sent" data-status="quote_sent">
-                <div class="qs-heading">
-                    <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
-                    <h3>Quote Sent</h3>
+                
+                <div class="heading-n-count">
+                    <div class="qs-heading">
+                        <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
+                        <h3>QUOTE SENT</h3>
+                    </div>
+                    <div class="projects-count">
+                        {{$quotesentProspects}}
+                    </div>
                 </div>
                 <div class="task-list">
                     @foreach ($prospects->where('status', 'quote_sent') as $prospect)
@@ -185,9 +204,15 @@
 
             <!-- Column for Completed tasks -->
             <div class="task-column" id="aggrement_sent" data-status="aggrement_sent">
+                
+                <div class="heading-n-count">
                 <div class="aggrement-heading">
                     <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
-                    <h3>Agreement Sent</h3>
+                    <h3>AGREEMENT SENT</h3>
+                </div>
+                    <div class="projects-count">
+                        {{$agreementsentProspects}}
+                    </div>
                 </div>
                 <div class="task-list">
                     @foreach ($prospects->where('status', 'aggrement_sent') as $prospect)
@@ -213,9 +238,15 @@
                 </div>
             </div>
             <div class="task-column" id="converted" data-status="converted">
-                <div class="closed-heading-prospect">
-                    <img src="{{url ('public/frontend/images/completed.png')}}" alt="">
-                    <h3>Converted</h3>
+                
+                <div class="heading-n-count">
+                    <div class="converted-heading-prospect">
+                        <img src="{{url ('public/frontend/images/completed.png')}}" alt="">
+                        <h3>CONVERTED</h3>
+                    </div>
+                    <div class="projects-count">
+                        {{$convertedProspects}}
+                    </div>
                 </div>
                 <div class="task-list">
                     @foreach ($prospects->where('status', 'converted') as $prospect)

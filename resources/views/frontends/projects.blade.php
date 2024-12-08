@@ -97,9 +97,12 @@ use Carbon\Carbon;
                     <!-- Column for To Do tasks -->
                     <div class="task-column" id="new-project" data-status="new">
                        <div class="new-project-add-heading">
-                       <div class="new-project-heading">
-                            <h3>NEW</h3>
-                        </div>
+                        <div class="new-project-heading">
+                                <h3>NEW</h3>
+                            </div>
+                            <div class="new-projects-count" style="margin-right: -100px !important; font-weight:500;">
+                                {{$newProjects}}
+                            </div>
                         <div class="add-new-project">
                         <button class="btn-create-new" id="task-create" onclick="openAddTaskModal()">
                             <img src="{{url('public/frontend/images/add-new.png')}}" alt="">
@@ -150,34 +153,41 @@ use Carbon\Carbon;
                                 </div> -->
                                 <div class="project-start-date-view">
                                     <div class="project-start-date-view-img">
-                                        <img src="{{url('public/frontend/images/start-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/green-start-date.png')}}" alt="">:
                                     </div>
                                
                                     {{ $project->start_date }}
                                 </div>
                                 <div class="project-due-date-view">
                                     <div class="project-due-date-view-img">
-                                        <img src="{{url('public/frontend/images/end-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/red-end-date.png')}}" alt="">:
                                     </div>
                                     {{ $project->due_date }}
                                 </div>
                                 <div class="due-in-project-view">
-                                <div class="due-in-project-view-img">
-                                        <img src="{{url('public/frontend/images/due-date.png')}}" alt="">:
+                                    <div class="due-in-project-view-img">
+                                        <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    {{ $project->time_left }}
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                        {{ $project->time_left }}
+                                    </div>
                                 </div>
+
                             </div>
                             @endforeach
                             @endif
                         </div>
                     </div>
                     <div class="task-column" id="design" data-status="design">
-                        <div class="design-heading-project">
-                            <img src="{{url ('public/frontend/images/design.png')}}" alt="">
-                            <h3>DESIGN</h3>
+                        <div class="heading-n-count">
+                            <div class="design-heading-project">
+                                <img src="{{url ('public/frontend/images/design.png')}}" alt="">
+                                <h3>DESIGN</h3>
+                            </div>
+                            <div class="projects-count">
+                                {{$designProjects}}
+                            </div>
                         </div>
-
                         <div class="task-list">
                         @if ($projects->where('status', 'design')->isEmpty())
                                 <p>No Projects in Design</p>
@@ -195,22 +205,25 @@ use Carbon\Carbon;
                                 </div> -->
                                 <div class="project-start-date-view">
                                     <div class="project-start-date-view-img">
-                                        <img src="{{url('public/frontend/images/start-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/green-start-date.png')}}" alt="">:
                                     </div>
                                
                                     {{ $project->start_date }}
                                 </div>
                                 <div class="project-due-date-view">
                                     <div class="project-due-date-view-img">
-                                        <img src="{{url('public/frontend/images/end-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/red-end-date.png')}}" alt="">:
                                     </div>
                                     {{ $project->due_date }}
                                 </div>
                                 <div class="due-in-project-view">
-                                <div class="due-in-project-view-img">
-                                        <img src="{{url('public/frontend/images/due-date.png')}}" alt="">:
+                                    <div class="due-in-project-view-img">
+                                        <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    {{ $project->time_left }}
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                        {{ $project->time_left }}
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -220,9 +233,14 @@ use Carbon\Carbon;
                     </div>
                     <!-- Column for In Progress tasks -->
                     <div class="task-column" id="development" data-status="development">
-                        <div class="developement-heading">
+                        <div class="heading-n-count">
+                            <div class="developement-heading">
                             <img src="{{url ('public/frontend/images/developement.png')}}" alt="">
                             <h3>DEVELOPMENT</h3>
+                            </div>
+                            <div class="projects-count">
+                                {{$developmentProjects}}
+                            </div>
                         </div>
 
                         <div class="task-list">
@@ -242,22 +260,24 @@ use Carbon\Carbon;
                                 </div> -->
                                 <div class="project-start-date-view">
                                     <div class="project-start-date-view-img">
-                                        <img src="{{url('public/frontend/images/start-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/green-start-date.png')}}" alt="">:
                                     </div>
                                
                                     {{ $project->start_date }}
                                 </div>
                                 <div class="project-due-date-view">
                                     <div class="project-due-date-view-img">
-                                        <img src="{{url('public/frontend/images/end-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/red-end-date.png')}}" alt="">:
                                     </div>
                                     {{ $project->due_date }}
                                 </div>
                                 <div class="due-in-project-view">
-                                <div class="due-in-project-view-img">
-                                        <img src="{{url('public/frontend/images/due-date.png')}}" alt="">:
+                                    <div class="due-in-project-view-img">
+                                        <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    {{ $project->time_left }}
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                        {{ $project->time_left }}
+                                    </div>
                                 </div>
                             </div>
                             @endforeach
@@ -267,9 +287,15 @@ use Carbon\Carbon;
 
                     <!-- Column for QA tasks -->
                     <div class="task-column" id="quote_sent" data-status="content-fillup">
-                       <div class="content-fillup-heading">
+                       
+                        <div class="heading-n-count">
+                        <div class="content-fillup-heading">
                             <img src="{{url ('public/frontend/images/content-fillup.png')}}" alt="">
                             <h3> CONTENT FILL UP</h3>
+                        </div>
+                            <div class="projects-count">
+                                {{$contentfillupProjects}}
+                            </div>
                         </div>
                         <div class="task-list">
                         @if ($projects->where('status', 'content-fillup')->isEmpty())
@@ -288,22 +314,24 @@ use Carbon\Carbon;
                                 </div> -->
                                 <div class="project-start-date-view">
                                     <div class="project-start-date-view-img">
-                                        <img src="{{url('public/frontend/images/start-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/green-start-date.png')}}" alt="">:
                                     </div>
                                
                                     {{ $project->start_date }}
                                 </div>
                                 <div class="project-due-date-view">
                                     <div class="project-due-date-view-img">
-                                        <img src="{{url('public/frontend/images/end-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/red-end-date.png')}}" alt="">:
                                     </div>
                                     {{ $project->due_date }}
                                 </div>
                                 <div class="due-in-project-view">
-                                <div class="due-in-project-view-img">
-                                        <img src="{{url('public/frontend/images/due-date.png')}}" alt="">:
+                                    <div class="due-in-project-view-img">
+                                        <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    {{ $project->time_left }}
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                        {{ $project->time_left }}
+                                    </div>
                                 </div>
 
                             </div>
@@ -312,9 +340,15 @@ use Carbon\Carbon;
                         </div>
                     </div>
                     <div class="task-column" id="converted" data-status="completed">
-                       <div class="completed-heading-project">
+                       
+                        <div class="heading-n-count">
+                        <div class="completed-heading-project">
                             <img src="{{url ('public/frontend/images/completed.png')}}" alt="">
                             <h3>COMPLETED</h3>
+                        </div>
+                            <div class="projects-count">
+                                {{$completedProjects}}
+                            </div>
                         </div>
                         <div class="task-list">
                         @if ($projects->where('status', 'completed')->isEmpty())
@@ -333,22 +367,24 @@ use Carbon\Carbon;
                                 </div> -->
                                 <div class="project-start-date-view">
                                     <div class="project-start-date-view-img">
-                                        <img src="{{url('public/frontend/images/start-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/green-start-date.png')}}" alt="">:
                                     </div>
                                
                                     {{ $project->start_date }}
                                 </div>
                                 <div class="project-due-date-view">
                                     <div class="project-due-date-view-img">
-                                        <img src="{{url('public/frontend/images/end-date.png')}}" alt="">:
+                                        <img src="{{url('public/frontend/images/red-end-date.png')}}" alt="">:
                                     </div>
                                     {{ $project->due_date }}
                                 </div>
                                 <div class="due-in-project-view">
-                                <div class="due-in-project-view-img">
-                                        <img src="{{url('public/frontend/images/due-date.png')}}" alt="">:
+                                    <div class="due-in-project-view-img">
+                                        <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    {{ $project->time_left }}
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                        {{ $project->time_left }}
+                                    </div>
                                 </div>
 
                             </div>

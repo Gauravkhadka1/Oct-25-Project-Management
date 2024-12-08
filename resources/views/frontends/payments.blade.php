@@ -227,7 +227,7 @@
                     </div>
 
                     <div class="inquiry-date">
-                          <strong style="margin-right: 4px;">NPR: </strong> {{ $payment->amount }}
+                          <p style="margin-right: 4px;">NPR: </p> {{ $payment->amount }}
                     </div>
                    
                     <div class="paid-date"> 

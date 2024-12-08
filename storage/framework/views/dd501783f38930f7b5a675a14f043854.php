@@ -70,7 +70,7 @@
             ?>
 
             <?php $__currentLoopData = $columnNames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status => $tasksCollection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="task-column" id="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>" data-status="<?php echo e($status); ?>">
+            <div class="task-column" id="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>" data-status="<?php echo e($status); ?>" style="margin-left:15px;">
             <div class="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>-heading">
                 <img src="<?php echo e(url('public/frontend/images/' . strtolower(str_replace(' ', '', $status)) . '.png')); ?>" alt="">
                 <h3><?php echo e($status); ?></h3>
@@ -95,27 +95,36 @@
                                     <p><?php echo e($task->name); ?></p>
                                 </a>
                             </div>
-                            <div class="in-project">in <?php echo e($task->category_name); ?></div>
-                            <div class="assigne">
-                                <?php if($task->assignedBy): ?>
-                                <img src="<?php echo e(url('public/frontend/images/assignedby.png')); ?>" alt=""> 
-                                    : <img src="<?php echo e(asset('storage/profilepics/' . $task->assignedBy->profilepic)); ?>" 
-                                    alt="<?php echo e($task->assignedBy->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> 
+                            <div class="in-project">In <?php echo e($task->category_name); ?></div>
+                             <div class="assigne">
+                                <?php if($task->assignedTo): ?>
+                                    <img src="<?php echo e(url('public/frontend/images/assigned-to.png')); ?>" alt="" class="assigned-to-icon">
+                                    : <img src="<?php echo e(asset('storage/profilepics/' . $task->assignedTo->profilepic)); ?>" 
+                                    alt="<?php echo e($task->assignedTo->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> 
                                 <?php else: ?>
                                     <img src="<?php echo e(url('public/frontend/images/unassigned.png')); ?>" alt="Unassigned">
                                     by: N/A
                                 <?php endif; ?>
                             </div>
                             <div class="due-date">
-                                <img src="<?php echo e(url('public/frontend/images/duedate.png')); ?>" alt=""> 
+                                <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt=""> 
                                 : <?php echo e($task->due_date); ?>
 
                             </div>
                             <div class="priority">
-                                <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt=""> 
+                                <?php
+                                    $priorityImages = [
+                                        'High' => 'priority-high.png',
+                                        'Urgent' => 'priority-urgent.png',
+                                        'Normal' => 'priority-normal.png',
+                                    ];
+                                    $priorityImage = isset($priorityImages[$task->priority]) ? $priorityImages[$task->priority] : 'default.png';
+                                ?>
+                                <img src="<?php echo e(url('public/frontend/images/' . $priorityImage)); ?>" alt="<?php echo e($task->priority); ?>">
                                 : <?php echo e($task->priority); ?>
 
                             </div>
+
                             <div class="time-details">
                                 <div class="start-pause">
                                     <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">
@@ -474,20 +483,6 @@ columns.forEach(column => {
   font-size: 18px;
   font-weight: 525;
 }
-.nodropdown{
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 210px;
-}
-.nodropdown img{
-margin-right: 10px;
-}
-#nodropdown-project  {
-  margin-bottom: -10px;
-  background-color:transparent !important;
-}
-
 
 
     </style>

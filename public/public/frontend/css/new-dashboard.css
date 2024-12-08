@@ -72,7 +72,7 @@
     align-items: center;
     justify-content: center;
     background-color: #f7b04f;
-    width: 120px; 
+    width: 118px; 
     padding: 5px;
     border-radius: 7px;
 }
@@ -82,6 +82,9 @@
 }
 .todo-heading h3, .inprogress-heading h3, .qa-heading h3, .completed-heading h3, .closed-heading h3 {
    font-size: 12px !important;
+}
+.inprogress-heading h3 {
+    color: black !important;
 }
 .qa-heading {
     display: flex;
@@ -179,18 +182,24 @@
 }
 .task-name p {
     color: #2A2E34;
-    font-weight: bolder;
-    font-weight: 14px;
+    font-weight: 550;
     margin-bottom: 5px;
-    font-size: 16px;
+    font-size: 14px;
 }
 .time-details {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-size: 12px;
+    padding: 3px 8px;
+    margin-left: -10px !important;
+    border-radius: 6px;
+}
+.time-details:hover {
+    background-color: #F0F1F3;
 }
 .time-details img {
-    width: 18px;
+    width: 16px;
     background-color: transparent;
     margin-right: 10px;
 }
@@ -202,12 +211,20 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 5px;
-    margin-top: 5px;
+    padding: 3px 8px;
+    margin-left: -10px !important;
+    border-radius: 6px;
     font-size: 20px;
+    margin-bottom: 0px;
+}
+.assigne:hover {
+    background-color: #F0F1F3;
 }
 .assigne img {
     width: 24px;
+}
+.assigned-to-icon{
+    width: 16px !important;
 }
 #assignedto{
     width: 10px !important;
@@ -216,20 +233,33 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 5px;
-    margin-top: 5px;
+    padding: 3px 8px;
+    margin-left: -10px !important;
+    border-radius: 6px;
+    font-size: 12px;
+}
+.priority:hover {
+    background-color: #F0F1F3;
 }
 .priority img {
-    width: 20px;
+    width: 16px;
     margin-right: 2px;
 }
 .due-date {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-size: 12px;
+    padding: 3px 8px;
+    margin-left: -10px !important;
+    border-radius: 6px;
+    margin-top: 0px;
+}
+.due-date:hover {
+    background-color: #F0F1F3;
 }
 .due-date img {
-    width: 18px;
+    width: 16px;
     margin-right: 5px;
 }
 .task-column .no-tasks {
@@ -249,5 +279,10 @@
 }
 .in-project {
     font-size: 13.3333;
+    color: #2A2E34;
+    margin-bottom: 0px !important;
 }
 
+#dashboard-task-board .task-board{
+    margin-left: 30px !important;
+}

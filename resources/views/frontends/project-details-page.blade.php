@@ -19,17 +19,17 @@
 
 
 </div>
-<div class="task-board">
+<div class="task-board" id="project-details-page" >
     <!-- Column for To Do tasks -->
-    <div class="task-column" id="todo" data-status="todo">
+    <div class="task-column" id="todo" data-status="TO DO">
         <div class="todo-add">
         <div class="todo-heading">
                     <img src="{{url ('public/frontend/images/todo.png')}}" alt="">
-                    <h3>To Do</h3>
+                    <h3>TO DO</h3>
                 </div>
             <div class="add-icon">
                 <button class="btn-create-new" id="task-create" onclick="openAddTaskModal({{ $project->id }})">
-                    <img src="{{ url('public/frontend/images/add-new.png') }}" alt="">
+                    <img src="{{ url('public/frontend/images/add-new.png') }}" alt="" style="width: 15px; margin-right:10px;">
                 </button>
             </div>
         </div>
@@ -52,10 +52,20 @@
                     @endforeach
                 </select>
             </div>
-            <div class="due-date">
-                <img src="{{ url('public/frontend/images/duedate.png') }}" alt="">
-                <input type="date" id="due-date" name="due_date" class="task-input" required />
-            </div>
+            <div class="project-start-date">
+    <div class="start-date-input">
+        <img src="{{ url('public/frontend/images/start-date.png') }}" alt="">
+        <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
+    </div>
+</div>
+
+<div class="project-due-date">
+    <div class="due-date-input">
+        <img src="{{ url('public/frontend/images/end-date.png') }}" alt="">
+        <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
+    </div>
+</div>
+
             <div class="priority">
                 <img src="{{ url('public/frontend/images/priority.png') }}" alt="">
                 <select id="priority" name="priority" class="task-input" required>
@@ -82,15 +92,48 @@
                     </a>
                     </div>
                     <div class="assigne">
-                        <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
-                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
+                        @if ($task->assignedTo)
+                            <img src="{{ url('public/frontend/images/assigned-to.png') }}" alt="" class="assigned-to-icon">
+                            : <img src="{{ asset('storage/profilepics/' . $task->assignedTo->profilepic) }}" 
+                            alt="{{ $task->assignedTo->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> 
+                        @else
+                            <img src="{{ url('public/frontend/images/unassigned.png') }}" alt="Unassigned">
+                            by: N/A
+                        @endif
                     </div>
-                    <div class="due-date">
-                        <img src="{{ url('public/frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
-                    </div>
+                    <div class="due-date" style="margin-top: 4px;">
+    <img src="{{ url('public/frontend/images/due-date.png') }}" alt=""> :
+    @if(isset($task->remaining_days) || isset($task->remaining_hours) || isset($task->overdue_days) || isset($task->overdue_hours))
+        @if(isset($task->remaining_days) && $task->remaining_days > 0)
+            {{ $task->remaining_days }} days {{ $task->remaining_hours }} hours left
+        @elseif(isset($task->remaining_hours) && $task->remaining_hours > 0)
+            {{ $task->remaining_hours }} hours left
+        @elseif(isset($task->overdue_days) && $task->overdue_days > 0)
+            Overdue by {{ $task->overdue_days }} days {{ $task->overdue_hours }} hours
+        @elseif(isset($task->overdue_hours) && $task->overdue_hours > 0)
+            Overdue by {{ $task->overdue_hours }} hours
+        @else
+            Due now
+        @endif
+    @else
+        N/A
+    @endif
+</div>
+
+
+
                     <div class="priority">
-                        <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
-                    </div>
+                                @php
+                                    $priorityImages = [
+                                        'High' => 'priority-high.png',
+                                        'Urgent' => 'priority-urgent.png',
+                                        'Normal' => 'priority-normal.png',
+                                    ];
+                                    $priorityImage = isset($priorityImages[$task->priority]) ? $priorityImages[$task->priority] : 'default.png';
+                                @endphp
+                                <img src="{{ url('public/frontend/images/' . $priorityImage) }}" alt="{{ $task->priority }}">
+                                : {{ $task->priority }}
+                            </div>
                      <div class="priority">
                     Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
 
@@ -101,11 +144,11 @@
     </div>
 
     <!-- Column for In Progress tasks -->
-    <div class="task-column" id="in-progress" data-status="in-progress">
+    <div class="task-column" id="in-progress" data-status="IN PROGRESS">
         <div class="todo-add">
         <div class="inprogress-heading">
                     <img src="{{url ('public/frontend/images/inprogress.png')}}" alt="">
-                    <h3>In Progress</h3>
+                    <h3>IN PROGRESS</h3>
                 </div>
             
         </div>
@@ -120,15 +163,45 @@
                     </a>
                     </div>
                     <div class="assigne">
-                        <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
-                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
+                        @if ($task->assignedTo)
+                            <img src="{{ url('public/frontend/images/assigned-to.png') }}" alt="" class="assigned-to-icon">
+                            : <img src="{{ asset('storage/profilepics/' . $task->assignedTo->profilepic) }}" 
+                            alt="{{ $task->assignedTo->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> 
+                        @else
+                            <img src="{{ url('public/frontend/images/unassigned.png') }}" alt="Unassigned">
+                            by: N/A
+                        @endif
                     </div>
-                    <div class="due-date">
-                        <img src="{{ url('public/frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
-                    </div>
+                    <div class="due-date" style="margin-top: 4px;">
+    <img src="{{ url('public/frontend/images/due-date.png') }}" alt=""> :
+    @if(isset($task->remaining_days) || isset($task->remaining_hours) || isset($task->overdue_days) || isset($task->overdue_hours))
+        @if(isset($task->remaining_days) && $task->remaining_days > 0)
+            {{ $task->remaining_days }} days {{ $task->remaining_hours }} hours left
+        @elseif(isset($task->remaining_hours) && $task->remaining_hours > 0)
+            {{ $task->remaining_hours }} hours left
+        @elseif(isset($task->overdue_days) && $task->overdue_days > 0)
+            Overdue by {{ $task->overdue_days }} days {{ $task->overdue_hours }} hours
+        @elseif(isset($task->overdue_hours) && $task->overdue_hours > 0)
+            Overdue by {{ $task->overdue_hours }} hours
+        @else
+            Due now
+        @endif
+    @else
+        N/A
+    @endif
+</div>
                     <div class="priority">
-                        <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
-                    </div>
+                                @php
+                                    $priorityImages = [
+                                        'High' => 'priority-high.png',
+                                        'Urgent' => 'priority-urgent.png',
+                                        'Normal' => 'priority-normal.png',
+                                    ];
+                                    $priorityImage = isset($priorityImages[$task->priority]) ? $priorityImages[$task->priority] : 'default.png';
+                                @endphp
+                                <img src="{{ url('public/frontend/images/' . $priorityImage) }}" alt="{{ $task->priority }}">
+                                : {{ $task->priority }}
+                            </div>
                      <div class="priority">
                     Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
 
@@ -139,7 +212,7 @@
     </div>
 
     <!-- Column for QA tasks -->
-    <div class="task-column" id="qa" data-status="qa">
+    <div class="task-column" id="qa" data-status="QA">
         <div class="todo-add">
         <div class="qa-heading">
                     <img src="{{url ('public/frontend/images/qa.png')}}" alt="">
@@ -158,15 +231,45 @@
                     </a>
                     </div>
                     <div class="assigne">
-                        <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
-                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
+                        @if ($task->assignedTo)
+                            <img src="{{ url('public/frontend/images/assigned-to.png') }}" alt="" class="assigned-to-icon">
+                            : <img src="{{ asset('storage/profilepics/' . $task->assignedTo->profilepic) }}" 
+                            alt="{{ $task->assignedTo->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> 
+                        @else
+                            <img src="{{ url('public/frontend/images/unassigned.png') }}" alt="Unassigned">
+                            by: N/A
+                        @endif
                     </div>
-                    <div class="due-date">
-                        <img src="{{ url('public/frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
-                    </div>
+                    <div class="due-date" style="margin-top: 4px;">
+    <img src="{{ url('public/frontend/images/due-date.png') }}" alt=""> :
+    @if(isset($task->remaining_days) || isset($task->remaining_hours) || isset($task->overdue_days) || isset($task->overdue_hours))
+        @if(isset($task->remaining_days) && $task->remaining_days > 0)
+            {{ $task->remaining_days }} days {{ $task->remaining_hours }} hours left
+        @elseif(isset($task->remaining_hours) && $task->remaining_hours > 0)
+            {{ $task->remaining_hours }} hours left
+        @elseif(isset($task->overdue_days) && $task->overdue_days > 0)
+            Overdue by {{ $task->overdue_days }} days {{ $task->overdue_hours }} hours
+        @elseif(isset($task->overdue_hours) && $task->overdue_hours > 0)
+            Overdue by {{ $task->overdue_hours }} hours
+        @else
+            Due now
+        @endif
+    @else
+        N/A
+    @endif
+</div>
                     <div class="priority">
-                        <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
-                    </div>
+                                @php
+                                    $priorityImages = [
+                                        'High' => 'priority-high.png',
+                                        'Urgent' => 'priority-urgent.png',
+                                        'Normal' => 'priority-normal.png',
+                                    ];
+                                    $priorityImage = isset($priorityImages[$task->priority]) ? $priorityImages[$task->priority] : 'default.png';
+                                @endphp
+                                <img src="{{ url('public/frontend/images/' . $priorityImage) }}" alt="{{ $task->priority }}">
+                                : {{ $task->priority }}
+                            </div>
                      <div class="priority">
                     Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
 
@@ -177,11 +280,11 @@
     </div>
 
     <!-- Column for Completed tasks -->
-    <div class="task-column" id="completed" data-status="completed">
+    <div class="task-column" id="completed" data-status="COMPLETED">
         <div class="todo-add">
         <div class="completed-heading">
                     <img src="{{url ('public/frontend/images/completed.png')}}" alt="">
-                    <h3>Completed</h3>
+                    <h3>COMPLETED</h3>
                 </div>
             
         </div>
@@ -196,12 +299,34 @@
                     </a>
                     </div>
                     <div class="assigne">
-                        <img src="{{ url('public/frontend/images/assignedby.png') }}" alt="">
-                        to: {{ $task->assignedUser->username ?? 'Unassigned' }}
-                    </div>
-                    <div class="due-date">
-                        <img src="{{ url('public/frontend/images/duedate.png') }}" alt=""> : {{ $task->due_date ?? 'No Due Date' }}
-                    </div>
+    @if ($task->assignedTo)
+        <img src="{{ url('public/frontend/images/assigned-to.png') }}" alt="" class="assigned-to-icon">
+        : <img src="{{ asset('storage/profilepics/' . $task->assignedTo->profilepic) }}" 
+        alt="{{ $task->assignedTo->username }}'s Profile Picture" class="profile-pic" id="assigned-pic"> 
+    @else
+        <img src="{{ url('public/frontend/images/unassigned.png') }}" alt="Unassigned">
+        by: N/A
+    @endif
+</div>
+
+<div class="due-date" style="margin-top: 4px;">
+    <img src="{{ url('public/frontend/images/due-date.png') }}" alt=""> :
+    @if(isset($task->remaining_days) || isset($task->remaining_hours) || isset($task->overdue_days) || isset($task->overdue_hours))
+        @if(isset($task->remaining_days) && $task->remaining_days > 0)
+            {{ $task->remaining_days }} days {{ $task->remaining_hours }} hours left
+        @elseif(isset($task->remaining_hours) && $task->remaining_hours > 0)
+            {{ $task->remaining_hours }} hours left
+        @elseif(isset($task->overdue_days) && $task->overdue_days > 0)
+            Overdue by {{ $task->overdue_days }} days {{ $task->overdue_hours }} hours
+        @elseif(isset($task->overdue_hours) && $task->overdue_hours > 0)
+            Overdue by {{ $task->overdue_hours }} hours
+        @else
+            Due now
+        @endif
+    @else
+        N/A
+    @endif
+</div>
                     <div class="priority">
                         <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
                     </div>
@@ -217,8 +342,33 @@
 
 
 <!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-   // Function to open the "Add Task" modal
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize Flatpickr for Start Date
+    flatpickr("#start-date", {
+        dateFormat: "Y-m-d h:i K",  // Format of the date and time with AM/PM
+        allowInput: true,          // Allow manual input
+        enableTime: true,          // Enable time selection
+        time_24hr: false,          // Use AM/PM format
+        onChange: function(selectedDates, dateStr, instance) {
+            console.log("Selected start date and time: " + dateStr);
+        }
+    });
+
+    // Initialize Flatpickr for Due Date
+    flatpickr("#due-date", {
+        dateFormat: "Y-m-d h:i K",  // Format of the date and time with AM/PM
+        allowInput: true,          // Allow manual input
+        enableTime: true,          // Enable time selection
+        time_24hr: false,          // Use AM/PM format
+        onChange: function(selectedDates, dateStr, instance) {
+            console.log("Selected due date and time: " + dateStr);
+        }
+    });
+});
+
+// Function to open the "Add Task" modal
 function openAddTaskModal(projectID) {
     document.getElementById('project-id').value = projectID; // Set project ID
     console.log('Opening modal for project ID:', projectID); // Debug log
@@ -244,10 +394,18 @@ function closeAddTaskModal() {
 // Handle outside click to close the modal
 function handleOutsideClick(event) {
     const modal = document.getElementById('add-task-modal');
-    if (!modal.contains(event.target) && !event.target.closest('.custom-form')) {
+    const flatpickrElements = document.querySelectorAll('.flatpickr-calendar'); // Flatpickr popups
+
+    // Check if the click is outside the modal and not on any Flatpickr component
+    const clickedOnFlatpickr = Array.from(flatpickrElements).some(el => el.contains(event.target));
+    if (!modal.contains(event.target) && !event.target.closest('.custom-form') && !clickedOnFlatpickr) {
         closeAddTaskModal();
     }
 }
+
+
+
+
 
 // Function to save the task
 function saveTask() {
@@ -380,6 +538,9 @@ columns.forEach(column => {
 
 <!-- CSS -->
 <style>
+#project-details-page {
+margin-left: 15px !important;
+}
    #add-task-modal {
     display: none; /* Initially hidden */
     z-index: 1000;

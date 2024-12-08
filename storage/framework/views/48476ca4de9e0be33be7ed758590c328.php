@@ -16,11 +16,11 @@
             </div>
             <div class="create-filter-search">
                 <div class="create-prospect">
-                    <button class="btn-create" onclick="openCreateProspectModal()"><img src="<?php echo e(url ('/frontend/images/add-new.png')); ?>" alt=""></button>
+                    <button class="btn-create" onclick="openCreateProspectModal()"><img src="<?php echo e(url ('public/frontend/images/add-new.png')); ?>" alt=""></button>
                 </div>
                 <div class="filter-section">
                     <div class="filter-prospects" onclick="toggleFilterList()">
-                        <img src="frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
                         <div class="filter-count">
                             <?php if($filterCount > 0): ?>
                             <p><?php echo e($filterCount); ?></p>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="search-prospects">
                     <div class="search-icon">
-                        <img src="frontend/images/search-icon.png" alt="" class="searchi-icon">
+                        <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
                     </div>
                     <form action="<?php echo e(route('prospects.index')); ?>" method="GET" id="search-form">
                         <div class="search-text-area">
@@ -88,12 +88,19 @@
             </div>
         </div>
 
-        <div class="task-board">
+        <div class="task-board" id="prospect-board">
             <!-- Column for To Do tasks -->
             <div class="task-column" id="new" data-status="new">
-                <div class="todo-heading-prospect">
-                    <img src="<?php echo e(url ('frontend/images/new.png')); ?>" alt="">
-                    <h3>Not Dealt</h3>
+                
+                <div class="heading-n-count">
+                    <div class="todo-heading-prospect">
+                        <img src="<?php echo e(url ('public/frontend/images/new.png')); ?>" alt="">
+                        <h3>NOT DEALT</h3>
+                    </div>
+                    <div class="projects-count">
+                        <?php echo e($newProspects); ?>
+
+                    </div>
                 </div>
 
                 <div class="task-list">
@@ -106,16 +113,16 @@
 
                         </div>
                         <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
 
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
 
                         </div>
                         <div class="probability">
-                            <img src="<?php echo e(url ('frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
+                            <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
                         </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -125,10 +132,18 @@
 
             <!-- Column for In Progress tasks -->
             <div class="task-column" id="dealing" data-status="dealing">
-                <div class="inprogress-heading">
-                    <img src="<?php echo e(url ('frontend/images/dealing.png')); ?>" alt="">
-                    <h3>Dealing</h3>
+               
+                <div class="heading-n-count">
+                    <div class="dealing-heading">
+                        <img src="<?php echo e(url ('public/frontend/images/dealing.png')); ?>" alt="">
+                        <h3>DEALING</h3>
+                    </div>
+                    <div class="projects-count">
+                        <?php echo e($dealingProspects); ?>
+
+                    </div>
                 </div>
+
 
                 <div class="task-list">
                     <?php $__currentLoopData = $prospects->where('status', 'dealing'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -140,16 +155,16 @@
 
                         </div>
                         <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
 
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
 
                         </div>
                         <div class="probability">
-                            <img src="<?php echo e(url ('frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
+                            <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
                         </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -158,9 +173,16 @@
 
             <!-- Column for QA tasks -->
             <div class="task-column" id="quote_sent" data-status="quote_sent">
-                <div class="qs-heading">
-                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
-                    <h3>Quote Sent</h3>
+                
+                <div class="heading-n-count">
+                    <div class="qs-heading">
+                        <img src="<?php echo e(url ('public/frontend/images/sentsent.png')); ?>" alt="">
+                        <h3>QUOTE SENT</h3>
+                    </div>
+                    <div class="projects-count">
+                        <?php echo e($quotesentProspects); ?>
+
+                    </div>
                 </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $prospects->where('status', 'quote_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -172,16 +194,16 @@
 
                         </div>
                         <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
 
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
 
                         </div>
                         <div class="probability">
-                            <img src="<?php echo e(url ('frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
+                            <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
                         </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -190,9 +212,16 @@
 
             <!-- Column for Completed tasks -->
             <div class="task-column" id="aggrement_sent" data-status="aggrement_sent">
+                
+                <div class="heading-n-count">
                 <div class="aggrement-heading">
-                    <img src="<?php echo e(url ('frontend/images/sentsent.png')); ?>" alt="">
-                    <h3>Agreement Sent</h3>
+                    <img src="<?php echo e(url ('public/frontend/images/sentsent.png')); ?>" alt="">
+                    <h3>AGREEMENT SENT</h3>
+                </div>
+                    <div class="projects-count">
+                        <?php echo e($agreementsentProspects); ?>
+
+                    </div>
                 </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $prospects->where('status', 'aggrement_sent'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -204,25 +233,32 @@
 
                         </div>
                         <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
 
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
 
                         </div>
                         <div class="probability">
-                            <img src="<?php echo e(url ('frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
+                            <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
                         </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
             <div class="task-column" id="converted" data-status="converted">
-                <div class="closed-heading-prospect">
-                    <img src="<?php echo e(url ('frontend/images/completed.png')); ?>" alt="">
-                    <h3>Converted</h3>
+                
+                <div class="heading-n-count">
+                    <div class="converted-heading-prospect">
+                        <img src="<?php echo e(url ('public/frontend/images/completed.png')); ?>" alt="">
+                        <h3>CONVERTED</h3>
+                    </div>
+                    <div class="projects-count">
+                        <?php echo e($convertedProspects); ?>
+
+                    </div>
                 </div>
                 <div class="task-list">
                     <?php $__currentLoopData = $prospects->where('status', 'converted'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prospect): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -234,16 +270,16 @@
 
                         </div>
                         <div class="category">
-                            <img src="<?php echo e(url ('frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/category.png')); ?>" alt=""> : <?php echo e($prospect->category); ?>
 
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
 
                         </div>
                         <div class="probability">
-                            <img src="<?php echo e(url ('frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
+                            <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
                         </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

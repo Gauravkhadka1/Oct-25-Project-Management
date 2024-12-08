@@ -25,8 +25,9 @@ class PaymentTask extends Model
     }
     public function assignedTo()
     {
-        return $this->belongsTo(User::class, 'assigned_to', 'id');
+        return $this->belongsTo(User::class, 'assigned_to');
     }
+    
 
     public function assignedBy()
     {

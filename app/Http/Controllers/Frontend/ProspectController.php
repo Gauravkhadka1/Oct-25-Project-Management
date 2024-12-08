@@ -62,7 +62,13 @@ class ProspectController extends Controller
         // Fetch all users
         $users = User::all();
 
-        return view('frontends.prospects', compact('users', 'prospects', 'filterCount'));
+        $newProspects = Prospect::where('status', 'new')->count();
+        $dealingProspects = Prospect::where('status', 'dealing')->count();
+        $quotesentProspects = Prospect::where('status', 'quote_sent')->count();
+        $agreementsentProspects = Prospect::where('status', 'aggrement_sent')->count();
+        $convertedProspects = Prospect::where('status', 'converted')->count();
+
+        return view('frontends.prospects', compact('users', 'prospects', 'filterCount', 'newProspects', 'dealingProspects', 'quotesentProspects', 'agreementsentProspects', 'convertedProspects'));
     }
 
 

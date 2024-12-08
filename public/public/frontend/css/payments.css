@@ -448,15 +448,17 @@ text-decoration: underline;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-size: 14px;
 }
 .category img {
-width: 20px;
+width: 15px !important;
 margin: 5px 0;
 }
 .inquiry-date {
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-size: 14px;
 }
 .inquiry-date img {
 width: 20px;
@@ -466,12 +468,15 @@ margin: 5px 0;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-size: 14px;
 }
 .probability img {
-width: 20px;
+width: 15px;
 margin: 5px 0 10px 0 ;
 }
-
+.paid-date {
+    font-size: 14px;
+}
 
 .sticky-section {
     position: sticky;

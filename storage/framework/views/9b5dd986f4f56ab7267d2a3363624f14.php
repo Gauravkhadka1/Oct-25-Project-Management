@@ -233,7 +233,7 @@
                     </div>
 
                     <div class="inquiry-date">
-                          <strong style="margin-right: 4px;">NPR: </strong> <?php echo e($payment->amount); ?>
+                          <p style="margin-right: 4px;">NPR: </p> <?php echo e($payment->amount); ?>
 
                     </div>
                    
