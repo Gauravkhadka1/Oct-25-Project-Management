@@ -419,35 +419,64 @@ document.querySelectorAll('.task-comment, .payment-task-comment, .prospect-task-
       
    // Prospect Task Timer Ends 
          // JavaScript for drag-and-drop functionality
-    const tasks = document.querySelectorAll('.task');
+         const tasks = document.querySelectorAll('.task');
 const columns = document.querySelectorAll('.task-column');
+let placeholder; // Placeholder element to indicate where the task can be dropped
 
 // Enable drag-and-drop
 tasks.forEach(task => {
     task.addEventListener('dragstart', () => {
         task.classList.add('dragging');
+
+        // Create a placeholder with the same height as the dragging task
+        placeholder = document.createElement('div');
+        placeholder.classList.add('placeholder');
+        placeholder.style.height = `${task.offsetHeight}px`;
     });
 
     task.addEventListener('dragend', () => {
         task.classList.remove('dragging');
+
+        // Remove the placeholder when drag ends
+        if (placeholder && placeholder.parentNode) {
+            placeholder.parentNode.removeChild(placeholder);
+        }
     });
 });
 
-// Update task status on drop
+// Handle dragover and drop in columns
 columns.forEach(column => {
     column.addEventListener('dragover', (e) => {
         e.preventDefault();
+
+        const draggingTask = document.querySelector('.dragging');
+        const taskList = column.querySelector('.task-list');
+        const tasksInColumn = [...taskList.querySelectorAll('.task:not(.dragging)')];
+
+        // Find the nearest task where the placeholder should be inserted
+        const afterTask = tasksInColumn.find(task => {
+            const taskRect = task.getBoundingClientRect();
+            return e.clientY < taskRect.top + taskRect.height / 2;
+        });
+
+        // Insert placeholder
+        if (afterTask) {
+            taskList.insertBefore(placeholder, afterTask);
+        } else {
+            taskList.appendChild(placeholder);
+        }
     });
 
     column.addEventListener('drop', (e) => {
         e.preventDefault();
+
         const draggingTask = document.querySelector('.dragging');
         const taskId = draggingTask.getAttribute('data-task-id');
         const taskType = draggingTask.getAttribute('data-task-type');
         const newStatus = column.getAttribute('data-status');
 
-        // Move task to new column
-        column.querySelector('.task-list').appendChild(draggingTask);
+        // Move the dragging task to the placeholder position
+        placeholder.parentNode.replaceChild(draggingTask, placeholder);
 
         // AJAX request to update task status in the database
         fetch("<?php echo e(route('tasks.updateStatusComment')); ?>", {
@@ -470,6 +499,7 @@ columns.forEach(column => {
     });
 });
 
+
    
 
 
@@ -482,6 +512,11 @@ columns.forEach(column => {
   padding-left: 20px;
   font-size: 18px;
   font-weight: 525;
+}
+.placeholder {
+    background: #fff;
+    border: 2px solid #ccc;
+    margin: 5px 0;
 }
 
 
