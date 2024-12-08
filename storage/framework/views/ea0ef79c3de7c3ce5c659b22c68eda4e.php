@@ -703,60 +703,84 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // JavaScript for drag-and-drop functionality
             const tasks = document.querySelectorAll('.task');
-            const columns = document.querySelectorAll('.task-column');
+const columns = document.querySelectorAll('.task-column');
+let placeholder; // Placeholder element to indicate where the task can be dropped
 
-            // Enable drag-and-drop
-            tasks.forEach(task => {
-                task.addEventListener('dragstart', () => {
-                    task.classList.add('dragging');
-                });
+// Enable drag-and-drop
+tasks.forEach(task => {
+    task.addEventListener('dragstart', () => {
+        task.classList.add('dragging');
 
-                task.addEventListener('dragend', () => {
-                    task.classList.remove('dragging');
-                });
-            });
+        // Create a placeholder with the same height as the dragging task
+        placeholder = document.createElement('div');
+        placeholder.classList.add('placeholder');
+        placeholder.style.height = `${task.offsetHeight}px`;
+    });
 
-            // Update task status on drop
-            columns.forEach(column => {
-                column.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                });
+    task.addEventListener('dragend', () => {
+        task.classList.remove('dragging');
 
-                column.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    const draggingTask = document.querySelector('.dragging');
-                    const taskId = draggingTask.getAttribute('data-task-id');
-                    const taskType = draggingTask.getAttribute('data-task-type');
-                    const newStatus = column.getAttribute('data-status');
+        // Remove the placeholder when drag ends
+        if (placeholder && placeholder.parentNode) {
+            placeholder.parentNode.removeChild(placeholder);
+        }
+    });
+});
 
-                    // Move task to new column
-                    column.querySelector('.task-list').appendChild(draggingTask);
+// Handle dragover and drop in columns
+columns.forEach(column => {
+    column.addEventListener('dragover', (e) => {
+        e.preventDefault();
 
-                    // AJAX request to update task status in the database
-                    fetch("<?php echo e(route('projects.updateStatus')); ?>", {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
-                            },
-                            body: JSON.stringify({
-                                taskId,
-                                status: newStatus
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                console.log(`Task ${taskId} status updated to ${newStatus}`);
-                            } else {
-                                console.error("Failed to update task status");
-                            }
-                        })
-                        .catch(error => console.error("Error:", error));
+        const draggingTask = document.querySelector('.dragging');
+        const taskList = column.querySelector('.task-list');
+        const tasksInColumn = [...taskList.querySelectorAll('.task:not(.dragging)')];
 
-                });
-            });
+        // Find the nearest task where the placeholder should be inserted
+        const afterTask = tasksInColumn.find(task => {
+            const taskRect = task.getBoundingClientRect();
+            return e.clientY < taskRect.top + taskRect.height / 2;
+        });
 
+        // Insert placeholder
+        if (afterTask) {
+            taskList.insertBefore(placeholder, afterTask);
+        } else {
+            taskList.appendChild(placeholder);
+        }
+    });
+
+    column.addEventListener('drop', (e) => {
+        e.preventDefault();
+
+        const draggingTask = document.querySelector('.dragging');
+        const taskId = draggingTask.getAttribute('data-task-id');
+        const taskType = draggingTask.getAttribute('data-task-type');
+        const newStatus = column.getAttribute('data-status');
+
+        // Move the dragging task to the placeholder position
+        placeholder.parentNode.replaceChild(draggingTask, placeholder);
+
+        // AJAX request to update task status in the database
+        fetch("<?php echo e(route('projects.updateStatus')); ?>", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+            },
+            body: JSON.stringify({ taskId, taskType, status: newStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(`Task ${taskId} status updated to ${newStatus}`);
+            } else {
+                console.error("Failed to update task status");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
 
 
 
@@ -869,7 +893,13 @@ function saveTask() {
 
 
         </script>
-
+<style>
+.placeholder {
+    background: #fff;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+</style>
 
 
 </main>

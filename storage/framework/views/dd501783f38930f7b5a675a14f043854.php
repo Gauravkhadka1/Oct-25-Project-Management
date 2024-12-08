@@ -515,8 +515,8 @@ columns.forEach(column => {
 }
 .placeholder {
     background: #fff;
-    border: 2px solid #ccc;
     margin: 5px 0;
+    border-radius: 5px;
 }
 
 
