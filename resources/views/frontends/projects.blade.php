@@ -137,9 +137,6 @@ use Carbon\Carbon;
                         </div>
 
                         <div class="task-list">
-                        @if ($projects->where('status', 'new')->isEmpty())
-                                <p>No NEW Projects</p>
-                            @else
                             @foreach ($projects->where('status', 'new') as $project)
                             <div class="task" draggable="true" data-task-id="{{ $project->id }}" data-task-type="{{ strtolower($project->category) }}">
                                 <div class="task-name">
@@ -175,7 +172,6 @@ use Carbon\Carbon;
 
                             </div>
                             @endforeach
-                            @endif
                         </div>
                     </div>
                     <div class="task-column" id="design" data-status="design">
@@ -189,9 +185,6 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div class="task-list">
-                        @if ($projects->where('status', 'design')->isEmpty())
-                                <p>No Projects in Design</p>
-                            @else
                             @foreach ($projects->where('status', 'design') as $project)
                             <div class="task" draggable="true" data-task-id="{{ $project->id }}" data-task-type="{{ strtolower($project->category) }}">
                                 <div class="task-name">
@@ -228,7 +221,6 @@ use Carbon\Carbon;
 
                             </div>
                             @endforeach
-                            @endif
                         </div>
                     </div>
                     <!-- Column for In Progress tasks -->
@@ -244,9 +236,6 @@ use Carbon\Carbon;
                         </div>
 
                         <div class="task-list">
-                        @if ($projects->where('status', 'development')->isEmpty())
-                                <p>No Projects in Development</p>
-                            @else
                             @foreach ($projects->where('status', 'development') as $project)
                             <div class="task" draggable="true" data-task-id="{{ $project->id }}" data-task-type="{{ strtolower($project->category) }}">
                                 <div class="task-name">
@@ -281,7 +270,6 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                             @endforeach
-                            @endif
                         </div>
                     </div>
 
@@ -298,9 +286,6 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div class="task-list">
-                        @if ($projects->where('status', 'content-fillup')->isEmpty())
-                                <p>No Projects in Content-fillup</p>
-                            @else
                             @foreach ($projects->where('status', 'content-fillup') as $project)
                             <div class="task" draggable="true" data-task-id="{{ $project->id }}" data-task-type="{{ strtolower($project->category) }}">
                                 <div class="task-name">
@@ -336,7 +321,6 @@ use Carbon\Carbon;
 
                             </div>
                             @endforeach
-                            @endif
                         </div>
                     </div>
                     <div class="task-column" id="converted" data-status="completed">
@@ -351,9 +335,6 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div class="task-list">
-                        @if ($projects->where('status', 'completed')->isEmpty())
-                                <p>No Projects in Completed</p>
-                            @else
                             @foreach ($projects->where('status', 'completed') as $project)
                             <div class="task" draggable="true" data-task-id="{{ $project->id }}" data-task-type="{{ strtolower($project->category) }}">
                                 <div class="task-name">
@@ -389,7 +370,6 @@ use Carbon\Carbon;
 
                             </div>
                             @endforeach
-                            @endif
                         </div>
                     </div>
                 </div>

@@ -136,9 +136,6 @@ use Carbon\Carbon;
                         </div>
 
                         <div class="task-list">
-                        <?php if($projects->where('status', 'new')->isEmpty()): ?>
-                                <p>No NEW Projects</p>
-                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'new'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
@@ -177,7 +174,6 @@ use Carbon\Carbon;
 
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="task-column" id="design" data-status="design">
@@ -192,9 +188,6 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div class="task-list">
-                        <?php if($projects->where('status', 'design')->isEmpty()): ?>
-                                <p>No Projects in Design</p>
-                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'design'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
@@ -234,7 +227,6 @@ use Carbon\Carbon;
 
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php endif; ?>
                         </div>
                     </div>
                     <!-- Column for In Progress tasks -->
@@ -251,9 +243,6 @@ use Carbon\Carbon;
                         </div>
 
                         <div class="task-list">
-                        <?php if($projects->where('status', 'development')->isEmpty()): ?>
-                                <p>No Projects in Development</p>
-                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'development'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
@@ -291,7 +280,6 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -309,9 +297,6 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div class="task-list">
-                        <?php if($projects->where('status', 'content-fillup')->isEmpty()): ?>
-                                <p>No Projects in Content-fillup</p>
-                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'content-fillup'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
@@ -350,7 +335,6 @@ use Carbon\Carbon;
 
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="task-column" id="converted" data-status="completed">
@@ -366,9 +350,6 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div class="task-list">
-                        <?php if($projects->where('status', 'completed')->isEmpty()): ?>
-                                <p>No Projects in Completed</p>
-                            <?php else: ?>
                             <?php $__currentLoopData = $projects->where('status', 'completed'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $project): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="task" draggable="true" data-task-id="<?php echo e($project->id); ?>" data-task-type="<?php echo e(strtolower($project->category)); ?>">
                                 <div class="task-name">
@@ -407,7 +388,6 @@ use Carbon\Carbon;
 
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

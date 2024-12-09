@@ -18,128 +18,146 @@
         </div>
 
 
-         <div class="task-board">
-            <?php
-            $tasks = collect(); // Create an empty collection to hold all tasks
+        <div class="task-board">
+    <?php
+        $tasks = collect(); // Create an empty collection to hold all tasks
 
-            // Add tasks from payments first
-            foreach ($payments as $payment) {
+        // Add tasks from payments first
+        foreach ($payments as $payment) {
             foreach ($payment->payment_tasks as $task) {
-            $task->category = 'Payment';
-            $task->category_name = $payment->company_name; // Store payment company name in 'category_name'
-            $tasks->push($task); // Add payment tasks to the collection
+                $task->category = 'Payment';
+                $task->category_name = $payment->company_name; // Store payment company name in 'category_name'
+                $tasks->push($task); // Add payment tasks to the collection
             }
-            }
+        }
 
-            // Add tasks from projects second
-            foreach ($projects as $project) {
+        // Add tasks from projects second
+        foreach ($projects as $project) {
             foreach ($project->tasks as $task) {
-            $task->category = 'Project';
-            $task->category_name = $project->name; // Store project name in 'category_name'
-            $tasks->push($task); // Add project tasks to the collection
+                $task->category = 'Project';
+                $task->category_name = $project->name; // Store project name in 'category_name'
+                $tasks->push($task); // Add project tasks to the collection
             }
-            }
+        }
 
-            // Add tasks from prospects third
-            foreach ($prospects as $prospect) {
+        // Add tasks from prospects third
+        foreach ($prospects as $prospect) {
             foreach ($prospect->prospect_tasks as $task) {
-            $task->category = 'Prospect';
-            $task->category_name = $prospect->company_name; // Store prospect company name in 'category_name'
-            $tasks->push($task); // Add prospect tasks to the collection
+                $task->category = 'Prospect';
+                $task->category_name = $prospect->company_name; // Store prospect company name in 'category_name'
+                $tasks->push($task); // Add prospect tasks to the collection
             }
-            }
+        }
 
-            // Flag to check if there are any tasks
-            $hasTasks = $tasks->isNotEmpty();
-            $serialNo = 1;
-            
-            $tasksToDo = $tasks->filter(function ($task) {
-                return $task->status === 'TO DO' || $task->status === null;
-            });
-                $tasksInProgress = $tasks->where('status', 'IN PROGRESS');
-                $tasksQA = $tasks->where('status', 'QA');
-                $tasksCompleted = $tasks->where('status', 'COMPLETED');
-                $tasksClosed = $tasks->where('status', 'CLOSED');
-                $columnNames = [
+        // Flag to check if there are any tasks
+        $hasTasks = $tasks->isNotEmpty();
+        $serialNo = 1;
+        
+        // Filter tasks by status
+        $tasksToDo = $tasks->filter(function ($task) {
+            return $task->status === 'TO DO' || $task->status === null;
+        });
+        $tasksInProgress = $tasks->where('status', 'IN PROGRESS');
+        $tasksQA = $tasks->where('status', 'QA');
+        $tasksCompleted = $tasks->where('status', 'COMPLETED');
+        $tasksClosed = $tasks->where('status', 'CLOSED');
+
+        // Count tasks per status
+        $tasksCounts = [
+            'TO DO' => $tasksToDo->count(),
+            'IN PROGRESS' => $tasksInProgress->count(),
+            'QA' => $tasksQA->count(),
+            'COMPLETED' => $tasksCompleted->count(),
+            'CLOSED' => $tasksClosed->count()
+        ];
+
+        $columnNames = [
             'TO DO' => $tasksToDo,
             'IN PROGRESS' => $tasksInProgress,
             'QA' => $tasksQA,
             'COMPLETED' => $tasksCompleted,
             'CLOSED' => $tasksClosed
-            ];
-            ?>
+        ];
+    ?>
 
-            <?php $__currentLoopData = $columnNames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status => $tasksCollection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="task-column" id="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>" data-status="<?php echo e($status); ?>" style="margin-left:15px;">
-            <div class="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>-heading">
-                <img src="<?php echo e(url('public/frontend/images/' . strtolower(str_replace(' ', '', $status)) . '.png')); ?>" alt="">
-                <h3><?php echo e($status); ?></h3>
-            </div>
-
-            <div class="task-list">
-                <?php if($tasksCollection->isEmpty()): ?>
-                    <div class="no-tasks" style="height: 40px; background-color: white; display: flex; align-items: center; justify-content: center; border:none; margin-top: 10px;">
-                        <p>No task in <?php echo e($status); ?></p>
-                    </div>
-                <?php else: ?>
-                    <?php $__currentLoopData = $tasksCollection; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
-                            <div class="task-name">
-                                <?php if($task->category == 'Payment'): ?>
-                                    <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
-                                <?php elseif($task->category == 'Prospect'): ?>
-                                    <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
-                                <?php else: ?>
-                                    <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
-                                <?php endif; ?>
-                                    <p><?php echo e($task->name); ?></p>
-                                </a>
-                            </div>
-                            <div class="in-project">In <?php echo e($task->category_name); ?></div>
-                             <div class="assigne">
-                                <?php if($task->assignedTo): ?>
-                                    <img src="<?php echo e(url('public/frontend/images/assigned-to.png')); ?>" alt="" class="assigned-to-icon">
-                                    : <img src="<?php echo e(asset('storage/profilepics/' . $task->assignedTo->profilepic)); ?>" 
-                                    alt="<?php echo e($task->assignedTo->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> 
-                                <?php else: ?>
-                                    <img src="<?php echo e(url('public/frontend/images/unassigned.png')); ?>" alt="Unassigned">
-                                    by: N/A
-                                <?php endif; ?>
-                            </div>
-                            <div class="due-date">
-                                <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt=""> 
-                                : <?php echo e($task->due_date); ?>
-
-                            </div>
-                            <div class="priority">
-                                <?php
-                                    $priorityImages = [
-                                        'High' => 'priority-high.png',
-                                        'Urgent' => 'priority-urgent.png',
-                                        'Normal' => 'priority-normal.png',
-                                    ];
-                                    $priorityImage = isset($priorityImages[$task->priority]) ? $priorityImages[$task->priority] : 'default.png';
-                                ?>
-                                <img src="<?php echo e(url('public/frontend/images/' . $priorityImage)); ?>" alt="<?php echo e($task->priority); ?>">
-                                : <?php echo e($task->priority); ?>
-
-                            </div>
-
-                            <div class="time-details">
-                                <div class="start-pause">
-                                    <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">
-                                        <img src="<?php echo e(url('public/frontend/images/play.png')); ?>" alt="">
-                                    </button>
-                                </div>
-                                <div class="time-data" id="time-<?php echo e($task->id); ?>">00:00:00</div>
-                            </div>
-                        </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <?php endif; ?>
-            </div>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    <?php $__currentLoopData = $columnNames; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status => $tasksCollection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <div class="task-column" id="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>" data-status="<?php echo e($status); ?>" style="margin-left:15px;">
+        <div class="status-n-count-dashboard">
+        <div class="<?php echo e(strtolower(str_replace(' ', '', $status))); ?>-heading">
+            <img src="<?php echo e(url('public/frontend/images/' . strtolower(str_replace(' ', '', $status)) . '.png')); ?>" alt="">
+            <h3><?php echo e($status); ?></h3> <!-- Display the task count -->
         </div>
+        <div class="task-count-dashboard">
+        <?php echo e($tasksCounts[$status]); ?>
+
+        </div>
+
+        </div>
+        <div class="task-list">
+            <?php if($tasksCollection->isEmpty()): ?>
+                <div class="no-tasks" style="height: 40px; background-color: white; display: flex; align-items: center; justify-content: center; border:none; margin-top: 10px;">
+                    <p>No task in <?php echo e($status); ?></p>
+                </div>
+            <?php else: ?>
+                <?php $__currentLoopData = $tasksCollection; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
+                        <div class="task-name">
+                            <?php if($task->category == 'Payment'): ?>
+                                <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
+                            <?php elseif($task->category == 'Prospect'): ?>
+                                <a href="<?php echo e(route('prospect_task.detail', ['id' => $task->id])); ?>">
+                            <?php else: ?>
+                                <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
+                            <?php endif; ?>
+                                <p><?php echo e($task->name); ?></p>
+                            </a>
+                        </div>
+                        <div class="in-project">In <?php echo e($task->category_name); ?></div>
+                        <div class="assigne">
+                            <?php if($task->assignedTo): ?>
+                                <img src="<?php echo e(url('public/frontend/images/assigned-to.png')); ?>" alt="" class="assigned-to-icon">
+                                : <img src="<?php echo e(asset('storage/profilepics/' . $task->assignedTo->profilepic)); ?>" 
+                                alt="<?php echo e($task->assignedTo->username); ?>'s Profile Picture" class="profile-pic" id="assigned-pic"> 
+                            <?php else: ?>
+                                <img src="<?php echo e(url('public/frontend/images/unassigned.png')); ?>" alt="Unassigned">
+                                by: N/A
+                            <?php endif; ?>
+                        </div>
+                        <div class="due-date">
+                            <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt=""> 
+                            : <?php echo e($task->due_date); ?>
+
+                        </div>
+                        <div class="priority">
+                            <?php
+                                $priorityImages = [
+                                    'High' => 'priority-high.png',
+                                    'Urgent' => 'priority-urgent.png',
+                                    'Normal' => 'priority-normal.png',
+                                ];
+                                $priorityImage = isset($priorityImages[$task->priority]) ? $priorityImages[$task->priority] : 'default.png';
+                            ?>
+                            <img src="<?php echo e(url('public/frontend/images/' . $priorityImage)); ?>" alt="<?php echo e($task->priority); ?>">
+                            : <?php echo e($task->priority); ?>
+
+                        </div>
+
+                        <div class="time-details">
+                            <div class="start-pause">
+                                <button class="btn-toggle start" id="toggle-<?php echo e($task->id); ?>" onclick="toggleTimer(<?php echo e($task->id); ?>, '<?php echo e($task->category); ?>')">
+                                    <img src="<?php echo e(url('public/frontend/images/play.png')); ?>" alt="">
+                                </button>
+                            </div>
+                            <div class="time-data" id="time-<?php echo e($task->id); ?>">00:00:00</div>
+                        </div>
+                    </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+</div>
+
  
         <div class="schedule-table">
             <div class="schedule-table-heading">
@@ -518,7 +536,15 @@ columns.forEach(column => {
     margin: 5px 0;
     border-radius: 5px;
 }
-
+.status-n-count-dashboard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.task-count-dashboard {
+    margin-right: 15px;
+    font-weight: 500;
+}
 
     </style>
 </main>
