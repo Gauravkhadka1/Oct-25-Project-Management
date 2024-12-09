@@ -59,7 +59,7 @@ use Carbon\Carbon;
                             </div>
 
                             <!-- Status Filter -->
-                            <div class="filter-item">
+                            <!-- <div class="filter-item">
                                 <label for="status">Status:</label>
                                 <select id="status" name="sort_status" class="filter-select">
                                     <option value="">Select Options</option>
@@ -72,7 +72,7 @@ use Carbon\Carbon;
                                     <option value="Other" {{ request('sort_status') == 'Other' ? 'selected' : '' }}>Other</option>
 
                                 </select>
-                            </div>
+                            </div> -->
 
                             <button type="submit">Apply Filter</button>
                         </form>
@@ -359,14 +359,14 @@ use Carbon\Carbon;
                                     </div>
                                     {{ $project->due_date }}
                                 </div>
-                                <div class="due-in-project-view">
+                                <!-- <div class="due-in-project-view">
                                     <div class="due-in-project-view-img">
                                         <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
                                     <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
                                         {{ $project->time_left }}
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
                             @endforeach

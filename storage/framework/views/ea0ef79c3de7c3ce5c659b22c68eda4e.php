@@ -57,7 +57,7 @@ use Carbon\Carbon;
                             </div>
 
                             <!-- Status Filter -->
-                            <div class="filter-item">
+                            <!-- <div class="filter-item">
                                 <label for="status">Status:</label>
                                 <select id="status" name="sort_status" class="filter-select">
                                     <option value="">Select Options</option>
@@ -70,7 +70,7 @@ use Carbon\Carbon;
                                     <option value="Other" <?php echo e(request('sort_status') == 'Other' ? 'selected' : ''); ?>>Other</option>
 
                                 </select>
-                            </div>
+                            </div> -->
 
                             <button type="submit">Apply Filter</button>
                         </form>
@@ -376,7 +376,7 @@ use Carbon\Carbon;
                                     <?php echo e($project->due_date); ?>
 
                                 </div>
-                                <div class="due-in-project-view">
+                                <!-- <div class="due-in-project-view">
                                     <div class="due-in-project-view-img">
                                         <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt="">:
                                     </div>
@@ -384,7 +384,7 @@ use Carbon\Carbon;
                                         <?php echo e($project->time_left); ?>
 
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
