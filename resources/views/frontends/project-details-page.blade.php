@@ -53,18 +53,18 @@
                 </select>
             </div>
             <div class="project-start-date">
-    <div class="start-date-input">
-        <img src="{{ url('public/frontend/images/start-date.png') }}" alt="">
-        <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
-    </div>
-</div>
+                <div class="start-date-input">
+                    <img src="{{ url('public/frontend/images/start-date.png') }}" alt="">
+                    <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
+                </div>
+            </div>
 
-<div class="project-due-date">
-    <div class="due-date-input">
-        <img src="{{ url('public/frontend/images/end-date.png') }}" alt="">
-        <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
-    </div>
-</div>
+            <div class="project-due-date">
+                <div class="due-date-input">
+                    <img src="{{ url('public/frontend/images/end-date.png') }}" alt="">
+                    <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
+                </div>
+            </div>
 
             <div class="priority">
                 <img src="{{ url('public/frontend/images/priority.png') }}" alt="">
@@ -485,33 +485,62 @@ function saveTask() {
 // Drag-and-drop functionality
 const tasks = document.querySelectorAll('.task');
 const columns = document.querySelectorAll('.task-column');
+let placeholder; // Placeholder element to indicate where the task can be dropped
 
 // Enable drag-and-drop
 tasks.forEach(task => {
     task.addEventListener('dragstart', () => {
         task.classList.add('dragging');
+
+        // Create a placeholder with the same height as the dragging task
+        placeholder = document.createElement('div');
+        placeholder.classList.add('placeholder');
+        placeholder.style.height = `${task.offsetHeight}px`;
     });
 
     task.addEventListener('dragend', () => {
         task.classList.remove('dragging');
+
+        // Remove the placeholder when drag ends
+        if (placeholder && placeholder.parentNode) {
+            placeholder.parentNode.removeChild(placeholder);
+        }
     });
 });
 
-// Update task status on drop
+// Handle dragover and drop in columns
 columns.forEach(column => {
     column.addEventListener('dragover', (e) => {
         e.preventDefault();
+
+        const draggingTask = document.querySelector('.dragging');
+        const taskList = column.querySelector('.task-list');
+        const tasksInColumn = [...taskList.querySelectorAll('.task:not(.dragging)')];
+
+        // Find the nearest task where the placeholder should be inserted
+        const afterTask = tasksInColumn.find(task => {
+            const taskRect = task.getBoundingClientRect();
+            return e.clientY < taskRect.top + taskRect.height / 2;
+        });
+
+        // Insert placeholder
+        if (afterTask) {
+            taskList.insertBefore(placeholder, afterTask);
+        } else {
+            taskList.appendChild(placeholder);
+        }
     });
 
     column.addEventListener('drop', (e) => {
         e.preventDefault();
+
         const draggingTask = document.querySelector('.dragging');
         const taskId = draggingTask.getAttribute('data-task-id');
         const taskType = draggingTask.getAttribute('data-task-type');
         const newStatus = column.getAttribute('data-status');
 
-        // Move task to new column
-        column.querySelector('.task-list').appendChild(draggingTask);
+        // Move the dragging task to the placeholder position
+        placeholder.parentNode.replaceChild(draggingTask, placeholder);
 
         // AJAX request to update task status in the database
         fetch("{{ route('tasks.updateStatusComment') }}", {
@@ -522,15 +551,15 @@ columns.forEach(column => {
             },
             body: JSON.stringify({ taskId, taskType, status: newStatus })
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log(`Task ${taskId} status updated to ${newStatus}`);
-                } else {
-                    console.error("Failed to update task status");
-                }
-            })
-            .catch(error => console.error("Error:", error));
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(`Task ${taskId} status updated to ${newStatus}`);
+            } else {
+                console.error("Failed to update task status");
+            }
+        })
+        .catch(error => console.error("Error:", error));
     });
 });
 
@@ -589,5 +618,10 @@ margin-left: 15px !important;
         background-color: #dc3545;
         color: white;
     }
+    .placeholder {
+    background: #fff;
+    margin: 5px 0;
+    border-radius: 5px;
+}
 </style>
 @endsection

@@ -115,17 +115,19 @@
   .sidebar ul li {
     padding: 15px;
     text-align: left;
+ 
   }
   
   .sidebar ul li a {
-    color: black;
+    color: #2a2e34;
     text-decoration: none;
     display: block;
-    font-weight: 500;
-    font-size: 16px;
+    font-weight: 475;
+    font-size: 14px;
   }
   .sidebar ul li a:hover {
-    color: #0C85B6;
+    background-color: #F0F1F3;
+    border-radius: 5px;
   }
   
   /* Header */

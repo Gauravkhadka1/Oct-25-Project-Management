@@ -13,88 +13,90 @@ use Illuminate\Support\Facades\Log;
 class ProjectController extends Controller
 {
     public function index(Request $request)
-    {
-        $query = Project::query();
-        $filterCount = 0;
+{
+    $query = Project::with(['tasks.assignedTo', 'tasks.assignedBy'])->orderBy('created_at', 'desc');
+    $filterCount = 0;
 
-
-        // Start a query for projects
-        $query = Project::with(['tasks.assignedTo', 'tasks.assignedBy']); // Load related tasks and users
-
-           // Filtering by Start Date
-        if ($request->filled('start_date')) {
-            $filterCount++;
-            switch ($request->start_date) {
-                case 'recent':
-                    $query->orderBy('start_date', 'desc');
-                    break;
-                case 'oldest':
-                    $query->orderBy('start_date', 'asc');
-                    break;
-                case 'date-range':
-                    if ($request->filled('from_date') && $request->filled('to_date')) {
-                        $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
-                        $filterCount++;
-                    }
-                    break;
-            }
+    // Filtering by Start Date
+    if ($request->filled('start_date')) {
+        $filterCount++;
+        switch ($request->start_date) {
+            case 'recent':
+                $query->orderBy('start_date', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('start_date', 'asc');
+                break;
+            case 'date-range':
+                if ($request->filled('from_date') && $request->filled('to_date')) {
+                    $query->whereBetween('start_date', [$request->from_date, $request->to_date]);
+                    $filterCount++;
+                }
+                break;
         }
+    }
 
-        // Filtering by Due Date
-        if ($request->filled('due_date')) {
-            $filterCount++;
-            switch ($request->due_date) {
-                case 'More-Time':
-                    $query->orderBy('due_date', 'desc');
-                    break;
-                case 'Less-Time':
-                    $query->orderBy('due_date', 'asc');
-                    break;
-                case 'date-range':
-                    if ($request->filled('from_date') && $request->filled('to_date')) {
-                        $query->whereBetween('due_date', [$request->from_date, $request->to_date]);
-                        $filterCount++;
-                    }
-                    break;
-            }
+    // Filtering by Due Date
+    if ($request->filled('due_date')) {
+        $filterCount++;
+        switch ($request->due_date) {
+            case 'More-Time':
+                $query->orderBy('due_date', 'desc');
+                break;
+            case 'Less-Time':
+                $query->orderBy('due_date', 'asc');
+                break;
+            case 'date-range':
+                if ($request->filled('from_date') && $request->filled('to_date')) {
+                    $query->whereBetween('due_date', [$request->from_date, $request->to_date]);
+                    $filterCount++;
+                }
+                break;
         }
+    }
 
-        // Filtering by Status
-        if ($request->filled('sort_status')) {
-            $query->where('status', $request->sort_status);
-            $filterCount++;
-        }
+    // Filtering by Status
+    if ($request->filled('sort_status')) {
+        $query->where('status', $request->sort_status);
+        $filterCount++;
+    }
 
-        // Search functionality
-        if ($request->has('search') && !empty($request->search)) {
-            $searchTerm = $request->search;
-            $query->where('name', 'like', "%{$searchTerm}%"); // Search by project name
-        }
+    // Search functionality
+    if ($request->has('search') && !empty($request->search)) {
+        $searchTerm = $request->search;
+        $query->where('name', 'like', "%{$searchTerm}%");
+    }
 
-         // Execute the query to fetch projects
+    // Execute the query to fetch projects
     $projects = $query->get()->map(function ($project) {
-        // Calculate time left for each project
         $project->time_left = $this->calculateTimeLeft($project);
         return $project;
     });
 
-    
-
-    // Fetch all users
     $users = User::all();
-
-    // Initialize $project to null if there are no projects
     $project = $projects->isEmpty() ? null : $projects;
 
-    $newProjects = Project::where('status', 'new')->count();
+    // Fetch and sort counts
+    $newProjects = Project::where('status', 'new')->orderBy('created_at', 'desc')->count();
     $designProjects = Project::where('status', 'design')->count();
     $developmentProjects = Project::where('status', 'development')->count();
     $contentfillupProjects = Project::where('status', 'content-fillup')->count();
     $completedProjects = Project::where('status', 'completed')->count();
 
-    // Return the view with the necessary data
-    return view('frontends.projects', compact('users', 'projects', 'project', 'filterCount', 'newProjects', 'designProjects', 'developmentProjects', 'contentfillupProjects', 'completedProjects'));
+    // Return the view
+    return view('frontends.projects', compact(
+        'users',
+        'projects',
+        'project',
+        'filterCount',
+        'newProjects',
+        'designProjects',
+        'developmentProjects',
+        'contentfillupProjects',
+        'completedProjects'
+    ));
 }
+
 
     public function store(Request $request)
     {
