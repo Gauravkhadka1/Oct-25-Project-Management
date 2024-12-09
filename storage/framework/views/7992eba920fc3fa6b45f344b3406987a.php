@@ -1,12 +1,10 @@
-@extends('frontends.layouts.main')
-
-@section('main-container')
+<?php $__env->startSection('main-container'); ?>
 
 <div class="user-profile-page">
         <div class="mytasks">
             <div class="current-tasks">
-                <h2>{{ $username }} Tasks</h2>
-                @include('partials.task-table', ['tasks' => $tasks, 'prospectTasks' => $prospectTasks, 'paymentTasks' => $paymentTasks, 'projects' => $projects, 'prospects' => $prospects, 'payments' => $payments])
+                <h2><?php echo e($username); ?> Tasks</h2>
+                <?php echo $__env->make('partials.task-table', ['tasks' => $tasks, 'prospectTasks' => $prospectTasks, 'paymentTasks' => $paymentTasks, 'projects' => $projects, 'prospects' => $prospects, 'payments' => $payments], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
         </div>
     </div>
@@ -50,4 +48,5 @@
     font-weight: 500;
 }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontends.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/user-dashboard.blade.php ENDPATH**/ ?>
