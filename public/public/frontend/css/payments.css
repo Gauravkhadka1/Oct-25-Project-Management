@@ -6,14 +6,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: -20px;
-    padding: 0 20px 15px;
+    margin-top: -7px;
+    padding: 0 10px 10px;
     /* padding: 10px 0 0 20px; */
 }
 .payments-heading-h2 {
     display: flex;
     align-items: center;
-   
+}
+.payments-heading-h2 h2 {
+   font-size: 20px;
+   font-weight: 500 !important;
 }
 .create-payments {
     margin: 10px 0;
@@ -23,12 +26,13 @@
     align-items: center;
     justify-content: center;
     background-color: transparent;
+    padding: 5px !important;
 }
 .create-payments button:hover {
-    background-color: rgb(231, 228, 228);
+    background-color: transparent;
 }
 .create-payments img{
-    width: 20px;
+    width: 15px !important;
     margin-right: 10px;
 }
 .btn-create {
@@ -45,6 +49,10 @@
 }
 .btn-see-details img {
     width: 30px; 
+}
+#payment-task-board {
+margin-left: 5px !important;
+height: 77vh;
 }
 
 /* table css starts */
@@ -163,40 +171,51 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid gray;
+    border: 1px solid rgb(218, 215, 215);
     border-radius: 10px;
-    padding: 9px 10px;
-    margin-left: 15px;
+    padding: 2px 8px 2px 8px;
+    margin-left: 13px;
+    font-weight: 500;
+    color: #656F7D;
+    width: 75px;
 }
 .filter-payments img {
-    margin-right: 10px;
+    margin-right: 0px;
+    width: 17px !important;
 }
 
 /* search paymentss style  */
 
 .search-payments {
     display: flex;
-    border: 1px solid gray;
+    border: 1px solid rgb(218, 215, 215);
     border-radius: 10px;
-    padding: 8px;
+    padding: 4px 8px 4px 8px;
     margin-left: 20px;
-    width: 190px;
+    width: 110px;
 }
 .search-payments img {
-    width: 20px;
-    margin-right: 10px;
+    width: 12px;
+    margin-right: 5px;
+    transition: opacity 0.3s ease;
 }
 .search-payments form {
     display: flex;
 }
 .search-text-area input {
     border: none;
-    font-size: 20px;
+    font-size: 14px !important;
     padding-left: 10px;
+    color: #656F7D;
+    background-color: transparent;
 }
 .search-text-area input:focus {
     border: none; 
     outline: none; 
+    color: black; /* Text color when typing */
+}
+.search-text-area input:not(:placeholder-shown) ~ .search-icon img {
+    opacity: 0.5; /* Fades out the image when typing */
 }
 
 /* dragand drop css  */
@@ -247,52 +266,67 @@
     align-items: center;
     justify-content: center;
     background-color: #e16b16;
-    width: 90px; 
-    padding: 5px;
+    width: 70px; 
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
+    /* margin-top: -16px !important;
+    margin-bottom: 0px !important; */
 }
 .todo-heading-payments img {
-    width: 20px;
+    width: 15px;
     margin-right: 7px;
+}
+.todo-heading-payments h3 {
+    font-size: 12px !important;
 }
 .invoicesent-heading {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #f7b04f;
-    width: 230px; 
-    padding: 5px;
+    width: 173px; 
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
 }
 .invoicesent-heading img {
-    width: 20px;
+    width: 15px;
     margin-right: 10px;
+}
+.invoicesent-heading h3 {
+    font-size: 12px !important;
+    color: black !important;
 }
 .vatbillsent-heading {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #4f72f3;
-    width: 150px; 
-    padding: 5px;
+    width: 120px; 
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
 }
 .vatbillsent-heading img {
-    width: 20px;
+    width: 15px;
     margin-right: 10px;
+}
+.vatbillsent-heading h3 {
+    font-size: 12px !important;
 }
 .paid-heading {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #318945;
-    width: 85px; 
-    padding: 5px;
+    width: 65px; 
+    padding: 4px 8px 4px 4px;
     border-radius: 7px;
 }
 .paid-heading img {
-    width: 20px;
+    width: 15px;
     margin-right: 10px;
+}
+.paid-heading h3 {
+    font-size: 12px !important;
 }
 .closed-heading-prospect {
     display: flex;
@@ -551,4 +585,29 @@ margin: 5px 0 10px 0 ;
     height: 30px;
     border-radius: 50%;
     margin-right: 10px;
+}
+.dues-heading-create {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -10px !important;
+    margin-bottom: -10px !important;
+}
+.total-dues {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 10px;
+}
+.total-dues-text {
+    font-weight: 500 !important;
+}
+.total-dues-amount {
+    margin-left: 5px;
+    color: #B13A41;
+    font-weight: 500;
+}
+.due-amt {
+    margin-left: 5px;
+    color: #B13A41;
 }

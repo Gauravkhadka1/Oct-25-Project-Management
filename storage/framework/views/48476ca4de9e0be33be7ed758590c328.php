@@ -12,15 +12,15 @@
     <div class="prospects-list">
         <div class="prospect-heading">
             <div class="prospect-heading-h2">
-                <h2>Prospects</h2>
+                <h2>PROSPECTS</h2>
             </div>
             <div class="create-filter-search">
                 <div class="create-prospect">
                     <button class="btn-create" onclick="openCreateProspectModal()"><img src="<?php echo e(url ('public/frontend/images/add-new.png')); ?>" alt=""></button>
                 </div>
                 <div class="filter-section">
-                    <div class="filter-prospects" onclick="toggleFilterList()">
-                        <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
+                    <div class="filter-payments" onclick="toggleFilterList()">
+                        <img src="public/frontend/images/new-bar.png" alt="" class="barfilter">
                         <div class="filter-count">
                             <?php if($filterCount > 0): ?>
                             <p><?php echo e($filterCount); ?></p>
@@ -74,9 +74,9 @@
                     </div>
 
                 </div>
-                <div class="search-prospects">
+                <div class="search-payments">
                     <div class="search-icon">
-                        <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
+                        <img src="public/frontend/images/search-light-color.png" alt="" class="searchi-icon">
                     </div>
                     <form action="<?php echo e(route('prospects.index')); ?>" method="GET" id="search-form">
                         <div class="search-text-area">
@@ -118,12 +118,13 @@
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                                <img src="<?php echo e(url ('public/frontend/images/green-start-date.png')); ?>" alt=""> : 
+                            <?php echo e($prospect->inquirydate); ?>
 
                         </div>
-                        <div class="probability">
+                        <!-- <div class="probability">
                             <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
-                        </div>
+                        </div> -->
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -135,7 +136,7 @@
                
                 <div class="heading-n-count">
                     <div class="dealing-heading">
-                        <img src="<?php echo e(url ('public/frontend/images/dealing.png')); ?>" alt="">
+                        <img src="<?php echo e(url ('public/frontend/images/dealing-black.png')); ?>" alt="">
                         <h3>DEALING</h3>
                     </div>
                     <div class="projects-count">
@@ -160,12 +161,13 @@
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                        <img src="<?php echo e(url ('public/frontend/images/green-start-date.png')); ?>" alt=""> : 
+                            <?php echo e($prospect->inquirydate); ?>
 
                         </div>
-                        <div class="probability">
+                        <!-- <div class="probability">
                             <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
-                        </div>
+                        </div> -->
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -199,12 +201,13 @@
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                        <img src="<?php echo e(url ('public/frontend/images/green-start-date.png')); ?>" alt=""> : 
+                            <?php echo e($prospect->inquirydate); ?>
 
                         </div>
-                        <div class="probability">
+                        <!-- <div class="probability">
                             <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
-                        </div>
+                        </div> -->
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -238,12 +241,13 @@
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                        <img src="<?php echo e(url ('public/frontend/images/green-start-date.png')); ?>" alt=""> : 
+                            <?php echo e($prospect->inquirydate); ?>
 
                         </div>
-                        <div class="probability">
+                        <!-- <div class="probability">
                             <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
-                        </div>
+                        </div> -->
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -275,12 +279,13 @@
                         </div>
 
                         <div class="inquiry-date">
-                            <img src="<?php echo e(url ('public/frontend/images/inquiry.png')); ?>" alt=""> : <?php echo e($prospect->inquirydate); ?>
+                        <img src="<?php echo e(url ('public/frontend/images/green-start-date.png')); ?>" alt=""> : 
+                            <?php echo e($prospect->inquirydate); ?>
 
                         </div>
-                        <div class="probability">
+                        <!-- <div class="probability">
                             <img src="<?php echo e(url ('public/frontend/images/probability.png')); ?>" alt="">: <?php echo e($prospect->probability); ?> %
-                        </div>
+                        </div> -->
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
@@ -418,14 +423,14 @@
                 <label for="message">Message:</label>
                 <textarea name="message" id="message"></textarea><br>
 
-                <label for="probability">Probability</label>
-                <input type="number" name="probability" id="probability"><br>
+                <!-- <label for="probability">Probability</label>
+                <input type="number" name="probability" id="probability"><br> -->
 
                 <label for="inquirydate">Inquiry Date</label>
                 <input type="datetime-local" name="inquirydate" id="inquirydate"><br>
 
-                <label for="activities">Activities</label>
-                <input type="text" name="activities" id="activities"><br>
+                <!-- <label for="activities">Activities</label>
+                <input type="text" name="activities" id="activities"><br> -->
 
                 <label for="status">Status</label>
                 <select name="status" id="status">
@@ -892,59 +897,86 @@
 
         // JavaScript for drag-and-drop functionality
         const tasks = document.querySelectorAll('.task');
-        const columns = document.querySelectorAll('.task-column');
+const columns = document.querySelectorAll('.task-column');
+let placeholder; // Placeholder element to indicate where the task can be dropped
 
-        // Enable drag-and-drop
-        tasks.forEach(task => {
-            task.addEventListener('dragstart', () => {
-                task.classList.add('dragging');
-            });
+// Enable drag-and-drop
+tasks.forEach(task => {
+    task.addEventListener('dragstart', () => {
+        task.classList.add('dragging');
 
-            task.addEventListener('dragend', () => {
-                task.classList.remove('dragging');
-            });
+        // Create a placeholder with the same height as the dragging task
+        placeholder = document.createElement('div');
+        placeholder.classList.add('placeholder');
+        placeholder.style.height = `${task.offsetHeight}px`;
+    });
+
+    task.addEventListener('dragend', () => {
+        task.classList.remove('dragging');
+
+        // Remove the placeholder when drag ends
+        if (placeholder && placeholder.parentNode) {
+            placeholder.parentNode.removeChild(placeholder);
+        }
+    });
+});
+
+// Handle dragover and drop in columns
+columns.forEach(column => {
+    column.addEventListener('dragover', (e) => {
+        e.preventDefault();
+
+        const draggingTask = document.querySelector('.dragging');
+        const taskList = column.querySelector('.task-list');
+        const tasksInColumn = [...taskList.querySelectorAll('.task:not(.dragging)')];
+
+        // Find the nearest task where the placeholder should be inserted
+        const afterTask = tasksInColumn.find(task => {
+            const taskRect = task.getBoundingClientRect();
+            return e.clientY < taskRect.top + taskRect.height / 2;
         });
 
-        // Update task status on drop
-        columns.forEach(column => {
-            column.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
+        // Insert placeholder
+        if (afterTask) {
+            taskList.insertBefore(placeholder, afterTask);
+        } else {
+            taskList.appendChild(placeholder);
+        }
+    });
 
-            column.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const draggingTask = document.querySelector('.dragging');
-                const taskId = draggingTask.getAttribute('data-task-id');
-                const taskType = draggingTask.getAttribute('data-task-type');
-                const newStatus = column.getAttribute('data-status');
+    column.addEventListener('drop', (e) => {
+        e.preventDefault();
 
-                // Move task to new column
-                column.querySelector('.task-list').appendChild(draggingTask);
+        const draggingTask = document.querySelector('.dragging');
+        const taskId = draggingTask.getAttribute('data-task-id');
+        const taskType = draggingTask.getAttribute('data-task-type');
+        const newStatus = column.getAttribute('data-status');
 
-                // AJAX request to update task status in the database
-                fetch("<?php echo e(route('prospects.updateStatus')); ?>", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
-                        },
-                        body: JSON.stringify({
-                            taskId,
-                            status: newStatus
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log(`Task ${taskId} status updated to ${newStatus}`);
-                        } else {
-                            console.error("Failed to update task status");
-                        }
-                    })
-                    .catch(error => console.error("Error:", error));
+        // Move the dragging task to the placeholder position
+        placeholder.parentNode.replaceChild(draggingTask, placeholder);
 
-            });
-        });
+        // AJAX request to update task status in the database
+        fetch("<?php echo e(route('prospects.updateStatus')); ?>", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+            },
+            body: JSON.stringify({ taskId, taskType, status: newStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(`Task ${taskId} status updated to ${newStatus}`);
+            } else {
+                console.error("Failed to update task status");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+
+
     </script>
 </main>
 

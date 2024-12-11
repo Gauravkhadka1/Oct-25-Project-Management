@@ -269,7 +269,32 @@ class ProjectController extends Controller
         return view('frontends.project-details-page', compact('project', 'users', 'todoTasks', 'inProgressTasks', 'qaTasks', 'completedTasks'));
     }
     
-    
+    public function updateInline(Request $request, $id)
+{
+    // Validate the incoming request
+    $request->validate([
+        'field' => 'required|string',
+        'value' => 'required|string'
+    ]);
+
+    // Find the project by ID
+    $project = Project::findOrFail($id);
+
+    // Update the appropriate field based on the 'field' parameter
+    if ($request->field == 'name') {
+        $project->name = $request->value;
+    } elseif ($request->field == 'start_date') {
+        $project->start_date = $request->value;
+    } elseif ($request->field == 'due_date') {
+        $project->due_date = $request->value;
+    }
+
+    // Save the updated project
+    $project->save();
+
+    return response()->json(['success' => true]);
+}
+
         
 
 

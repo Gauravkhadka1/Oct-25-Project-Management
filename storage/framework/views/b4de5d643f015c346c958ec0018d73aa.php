@@ -1,13 +1,11 @@
-@extends ('frontends.layouts.main')
-
-@section ('main-container')
+<?php $__env->startSection('main-container'); ?>
 
 <div class="add-clients-page">
 
     <div class="form-container">
         <h2>Add Client Details</h2>
-        <form action="{{ route('clients.store') }}" method="POST">
-            @csrf
+        <form action="<?php echo e(route('clients.store')); ?>" method="POST">
+            <?php echo csrf_field(); ?>
 
             <div class="company-details">
                 <div class="form-group">
@@ -160,4 +158,5 @@
 </script>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontends.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/add-clients.blade.php ENDPATH**/ ?>

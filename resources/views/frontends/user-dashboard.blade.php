@@ -27,6 +27,9 @@
     .user-profile-page {
         margin-top: -20px;
     }
+    #user-task-board {
+        height: 78vh;
+    }
      .your-task {
   width: 100%;
   margin-top: -25px;

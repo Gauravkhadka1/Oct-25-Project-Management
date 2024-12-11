@@ -170,6 +170,7 @@ Route::get('/client-task/{id}/detail', [ClientTaskController::class, 'show'])->n
 Route::post('/tasks/{id}/pause-timer', [TaskController::class, 'updateElapsedTime']);
 Route::get('/paid-payments', [PaidPaymentsController::class, 'index'])->name('paid-payments.index');
 
+Route::post('/projects/{id}/update-inline', [ProjectController::class, 'updateInline'])->name('projects.updateInline');
 
 
 

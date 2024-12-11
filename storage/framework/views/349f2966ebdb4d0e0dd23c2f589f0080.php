@@ -198,7 +198,7 @@
           </a>
             <ul class="task-dropdown">
                 <!-- Redirect "All Payments" to the previous functionality -->
-                <li><a href="<?php echo e(url('/payments')); ?>">All Payments</a></li>
+                <li><a href="<?php echo e(url('/payments')); ?>">Due Payments</a></li>
 
                 <!-- Redirect "Today Paid" to Paid Payments -->
                 <li><a href="<?php echo e(route('paid-payments.index', ['filter_date' => 'today'])); ?>">Today Paid</a></li>
@@ -367,6 +367,7 @@
 
 
   </script>
+  
 
 </body>
 

@@ -1,7 +1,7 @@
 <?php $__env->startSection('main-container'); ?>
 <div class="paid-payments-page">
     
-    <div class="task-board">
+    <div class="task-board" id="paid-payment-page-tboard">
         <!-- Website Column -->
         <div class="task-column" id="due">
             <div class="todo-heading-payments">
@@ -34,7 +34,13 @@
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="total-category">
-                <strong><?php echo e($paidLabel); ?>: NPR <?php echo e(number_format($totalWebsite)); ?></strong>
+                <div class="paid-label">
+                    <?php echo e($paidLabel); ?>: 
+                </div>
+                <div class="cat-payment">
+                    NPR <?php echo e(number_format($totalWebsite)); ?>
+
+                </div>
             </div>
         </div>
 
@@ -70,7 +76,13 @@
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="total-category">
-                <strong><?php echo e($paidLabel); ?>: NPR <?php echo e(number_format($totalMicrosoft)); ?></strong>
+                <div class="paid-label">
+                    <?php echo e($paidLabel); ?>: 
+                </div>
+                <div class="cat-payment">
+                    NPR <?php echo e(number_format($totalWebsite)); ?>
+
+                </div>
             </div>
         </div>
 
@@ -106,7 +118,13 @@
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="total-category">
-                <strong><?php echo e($paidLabel); ?>: NPR <?php echo e(number_format($totalRenewal)); ?></strong>
+                <div class="paid-label">
+                    <?php echo e($paidLabel); ?>: 
+                </div>
+                <div class="cat-payment">
+                    NPR <?php echo e(number_format($totalWebsite)); ?>
+
+                </div>
             </div>
         </div>
 
@@ -142,14 +160,26 @@
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <div class="total-category">
-                <strong><?php echo e($paidLabel); ?>: NPR <?php echo e(number_format($totalOthers)); ?></strong>
+                <div class="paid-label">
+                    <?php echo e($paidLabel); ?>: 
+                </div>
+                <div class="cat-payment">
+                    NPR <?php echo e(number_format($totalWebsite)); ?>
+
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Overall Total Paid Amount -->
     <div class="total-amounts-paid">
-        <h2><?php echo e($paidLabel); ?>: NPR <?php echo e(number_format($totalPaidAmount)); ?></h2>
+        <div class="total-paid-label">
+            <?php echo e($paidLabel); ?>:
+        </div>
+        <div class="total-paid-amount">
+            NPR <?php echo e(number_format($totalPaidAmount)); ?>
+
+        </div>
     </div>
 </div>
 
@@ -161,11 +191,38 @@
         margin-top: 30px;
         margin-left: 20px
     }
+    #paid-payment-page-tboard {
+        height: 80vh;
+    }
     .total-category {
         margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
     }
+    .paid-label {
+    font-weight: 500;
+    margin-right: 5px;
+}
+.cat-payment {
+    color: #087641;
+    font-weight: 500
+}
+.total-amounts-paid {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.total-paid-label {
+    font-weight: 500;
+    margin-right: 5px;
+}
+.total-paid-amount {
+    color: #087641;
+    font-weight: 500
+}
 
-    .todo-heading-payments {
+.todo-heading-payments {
     display: flex;
     align-items: center;
     justify-content: center;

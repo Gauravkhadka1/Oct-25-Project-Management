@@ -6,7 +6,7 @@
         </div>
 
 
-        <div class="task-board">
+        <div class="task-board" id="user-task-board">
     <?php
         $tasks = collect(); // Create an empty collection to hold all tasks
 

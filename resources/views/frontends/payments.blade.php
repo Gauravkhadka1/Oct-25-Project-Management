@@ -16,20 +16,15 @@
 <div class="payments-page">
     <div class="payments-heading">
         <div class="payments-heading-h2">
-        <h1>Due Payments</h1>
+            <h2>Due Payments</h2>
         </div>
         <div class="create-filter-search">
-            <div class="create-payments">
-                <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="{{url ('public/frontend/images/add-new.png')}}" alt=""></button>
-            </div>
             <div class="filter-section">
                 <div class="filter-payments" onclick="toggleFilterList()">
-             <img src="{{ url('public/frontend/images/bars-filter.png') }}" alt="" class="barfilter">
-
-
+                    <img src="{{ url('public/frontend/images/new-bar.png') }}" alt="" class="barfilter">
                     <div class="filter-count">
                         @if($filterCount > 0)
-                        <p>{{ $filterCount }}</p>
+                        <p style="color: #b13a41;">{{ $filterCount }}</p>
                         @endif
                     </div>
                     Filter
@@ -76,11 +71,11 @@
             </div>
             <div class="search-payments">
                 <div class="search-icon">
-                    <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
+                    <img src="public/frontend/images/search-light-color.png" alt="" class="searchi-icon">
                 </div>
                 <form action="{{ route('payments.index') }}" method="GET" id="search-form">
                     <div class="search-text-area">
-                        <input type="text" name="search" placeholder="search payments" value="{{ request('search') }}" oninput="this.form.submit()">
+                        <input type="text" name="search" placeholder="Search..." value="{{ request('search') }}" oninput="this.form.submit()">
                     </div>
                 </form>
             </div>
@@ -89,14 +84,18 @@
 
 
 
-    <div class="task-board" style="overflow-x: hidden;">
+    <div class="task-board" style="overflow-x: hidden;" id="payment-task-board">
         <!-- Column for To Do tasks -->
         <div class="task-column" id="due" data-status="due" >
-            <div class="todo-heading-payments">
-                <img src="{{url ('public/frontend/images/due.png')}}" alt="">
-                <h3>Dues</h3>
+            <div class="dues-heading-create">
+                <div class="todo-heading-payments">
+                    <img src="{{url ('public/frontend/images/due.png')}}" alt="">
+                    <h3>DUES</h3>
+                </div>
+                <div class="create-payments">
+                    <button class="btn-create" onclick="openCreatePaymentsModal()"><img src="{{url ('public/frontend/images/add-new.png')}}" alt=""></button>
+                </div>
             </div>
-
             <div class="task-list">
                 @foreach ($payments->filter(fn($payment) => $payment->status === 'due' || is_null($payment->status)) as $payment)
 
@@ -112,7 +111,12 @@
                     </div>
 
                     <div class="inquiry-date">
-                        NPR: {{ $payment->amount }}
+                        <div class="due-curr">
+                            NPR:
+                        </div>
+                        <div class="due-amt">
+                        {{ $payment->amount }}
+                        </div>
                     </div>
                     <div class="probability">
                         @if (is_null($payment->due_days))
@@ -134,8 +138,8 @@
         <!-- Column for In Progress tasks -->
         <div class="task-column" id="invoice_sent" data-status="invoice_sent">
             <div class="invoicesent-heading">
-                <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
-                <h3>Payment Details Sent</h3>
+                <img src="{{url ('public/frontend/images/sent-black.png')}}" alt="">
+                <h3>PAYMENT DETAILS SENT</h3>
             </div>
 
             <div class="task-list">
@@ -152,7 +156,12 @@
                     </div>
 
                     <div class="inquiry-date">
-                        NPR: {{ $payment->amount }}
+                        <div class="due-curr">
+                            NPR:
+                        </div>
+                        <div class="due-amt">
+                        {{ $payment->amount }}
+                        </div>
                     </div>
                     <div class="probability">
                         @if (is_null($payment->due_days))
@@ -174,7 +183,7 @@
         <div class="task-column" id="vatbill_sent" data-status="vatbill_sent">
             <div class="vatbillsent-heading">
                 <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
-                <h3>Vat Bill Sent</h3>
+                <h3>VAT BILL SENT</h3>
             </div>
             <div class="task-list">
                 @foreach ($payments->where('status', 'vatbill_sent') as $payment)
@@ -190,7 +199,12 @@
                     </div>
 
                     <div class="inquiry-date">
-                        NPR: {{ $payment->amount }}
+                        <div class="due-curr">
+                            NPR:
+                        </div>
+                        <div class="due-amt">
+                        {{ $payment->amount }}
+                        </div>
                     </div>
                     <div class="probability">
                         @if (is_null($payment->due_days))
@@ -212,7 +226,7 @@
       <div class="task-column" id="paid" data-status="paid">
             <div class="paid-heading">
                 <img src="{{url ('public/frontend/images/sentsent.png')}}" alt="">
-                <h3>Paid</h3>
+                <h3>PAID</h3>
             </div>
             <div class="task-list">
                 @foreach ($payments->where('status', 'paid') as $payment)
@@ -227,7 +241,12 @@
                     </div>
 
                     <div class="inquiry-date">
-                          <p style="margin-right: 4px;">NPR: </p> {{ $payment->amount }}
+                        <div class="due-curr">
+                            NPR:
+                        </div>
+                        <div class="due-amt">
+                        {{ $payment->amount }}
+                        </div>
                     </div>
                    
                     <div class="paid-date"> 
@@ -244,14 +263,15 @@
             @endif
         </div>
     </div>
-    <tfoot>
-        <tr>
-            <td colspan="3" style="text-align: right; font-weight: bold;">{{ $totalDuesText }}</td>
-            <td colspan="3" style="font-weight: bold;">
-                {{ number_format($filteredTotalAmount) }}
-            </td>
-        </tr>
-    </tfoot>
+ 
+    <div class="total-dues">
+        <div class="total-dues-text">
+            {{ $totalDuesText }}
+        </div>
+        <div class="total-dues-amount">
+            {{ number_format($filteredTotalAmount) }}
+        </div>
+    </div>
 
     <!-- See Details Modal -->
     <div id="details-modal" class="details-modal" style="display: none;">

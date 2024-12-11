@@ -194,7 +194,7 @@
           </a>
             <ul class="task-dropdown">
                 <!-- Redirect "All Payments" to the previous functionality -->
-                <li><a href="{{ url('/payments') }}">All Payments</a></li>
+                <li><a href="{{ url('/payments') }}">Due Payments</a></li>
 
                 <!-- Redirect "Today Paid" to Paid Payments -->
                 <li><a href="{{ route('paid-payments.index', ['filter_date' => 'today']) }}">Today Paid</a></li>
@@ -363,6 +363,7 @@
 
 
   </script>
+  
 
 </body>
 

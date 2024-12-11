@@ -71,7 +71,7 @@
     top: 0;
     width: 250px;
     height: 100%;
-    background-color: #fff;
+    background-color: #F7F8F9;
     color: black;
     padding: 0 20px;
     padding-right: 17px; 
@@ -122,7 +122,7 @@
     color: #2a2e34;
     text-decoration: none;
     display: block;
-    font-weight: 475;
+    font-weight: normal;
     font-size: 14px;
   }
   .sidebar ul li a:hover {
@@ -390,5 +390,24 @@
  margin-left: 10px;
 }
 
+.days-filter-form {
+  /* background-color: red; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.days-filter-form input {
+  padding: 4px 5px;
+  width: 55%;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+.days-filter-form button {
+  background-color: #1090E0;
+  font-size: 12px;
+  padding: 5px;
+  margin-right: 17%;
 
+
+}
   

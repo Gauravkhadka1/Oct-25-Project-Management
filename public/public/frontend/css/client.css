@@ -46,3 +46,12 @@
     padding: 0 20px;
     border-radius: 20px;
 }
+#company-name {
+display: flex;
+align-items: center;
+justify-content: flex-start;
+}
+#company-name img {
+width: 15px;
+margin-left: 10px;
+}

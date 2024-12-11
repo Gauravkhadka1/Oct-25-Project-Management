@@ -4,6 +4,7 @@
 
 @php
 use Carbon\Carbon;
+
 @endphp
 
 <main>
@@ -14,14 +15,14 @@ use Carbon\Carbon;
             </div>
             <div class="create-filter-search-project">
                 <div class="filter-section">
-                    <div class="filter-projects" onclick="toggleFilterList()">
-                        <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
+                    <div class="filter-payments" onclick="toggleFilterList()">
+                    <img src="{{ url('public/frontend/images/new-bar.png') }}" alt="" class="barfilter">
                         <div class="filter-count">
                             @if($filterCount > 0)
-                            <p>{{ $filterCount }}</p>
+                            <p style="color: #b13a41;">{{ $filterCount }}</p>
                             @endif
                         </div>
-                        <p>Filter</p>
+                        Filter
                     </div>
                     <div class="filter-options" style="display: none;">
                         <form action="{{ route('projects.index') }}" method="GET">
@@ -79,9 +80,9 @@ use Carbon\Carbon;
                     </div>
 
                 </div>
-                <div class="search-projects">
+                <div class="search-payments">
                     <div class="search-icon">
-                        <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
+                        <img src="public/frontend/images/search-light-color.png" alt="" class="searchi-icon">
                     </div>
                     <form action="{{ route('projects.index') }}" method="GET" id="search-form">
                         <div class="search-text-area">
@@ -93,7 +94,7 @@ use Carbon\Carbon;
         </div>
         <div class="projects">
             <div class="ongoing-project" id="ongoing-project">
-                <div class="task-board">
+                <div class="task-board" id="project-task-board">
                     <!-- Column for To Do tasks -->
                     <div class="task-column" id="new-project" data-status="new">
                        <div class="new-project-add-heading">
@@ -139,12 +140,11 @@ use Carbon\Carbon;
                         <div class="task-list">
                             @foreach ($projects->where('status', 'new') as $project)
                             <div class="task" draggable="true" data-task-id="{{ $project->id }}" data-task-type="{{ strtolower($project->category) }}">
-                                <div class="task-name">
-                                    <a href="{{url ('projectdetails/' .$project->id)}}">
-                                    <p style="font-size:15px;">{{ $project->name }}</p>
-                                    </a>
-
-                                </div>
+                            <div class="task-name">
+            <a href="javascript:void(0)" class="edit-project-name" data-project-id="{{ $project->id }}">
+                <p class="editable-name">{{ $project->name }}</p>
+            </a>
+        </div>
                                 <!-- <div class="category">
                                     <strong>Status:</strong> <p>{{ $project->sub_status }}</p>
                                 </div> -->
@@ -153,19 +153,19 @@ use Carbon\Carbon;
                                         <img src="{{url('public/frontend/images/green-start-date.png')}}" alt="">:
                                     </div>
                                
-                                    {{ $project->start_date }}
+                                    <span class="editable-start-date" data-project-id="{{ $project->id }}">{{ $project->start_date }}</span>
                                 </div>
                                 <div class="project-due-date-view">
                                     <div class="project-due-date-view-img">
                                         <img src="{{url('public/frontend/images/red-end-date.png')}}" alt="">:
                                     </div>
-                                    {{ $project->due_date }}
+                                    <span class="editable-due-date" data-project-id="{{ $project->id }}">{{ $project->due_date }}</span>
                                 </div>
                                 <div class="due-in-project-view">
                                     <div class="due-in-project-view-img">
                                         <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? '#b13a41' : '#087641' }}">
                                         {{ $project->time_left }}
                                     </div>
                                 </div>
@@ -213,10 +213,9 @@ use Carbon\Carbon;
                                     <div class="due-in-project-view-img">
                                         <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? '#b13a41' : '#087641' }}">
                                         {{ $project->time_left }}
                                     </div>
-
                                 </div>
 
                             </div>
@@ -264,7 +263,7 @@ use Carbon\Carbon;
                                     <div class="due-in-project-view-img">
                                         <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? '#b13a41' : '#087641' }}">
                                         {{ $project->time_left }}
                                     </div>
                                 </div>
@@ -314,7 +313,7 @@ use Carbon\Carbon;
                                     <div class="due-in-project-view-img">
                                         <img src="{{ url('public/frontend/images/due-date.png') }}" alt="">:
                                     </div>
-                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? 'red' : 'green' }}">
+                                    <div style="color: {{ Str::contains($project->time_left, 'Overdue') ? '#b13a41' : '#087641' }}">
                                         {{ $project->time_left }}
                                     </div>
                                 </div>
@@ -851,6 +850,72 @@ function saveTask() {
             alert('Failed to save task. Please try again.');
         });
 }
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to handle inline editing
+    function makeEditable(element, fieldType) {
+        element.addEventListener('click', function() {
+            const currentValue = element.textContent.trim();
+            const input = document.createElement('input');
+            input.type = fieldType === 'date' ? 'date' : 'text'; // Use 'date' type for date fields
+            input.value = currentValue;
+            element.innerHTML = ''; // Clear current content
+            element.appendChild(input);
+
+            // Focus the input field and select text for convenience
+            input.focus();
+            input.select();
+
+            // When user presses Enter or clicks outside, save the change
+            input.addEventListener('blur', () => saveChange(input, element, fieldType));
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    saveChange(input, element, fieldType);
+                }
+            });
+        });
+    }
+
+    // Save the edited data to the server
+    function saveChange(input, element, fieldType) {
+        const newValue = input.value.trim();
+        const projectId = element.getAttribute('data-project-id');
+
+        if (newValue !== '') {
+            // Make AJAX request to update the project data
+            fetch(`/projects/${projectId}/update-inline`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    field: fieldType,
+                    value: newValue
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the display with the new value
+                    element.innerHTML = newValue;
+                } else {
+                    // Handle error (optional)
+                    alert('Error saving changes');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            element.innerHTML = input.value; // Revert if no value was entered
+        }
+    }
+
+    // Make the name, start date, and due date editable
+    document.querySelectorAll('.editable-name').forEach(element => makeEditable(element, 'text'));
+    document.querySelectorAll('.editable-start-date').forEach(element => makeEditable(element, 'date'));
+    document.querySelectorAll('.editable-due-date').forEach(element => makeEditable(element, 'date'));
+});
 
 
 

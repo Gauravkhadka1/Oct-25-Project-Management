@@ -99,54 +99,61 @@
             @endif
         </div>
         <div class="modern-payments-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>SN</th>
-                        <th>Company Name</th>
-                        <th>Website</th>
-                        <th>Category</th>
-                        <th>Address</th>
-                        <th>Contact Person</th>
-                        <th>C. Phone</th>
-                        <th>C. Email</th>
-                        <th>Rating</th>
+    <table>
+        <thead>
+            <tr>
+                <th>SN</th>
+                <th id="company-name">
+                    Company Name
+                    <img 
+                        id="sort-company-name" 
+                        src="{{ url('public/frontend/images/sort.png') }}" 
+                        alt="Sort" 
+                        data-order="{{ request('sort_order') === 'asc' ? 'desc' : 'asc' }}" 
+                        style="cursor: pointer;">
+                </th>
+                <th id="website">
+    Website
+    <img 
+        id="sort-website" 
+        src="{{ url('public/frontend/images/sort.png') }}" 
+        alt="Sort" 
+        data-order="{{ request('sort_by') === 'website' && request('sort_order') === 'asc' ? 'desc' : 'asc' }}" 
+        style="cursor: pointer;" 
+        onclick="sortColumn('website', this)">
+</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($clients as $index => $client)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $client->company_name ?? '' }}</td>
-                        <td>
-                            @if(!empty($client->website))
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody id="clients-tbody">
+            @forelse ($clients as $index => $client)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $client->company_name ?? '' }}</td>
+                    <td>
+                        @if (!empty($client->website))
                             @php
-                            $url = preg_match('/^(http|https):\/\//', $client->website) ? $client->website : 'http://' . $client->website;
+                                $url = preg_match('/^(http|https):\/\//', $client->website) ? $client->website : 'http://' . $client->website;
                             @endphp
                             <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">{{ $client->website }}</a>
-                            @else
+                        @else
                             No Website
-                            @endif
-                        </td>
+                        @endif
+                    </td>
+                    <td>{{ $client->rating ?? '' }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" style="text-align: center;">No data available</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 
-
-                        <td>{{ $client->category ?? '' }}</td>
-                        <td>{{ $client->address ?? '' }}</td>
-                        <td>{{ $client->contact_person ?? '' }}</td>
-                        <td>{{ $client->company_phone ?? '' }}</td>
-                        <td>{{ $client->company_email ?? '' }}</td>
-                        <td>{{ $client->rating ?? '' }}</td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="8" style="text-align: center;">No data available</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
     </div>
+
     <div id="add-clients-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <h3>Add Clients</h3>
@@ -268,6 +275,7 @@
                     "Tourism": [],
                     "Education": ["Edu Consultancy", "School", "College", "Other"],
                     "News": [""],
+                    "Health & Wellness": [""],
                     "eCommerce": ["Product Catlog", "ecommerce", "Other"],
                     "Hospitality": ["Hotel & Cafe", "Resort", "Other"],
                     "Personal Portfolio": [],
@@ -367,6 +375,125 @@
                 additionalSubcategoryContainer.style.display = 'none';
             }
         });
+
+        document.getElementById('sort-company-name').addEventListener('click', function () {
+        const sortOrder = this.getAttribute('data-order'); // Get current sort order
+        const url = `{{ route('clients.index') }}?sort_by=company_name&sort_order=${sortOrder}`; // Build URL for sorting
+        
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest', // Indicate this is an AJAX request
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok.");
+            return response.text(); // Parse response as text (HTML)
+        })
+        .then(html => {
+            document.getElementById('clients-tbody').innerHTML = html; // Update table body
+            this.setAttribute('data-order', sortOrder === 'asc' ? 'desc' : 'asc'); // Toggle sort order for next click
+        })
+        .catch(error => {
+            console.error('Error fetching sorted data:', error);
+        });
+    });
+
+
+    function sortColumn(column, element) {
+    const sortOrder = element.getAttribute('data-order'); // Get current sort order
+    const url = new URL(window.location.href);
+    url.searchParams.set('sort_by', column); // Set the column to sort by
+    url.searchParams.set('sort_order', sortOrder); // Set the sorting order
+    
+    // Fetch updated data
+    fetch(url, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest', // Indicate this is an AJAX request
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok.");
+        return response.text(); // Parse response as text (HTML)
+    })
+    .then(html => {
+        document.getElementById('clients-tbody').innerHTML = html; // Update table body with sorted data
+        // Toggle the sort order for the next click
+        element.setAttribute('data-order', sortOrder === 'asc' ? 'desc' : 'asc');
+    })
+    .catch(error => {
+        console.error('Error fetching sorted data:', error);
+    });
+}
+
     </script>
+    <style>
+        .client-page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+.client-page-heading h2 {
+    font-size: 30px;
+
+}
+.create-clients button{
+   background-color: transparent;
+}
+.create-clients button:hover{
+   background-color: rgb(238, 235, 235);
+}
+.create-clients button a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+}
+.create-filter-search-clients {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-clients {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border: 1px solid gray;
+    width: 40%;
+    padding: 8px;
+    border-radius: 10px;
+}
+.number-category {
+    padding: 10px 20px 0;
+}
+/* .create-clients .btn-create {
+    background-color: transparent;
+} */
+.modern-payments-table {
+    padding: 0 20px;
+    border-radius: 20px;
+}
+#company-name {
+display: flex;
+align-items: center;
+justify-content: flex-start;
+}
+#company-name img {
+width: 15px;
+margin-left: 10px;
+}
+
+#website {
+/* display: flex;
+align-items: center;
+justify-content: flex-start; */
+}
+#website img {
+width: 15px;
+margin-left: 10px;
+}
+    </style>
 </main>
 @endsection

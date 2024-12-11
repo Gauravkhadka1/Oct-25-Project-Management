@@ -42,7 +42,17 @@ class ClientsController extends Controller
             $filterCount++;
         }
     
-        $clients = $query->get();
+          // Sorting
+          $sortBy = $request->get('sort_by', 'company_name'); // Default sort column
+          $sortOrder = $request->get('sort_order', 'asc');  // Default sort order
+          $query->orderBy($sortBy, $sortOrder); // Apply sorting
+          
+          $clients = $query->get();
+          
+          // If AJAX request, return only the table rows
+          if ($request->ajax()) {
+              return view('partials.clients_table_rows', compact('clients'))->render(); // Return updated rows
+          }
     
         // Build a descriptive filter label
         $lastSelectedFilter = null;
