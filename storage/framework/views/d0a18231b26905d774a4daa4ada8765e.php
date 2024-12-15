@@ -129,7 +129,13 @@
             <?php $__empty_1 = true; $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
                     <td><?php echo e($index + 1); ?></td>
-                    <td><?php echo e($client->company_name ?? ''); ?></td>
+                    <td>
+                        <a href="<?php echo e(route('client.details', ['id' => $client->id])); ?>">
+                            <?php echo e($client->company_name ?? ''); ?>
+
+                        </a>
+                    </td>
+
                     <td>
                         <?php if(!empty($client->website)): ?>
                             <?php

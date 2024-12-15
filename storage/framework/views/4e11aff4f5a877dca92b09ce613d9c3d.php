@@ -52,18 +52,18 @@
                 </select>
             </div>
             <div class="project-start-date">
-    <div class="start-date-input">
-        <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">
-        <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
-    </div>
-</div>
+                <div class="start-date-input">
+                    <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">
+                    <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
+                </div>
+            </div>
 
-<div class="project-due-date">
-    <div class="due-date-input">
-        <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">
-        <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
-    </div>
-</div>
+            <div class="project-due-date">
+                <div class="due-date-input">
+                    <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">
+                    <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
+                </div>
+            </div>
 
             <div class="priority">
                 <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt="">

@@ -130,7 +130,12 @@
             @forelse ($clients as $index => $client)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $client->company_name ?? '' }}</td>
+                    <td>
+                        <a href="{{ route('client.details', ['id' => $client->id]) }}">
+                            {{ $client->company_name ?? '' }}
+                        </a>
+                    </td>
+
                     <td>
                         @if (!empty($client->website))
                             @php

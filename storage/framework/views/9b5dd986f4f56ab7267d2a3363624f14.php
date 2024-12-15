@@ -21,8 +21,6 @@
             <div class="filter-section">
                 <div class="filter-payments" onclick="toggleFilterList()">
                     <img src="<?php echo e(url('public/frontend/images/new-bar.png')); ?>" alt="" class="barfilter">
-
-
                     <div class="filter-count">
                         <?php if($filterCount > 0): ?>
                         <p style="color: #b13a41;"><?php echo e($filterCount); ?></p>

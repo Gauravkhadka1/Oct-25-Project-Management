@@ -173,4 +173,8 @@ Route::get('/paid-payments', [PaidPaymentsController::class, 'index'])->name('pa
 Route::post('/projects/{id}/update-inline', [ProjectController::class, 'updateInline'])->name('projects.updateInline');
 
 
+Route::get('/client-detail/{id}', [ClientsController::class, 'details'])->name('client.details');
+Route::post('/client-detail/update/{id}', [ClientsController::class, 'update'])->name('client.update');
+
+
 

@@ -17,11 +17,13 @@
   <link rel="stylesheet" href="{{url('public/frontend/css/new-dashboard.css')}}">
   <link rel="stylesheet" href="{{url('public/frontend/css/task-detail.css')}}">
   <link rel="stylesheet" href="{{url('public/frontend/css/client.css')}}">
+  <link rel="stylesheet" href="{{url('public/frontend/css/client-detail.css')}}">
   <link rel="stylesheet" href="{{url('public/frontend/css/prospect-details-page.css')}}">
   <link rel="stylesheet" href="{{url('public/frontend/css/profile.css')}}">
   <link rel="stylesheet" href="{{url('public/frontend/css/payment-detail-page.css')}}">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
 
   @php
