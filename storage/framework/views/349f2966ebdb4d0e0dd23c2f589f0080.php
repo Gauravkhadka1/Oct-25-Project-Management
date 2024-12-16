@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/prospect-details-page.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/profile.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/payment-detail-page.css')); ?>">
+  <link rel="stylesheet" href="<?php echo e(url('public/frontend/css/expiry.css')); ?>">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
@@ -37,6 +38,46 @@
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
   $username = $user->username;
+
+
+  use App\Models\Clients;
+use Carbon\Carbon;
+
+// Retrieve the days filter from the request
+$daysFilter = request('days_filter', '');
+
+// Function to get client count based on filter
+function getClientCount($daysFilter) {
+    $clientsQuery = Clients::query();
+
+    // Apply the days filter if specified
+    switch ($daysFilter) {
+        case '35-31':
+            $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(31), Carbon::now()->addDays(35)]);
+            break;
+        case '30-16':
+            $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(16), Carbon::now()->addDays(30)]);
+            break;
+        case '15-8':
+            $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(8), Carbon::now()->addDays(15)]);
+            break;
+        case '7-1':
+            $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(1), Carbon::now()->addDays(7)]);
+            break;
+        case 'today':
+            $clientsQuery->whereDate('hosting_expiry_date', Carbon::today());
+            break;
+        case 'expired':
+            $clientsQuery->where('hosting_expiry_date', '<', Carbon::today());
+            break;
+        default:
+            break;
+    }
+
+    return $clientsQuery->count();
+}
+
+
 
   ?>
 
@@ -129,10 +170,10 @@
         </li>
         <?php if(auth()->check() && in_array(auth()->user()->email, $allowedEmails)): ?>
        
-        <!-- <li class="dropdown">
+        <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
-              <img src="<?php echo e(url('frontend/images/renewable.png')); ?>" alt=""> Renewals
+              <img src="<?php echo e(url('public/frontend/images/renewable.png')); ?>" alt=""> Expiry
             </div>
             <div class="dropdown-arrow-div">
               <i class="fas fa-chevron-right dropdown-arrow"></i>
@@ -140,15 +181,46 @@
 
           </a>
           <ul class="task-dropdown">
-            <li><a href="<?php echo e(url('/tasks/all')); ?>">All</a></li>
-            <li><a href="<?php echo e(url('/tasks/all')); ?>">35 days left</a></li>
-            <li><a href="<?php echo e(url('/tasks/my')); ?>">30 days</a></li>
-            <li><a href="<?php echo e(url('/tasks/my')); ?>">15 days</a></li>
-            <li><a href="<?php echo e(url('/tasks/my')); ?>">7 days</a></li>
-            <li><a href="<?php echo e(url('/tasks/my')); ?>">3 days</a></li>
-            <li><a href="<?php echo e(url('/tasks/my')); ?>">Expired</a></li>
-          </ul>
-        </li> -->
+    <li><a href="<?php echo e(url('/expiry')); ?>">All</a></li>
+    <li>
+        <a href="<?php echo e(route('expiry.index', ['days_filter' => '35-31', 'sort' => request('sort'), 'column' => request('column')])); ?>">
+            <div class="days">35 days</div>
+            <div class="expiry-count"><?php echo e(getClientCount('35-31')); ?></div>
+        </a>
+    </li>
+    <li>
+        <a href="<?php echo e(route('expiry.index', ['days_filter' => '30-16', 'sort' => request('sort'), 'column' => request('column')])); ?>">
+            <div class="days">30 days</div>
+            <div class="expiry-count"><?php echo e(getClientCount('30-16')); ?></div>
+        </a>
+    </li>
+    <li>
+        <a href="<?php echo e(route('expiry.index', ['days_filter' => '15-8', 'sort' => request('sort'), 'column' => request('column')])); ?>">
+            <div class="days">15 days</div>
+            <div class="expiry-count"><?php echo e(getClientCount('15-8')); ?></div>
+        </a>
+    </li>
+    <li>
+        <a href="<?php echo e(route('expiry.index', ['days_filter' => '7-1', 'sort' => request('sort'), 'column' => request('column')])); ?>">
+            <div class="days">7 days</div>
+            <div class="expiry-count"><?php echo e(getClientCount('7-1')); ?></div>
+        </a>
+    </li>
+    <li>
+        <a href="<?php echo e(route('expiry.index', ['days_filter' => 'today', 'sort' => request('sort'), 'column' => request('column')])); ?>">
+            <div class="days">Expiring Today</div>
+            <div class="expiry-count"><?php echo e(getClientCount('today')); ?></div>
+        </a>
+    </li>
+    <li>
+        <a href="<?php echo e(route('expiry.index', ['days_filter' => 'expired', 'sort' => request('sort'), 'column' => request('column')])); ?>">
+            <div class="days">Expired</div>
+            <div class="expiry-count" id="expired"><?php echo e(getClientCount('expired')); ?></div>
+        </a>
+    </li>
+</ul>
+
+        </li>
 
         <li class="dropdown">
         <a href="<?php echo e(url('/prospects')); ?>" class="task-toggle" >

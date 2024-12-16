@@ -50,23 +50,49 @@
                         <label for="address">Contact Person Email </label>
                         <input type="email" id="contact_person_email" name="contact_person_email" value="{{ $client->contact_person_email  }}">
                     </div>
-                </div>
-            </div>
-            <div class="additional-informations">
-                <div class="general-info">
-                    <div class="client-details-form">
-                        <label for="additional_info">Additional Informations</label>
-                        <textarea id="summernote" name="additional_info">{{$client->additional_info}}</textarea>
+                    <div class="additional-informations">
+                        <div class="general-info">
+                            <div class="client-details-form">
+                                <label for="additional_info">Additional Informations</label>
+                                <textarea id="summernote" name="additional_info">{{$client->additional_info}}</textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="additional-informations">
-                <div class="general-info">
-                    <div class="client-details-form">
-                        <label for="additional_info">Additional Informations</label>
-                        <textarea id="summernote" name="additional_info">{{$client->additional_info}}</textarea>
-                    </div>
-                </div>
+            <div class="client-activities">
+                <h3>Activities</h3>
+                @if ($activities->isNotEmpty())
+                <ul class="activities-list">
+                    @foreach ($activities as $activity)
+                    <li class="activity-item">
+                        <div class="activity-header">
+                            <div class="user-info">
+                                @if ($activity->user && $activity->user->profilepic)
+                                <!-- Use Storage::url() to get the full URL of the profile picture -->
+                                <img src="{{ Storage::url('profilepics/' . $activity->user->profilepic) }}" alt="Profile Picture" class="user-avatar">
+                                @else
+                                <!-- Fallback image if no profile picture is set -->
+                                <img src="{{ asset('default-avatar.png') }}" alt="Profile Picture" class="user-avatar">
+                                @endif
+                                <strong class="user-name">{{ $activity->user ? $activity->user->username : 'Unknown User' }}</strong>
+                            </div>
+                            <span class="activity-time">{{ $activity->created_at->format('d M Y, h:i A') }}</span>
+                        </div>
+                        <p class="activity-description">{{ $activity->activity }}</p>
+                        @if ($activity->field)
+                        <!-- <div class="activity-changes">
+                            <strong>Changed:</strong> {{ $activity->field }} <br>
+                            <strong>Old Value:</strong> {{ $activity->old_value }} <br>
+                            <strong>New Value:</strong> {{ $activity->new_value }}
+                        </div> -->
+                        @endif
+                    </li>
+                    @endforeach
+                </ul>
+                @else
+                <p class="no-activities">No activities found.</p>
+                @endif
             </div>
         </div>
 
@@ -89,22 +115,22 @@
                     <label for="choose_category">Category </label>
                     <select id="choose_subcategory" name="subcategory">
                         <option value="">Select Category</option>
-                        <option value="Company Portfolio">Company Portfolio</option>
-                        <option value="NGO/ INGO">NGO/ INGO</option>
-                        <option value="Tourism">Tourism</option>
-                        <option value="Ecommerce">Ecommerce</option>
-                        <option value="Hotels/ Cafe">Hotels/ Cafe</option>
-                        <option value="Education Consultancy">Education Consultancy</option>
-                        <option value="Manpower">Manpower</option>
-                        <option value="News Portal">News Portal</option>
-                        <option value="Health">Health</option>
-                        <option value="Personal Portfolio">Personal Portfolio</option>
+                        <option value="Company Portfolio" {{ $client->subcategory == 'Company Portfolio' ? 'selected' : '' }}>Company Portfolio</option>
+                        <option value="NGO/ INGO" {{ $client->subcategory == 'NGO/ INGO' ? 'selected' : '' }}>NGO/ INGO</option>
+                        <option value="Tourism" {{ $client->subcategory == 'Tourism' ? 'selected' : '' }}>Tourism</option>
+                        <option value="Ecommerce" {{ $client->subcategory == 'Ecommerce' ? 'selected' : '' }}>Ecommerce</option>
+                        <option value="Hotels/ Cafe" {{ $client->subcategory == 'Hotels/ Cafe' ? 'selected' : '' }}>Hotels/ Cafe</option>
+                        <option value="Education Consultancy" {{ $client->subcategory == 'Education Consultancy' ? 'selected' : '' }}>Education Consultancy</option>
+                        <option value="Manpower" {{ $client->subcategory == 'Manpower' ? 'selected' : '' }}>Manpower</option>
+                        <option value="News Portal" {{ $client->subcategory == 'News Portal' ? 'selected' : '' }}>News Portal</option>
+                        <option value="Health" {{ $client->subcategory == 'Health' ? 'selected' : '' }}>Health</option>
+                        <option value="Personal Portfolio" {{ $client->subcategory == 'Personal Portfolio' ? 'selected' : '' }}>Personal Portfolio</option>
                     </select>
                 </div>
-                <div class="client-details-form">
+                <!-- <div class="client-details-form">
                     <label for="amount">Amount</label>
                     <input type="text" id="domain_amount" name="domain_amount" value="{{ $client->domain_amount}}">
-                </div>
+                </div> -->
                 <div class="client-details-form">
                     <label for="contract">Upload Contract</label>
                     <input type="file" id="contract" name="contract" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
@@ -172,8 +198,8 @@
                     <label for="choose_domain">Choose Domain </label>
                     <select id="choose_domain" name="domain_type">
                         <option value="">Select Domain</option>
-                        <option value="Site5" {{ $client->domain_type == 'Site5' ? 'selected' : '' }}>Site5</option>
-                        <option value="Hostforweb" {{ $client->domain_type == 'Hostforweb' ? 'selected' : '' }}>Hostforweb</option>
+                        <option value="domain1" {{ $client->domain_type == 'domain1' ? 'selected' : '' }}>Domain1</option>
+                        <option value="domain2" {{ $client->domain_type == 'domain2' ? 'selected' : '' }}>Domain2</option>
                     </select>
 
                 </div>

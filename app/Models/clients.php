@@ -28,6 +28,7 @@ class Clients extends Model
         'domain_active_date',
         'domain_expiry_date',
         'domain_amount',
+        'domain_type',
         'hosting_active_date',
         'hosting_expiry_date',
         'hosting_space',
@@ -49,4 +50,8 @@ class Clients extends Model
         'vat_no',
         'additional_info',
     ];
+    public function userActivities()
+    {
+        return $this->hasMany(UserActivity::class);
+    }
 }

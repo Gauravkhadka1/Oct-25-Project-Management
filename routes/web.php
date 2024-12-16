@@ -25,7 +25,8 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Middleware\CheckAllowedEmails;
 use App\Http\Controllers\ClientTaskController;
-use App\Http\Controllers\PaidPaymentsController;
+use App\Http\Controllers\ExpiryController;
+
 
 Route::get('/',[HomeController::class, 'index']);
 Route::get('/mention',[HomeController::class, 'mention']);
@@ -175,6 +176,10 @@ Route::post('/projects/{id}/update-inline', [ProjectController::class, 'updateIn
 
 Route::get('/client-detail/{id}', [ClientsController::class, 'details'])->name('client.details');
 Route::post('/client-detail/update/{id}', [ClientsController::class, 'update'])->name('client.update');
+
+Route::get('/expiry', [ExpiryController::class, 'index'])->name('expiry.index');
+Route::get('/clients/sort', [ExpiryController::class, 'sort'])->name('clients.sort');
+
 
 
 

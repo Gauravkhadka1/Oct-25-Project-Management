@@ -267,6 +267,19 @@
     padding: 10px 0;
     margin-left: 30px
   }
+  .dropdown .task-dropdown li a{
+    /* color: red; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .expiry-count {
+    margin-right: 15px;
+  }
+  #expired {
+    color: red;
+    font-weight: 500;
+  }
   
   .dropdown .task-dropdown.show {
     display: block;

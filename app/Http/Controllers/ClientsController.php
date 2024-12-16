@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Clients;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use App\Models\UserActivity;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class ClientsController extends Controller
 {
@@ -94,6 +98,7 @@ class ClientsController extends Controller
             'domain_active_date' => 'nullable|date',
             'domain_expiry_date' => 'nullable|date',
             'domain_amount' => 'nullable|integer',
+            'domain_type' => 'nullable|string',
             'hosting_active_date' => 'nullable|date',
             'hosting_expiry_date' => 'nullable|date',
             'hosting_space' => 'nullable|string',
@@ -131,6 +136,7 @@ class ClientsController extends Controller
             'domain_active_date' => $validatedData['domain_active_date'],
             'domain_expiry_date' => $validatedData['domain_expiry_date'],
             'domain_amount' => $validatedData['domain_amount'],
+            'domain_type' => $validatedData['domain_type'],
             'hosting_active_date' => $validatedData['hosting_active_date'],
             'hosting_expiry_date' => $validatedData['hosting_expiry_date'],
             'hosting_space' => $validatedData['hosting_space'],
@@ -150,7 +156,7 @@ class ClientsController extends Controller
             'seo_type' => $validatedData['seo_type'],
             'seo_amount' => $validatedData['seo_amount'],
             'vat_no' => $validatedData['vat_no'],
-            'seo_amount' => $validatedData['additional_info'],
+            'additional_info' => $validatedData['additional_info'],
 
             // 'category' => $validatedData['category'],
             // 'subcategory' => $validatedData['subcategory'],
@@ -177,6 +183,15 @@ class ClientsController extends Controller
 
         // Save the client to the database
         $clients->save();
+
+    // Log the creator's activity
+    UserActivity::create([
+        'user_id' => auth()->id(),
+        'activity' => 'Created client: ' . $clients->company_name,
+        'client_id' => $clients->id,
+        'created_at' => Carbon::now('Asia/Kathmandu'),
+        'updated_at' => Carbon::now('Asia/Kathmandu'),
+    ]);
 
         // Redirect with a success message
         return redirect(url('/clients'))->with('success', 'Client added successfully.');
@@ -208,6 +223,7 @@ class ClientsController extends Controller
             'domain_active_date' => 'nullable|date',
             'domain_expiry_date' => 'nullable|date',
             'domain_amount' => 'nullable|integer',
+            'domain_type' => 'nullable|string',
             'hosting_active_date' => 'nullable|date',
             'hosting_expiry_date' => 'nullable|date',
             'hosting_space' => 'nullable|string',
@@ -232,6 +248,11 @@ class ClientsController extends Controller
 
         // Find the client by ID
         $client = Clients::findOrFail($id);
+        $oldValues = $client->getOriginal(); // Get original values before update
+
+         // Log old and validated data for debugging
+    \Log::info('Old Values:', $oldValues);
+    \Log::info('Validated Data:', $validatedData);
 
         // Handle file upload
         // Handle file uploads
@@ -267,14 +288,58 @@ class ClientsController extends Controller
         // Update the client with validated data
         $client->update($validatedData);
 
+       // Get changes
+       $changes = [];
 
+       foreach ($validatedData as $key => $newValue) {
+           $oldValue = $oldValues[$key] ?? null;
+       
+           if ((string) $newValue !== (string) $oldValue) {
+               $changes[$key] = [
+                'old_value' => $oldValue === null || $oldValue === '' ? 'empty' : $oldValue,
+                'new_value' => $newValue === null || $newValue === '' ? 'empty' : $newValue,
+               ];
+           }
+       }
+       
+       if (!empty($changes)) {
+           foreach ($changes as $field => $change) {
+               UserActivity::create([
+                   'user_id' => auth()->id(),
+                   'activity' => 'Updated ' . $field . '. From "' . $change['old_value'] . '" to "' . $change['new_value'] . '"',
+                   'field' => $field,
+                   'old_value' => $change['old_value'],
+                   'new_value' => $change['new_value'],
+                   'client_id' => $client->id,  // Save client ID here
+                   'created_at' => Carbon::now('Asia/Kathmandu'), // Save activity time in Nepali timezone
+                   'updated_at' => Carbon::now('Asia/Kathmandu'),
+               ]);
+           }
+       } else {
+           \Log::info('No changes detected.');
+       }
+       
 
-        // Redirect back with a success message
-        return redirect()->back()->with('success', true);
-    }
-    public function details($id)
-    {
-        $client = Clients::findOrFail($id);
-        return view('frontends.client-details', compact('client'));
-    }
+    return redirect()->back()->with('success', 'Client updated successfully.');
+}
+public function details($id)
+{
+    // Find the client by ID
+    $client = Clients::findOrFail($id);
+
+    // Get all activities related to the client (without filtering by user)
+    $activities = UserActivity::where('client_id', $id) // Filter by the client ID only
+                               ->latest()  // Get the latest activities first
+                               ->get()
+                               ->map(function ($activity) {
+                                // Convert timestamps to Nepali timezone
+                                $activity->created_at = Carbon::parse($activity->created_at)->timezone('Asia/Kathmandu')->toDateTimeString();
+                                $activity->updated_at = Carbon::parse($activity->updated_at)->timezone('Asia/Kathmandu')->toDateTimeString();
+                                return $activity;
+                            });
+
+    // Pass the client and activities data to the view
+    return view('frontends.client-details', compact('client', 'activities'));
+}
+
 }

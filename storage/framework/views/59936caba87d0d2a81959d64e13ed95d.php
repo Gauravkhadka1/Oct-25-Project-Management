@@ -50,23 +50,50 @@
                         <label for="address">Contact Person Email </label>
                         <input type="email" id="contact_person_email" name="contact_person_email" value="<?php echo e($client->contact_person_email); ?>">
                     </div>
-                </div>
-            </div>
-            <div class="additional-informations">
-                <div class="general-info">
-                    <div class="client-details-form">
-                        <label for="additional_info">Additional Informations</label>
-                        <textarea id="summernote" name="additional_info"><?php echo e($client->additional_info); ?></textarea>
+                    <div class="additional-informations">
+                        <div class="general-info">
+                            <div class="client-details-form">
+                                <label for="additional_info">Additional Informations</label>
+                                <textarea id="summernote" name="additional_info"><?php echo e($client->additional_info); ?></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="additional-informations">
-                <div class="general-info">
-                    <div class="client-details-form">
-                        <label for="additional_info">Additional Informations</label>
-                        <textarea id="summernote" name="additional_info"><?php echo e($client->additional_info); ?></textarea>
-                    </div>
-                </div>
+            <div class="client-activities">
+                <h3>Activities</h3>
+                <?php if($activities->isNotEmpty()): ?>
+                <ul class="activities-list">
+                    <?php $__currentLoopData = $activities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $activity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li class="activity-item">
+                        <div class="activity-header">
+                            <div class="user-info">
+                                <?php if($activity->user && $activity->user->profilepic): ?>
+                                <!-- Use Storage::url() to get the full URL of the profile picture -->
+                                <img src="<?php echo e(Storage::url('profilepics/' . $activity->user->profilepic)); ?>" alt="Profile Picture" class="user-avatar">
+                                <?php else: ?>
+                                <!-- Fallback image if no profile picture is set -->
+                                <img src="<?php echo e(asset('default-avatar.png')); ?>" alt="Profile Picture" class="user-avatar">
+                                <?php endif; ?>
+                                <strong class="user-name"><?php echo e($activity->user ? $activity->user->username : 'Unknown User'); ?></strong>
+                            </div>
+                            <span class="activity-time"><?php echo e($activity->created_at->format('d M Y, h:i A')); ?></span>
+                        </div>
+                        <p class="activity-description"><?php echo e($activity->activity); ?></p>
+                        <?php if($activity->field): ?>
+                        <!-- <div class="activity-changes">
+                            <strong>Changed:</strong> <?php echo e($activity->field); ?> <br>
+                            <strong>Old Value:</strong> <?php echo e($activity->old_value); ?> <br>
+                            <strong>New Value:</strong> <?php echo e($activity->new_value); ?>
+
+                        </div> -->
+                        <?php endif; ?>
+                    </li>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </ul>
+                <?php else: ?>
+                <p class="no-activities">No activities found.</p>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -89,22 +116,22 @@
                     <label for="choose_category">Category </label>
                     <select id="choose_subcategory" name="subcategory">
                         <option value="">Select Category</option>
-                        <option value="Company Portfolio">Company Portfolio</option>
-                        <option value="NGO/ INGO">NGO/ INGO</option>
-                        <option value="Tourism">Tourism</option>
-                        <option value="Ecommerce">Ecommerce</option>
-                        <option value="Hotels/ Cafe">Hotels/ Cafe</option>
-                        <option value="Education Consultancy">Education Consultancy</option>
-                        <option value="Manpower">Manpower</option>
-                        <option value="News Portal">News Portal</option>
-                        <option value="Health">Health</option>
-                        <option value="Personal Portfolio">Personal Portfolio</option>
+                        <option value="Company Portfolio" <?php echo e($client->subcategory == 'Company Portfolio' ? 'selected' : ''); ?>>Company Portfolio</option>
+                        <option value="NGO/ INGO" <?php echo e($client->subcategory == 'NGO/ INGO' ? 'selected' : ''); ?>>NGO/ INGO</option>
+                        <option value="Tourism" <?php echo e($client->subcategory == 'Tourism' ? 'selected' : ''); ?>>Tourism</option>
+                        <option value="Ecommerce" <?php echo e($client->subcategory == 'Ecommerce' ? 'selected' : ''); ?>>Ecommerce</option>
+                        <option value="Hotels/ Cafe" <?php echo e($client->subcategory == 'Hotels/ Cafe' ? 'selected' : ''); ?>>Hotels/ Cafe</option>
+                        <option value="Education Consultancy" <?php echo e($client->subcategory == 'Education Consultancy' ? 'selected' : ''); ?>>Education Consultancy</option>
+                        <option value="Manpower" <?php echo e($client->subcategory == 'Manpower' ? 'selected' : ''); ?>>Manpower</option>
+                        <option value="News Portal" <?php echo e($client->subcategory == 'News Portal' ? 'selected' : ''); ?>>News Portal</option>
+                        <option value="Health" <?php echo e($client->subcategory == 'Health' ? 'selected' : ''); ?>>Health</option>
+                        <option value="Personal Portfolio" <?php echo e($client->subcategory == 'Personal Portfolio' ? 'selected' : ''); ?>>Personal Portfolio</option>
                     </select>
                 </div>
-                <div class="client-details-form">
+                <!-- <div class="client-details-form">
                     <label for="amount">Amount</label>
                     <input type="text" id="domain_amount" name="domain_amount" value="<?php echo e($client->domain_amount); ?>">
-                </div>
+                </div> -->
                 <div class="client-details-form">
                     <label for="contract">Upload Contract</label>
                     <input type="file" id="contract" name="contract" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
@@ -172,8 +199,8 @@
                     <label for="choose_domain">Choose Domain </label>
                     <select id="choose_domain" name="domain_type">
                         <option value="">Select Domain</option>
-                        <option value="Site5" <?php echo e($client->domain_type == 'Site5' ? 'selected' : ''); ?>>Site5</option>
-                        <option value="Hostforweb" <?php echo e($client->domain_type == 'Hostforweb' ? 'selected' : ''); ?>>Hostforweb</option>
+                        <option value="domain1" <?php echo e($client->domain_type == 'domain1' ? 'selected' : ''); ?>>Domain1</option>
+                        <option value="domain2" <?php echo e($client->domain_type == 'domain2' ? 'selected' : ''); ?>>Domain2</option>
                     </select>
 
                 </div>
