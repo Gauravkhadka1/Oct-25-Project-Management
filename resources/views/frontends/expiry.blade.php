@@ -4,7 +4,8 @@
 
 <div class="expiry-page">
     <div class="expiry-filters">
-    
+    <!-- Any filters can go here -->
+    </div>
 
     <div class="expiry-table">
         <table>
@@ -12,7 +13,7 @@
                 <tr>
                     <th>SN</th>
                     <th>
-                        Domain   
+                        Domain
                         <a href="{{ route('expiry.index', ['sort' => request('sort') == 'asc' ? 'desc' : 'asc', 'column' => 'website', 'days_filter' => request('days_filter')]) }}">
                             <img src="{{ url('public/frontend/images/sort.png') }}" alt="Sort">
                         </a>
@@ -54,19 +55,15 @@
 
             <tbody>
                 @forelse ($clients as $index => $client)
-                    @php
-                    $endDate = \Carbon\Carbon::parse($client->hosting_expiry_date);
-                    $daysLeft = (int) now()->diffInDays($endDate, false); // Force integer
-                    @endphp
-                    <tr style="{{ $daysLeft <= 0 ? 'background-color: #ffcccc;' : '' }}">
+                    <tr style="{{ $client->days_left <= 0 ? 'background-color: #ffcccc;' : '' }}">
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $client->website }}</td>
                         <td>{{ $client->hosting_space }}</td>
-                        <td>{{ $daysLeft . ' days' }}</td>
-                        <td>{{ $client->hosting_amount }}</td>
-                        <td>{{ $client->hosting_expiry_date }}</td>
-                        <td></td>
-                        <td>{{ $daysLeft > 0 ? 'Active' : 'Expired' }}</td>
+                        <td>{{ $client->days_left }} days</td>
+                        <td>{{ $client->amount }}</td>
+                        <td>{{ $client->expiry_date }}</td>
+                        <td>{{ $client->service_type }}</td> <!-- Service type (Domain or Hosting) -->
+                        <td>{{ $client->days_left > 0 ? 'Active' : 'Expired' }}</td>
                         <td></td>
                     </tr>
                 @empty

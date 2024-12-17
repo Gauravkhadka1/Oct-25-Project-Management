@@ -20,7 +20,13 @@
         <?php endif; ?>
         <div class="client-page-heading">
             <div class="client-page-heading-h2">
-                <h2>All Clients</h2>
+            <div class="number-category">
+            <?php if($lastSelectedFilter): ?>
+            <p>Total number of <?php echo e($lastSelectedFilter); ?> Clients - <?php echo e($clients->count()); ?></p>
+            <?php else: ?>
+            <p> <strong> All Clients-</strong> (<?php echo e($clients->count()); ?>)</p>
+            <?php endif; ?>
+        </div>
             </div>
             <div class="create-filter-search-clients">
                 <div class="create-clients">
@@ -32,7 +38,7 @@
                 </div>
                 <div class="filter-section">
                     <div class="filter-payments" onclick="toggleFilterList()">
-                        <img src="public/frontend/images/bars-filter.png" alt="" class="barfilter">
+                        <img src="public/frontend/images/new-bar.png" alt="" class="barfilter">
                         <div class="filter-count">
                             <?php if($filterCount > 0): ?>
                             <p><?php echo e($filterCount); ?></p>
@@ -76,27 +82,19 @@
                         </form>
                     </div>
                 </div>
-                <div class="search-clients">
+                <div class="search-payments">
                     <div class="search-icon">
-                        <img src="public/frontend/images/search-icon.png" alt="" class="searchi-icon">
+                        <img src="public/frontend/images/search-light-color.png" alt="" class="searchi-icon">
                     </div>
                     <form action="<?php echo e(route('clients.index')); ?>" method="GET" id="search-form">
                         <div class="search-text-area">
-                            <input type="text" name="search" placeholder="search clients..." value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
+                            <input type="text" name="search" placeholder="search..." value="<?php echo e(request('search')); ?>" oninput="this.form.submit()">
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
-        <!-- Number Category Section -->
-        <div class="number-category">
-            <?php if($lastSelectedFilter): ?>
-            <p>Total number of <?php echo e($lastSelectedFilter); ?> Clients - <?php echo e($clients->count()); ?></p>
-            <?php else: ?>
-            <p> <strong> Total number of Clients -</strong> <?php echo e($clients->count()); ?></p>
-            <?php endif; ?>
-        </div>
+        
         <div class="modern-payments-table">
     <table>
         <thead>
@@ -431,75 +429,7 @@
 }
 
     </script>
-    <style>
-        .client-page-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 20px;
-}
-.client-page-heading h2 {
-    font-size: 30px;
-
-}
-.create-clients button{
-   background-color: transparent;
-}
-.create-clients button:hover{
-   background-color: rgb(238, 235, 235);
-}
-.create-clients button a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-}
-.create-filter-search-clients {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.search-clients {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 10px;
-    border: 1px solid gray;
-    width: 40%;
-    padding: 8px;
-    border-radius: 10px;
-}
-.number-category {
-    padding: 10px 20px 0;
-}
-/* .create-clients .btn-create {
-    background-color: transparent;
-} */
-.modern-payments-table {
-    padding: 0 20px;
-    border-radius: 20px;
-}
-#company-name {
-display: flex;
-align-items: center;
-justify-content: flex-start;
-}
-#company-name img {
-width: 15px;
-margin-left: 10px;
-}
-
-#website {
-/* display: flex;
-align-items: center;
-justify-content: flex-start; */
-}
-#website img {
-width: 15px;
-margin-left: 10px;
-}
-    </style>
+  
 </main>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontends.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/clients.blade.php ENDPATH**/ ?>

@@ -49,6 +49,7 @@ $daysFilter = request('days_filter', '');
 // Function to get client count based on filter
 function getClientCount($daysFilter) {
     $clientsQuery = Clients::query();
+  
 
     // Apply the days filter if specified
     switch ($daysFilter) {
@@ -77,7 +78,7 @@ function getClientCount($daysFilter) {
     return $clientsQuery->count();
 }
 
-
+$allClientsCount = getClientCount('');
 
   @endphp
 
@@ -179,7 +180,10 @@ function getClientCount($daysFilter) {
 
           </a>
           <ul class="task-dropdown">
-    <li><a href="{{ url('/expiry') }}">All</a></li>
+    <li><a href="{{ url('/expiry') }}">
+    <div class="days">All</div>
+    <div class="expiry-count">{{$allClientsCount}}</div>
+    </a></li>
     <li>
         <a href="{{ route('expiry.index', ['days_filter' => '35-31', 'sort' => request('sort'), 'column' => request('column')]) }}">
             <div class="days">35 days</div>
