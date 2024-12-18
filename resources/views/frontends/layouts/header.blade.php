@@ -40,7 +40,7 @@
   $username = $user->username;
 
 
-  use App\Models\Clients;
+use App\Models\Clients;
 use Carbon\Carbon;
 
 // Retrieve the days filter from the request
@@ -53,6 +53,9 @@ function getClientCount($daysFilter) {
 
     // Apply the days filter if specified
     switch ($daysFilter) {
+      case 'all':
+            // Show all clients (no filter)
+            return $clientsQuery->count();
         case '35-31':
             $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(31), Carbon::now()->addDays(35)]);
             break;
@@ -77,8 +80,7 @@ function getClientCount($daysFilter) {
 
     return $clientsQuery->count();
 }
-
-$allClientsCount = getClientCount('');
+$allClientsCount = getClientCount('all');  
 
   @endphp
 
@@ -169,6 +171,21 @@ $allClientsCount = getClientCount('');
         </li>
         @if(auth()->check() && in_array(auth()->user()->email, $allowedEmails))
        
+       
+
+        <li class="dropdown">
+        <a href="{{url('/prospects')}}" class="task-toggle" >
+              <div class="icon-text">
+              <img src="{{url('public/frontend/images/group.png')}}" alt=""> Prospects
+              </div>
+              <div class="dropdown-arrow-div">
+                <div class="number-count">
+                  {{$prospectsCount }}
+                </div>
+                  <!-- <i class="fas fa-chevron-right dropdown-arrow"></i> -->
+              </div>
+            </a>
+        </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
@@ -222,20 +239,6 @@ $allClientsCount = getClientCount('');
     </li>
 </ul>
 
-        </li>
-
-        <li class="dropdown">
-        <a href="{{url('/prospects')}}" class="task-toggle" >
-              <div class="icon-text">
-              <img src="{{url('public/frontend/images/group.png')}}" alt=""> Prospects
-              </div>
-              <div class="dropdown-arrow-div">
-                <div class="number-count">
-                  {{$prospectsCount }}
-                </div>
-                  <!-- <i class="fas fa-chevron-right dropdown-arrow"></i> -->
-              </div>
-            </a>
         </li>
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">

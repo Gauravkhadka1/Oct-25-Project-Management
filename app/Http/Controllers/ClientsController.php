@@ -121,6 +121,25 @@ class ClientsController extends Controller
             'additional_info' => 'nullable|string',
         ]);
 
+       
+    $filePaths = [];
+
+    // Handle 'contract' file
+    if ($request->hasFile('contract')) {
+        $filePaths['contract'] = $this->uploadFile($request->file('contract'), 'contracts');
+    }
+
+    // Handle other file uploads...
+    if ($request->hasFile('seo_contract')) {
+        $filePaths['seo_contract'] = $this->uploadFile($request->file('seo_contract'), 'contracts/seo');
+    }
+    
+    // Handle 'maintenance_contract' file
+    if ($request->hasFile('maintenance_contract')) {
+        $filePaths['maintenance_contract'] = $this->uploadFile($request->file('maintenance_contract'), 'contracts/maintenance');
+    }
+
+
         // Create a new client entry with validated data
         $clients = Clients::create([
             'company_name' => $validatedData['company_name'],
@@ -132,6 +151,9 @@ class ClientsController extends Controller
             'contact_person' => $validatedData['contact_person'],
             'contact_person_phone' => $validatedData['contact_person_phone'],
             'contact_person_email' => $validatedData['contact_person_email'],
+           'contract' => $filePaths['contract'] ?? null,
+        'seo_contract' => $filePaths['seo_contract'] ?? null,
+        'maintenance_contract' => $filePaths['maintenance_contract'] ?? null,
 
             'domain_active_date' => $validatedData['domain_active_date'],
             'domain_expiry_date' => $validatedData['domain_expiry_date'],
@@ -162,24 +184,11 @@ class ClientsController extends Controller
             // 'subcategory' => $validatedData['subcategory'],
             // 'additional_subcategory' => $validatedData['additional_subcategory'],
         ]);
-        // Handle file upload if provided
-        if ($request->hasFile('contract')) {
-            // Store the uploaded file and update client entry
-            $filePath = $request->file('contract')->store('contracts', 'public');
-            $clients->contract = $filePath;
-        }
 
-        if ($request->hasFile('seo_contract')) {
-            // Store the uploaded SEO contract
-            $seoFilePath = $request->file('seo_contract')->store('contracts/seo', 'public');
-            $clients->seo_contract = $seoFilePath;
-        }
+       
 
-        if ($request->hasFile('maintenance_contract')) {
-            // Store the uploaded maintenance contract
-            $maintenanceFilePath = $request->file('maintenance_contract')->store('contracts/maintenance', 'public');
-            $clients->maintenance_contract = $maintenanceFilePath;
-        }
+       
+    
 
         // Save the client to the database
         $clients->save();
@@ -195,7 +204,26 @@ class ClientsController extends Controller
 
         // Redirect with a success message
         return redirect(url('/clients'))->with('success', 'Client added successfully.');
+     
     }
+    private function uploadFile($file, $directory)
+    {
+        // Get the original file name
+        $originalFileName = $file->getClientOriginalName();
+        
+        // Clean the file name by replacing spaces with hyphens
+        $cleanedFileName = str_replace(' ', '-', $originalFileName);
+        
+        // Remove the timestamp from the filename (if it exists)
+        $cleanedFileName = preg_replace('/^\d+_/', '', $cleanedFileName); // Removes timestamp at the start
+        
+        // Generate a unique name (optional, you could also omit this if you want just the cleaned name)
+        $fileName = time() . '_' . $cleanedFileName;  // You can keep or omit the time if it's not needed
+        
+        // Store the file
+        return $file->storeAs($directory, $fileName, 'public');
+    }
+    
     public function addclients()
     {
         return view('frontends.add-clients');
@@ -261,29 +289,31 @@ class ClientsController extends Controller
             if ($client->contract) {
                 Storage::delete($client->contract);
             }
-
-            // Store new file and update the validated data
-            $filePath = $request->file('contract')->store('contracts', 'public');
-            $validatedData['contract'] = $filePath;
+    
+            // Upload the new file
+            $validatedData['contract'] = $this->uploadFile($request->file('contract'), 'contracts');
         }
-
+    
         if ($request->hasFile('seo_contract')) {
+            // Delete old file if it exists
             if ($client->seo_contract) {
                 Storage::delete($client->seo_contract);
             }
-
-            $seoFilePath = $request->file('seo_contract')->store('contracts/seo', 'public');
-            $validatedData['seo_contract'] = $seoFilePath;
+    
+            // Upload the new file
+            $validatedData['seo_contract'] = $this->uploadFile($request->file('seo_contract'), 'contracts/seo');
         }
-
+    
         if ($request->hasFile('maintenance_contract')) {
+            // Delete old file if it exists
             if ($client->maintenance_contract) {
                 Storage::delete($client->maintenance_contract);
             }
-
-            $maintenanceFilePath = $request->file('maintenance_contract')->store('contracts/maintenance', 'public');
-            $validatedData['maintenance_contract'] = $maintenanceFilePath;
+    
+            // Upload the new file
+            $validatedData['maintenance_contract'] = $this->uploadFile($request->file('maintenance_contract'), 'contracts/maintenance');
         }
+    
 
         // Update the client with validated data
         $client->update($validatedData);

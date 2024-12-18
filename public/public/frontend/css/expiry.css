@@ -1,3 +1,15 @@
 .expiry-table img {
     width: 15px;
 }
+.expiry-table th {
+    background-color: #f5f5f5;
+    color: #2A2E34;
+}
+.client-domain a {
+    text-decoration: none;
+    color: #2A2E34;
+    font-weight: 500;
+}
+.client-domain a:hover {
+    text-decoration: underline;
+}

@@ -58,6 +58,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="payment-history" style="background-color: blue; color:white;">
+                        Payment History
+                    </div>
                 </div>
             </div>
             <div class="client-activities">
@@ -144,6 +147,7 @@
                     <div class="contract-preview">
                         <?php
                         $filePath = Storage::url($client->contract);
+                        $fileName = basename($filePath);  
                         $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
                         ?>
 
@@ -153,6 +157,7 @@
                             <div class="contract-image">
                                 <img src="<?php echo e($filePath); ?>" alt="Contract Image">
                             </div>
+                            <!-- <p><?php echo e($fileName); ?></p>  -->
 
                         </a>
                         <?php elseif(in_array($fileExtension, ['pdf'])): ?>
@@ -161,7 +166,7 @@
                             <div class="contract-image">
                                 <img src="<?php echo e(url('public/frontend/images/pdf.png')); ?>" alt="PDF Icon">
                             </div>
-
+                            <!-- <p style="color:red;"><?php echo e($fileName); ?></p>  -->
                         </a>
                         <?php elseif(in_array($fileExtension, ['doc', 'docx'])): ?>
                         <!-- Word Icon -->
@@ -169,7 +174,7 @@
                             <div class="contract-image">
                                 <img src="<?php echo e(url('public/frontend/images/word.png')); ?>" alt="Word Icon">
                             </div>
-
+                            <!-- <p><?php echo e($fileName); ?></p>  -->
                         </a>
                         <?php else: ?>
                         <p>Unsupported file type. <a href="<?php echo e($filePath); ?>" target="_blank">Download</a></p>

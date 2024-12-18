@@ -23,6 +23,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\PaidPaymentsController;
 use App\Http\Middleware\CheckAllowedEmails;
 use App\Http\Controllers\ClientTaskController;
 use App\Http\Controllers\ExpiryController;

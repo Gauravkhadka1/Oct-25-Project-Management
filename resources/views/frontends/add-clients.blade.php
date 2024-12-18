@@ -142,7 +142,7 @@
                     <label for="choose_hosting">Choose Hosting</label>
                     <select id="choose_hosting" name="hosting_type">
                         <option value="">Select Hosting</option>
-                        <option value="Site5"></option>
+                        <option value="Site5">Site5</option>
                         <option value="Hostforweb">Hostforweb</option>
                     </select>
 
@@ -251,7 +251,7 @@
             </div>
         </div>
         <div class="client-details-form">
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary">Add</button>
         </div>
     </form>
 </div>

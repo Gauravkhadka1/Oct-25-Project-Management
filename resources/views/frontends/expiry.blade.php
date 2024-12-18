@@ -11,19 +11,19 @@
         <table>
             <thead>
                 <tr>
-                    <th>SN</th>
+                    <!-- <th>SN</th> -->
                     <th>
                         Domain
                         <a href="{{ route('expiry.index', ['sort' => request('sort') == 'asc' ? 'desc' : 'asc', 'column' => 'website', 'days_filter' => request('days_filter')]) }}">
                             <img src="{{ url('public/frontend/images/sort.png') }}" alt="Sort">
                         </a>
                     </th>
-                    <th>
+                    <!-- <th>
                         Space
                         <a href="{{ route('expiry.index', ['sort' => request('sort') == 'asc' ? 'desc' : 'asc', 'column' => 'hosting_space', 'days_filter' => request('days_filter')]) }}">
                             <img src="{{ url('public/frontend/images/sort.png') }}" alt="Sort">
                         </a>
-                    </th>
+                    </th> -->
                     <th>
                         Days Left
                         <a href="{{ route('expiry.index', ['sort' => request('sort') == 'asc' ? 'desc' : 'asc', 'column' => 'days_left', 'days_filter' => request('days_filter')]) }}">
@@ -49,21 +49,29 @@
                             <img src="{{ url('public/frontend/images/sort.png') }}" alt="Sort">
                         </a>
                     </th>
+                    <th>E. Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
                 @forelse ($clients as $index => $client)
-                    <tr style="{{ $client->days_left <= 0 ? 'background-color: #ffcccc;' : '' }}">
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $client->website }}</td>
-                        <td>{{ $client->hosting_space }}</td>
-                        <td>{{ $client->days_left }} days</td>
-                        <td>{{ $client->amount }}</td>
-                        <td>{{ $client->expiry_date }}</td>
-                        <td>{{ $client->service_type }}</td> <!-- Service type (Domain or Hosting) -->
-                        <td>{{ $client->days_left > 0 ? 'Active' : 'Expired' }}</td>
+                    @php
+                    $endDate = \Carbon\Carbon::parse($client->hosting_expiry_date);
+                    $daysLeft = (int) now()->diffInDays($endDate, false); // Force integer
+                    @endphp
+                    <tr style="{{ $daysLeft <= 0 ? 'background-color: #F0434C; color: #f5f5f5;' : '' }}">
+                        <!-- <td>{{ $index + 1 }}</td> -->
+                        <td class="client-domain">
+                        <a href="{{ route('client.details', ['id' => $client->id]) }}">{{ $client->website }}</a>
+                            </td>
+                        <!-- <td>{{ $client->hosting_space }}</td> -->
+                        <td>{{ $daysLeft . ' days' }}</td>
+                        <td>{{ $client->hosting_amount }}</td>
+                        <td>{{ $client->hosting_expiry_date }}</td>
+                        <td></td>
+                        <td>{{ $daysLeft > 0 ? 'Active' : 'Expired' }}</td>
+                        <td></td>
                         <td></td>
                     </tr>
                 @empty

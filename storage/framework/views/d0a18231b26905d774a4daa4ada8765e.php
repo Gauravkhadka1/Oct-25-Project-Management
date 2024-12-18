@@ -2,22 +2,7 @@
 
 <main>
     <div class="client-page">
-        <?php if(session('success')): ?>
-        <div id="success-message" class="alert alert-success" style="
-                background-color: #d4edda;
-                border: 1px solid #c3e6cb;
-                color: #155724;
-                padding: 10px;
-                border-radius: 5px;
-                margin-bottom: 15px;
-                font-weight: bold;
-                text-align: center;
-                transition: opacity 0.5s ease;
-            ">
-            <?php echo e(session('success')); ?>
-
-        </div>
-        <?php endif; ?>
+       
         <div class="client-page-heading">
             <div class="client-page-heading-h2">
             <div class="number-category">
@@ -120,7 +105,7 @@
         onclick="sortColumn('website', this)">
 </th>
 
-                <th>Rating</th>
+                <!-- <th>Rating</th> -->
             </tr>
         </thead>
         <tbody id="clients-tbody">
@@ -144,7 +129,7 @@
                             No Website
                         <?php endif; ?>
                     </td>
-                    <td><?php echo e($client->rating ?? ''); ?></td>
+                    <!-- <td><?php echo e($client->rating ?? ''); ?></td> -->
                 </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
@@ -247,19 +232,7 @@
             }
         });
 
-        // JavaScript to automatically fade out the success message
-        document.addEventListener('DOMContentLoaded', function() {
-            const successMessage = document.getElementById('success-message');
-            if (successMessage) {
-                setTimeout(() => {
-                    successMessage.style.opacity = '0'; // Start fade out
-                    setTimeout(() => {
-                        successMessage.remove(); // Remove the element after fade-out
-                    }, 500); // Match this duration with CSS transition time
-                }, 3000); // Display time before fade-out (3 seconds)
-            }
-        });
-
+       
         function openAddClientsModal() {
             document.getElementById('add-clients-modal').style.display = 'block';
         }
@@ -428,6 +401,34 @@
     });
 }
 
+let toastBox = document.getElementById('toastBox');
+    let successMsg = ' <i class="fa-solid fa-circle-check"></i> Client Detail Updated Succesfully';
+    let errorMsg = ' <i class="fa-solid fa-circle-xmark"></i> Please fix the error';
+    let invalidMsg = '<i class="fa-solid fa-circle-exclamation"></i> Invalid input, check again';
+
+    function showToast(msg) {
+        let toast = document.createElement('div');
+        toast.classList.add('toast');
+        toast.innerHTML = msg;
+        toastBox.appendChild(toast);
+
+        if (msg.includes('error')) {
+            toast.classList.add('error')
+        }
+        if (msg.includes('Invalid')) {
+            toast.classList.add('invalid')
+        }
+
+
+        setTimeout(() => {
+            toast.remove();
+        }, 6000);
+    }
+
+    // Show the toast message if success exists in session
+    <?php if(session('success')): ?>
+    showToast(successMsg);
+    <?php endif; ?>
     </script>
   
 </main>

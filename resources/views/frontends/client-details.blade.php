@@ -58,6 +58,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="payment-history" style="background-color: blue; color:white;">
+                        Payment History
+                    </div>
                 </div>
             </div>
             <div class="client-activities">
@@ -143,6 +146,7 @@
                     <div class="contract-preview">
                         @php
                         $filePath = Storage::url($client->contract);
+                        $fileName = basename($filePath);  
                         $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
                         @endphp
 
@@ -152,6 +156,7 @@
                             <div class="contract-image">
                                 <img src="{{ $filePath }}" alt="Contract Image">
                             </div>
+                            <!-- <p>{{ $fileName }}</p>  -->
 
                         </a>
                         @elseif (in_array($fileExtension, ['pdf']))
@@ -160,7 +165,7 @@
                             <div class="contract-image">
                                 <img src="{{ url('public/frontend/images/pdf.png') }}" alt="PDF Icon">
                             </div>
-
+                            <!-- <p style="color:red;">{{ $fileName }}</p>  -->
                         </a>
                         @elseif (in_array($fileExtension, ['doc', 'docx']))
                         <!-- Word Icon -->
@@ -168,7 +173,7 @@
                             <div class="contract-image">
                                 <img src="{{ url('public/frontend/images/word.png') }}" alt="Word Icon">
                             </div>
-
+                            <!-- <p>{{ $fileName }}</p>  -->
                         </a>
                         @else
                         <p>Unsupported file type. <a href="{{ $filePath }}" target="_blank">Download</a></p>

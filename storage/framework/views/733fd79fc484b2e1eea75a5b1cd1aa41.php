@@ -80,7 +80,7 @@
                     <?php echo e($paidLabel); ?>: 
                 </div>
                 <div class="cat-payment">
-                    NPR <?php echo e(number_format($totalWebsite)); ?>
+                    NPR <?php echo e(number_format($totalMicrosoft)); ?>
 
                 </div>
             </div>
@@ -122,7 +122,7 @@
                     <?php echo e($paidLabel); ?>: 
                 </div>
                 <div class="cat-payment">
-                    NPR <?php echo e(number_format($totalWebsite)); ?>
+                    NPR <?php echo e(number_format($totalRenewal)); ?>
 
                 </div>
             </div>
@@ -164,7 +164,7 @@
                     <?php echo e($paidLabel); ?>: 
                 </div>
                 <div class="cat-payment">
-                    NPR <?php echo e(number_format($totalWebsite)); ?>
+                    NPR <?php echo e(number_format($totalOthers)); ?>
 
                 </div>
             </div>
