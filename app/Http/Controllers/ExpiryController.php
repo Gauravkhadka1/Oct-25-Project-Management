@@ -79,7 +79,7 @@ class ExpiryController extends Controller
                 '15-8' => [15, 8],
                 '7-1' => [7, 1],
                 'today' => [0, 0],
-                'expired' => [null, -1],
+                // 'expired' filter removed from here
             ];
     
             if (array_key_exists($daysFilter, $ranges)) {
@@ -89,13 +89,13 @@ class ExpiryController extends Controller
                 $servicesData = array_filter($servicesData, function ($service) use ($maxDays, $minDays) {
                     return $service['days_left'] <= $maxDays && $service['days_left'] >= $minDays;
                 });
+            }
     
-                // If the filter is "expired", show services with expired dates
-                if ($daysFilter === 'expired') {
-                    $servicesData = array_filter($servicesData, function ($service) {
-                        return $service['days_left'] < 0;  // Show only expired services (days_left < 0)
-                    });
-                }
+            // If the filter is "expired", show services with expired dates
+            if ($daysFilter === 'expired') {
+                $servicesData = array_filter($servicesData, function ($service) {
+                    return $service['days_left'] < 0;  // Show only expired services (days_left < 0)
+                });
             }
         }
     
