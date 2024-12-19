@@ -40,49 +40,70 @@
   $username = $user->username;
 
 
-use App\Models\Clients;
+
+  use App\Models\Clients;
 use Carbon\Carbon;
 
 // Retrieve the days filter from the request
 $daysFilter = request('days_filter', '');
 
-// Function to get client count based on filter
-function getClientCount($daysFilter) {
-    $clientsQuery = Clients::query();
-  
+// Function to get service count based on filter and service expiry dates
+function getServiceCount($daysFilter) {
+    $servicesCount = 0;
+    $clients = Clients::all(); // Get all clients
 
-    // Apply the days filter if specified
-    switch ($daysFilter) {
-      case 'all':
-            // Show all clients (no filter)
-            return $clientsQuery->count();
-        case '35-31':
-            $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(31), Carbon::now()->addDays(35)]);
-            break;
-        case '30-16':
-            $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(16), Carbon::now()->addDays(30)]);
-            break;
-        case '15-8':
-            $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(8), Carbon::now()->addDays(15)]);
-            break;
-        case '7-1':
-            $clientsQuery->whereBetween('hosting_expiry_date', [Carbon::now()->addDays(1), Carbon::now()->addDays(7)]);
-            break;
-        case 'today':
-            $clientsQuery->whereDate('hosting_expiry_date', Carbon::today());
-            break;
-        case 'expired':
-            $clientsQuery->where('hosting_expiry_date', '<', Carbon::today());
-            break;
-        default:
-            break;
+    // Iterate over each client to check expiry dates for all services
+    foreach ($clients as $client) {
+        $services = [
+            'hosting' => $client->hosting_expiry_date,
+            'domain' => $client->domain_expiry_date,
+            'microsoft' => $client->microsoft_expiry_date,
+            'maintenance' => $client->maintenance_expiry_date,
+            'seo' => $client->seo_expiry_date
+        ];
+
+        // Check the expiry date for each service and increment counts based on the filter
+        foreach ($services as $service => $expiryDate) {
+            if ($expiryDate) {
+                $daysLeft = Carbon::now()->diffInDays($expiryDate, false);
+                
+                // Round daysLeft to a whole number (if needed)
+                $daysLeft = floor($daysLeft); // You can use ceil() if needed
+
+                // Increment service counts based on expiry date range
+                if ($daysFilter == 'all') {
+                    $servicesCount++; // Count all services that have an expiry date
+                } elseif ($daysFilter === 'expired' && $daysLeft < 0) {
+                    $servicesCount++; // Count expired services
+                } elseif ($daysFilter === 'today' && $daysLeft === 0) {
+                    $servicesCount++; // Count services expiring today
+                } elseif ($daysFilter === '35-31' && $daysLeft >= 31 && $daysLeft <= 35) {
+                    $servicesCount++; // Count services expiring in 35-31 days
+                } elseif ($daysFilter === '30-16' && $daysLeft >= 16 && $daysLeft <= 30) {
+                    $servicesCount++; // Count services expiring in 30-16 days
+                } elseif ($daysFilter === '15-8' && $daysLeft >= 8 && $daysLeft <= 15) {
+                    $servicesCount++; // Count services expiring in 15-8 days
+                } elseif ($daysFilter === '7-1' && $daysLeft >= 1 && $daysLeft <= 7) {
+                    $servicesCount++; // Count services expiring in 7-1 days
+                }
+            }
+        }
     }
 
-    return $clientsQuery->count();
+    return $servicesCount;
 }
-$allClientsCount = getClientCount('all');  
 
-  @endphp
+// Get counts for all the ranges
+$allServicesCount = getServiceCount('all');
+$servicesIn35To31Days = getServiceCount('35-31');
+$servicesIn30To16Days = getServiceCount('30-16');
+$servicesIn15To8Days = getServiceCount('15-8');
+$servicesIn7To1Days = getServiceCount('7-1');
+$servicesExpiringToday = getServiceCount('today');
+$expiredServicesCount = getServiceCount('expired');
+@endphp
+
+
 
 </head>
 
@@ -198,46 +219,38 @@ $allClientsCount = getClientCount('all');
           </a>
           <ul class="task-dropdown">
     <li><a href="{{ url('/expiry') }}">
-    <div class="days">All</div>
-    <div class="expiry-count">{{$allClientsCount}}</div>
+        <div class="days">All</div>
+        <div class="expiry-count">{{ $allServicesCount }}</div>
+    </a></li>
+    <li><a href="{{ route('expiry.index', ['days_filter' => '35-31', 'sort' => request('sort'), 'column' => request('column')]) }}">
+        <div class="days">35-31 Days</div>
+        <div class="expiry-count">{{ $servicesIn35To31Days }}</div>
+    </a></li>
+    <li><a href="{{ route('expiry.index', ['days_filter' => '30-16', 'sort' => request('sort'), 'column' => request('column')]) }}">
+        <div class="days">30-16 Days</div>
+        <div class="expiry-count">{{ $servicesIn30To16Days }}</div>
+    </a></li>
+    <li><a href="{{ route('expiry.index', ['days_filter' => '15-8', 'sort' => request('sort'), 'column' => request('column')]) }}">
+        <div class="days">15-8 Days</div>
+        <div class="expiry-count">{{ $servicesIn15To8Days }}</div>
+    </a></li>
+    <li><a href="{{ route('expiry.index', ['days_filter' => '7-1', 'sort' => request('sort'), 'column' => request('column')]) }}">
+        <div class="days">7-1 Days</div>
+        <div class="expiry-count">{{ $servicesIn7To1Days }}</div>
+    </a></li>
+    <li><a href="{{ route('expiry.index', ['days_filter' => 'today', 'sort' => request('sort'), 'column' => request('column')]) }}">
+        <div class="days">Expiring Today</div>
+        <div class="expiry-count">{{ $servicesExpiringToday }}</div>
     </a></li>
     <li>
-        <a href="{{ route('expiry.index', ['days_filter' => '35-31', 'sort' => request('sort'), 'column' => request('column')]) }}">
-            <div class="days">35 days</div>
-            <div class="expiry-count">{{ getClientCount('35-31') }}</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('expiry.index', ['days_filter' => '30-16', 'sort' => request('sort'), 'column' => request('column')]) }}">
-            <div class="days">30 days</div>
-            <div class="expiry-count">{{ getClientCount('30-16') }}</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('expiry.index', ['days_filter' => '15-8', 'sort' => request('sort'), 'column' => request('column')]) }}">
-            <div class="days">15 days</div>
-            <div class="expiry-count">{{ getClientCount('15-8') }}</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('expiry.index', ['days_filter' => '7-1', 'sort' => request('sort'), 'column' => request('column')]) }}">
-            <div class="days">7 days</div>
-            <div class="expiry-count">{{ getClientCount('7-1') }}</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('expiry.index', ['days_filter' => 'today', 'sort' => request('sort'), 'column' => request('column')]) }}">
-            <div class="days">Expiring Today</div>
-            <div class="expiry-count">{{ getClientCount('today') }}</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('expiry.index', ['days_filter' => 'expired', 'sort' => request('sort'), 'column' => request('column')]) }}">
-            <div class="days">Expired</div>
-            <div class="expiry-count" id="expired">{{ getClientCount('expired') }}</div>
-        </a>
-    </li>
+    <a href="{{ route('expiry.index', ['days_filter' => 'expired', 'sort' => request('sort'), 'column' => request('column')]) }}">
+        <div class="days">Expired</div>
+        <div class="expiry-count">{{ $expiredServicesCount }}</div>
+    </a>
+</li>
+
 </ul>
+
 
         </li>
         <li class="dropdown">

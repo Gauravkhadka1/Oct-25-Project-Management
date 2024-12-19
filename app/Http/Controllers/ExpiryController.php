@@ -10,83 +10,103 @@ class ExpiryController extends Controller
 {
     public function index(Request $request)
     {
-        $sortOrder = $request->get('sort', 'asc'); // Default to 'asc' if no sort parameter is passed
-        $sortColumn = $request->get('column', 'website'); // Default to 'website' if no column parameter is passed
-        $daysFilter = $request->get('days_filter'); // Get the days filter from the request
-
-        // Sorting and filtering logic
+        // Retrieve all clients
         $clients = Clients::all();
-
-        if ($daysFilter) {
-            // Apply day ranges based on selected filter
-            $clients = $clients->filter(function ($client) use ($daysFilter) {
-                $endDate = Carbon::parse($client->hosting_expiry_date);
-                $daysLeft = now()->diffInDays($endDate, false); // Get the days remaining
-
-                switch ($daysFilter) {
-                    case '35-31':
-                        return $daysLeft >= 31 && $daysLeft <= 35;
-                    case '30-16':
-                        return $daysLeft >= 16 && $daysLeft <= 30;
-                    case '15-8':
-                        return $daysLeft >= 8 && $daysLeft <= 15;
-                    case '7-1':
-                        return $daysLeft >= 1 && $daysLeft <= 7;
-                    case 'today':
-                        return $daysLeft == 0; // Expiring today
-                    case 'expired':
-                        return $daysLeft < 0; // Expired
-                    default:
-                        return true;
-                }
-            });
-        }
-
-        // Add service type and expiry logic for both domain and hosting
+    
+        // Get the 'days_filter' from the request, if present
+        $daysFilter = $request->input('days_filter');
+    
+        // Initialize services count for each range
+        $servicesIn35To31Days = 0;
+        $servicesIn30To16Days = 0;
+        $servicesIn15To8Days = 0;
+        $servicesIn7To1Days = 0;
+        $servicesExpiringToday = 0;
+        $expiredServicesCount = 0;
+    
+        // Initialize services data array
+        $servicesData = [];
+    
+        // Calculate services count for each range and build services data
         foreach ($clients as $client) {
-            // Get expiry dates for domain and hosting
-            $expiryDates = [
-                'Domain' => Carbon::parse($client->domain_expiry_date),
-                'Hosting' => Carbon::parse($client->hosting_expiry_date),
+            $services = [
+                'hosting' => $client->hosting_expiry_date,
+                'domain' => $client->domain_expiry_date,
+                'microsoft' => $client->microsoft_expiry_date,
+                'maintenance' => $client->maintenance_expiry_date,
+                'seo' => $client->seo_expiry_date
             ];
-
-            // Find the closest expiry date for either domain or hosting
-            $closestService = collect($expiryDates)->sortBy(function ($date) {
-                return $date->diffInDays(now());
-            })->keys()->first();
-
-            // Calculate days left for the closest expiry
-            $endDate = $expiryDates[$closestService];
-            $daysLeft = now()->diffInDays($endDate, false);
-
-            // Store calculated values in the client model
-            $client->service_type = $closestService;
-            $client->days_left = $daysLeft;
-            $client->expiry_date = $endDate->format('Y-m-d');
-            $client->amount = $client->{$closestService . '_amount'};  // Assuming you have a field for amount like hosting_amount, domain_amount etc.
-        }
-
-        // Sorting logic for the selected column
-        if ($sortColumn == 'days_left') {
-            $clients = $clients->sortBy('days_left');
-            if ($sortOrder == 'desc') {
-                $clients = $clients->reverse();
-            }
-        } elseif ($sortColumn == 'status') {
-            $clients = $clients->sortBy(function ($client) {
-                return $client->days_left > 0 ? 'Active' : 'Expired';
-            });
-            if ($sortOrder == 'desc') {
-                $clients = $clients->reverse();
-            }
-        } else {
-            // For other columns, use the orderBy functionality
-            $clients = $clients->sortBy($sortColumn);
-            if ($sortOrder == 'desc') {
-                $clients = $clients->reverse();
+    
+            foreach ($services as $service => $expiryDate) {
+                if ($expiryDate) {
+                    $daysLeft = Carbon::now()->diffInDays($expiryDate, false);
+                    
+                    // Round daysLeft to a whole number (if needed)
+                    $daysLeft = floor($daysLeft);  // Use floor or ceil as per your need
+    
+                    // Increment service counts based on expiry date range
+                    if ($daysLeft >= 31 && $daysLeft <= 35) {
+                        $servicesIn35To31Days++;
+                    } elseif ($daysLeft >= 16 && $daysLeft <= 30) {
+                        $servicesIn30To16Days++;
+                    } elseif ($daysLeft >= 8 && $daysLeft <= 15) {
+                        $servicesIn15To8Days++;
+                    } elseif ($daysLeft >= 1 && $daysLeft <= 7) {
+                        $servicesIn7To1Days++;
+                    } elseif ($daysLeft === 0) {
+                        $servicesExpiringToday++;
+                    } elseif ($daysLeft < 0) {
+                        $expiredServicesCount++;
+                    }
+    
+                    // Add the service to the servicesData array
+                    $servicesData[] = [
+                        'domain_name' => $client->website,
+                        'service_type' => ucfirst($service),
+                        'expiry_date' => $expiryDate,
+                        'amount' => $client->{$service . '_amount'},
+                        'days_left' => $daysLeft // Use days_left without categorizing it as expired or active
+                    ];
+                }
             }
         }
-
-        return view('frontends.expiry', compact('clients'));
+    
+        // Filter clients based on the selected filter
+        if ($daysFilter) {
+            $ranges = [
+                '35-31' => [35, 31],
+                '30-16' => [30, 16],
+                '15-8' => [15, 8],
+                '7-1' => [7, 1],
+                'today' => [0, 0],
+                'expired' => [null, -1],
+            ];
+    
+            if (array_key_exists($daysFilter, $ranges)) {
+                list($maxDays, $minDays) = $ranges[$daysFilter];
+    
+                // Filter the servicesData based on the expiry range
+                $servicesData = array_filter($servicesData, function ($service) use ($maxDays, $minDays) {
+                    return $service['days_left'] <= $maxDays && $service['days_left'] >= $minDays;
+                });
+    
+                // If the filter is "expired", show services with expired dates
+                if ($daysFilter === 'expired') {
+                    $servicesData = array_filter($servicesData, function ($service) {
+                        return $service['days_left'] < 0;  // Show only expired services (days_left < 0)
+                    });
+                }
+            }
+        }
+    
+        return view('frontends.expiry', compact(
+            'servicesData', 
+            'servicesIn35To31Days', 
+            'servicesIn30To16Days', 
+            'servicesIn15To8Days', 
+            'servicesIn7To1Days', 
+            'servicesExpiringToday', 
+            'expiredServicesCount'
+        ));
     }
 }

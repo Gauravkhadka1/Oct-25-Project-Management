@@ -54,4 +54,8 @@ class Clients extends Model
     {
         return $this->hasMany(UserActivity::class);
     }
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
 }
