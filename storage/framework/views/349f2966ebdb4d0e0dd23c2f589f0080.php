@@ -41,7 +41,8 @@
 
 
 
-  use App\Models\Clients;
+
+use App\Models\Clients;
 use Carbon\Carbon;
 
 // Retrieve the days filter from the request
@@ -51,6 +52,9 @@ $daysFilter = request('days_filter', '');
 function getServiceCount($daysFilter) {
     $servicesCount = 0;
     $clients = Clients::all(); // Get all clients
+
+    // Get current date and time in Nepali Time (Asia/Kathmandu)
+    $nowNepalTime = Carbon::now('Asia/Kathmandu')->startOfDay();  // Set time to 00:00:00 for the current day
 
     // Iterate over each client to check expiry dates for all services
     foreach ($clients as $client) {
@@ -65,17 +69,21 @@ function getServiceCount($daysFilter) {
         // Check the expiry date for each service and increment counts based on the filter
         foreach ($services as $service => $expiryDate) {
             if ($expiryDate) {
-                $daysLeft = Carbon::now()->diffInDays($expiryDate, false);
-                
+                // Adjust expiry date to Nepali time and set to start of the day
+                $expiryDateNepalTime = Carbon::parse($expiryDate)->setTimezone('Asia/Kathmandu')->startOfDay();
+
+                // Calculate days left from current time in Nepal, ignoring time (using startOfDay for both)
+                $daysLeft = $nowNepalTime->diffInDays($expiryDateNepalTime, false);
+
                 // Round daysLeft to a whole number (if needed)
-                $daysLeft = floor($daysLeft); // You can use ceil() if needed
+                $daysLeft = floor($daysLeft);  // You can use ceil() if needed
 
                 // Increment service counts based on expiry date range
                 if ($daysFilter == 'all') {
                     $servicesCount++; // Count all services that have an expiry date
                 } elseif ($daysFilter === 'expired' && $daysLeft < 0) {
                     $servicesCount++; // Count expired services
-                } elseif ($daysFilter === 'today' && $daysLeft === 0) {
+                } elseif ($daysFilter === 'today' && $expiryDateNepalTime->isToday()) {
                     $servicesCount++; // Count services expiring today
                 } elseif ($daysFilter === '35-31' && $daysLeft >= 31 && $daysLeft <= 35) {
                     $servicesCount++; // Count services expiring in 35-31 days
@@ -101,7 +109,10 @@ $servicesIn15To8Days = getServiceCount('15-8');
 $servicesIn7To1Days = getServiceCount('7-1');
 $servicesExpiringToday = getServiceCount('today');
 $expiredServicesCount = getServiceCount('expired');
+
 ?>
+
+
 
 
 

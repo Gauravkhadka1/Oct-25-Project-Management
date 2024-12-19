@@ -27,6 +27,9 @@ class ExpiryController extends Controller
         // Initialize services data array
         $servicesData = [];
     
+        // Get current date and time in Nepali Time (Asia/Kathmandu)
+        $nowNepalTime = Carbon::now('Asia/Kathmandu')->startOfDay();  // Set time to 00:00:00 for the current day
+    
         // Calculate services count for each range and build services data
         foreach ($clients as $client) {
             $services = [
@@ -39,8 +42,12 @@ class ExpiryController extends Controller
     
             foreach ($services as $service => $expiryDate) {
                 if ($expiryDate) {
-                    $daysLeft = Carbon::now()->diffInDays($expiryDate, false);
-                    
+                    // Adjust expiry date and current time to Nepali time zone
+                    $expiryDateNepalTime = Carbon::parse($expiryDate)->setTimezone('Asia/Kathmandu')->startOfDay(); // Set to 00:00:00 for the expiry day
+    
+                    // Calculate days left from current time in Nepal, ignoring time (using startOfDay for both)
+                    $daysLeft = $nowNepalTime->diffInDays($expiryDateNepalTime, false);
+    
                     // Round daysLeft to a whole number (if needed)
                     $daysLeft = floor($daysLeft);  // Use floor or ceil as per your need
     
@@ -63,7 +70,7 @@ class ExpiryController extends Controller
                     $servicesData[] = [
                         'domain_name' => $client->website,
                         'service_type' => ucfirst($service),
-                        'expiry_date' => $expiryDate,
+                        'expiry_date' => $expiryDateNepalTime,
                         'amount' => $client->{$service . '_amount'},
                         'days_left' => $daysLeft // Use days_left without categorizing it as expired or active
                     ];
