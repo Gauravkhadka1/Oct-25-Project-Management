@@ -131,6 +131,44 @@
                         <option value="Personal Portfolio" <?php echo e($client->subcategory == 'Personal Portfolio' ? 'selected' : ''); ?>>Personal Portfolio</option>
                     </select>
                 </div>
+                <div class="installments">
+                    <!-- <div class="installment-section">
+                        <h3>Select Installments</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="radio" name="no_of_installments" value="2">
+                                2
+                            </label>
+                            <label>
+                                <input type="radio" name="no_of_installments" value="3">
+                                3
+                            </label>
+                            <label>
+                                <input type="radio" name="no_of_installments" value="4">
+                                4
+                            </label>
+                        </div>
+                    </div> -->
+
+                    <div id="installment-dates" class="installment-dates">
+                        <div class="1st_installment">
+                            <label for="">1st installment date</label>
+                            <input type="date" name="first_installment" value="<?php echo e($client->first_installment); ?>">
+                        </div>
+                        <div class="1st_installment">
+                        <label for="">2nd installment date</label>
+                            <input type="date" name="second_installment" value="<?php echo e($client->second_installment); ?>">
+                        </div>
+                        <div class="1st_installment">
+                        <label for="">3rd installment date</label>
+                            <input type="date" name="third_installment" value="<?php echo e($client->third_installment); ?>">
+                        </div>
+                        <div class="1st_installment">
+                        <label for="">4th installment date</label>
+                            <input type="date" name="fourth_installment" value="<?php echo e($client->fourth_installment); ?>">
+                        </div>
+                    </div>
+                </div>
                 <!-- <div class="client-details-form">
                     <label for="amount">Amount</label>
                     <input type="text" id="domain_amount" name="domain_amount" value="<?php echo e($client->domain_amount); ?>">
@@ -147,7 +185,7 @@
                     <div class="contract-preview">
                         <?php
                         $filePath = Storage::url($client->contract);
-                        $fileName = basename($filePath);  
+                        $fileName = basename($filePath);
                         $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
                         ?>
 
@@ -471,6 +509,7 @@
     showToast(successMsg);
     <?php endif; ?>
 </script>
+
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontends.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/client-details.blade.php ENDPATH**/ ?>

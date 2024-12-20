@@ -178,8 +178,10 @@ Route::post('/projects/{id}/update-inline', [ProjectController::class, 'updateIn
 Route::get('/client-detail/{id}', [ClientsController::class, 'details'])->name('client.details');
 Route::post('/client-detail/update/{id}', [ClientsController::class, 'update'])->name('client.update');
 
-Route::get('/expiry', [ExpiryController::class, 'index'])->name('expiry.index');
+// Route::get('/expiry', [ExpiryController::class, 'index'])->name('expiry.index');
 Route::get('/clients/sort', [ExpiryController::class, 'sort'])->name('clients.sort');
+
+Route::get('/expiry', [ExpiryController::class, 'index'])->name('expiry.index');
 
 
 

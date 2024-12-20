@@ -49,6 +49,12 @@ class Clients extends Model
         'seo_amount',
         'vat_no',
         'additional_info',
+      
+        'no_of_installments',
+        'first_installment',
+        'second_installment',
+        'third_installment',
+        'fourth_installment',
     ];
     public function userActivities()
     {

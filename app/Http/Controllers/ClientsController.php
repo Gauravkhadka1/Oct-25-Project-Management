@@ -119,6 +119,12 @@ class ClientsController extends Controller
             'seo_amount' => 'nullable|integer',
             'vat_no' => 'nullable|string',
             'additional_info' => 'nullable|string',
+
+            'no_of_installments' => 'nullable|integer|min:2|max:4',
+        'first_installment' => 'nullable|date',
+        'second_installment' => 'nullable|date',
+        'third_installment' => 'nullable|date',
+        'fourth_installment' => 'nullable|date',
         ]);
 
        
@@ -179,6 +185,12 @@ class ClientsController extends Controller
             'seo_amount' => $validatedData['seo_amount'],
             'vat_no' => $validatedData['vat_no'],
             'additional_info' => $validatedData['additional_info'],
+
+            'no_of_installments' => $validatedData['no_of_installments'],
+            'first_installment' => $validatedData['first_installment'] ?? null,
+            'second_installment' => $validatedData['second_installment'] ?? null,
+            'third_installment' => $validatedData['third_installment'] ?? null,
+            'fourth_installment' => $validatedData['fourth_installment'] ?? null,
 
             // 'category' => $validatedData['category'],
             // 'subcategory' => $validatedData['subcategory'],
@@ -272,6 +284,12 @@ class ClientsController extends Controller
             'seo_amount' => 'nullable|integer',
             'vat_no' => 'nullable|string',
             'additional_info' => 'nullable|string',
+
+            'no_of_installments' => 'nullable|integer|in:2,3,4',
+        'first_installment' => 'nullable|date',
+        'second_installment' => 'nullable|date',
+        'third_installment' => 'nullable|date',
+        'fourth_installment' => 'nullable|date',
         ]);
 
         // Find the client by ID

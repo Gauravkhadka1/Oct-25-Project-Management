@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Clients;
@@ -12,17 +11,12 @@ class ExpiryController extends Controller
     {
         // Retrieve all clients
         $clients = Clients::all();
+
+        $sortBy = $request->input('sort_by', 'domain_name'); // Default sort column
+        $sortOrder = $request->input('sort_order', 'asc'); // Default sort order
     
         // Get the 'days_filter' from the request, if present
         $daysFilter = $request->input('days_filter');
-    
-        // Initialize services count for each range
-        $servicesIn35To31Days = 0;
-        $servicesIn30To16Days = 0;
-        $servicesIn15To8Days = 0;
-        $servicesIn7To1Days = 0;
-        $servicesExpiringToday = 0;
-        $expiredServicesCount = 0;
     
         // Initialize services data array
         $servicesData = [];
@@ -51,29 +45,24 @@ class ExpiryController extends Controller
                     // Round daysLeft to a whole number (if needed)
                     $daysLeft = floor($daysLeft);  // Use floor or ceil as per your need
     
-                    // Increment service counts based on expiry date range
-                    if ($daysLeft >= 31 && $daysLeft <= 35) {
-                        $servicesIn35To31Days++;
-                    } elseif ($daysLeft >= 16 && $daysLeft <= 30) {
-                        $servicesIn30To16Days++;
-                    } elseif ($daysLeft >= 8 && $daysLeft <= 15) {
-                        $servicesIn15To8Days++;
-                    } elseif ($daysLeft >= 1 && $daysLeft <= 7) {
-                        $servicesIn7To1Days++;
-                    } elseif ($daysLeft === 0) {
-                        $servicesExpiringToday++;
-                    } elseif ($daysLeft < 0) {
-                        $expiredServicesCount++;
-                    }
+                    // Create a unique key for client and expiry date
+                    $key = $client->id . '-' . $expiryDateNepalTime->format('Y-m-d');
     
-                    // Add the service to the servicesData array
-                    $servicesData[] = [
-                        'domain_name' => $client->website,
-                        'service_type' => ucfirst($service),
-                        'expiry_date' => $expiryDateNepalTime,
-                        'amount' => $client->{$service . '_amount'},
-                        'days_left' => $daysLeft // Use days_left without categorizing it as expired or active
-                    ];
+                    // If this combination already exists, update it
+                    if (isset($servicesData[$key])) {
+                        $servicesData[$key]['service_type'] .= ' & ' . ucfirst($service);
+                        $servicesData[$key]['amount'] += $client->{$service . '_amount'};
+                    } else {
+                        // Add the new service entry
+                        $servicesData[$key] = [
+                            'domain_name' => $client->website,
+                            'service_type' => ucfirst($service),
+                            'expiry_date' => $expiryDateNepalTime,
+                            'amount' => $client->{$service . '_amount'},
+                            'days_left' => $daysLeft,
+                            'client_id' => $client->id // Add client id for linking to the details page
+                        ];
+                    }
                 }
             }
         }
@@ -86,7 +75,6 @@ class ExpiryController extends Controller
                 '15-8' => [15, 8],
                 '7-1' => [7, 1],
                 'today' => [0, 0],
-                // 'expired' filter removed from here
             ];
     
             if (array_key_exists($daysFilter, $ranges)) {
@@ -105,15 +93,36 @@ class ExpiryController extends Controller
                 });
             }
         }
+
+         // Sorting the servicesData array dynamically
+        // Sorting the servicesData array dynamically
+        // Sorting the servicesData array dynamically
+usort($servicesData, function ($a, $b) use ($sortBy, $sortOrder) {
+    $valueA = $a[$sortBy] ?? null;
+    $valueB = $b[$sortBy] ?? null;
+
+    // Handle different data types
+    if ($sortBy === 'expiry_date') {
+        // Date comparison
+        $valueA = $valueA instanceof \Carbon\Carbon ? $valueA : \Carbon\Carbon::parse($valueA);
+        $valueB = $valueB instanceof \Carbon\Carbon ? $valueB : \Carbon\Carbon::parse($valueB);
+        return $sortOrder === 'asc' ? $valueA->getTimestamp() <=> $valueB->getTimestamp() : $valueB->getTimestamp() <=> $valueA->getTimestamp();
+    } elseif (is_numeric($valueA) && is_numeric($valueB)) {
+        // Numeric comparison (for amount, days_left)
+        return $sortOrder === 'asc' ? $valueA <=> $valueB : $valueB <=> $valueA;
+    } else {
+        // String comparison (for domain_name, service_type, or others)
+        $valueA = strtolower(trim($valueA ?? ''));
+        $valueB = strtolower(trim($valueB ?? ''));
+        return $sortOrder === 'asc' ? strcmp($valueA, $valueB) : strcmp($valueB, $valueA);
+    }
+});
+
+
+        
     
         return view('frontends.expiry', compact(
-            'servicesData', 
-            'servicesIn35To31Days', 
-            'servicesIn30To16Days', 
-            'servicesIn15To8Days', 
-            'servicesIn7To1Days', 
-            'servicesExpiringToday', 
-            'expiredServicesCount'
+            'servicesData',
         ));
     }
 }

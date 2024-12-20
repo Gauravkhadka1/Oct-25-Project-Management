@@ -42,7 +42,7 @@
 
 
 
-use App\Models\Clients;
+  use App\Models\Clients;
 use Carbon\Carbon;
 
 // Retrieve the days filter from the request
@@ -66,34 +66,42 @@ function getServiceCount($daysFilter) {
             'seo' => $client->seo_expiry_date
         ];
 
-        // Check the expiry date for each service and increment counts based on the filter
+        // Create an array to store unique expiry dates for the client
+        $uniqueExpiryDates = [];
+
+        // Check the expiry date for each service and add unique expiry dates to the array
         foreach ($services as $service => $expiryDate) {
             if ($expiryDate) {
                 // Adjust expiry date to Nepali time and set to start of the day
                 $expiryDateNepalTime = Carbon::parse($expiryDate)->setTimezone('Asia/Kathmandu')->startOfDay();
 
-                // Calculate days left from current time in Nepal, ignoring time (using startOfDay for both)
-                $daysLeft = $nowNepalTime->diffInDays($expiryDateNepalTime, false);
+                // Add expiry date to the uniqueExpiryDates array if it's not already there
+                $uniqueExpiryDates[$expiryDateNepalTime->toDateString()] = true;
+            }
+        }
 
-                // Round daysLeft to a whole number (if needed)
-                $daysLeft = floor($daysLeft);  // You can use ceil() if needed
+        // Count the unique expiry dates for the client
+        foreach ($uniqueExpiryDates as $expiryDate => $value) {
+            // Calculate days left from current time in Nepal, ignoring time
+            $expiryDateNepalTime = Carbon::parse($expiryDate)->setTimezone('Asia/Kathmandu')->startOfDay();
+            $daysLeft = $nowNepalTime->diffInDays($expiryDateNepalTime, false);
+            $daysLeft = floor($daysLeft); // Use floor or ceil as needed
 
-                // Increment service counts based on expiry date range
-                if ($daysFilter == 'all') {
-                    $servicesCount++; // Count all services that have an expiry date
-                } elseif ($daysFilter === 'expired' && $daysLeft < 0) {
-                    $servicesCount++; // Count expired services
-                } elseif ($daysFilter === 'today' && $expiryDateNepalTime->isToday()) {
-                    $servicesCount++; // Count services expiring today
-                } elseif ($daysFilter === '35-31' && $daysLeft >= 31 && $daysLeft <= 35) {
-                    $servicesCount++; // Count services expiring in 35-31 days
-                } elseif ($daysFilter === '30-16' && $daysLeft >= 16 && $daysLeft <= 30) {
-                    $servicesCount++; // Count services expiring in 30-16 days
-                } elseif ($daysFilter === '15-8' && $daysLeft >= 8 && $daysLeft <= 15) {
-                    $servicesCount++; // Count services expiring in 15-8 days
-                } elseif ($daysFilter === '7-1' && $daysLeft >= 1 && $daysLeft <= 7) {
-                    $servicesCount++; // Count services expiring in 7-1 days
-                }
+            // Increment service counts based on expiry date range and filter
+            if ($daysFilter == 'all') {
+                $servicesCount++; // Count all unique expiry dates
+            } elseif ($daysFilter === 'expired' && $daysLeft < 0) {
+                $servicesCount++; // Count expired services
+            } elseif ($daysFilter === 'today' && $expiryDateNepalTime->isToday()) {
+                $servicesCount++; // Count services expiring today
+            } elseif ($daysFilter === '35-31' && $daysLeft >= 31 && $daysLeft <= 35) {
+                $servicesCount++; // Count services expiring in 35-31 days
+            } elseif ($daysFilter === '30-16' && $daysLeft >= 16 && $daysLeft <= 30) {
+                $servicesCount++; // Count services expiring in 30-16 days
+            } elseif ($daysFilter === '15-8' && $daysLeft >= 8 && $daysLeft <= 15) {
+                $servicesCount++; // Count services expiring in 15-8 days
+            } elseif ($daysFilter === '7-1' && $daysLeft >= 1 && $daysLeft <= 7) {
+                $servicesCount++; // Count services expiring in 7-1 days
             }
         }
     }
@@ -111,6 +119,7 @@ $servicesExpiringToday = getServiceCount('today');
 $expiredServicesCount = getServiceCount('expired');
 
 @endphp
+
 
 
 
@@ -234,19 +243,19 @@ $expiredServicesCount = getServiceCount('expired');
         <div class="expiry-count">{{ $allServicesCount }}</div>
     </a></li>
     <li><a href="{{ route('expiry.index', ['days_filter' => '35-31', 'sort' => request('sort'), 'column' => request('column')]) }}">
-        <div class="days">35-31 Days</div>
+        <div class="days">35 Days</div>
         <div class="expiry-count">{{ $servicesIn35To31Days }}</div>
     </a></li>
     <li><a href="{{ route('expiry.index', ['days_filter' => '30-16', 'sort' => request('sort'), 'column' => request('column')]) }}">
-        <div class="days">30-16 Days</div>
+        <div class="days">30 Days</div>
         <div class="expiry-count">{{ $servicesIn30To16Days }}</div>
     </a></li>
     <li><a href="{{ route('expiry.index', ['days_filter' => '15-8', 'sort' => request('sort'), 'column' => request('column')]) }}">
-        <div class="days">15-8 Days</div>
+        <div class="days">15 Days</div>
         <div class="expiry-count">{{ $servicesIn15To8Days }}</div>
     </a></li>
     <li><a href="{{ route('expiry.index', ['days_filter' => '7-1', 'sort' => request('sort'), 'column' => request('column')]) }}">
-        <div class="days">7-1 Days</div>
+        <div class="days">7 Days</div>
         <div class="expiry-count">{{ $servicesIn7To1Days }}</div>
     </a></li>
     <li><a href="{{ route('expiry.index', ['days_filter' => 'today', 'sort' => request('sort'), 'column' => request('column')]) }}">

@@ -63,7 +63,7 @@
         <div class="client-services">
             <div class="domain-service">
                 <h2> <img src="<?php echo e(url ('public/frontend/images/design-blue.png')); ?>" alt=""> Web Design</h2>
-                
+
                 <div class="client-details-form">
                     <label for="choose_category">Category </label>
                     <select id="choose_subcategory" name="subcategory">
@@ -84,6 +84,44 @@
                     <label for="amount">Amount</label>
                     <input type="text" id="domain_amount" name="domain_amount">
                 </div> -->
+                <div class="installments">
+                    <!-- <div class="installment-section">
+                        <h3>Select Installments</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="radio" name="no_of_installments" value="2">
+                                2
+                            </label>
+                            <label>
+                                <input type="radio" name="no_of_installments" value="3">
+                                3
+                            </label>
+                            <label>
+                                <input type="radio" name="no_of_installments" value="4">
+                                4
+                            </label>
+                        </div>
+                    </div> -->
+
+                    <div id="installment-dates" class="installment-dates">
+                        <div class="1st_installment">
+                            <label for="">1st installment date</label>
+                            <input type="date" name="1st_installment">
+                        </div>
+                        <div class="1st_installment">
+                        <label for="">2nd installment date</label>
+                            <input type="date" name="2nd_installment">
+                        </div>
+                        <div class="1st_installment">
+                        <label for="">3rd installment date</label>
+                            <input type="date" name="3rd_installment">
+                        </div>
+                        <div class="1st_installment">
+                        <label for="">4th installment date</label>
+                            <input type="date" name="4th_installment">
+                        </div>
+                    </div>
+                </div>
                 <div class="client-details-form">
                     <label for="contract">Upload Contract</label>
                     <input type="file" id="contract" name="contract" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
@@ -263,6 +301,7 @@
         });
     });
 </script>
+
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontends.layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Oct 29- Live edited-project management\resources\views/frontends/add-clients.blade.php ENDPATH**/ ?>
