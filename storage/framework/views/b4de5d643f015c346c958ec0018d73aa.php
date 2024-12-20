@@ -106,19 +106,36 @@
                     <div id="installment-dates" class="installment-dates">
                         <div class="1st_installment">
                             <label for="">1st installment date</label>
-                            <input type="date" name="1st_installment">
+                            <input type="date" name="first_installment" placeholder="Select date">
+                        </div>
+                        <div class="1st_installment_amount">
+                            <label for="">Amount</label>
+                            <input type="number" name="first_installment_amount" placeholder="Enter Amount">
+                        </div>
+                        
+                        <div class="1st_installment">
+                            <label for="">2nd installment date</label>
+                            <input type="date" name="second_installment" placeholder="Select date">
+                        </div>
+                        <div class="1st_installment_amount">
+                            <label for="">Amount</label>
+                            <input type="number" name="second_installment_amount" placeholder="Enter Amount">
                         </div>
                         <div class="1st_installment">
-                        <label for="">2nd installment date</label>
-                            <input type="date" name="2nd_installment">
+                            <label for="">3rd installment date</label>
+                            <input type="date" name="third_installment" placeholder="Select date">
+                        </div>
+                        <div class="1st_installment_amount">
+                            <label for="">Amount</label>
+                            <input type="number" name="third_installment_amount" placeholder="Enter Amount">
                         </div>
                         <div class="1st_installment">
-                        <label for="">3rd installment date</label>
-                            <input type="date" name="3rd_installment">
+                            <label for="">4th installment date</label>
+                            <input type="date" name="fourth_installment" placeholder="Select date">
                         </div>
-                        <div class="1st_installment">
-                        <label for="">4th installment date</label>
-                            <input type="date" name="4th_installment">
+                        <div class="1st_installment_amount">
+                            <label for="">Amount</label>
+                            <input type="number" name="fourth_installment_amount" placeholder="Enter Amount">
                         </div>
                     </div>
                 </div>

@@ -63,7 +63,11 @@ function getServiceCount($daysFilter) {
             'domain' => $client->domain_expiry_date,
             'microsoft' => $client->microsoft_expiry_date,
             'maintenance' => $client->maintenance_expiry_date,
-            'seo' => $client->seo_expiry_date
+            'seo' => $client->seo_expiry_date,
+            'web_design_1st_installment' => $client->first_installment,
+            'web_design_2nd_installment' => $client->second_installment,
+            'web_design_3rd_installment' => $client->third_installment,
+            'web_design_4th_installment' => $client->fourth_installment
         ];
 
         // Create an array to store unique expiry dates for the client

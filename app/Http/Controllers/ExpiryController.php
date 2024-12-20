@@ -31,7 +31,11 @@ class ExpiryController extends Controller
                 'domain' => $client->domain_expiry_date,
                 'microsoft' => $client->microsoft_expiry_date,
                 'maintenance' => $client->maintenance_expiry_date,
-                'seo' => $client->seo_expiry_date
+                'seo' => $client->seo_expiry_date,
+                'web_design_1st_installment' => $client->first_installment,
+                'web_design_2nd_installment' => $client->second_installment,
+                'web_design_3rd_installment' => $client->third_installment,
+                'web_design_4th_installment' => $client->fourth_installment
             ];
     
             foreach ($services as $service => $expiryDate) {
@@ -50,13 +54,13 @@ class ExpiryController extends Controller
     
                     // If this combination already exists, update it
                     if (isset($servicesData[$key])) {
-                        $servicesData[$key]['service_type'] .= ' & ' . ucfirst($service);
+                        $servicesData[$key]['service_type'] .= ' & ' . ucfirst(str_replace('_', ' ', $service)); // Add the service name to the list
                         $servicesData[$key]['amount'] += $client->{$service . '_amount'};
                     } else {
                         // Add the new service entry
                         $servicesData[$key] = [
                             'domain_name' => $client->website,
-                            'service_type' => ucfirst($service),
+                            'service_type' => ucfirst(str_replace('_', ' ', $service)), // Use the service name like 'Web Design 1st Installment'
                             'expiry_date' => $expiryDateNepalTime,
                             'amount' => $client->{$service . '_amount'},
                             'days_left' => $daysLeft,
@@ -95,34 +99,27 @@ class ExpiryController extends Controller
         }
 
          // Sorting the servicesData array dynamically
-        // Sorting the servicesData array dynamically
-        // Sorting the servicesData array dynamically
-usort($servicesData, function ($a, $b) use ($sortBy, $sortOrder) {
-    $valueA = $a[$sortBy] ?? null;
-    $valueB = $b[$sortBy] ?? null;
+        usort($servicesData, function ($a, $b) use ($sortBy, $sortOrder) {
+            $valueA = $a[$sortBy] ?? null;
+            $valueB = $b[$sortBy] ?? null;
 
-    // Handle different data types
-    if ($sortBy === 'expiry_date') {
-        // Date comparison
-        $valueA = $valueA instanceof \Carbon\Carbon ? $valueA : \Carbon\Carbon::parse($valueA);
-        $valueB = $valueB instanceof \Carbon\Carbon ? $valueB : \Carbon\Carbon::parse($valueB);
-        return $sortOrder === 'asc' ? $valueA->getTimestamp() <=> $valueB->getTimestamp() : $valueB->getTimestamp() <=> $valueA->getTimestamp();
-    } elseif (is_numeric($valueA) && is_numeric($valueB)) {
-        // Numeric comparison (for amount, days_left)
-        return $sortOrder === 'asc' ? $valueA <=> $valueB : $valueB <=> $valueA;
-    } else {
-        // String comparison (for domain_name, service_type, or others)
-        $valueA = strtolower(trim($valueA ?? ''));
-        $valueB = strtolower(trim($valueB ?? ''));
-        return $sortOrder === 'asc' ? strcmp($valueA, $valueB) : strcmp($valueB, $valueA);
-    }
-});
-
-
-        
+            // Handle different data types
+            if ($sortBy === 'expiry_date') {
+                // Date comparison
+                $valueA = $valueA instanceof \Carbon\Carbon ? $valueA : \Carbon\Carbon::parse($valueA);
+                $valueB = $valueB instanceof \Carbon\Carbon ? $valueB : \Carbon\Carbon::parse($valueB);
+                return $sortOrder === 'asc' ? $valueA->getTimestamp() <=> $valueB->getTimestamp() : $valueB->getTimestamp() <=> $valueA->getTimestamp();
+            } elseif (is_numeric($valueA) && is_numeric($valueB)) {
+                // Numeric comparison (for amount, days_left)
+                return $sortOrder === 'asc' ? $valueA <=> $valueB : $valueB <=> $valueA;
+            } else {
+                // String comparison (for domain_name, service_type, or others)
+                $valueA = strtolower(trim($valueA ?? ''));
+                $valueB = strtolower(trim($valueB ?? ''));
+                return $sortOrder === 'asc' ? strcmp($valueA, $valueB) : strcmp($valueB, $valueA);
+            }
+        });    
     
-        return view('frontends.expiry', compact(
-            'servicesData',
-        ));
+        return view('frontends.expiry', compact('servicesData'));
     }
 }

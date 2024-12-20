@@ -120,11 +120,15 @@ class ClientsController extends Controller
             'vat_no' => 'nullable|string',
             'additional_info' => 'nullable|string',
 
-            'no_of_installments' => 'nullable|integer|min:2|max:4',
         'first_installment' => 'nullable|date',
         'second_installment' => 'nullable|date',
         'third_installment' => 'nullable|date',
         'fourth_installment' => 'nullable|date',
+        'first_installment_amount' => 'nullable|integer',
+'second_installment_amount' => 'nullable|integer',
+'third_installment_amount' => 'nullable|integer',
+'fourth_installment_amount' => 'nullable|integer',
+
         ]);
 
        
@@ -185,12 +189,14 @@ class ClientsController extends Controller
             'seo_amount' => $validatedData['seo_amount'],
             'vat_no' => $validatedData['vat_no'],
             'additional_info' => $validatedData['additional_info'],
-
-            'no_of_installments' => $validatedData['no_of_installments'],
             'first_installment' => $validatedData['first_installment'] ?? null,
             'second_installment' => $validatedData['second_installment'] ?? null,
             'third_installment' => $validatedData['third_installment'] ?? null,
             'fourth_installment' => $validatedData['fourth_installment'] ?? null,
+            'first_installment_amount' => $validatedData['first_installment_amount'] ?? null,
+            'second_installment_amount' => $validatedData['second_installment_amount'] ?? null,
+            'third_installment_amount' => $validatedData['third_installment_amount'] ?? null,
+            'fourth_installment_amount' => $validatedData['fourth_installment_amount'] ?? null,
 
             // 'category' => $validatedData['category'],
             // 'subcategory' => $validatedData['subcategory'],
@@ -285,11 +291,14 @@ class ClientsController extends Controller
             'vat_no' => 'nullable|string',
             'additional_info' => 'nullable|string',
 
-            'no_of_installments' => 'nullable|integer|in:2,3,4',
         'first_installment' => 'nullable|date',
         'second_installment' => 'nullable|date',
         'third_installment' => 'nullable|date',
         'fourth_installment' => 'nullable|date',
+        'first_installment_amount' => 'nullable|numeric',
+        'second_installment_amount' => 'nullable|numeric',
+        'third_installment_amount' => 'nullable|numeric',
+        'fourth_installment_amount' => 'nullable|numeric',
         ]);
 
         // Find the client by ID
