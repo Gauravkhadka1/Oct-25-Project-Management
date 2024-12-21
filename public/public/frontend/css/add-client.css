@@ -100,3 +100,43 @@
     justify-content: space-between;
     flex-wrap: wrap;
 }
+
+.installments {
+    margin-bottom: 10px;
+}
+
+.first-installment, .first-installment_amount {
+margin-bottom: 5px;
+}
+.first-installment input, .first-installment_amount input {
+margin-top: 10px !important;
+}
+.first-installment-inputs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.first-installment {
+    width: 55%;
+    /* background-color: red; */
+    margin-right: 15px;
+}
+ 
+.first-installment_amount {
+    width: 45%;
+    /* background-color: yellow; */
+}
+.first-installment_amount input,  .first-installment input {
+    width: 100%;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+#website-service {
+    padding-bottom: 5px !important;
+    margin-bottom: 7px !important;
+    }
+.first-installment label, .first-installment_amount label {
+        color: #4c5258;
+    }
+ 

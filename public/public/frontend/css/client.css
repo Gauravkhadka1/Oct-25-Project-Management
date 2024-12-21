@@ -1,8 +1,9 @@
+
 .client-page-heading {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 20px;
+    padding: 5px 10px 0px;
 }
 .number-category p {
     font-size: 20px;
@@ -69,4 +70,17 @@ justify-content: flex-start; */
 #website img {
 width: 15px;
 margin-left: 10px;
+}
+
+.client-company-name a {
+    text-decoration: none;
+    color: #2A2E34;
+    font-weight: 500;
+}
+
+.client-company-name a:hover {
+    text-decoration: underline;
+}
+.client-domain-name a {
+    text-decoration: none;
 }

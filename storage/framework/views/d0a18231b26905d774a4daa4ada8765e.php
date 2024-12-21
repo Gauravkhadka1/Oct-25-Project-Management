@@ -112,14 +112,14 @@
             <?php $__empty_1 = true; $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
                     <td><?php echo e($index + 1); ?></td>
-                    <td>
+                    <td class="client-company-name">
                         <a href="<?php echo e(route('client.details', ['id' => $client->id])); ?>">
                             <?php echo e($client->company_name ?? ''); ?>
 
                         </a>
                     </td>
 
-                    <td>
+                    <td class="client-domain-name">
                         <?php if(!empty($client->website)): ?>
                             <?php
                                 $url = preg_match('/^(http|https):\/\//', $client->website) ? $client->website : 'http://' . $client->website;

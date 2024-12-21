@@ -1,18 +1,89 @@
 .expiry-page {
-    padding: 20px;
+    padding: 10px 20px;
 }
+
 .expiry-table img {
     width: 15px;
 }
+
 .expiry-table th {
-    background-color: #f5f5f5;
+    background-color: rgb(235, 238, 245);
     color: #2A2E34;
 }
+
 .client-domain a {
     text-decoration: none;
     color: #2A2E34;
     font-weight: 500;
 }
+
 .client-domain a:hover {
     text-decoration: underline;
+}
+
+/* Expired Critical: 30+ days overdue */
+.expiry-table tr.expired-critical {
+    background-color: black;
+    color: #f5f5f5 !important;
+}
+
+.expiry-table tr.expired-critical .client-domain a {
+    color: #f5f5f5 !important;
+}
+
+.expiry-table tr.expired-critical .client-domain a:hover {
+    color: lightgray;
+}
+
+/* Expiring Immediately: 0 to -29 days */
+.expiry-table tr.expiring-immediate {
+    background-color: #F0434C;
+    color: #f5f5f5 !important;
+}
+
+.expiry-table tr.expiring-immediate .client-domain a {
+    color: white !important;
+}
+
+.expiry-table tr.expiring-immediate .client-domain a:hover {
+    color: lightgray;
+}
+
+/* Expiring Soon: 1 to 7 days */
+.expiry-table tr.expiring-soon {
+    background-color: orange;
+    color: black !important;
+}
+
+.expiry-table tr.expiring-soon .client-domain a {
+    color: black !important;
+}
+
+.expiry-table tr.expiring-soon .client-domain a:hover {
+    color: darkgray;
+}
+.client-domain a {
+text-decoration: none;
+color: #2A2E34;
+font-weight: 500;
+}
+.client-domain a:hover {
+text-decoration: underline;
+}
+.expiry-filter-search {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+margin-bottom: 10px;
+}
+
+.expiry-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 5px;
+}
+
+.expiry-category p {
+font-weight: 500;
 }

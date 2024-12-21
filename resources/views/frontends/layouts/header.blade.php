@@ -37,7 +37,7 @@
 
   $allowedEmails = ['gaurav@webtech.com.np', 'suraj@webtechnepal.com', 'sudeep@webtechnepal.com', 'sabita@webtechnepal.com'];
   $user = auth()->user();
-  $username = $user->username;
+  $username = $user ? $user->username : null;
 
 
 
@@ -67,7 +67,7 @@ function getServiceCount($daysFilter) {
             'web_design_1st_installment' => $client->first_installment,
             'web_design_2nd_installment' => $client->second_installment,
             'web_design_3rd_installment' => $client->third_installment,
-            'web_design_4th_installment' => $client->fourth_installment
+            'web_design_Final_installment' => $client->fourth_installment
         ];
 
         // Create an array to store unique expiry dates for the client
@@ -123,11 +123,6 @@ $servicesExpiringToday = getServiceCount('today');
 $expiredServicesCount = getServiceCount('expired');
 
 @endphp
-
-
-
-
-
 
 </head>
 
@@ -234,7 +229,7 @@ $expiredServicesCount = getServiceCount('expired');
         <li class="dropdown">
           <a href="javascript:void(0);" class="task-toggle" onclick="toggleTaskDropdown(event)">
             <div class="icon-text">
-              <img src="{{url('public/frontend/images/renewable.png')}}" alt=""> Expiry
+              <img src="{{url('public/frontend/images/nexpiry.png')}}" alt=""> Expiry
             </div>
             <div class="dropdown-arrow-div">
               <i class="fas fa-chevron-right dropdown-arrow"></i>
@@ -258,20 +253,28 @@ $expiredServicesCount = getServiceCount('expired');
         <div class="days">15 Days</div>
         <div class="expiry-count">{{ $servicesIn15To8Days }}</div>
     </a></li>
-    <li><a href="{{ route('expiry.index', ['days_filter' => '7-1', 'sort' => request('sort'), 'column' => request('column')]) }}">
-        <div class="days">7 Days</div>
-        <div class="expiry-count">{{ $servicesIn7To1Days }}</div>
-    </a></li>
-    <li><a href="{{ route('expiry.index', ['days_filter' => 'today', 'sort' => request('sort'), 'column' => request('column')]) }}">
-        <div class="days">Expiring Today</div>
-        <div class="expiry-count">{{ $servicesExpiringToday }}</div>
-    </a></li>
     <li>
-    <a href="{{ route('expiry.index', ['days_filter' => 'expired', 'sort' => request('sort'), 'column' => request('column')]) }}">
-        <div class="days">Expired</div>
-        <div class="expiry-count">{{ $expiredServicesCount }}</div>
-    </a>
-</li>
+        <a href="{{ route('expiry.index', ['days_filter' => '7-1', 'sort' => request('sort'), 'column' => request('column')]) }}">
+            <div class="days">7 Days</div>
+            <div class="expiry-count" style="color: {{ $servicesIn7To1Days > 0 ? 'orange' : 'inherit' }};">
+                {{ $servicesIn7To1Days }}
+            </div>
+        </a>
+    </li>
+    <li> <a href="{{ route('expiry.index', ['days_filter' => 'today', 'sort' => request('sort'), 'column' => request('column')]) }}">
+            <div class="days">Expiring Today</div>
+            <div class="expiry-count" style="color: {{ $servicesExpiringToday > 0 ? 'red' : 'inherit' }};">
+                {{ $servicesExpiringToday }}
+            </div>
+        </a>
+        <li>
+        <a href="{{ route('expiry.index', ['days_filter' => 'expired', 'sort' => request('sort'), 'column' => request('column')]) }}">
+            <div class="days">Expired</div>
+            <div class="expiry-count" style="color: {{ $expiredServicesCount > 0 ? 'red' : 'inherit' }};">
+                {{ $expiredServicesCount }}
+            </div>
+        </a>
+    </li>
 
 </ul>
 

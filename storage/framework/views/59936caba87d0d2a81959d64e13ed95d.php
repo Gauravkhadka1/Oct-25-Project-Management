@@ -101,7 +101,7 @@
         </div>
 
         <div class="client-services">
-            <div class="domain-service">
+            <div class="domain-service" id="website-service">
                 <h2> <img src="<?php echo e(url ('public/frontend/images/design-blue.png')); ?>" alt=""> Web Design</h2>
                 <!-- <div class="client-details-form">
                         <label for="domain_name">Domain Name</label>
@@ -151,21 +151,46 @@
                     </div> -->
 
                     <div id="installment-dates" class="installment-dates">
-                        <div class="1st_installment">
-                            <label for="">1st installment date</label>
+                        <div class="first-installment-inputs">
+                        <div class="first-installment">
+                            <label for="">1st Inst.. Date</label>
                             <input type="date" name="first_installment" value="<?php echo e($client->first_installment); ?>">
                         </div>
-                        <div class="1st_installment">
-                        <label for="">2nd installment date</label>
+                        <div class="first-installment_amount">
+                            <label for="">Amount</label>
+                            <input type="number" name="first_installment_amount" value="<?php echo e($client->first_installment_amount); ?>">
+                        </div>
+                        </div>
+                        
+                        <div class="first-installment-inputs">
+                        <div class="first-installment">
+                            <label for="">2nd Inst.. Date</label>
                             <input type="date" name="second_installment" value="<?php echo e($client->second_installment); ?>">
                         </div>
-                        <div class="1st_installment">
-                        <label for="">3rd installment date</label>
-                            <input type="date" name="third_installment" value="<?php echo e($client->third_installment); ?>">
+                        <div class="first-installment_amount">
+                            <label for="">Amount</label>
+                            <input type="number" name="second_installment_amount" value="<?php echo e($client->second_installment_amount); ?>">
                         </div>
-                        <div class="1st_installment">
-                        <label for="">4th installment date</label>
-                            <input type="date" name="fourth_installment" value="<?php echo e($client->fourth_installment); ?>">
+                        </div>
+                        <div class="first-installment-inputs">
+                        <div class="first-installment">
+                            <label for="">3rd Inst.. Date</label>
+                            <input type="date" name="third_installment" value="<?php echo e($client->third_installment_amount); ?>">
+                        </div>
+                        <div class="first-installment_amount">
+                            <label for="">Amount</label>
+                            <input type="number" name="third_installment_amount" value="<?php echo e($client->third_installment_amount); ?>">
+                        </div>
+                        </div>
+                        <div class="first-installment-inputs">
+                        <div class="first-installment">
+                            <label for="">Final Inst.. Date</label>
+                            <input type="date" name="fourth_installment"  value="<?php echo e($client->fourth_installment); ?>"> 
+                        </div>
+                        <div class="first-installment_amount">
+                            <label for="">Amount</label>
+                            <input type="number" name="fourth_installment_amount" value="<?php echo e($client->fourth_installment_amount); ?>">
+                        </div>
                         </div>
                     </div>
                 </div>

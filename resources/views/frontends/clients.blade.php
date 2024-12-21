@@ -114,13 +114,13 @@
             @forelse ($clients as $index => $client)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>
+                    <td class="client-company-name">
                         <a href="{{ route('client.details', ['id' => $client->id]) }}">
                             {{ $client->company_name ?? '' }}
                         </a>
                     </td>
 
-                    <td>
+                    <td class="client-domain-name">
                         @if (!empty($client->website))
                             @php
                                 $url = preg_match('/^(http|https):\/\//', $client->website) ? $client->website : 'http://' . $client->website;

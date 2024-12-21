@@ -3,8 +3,31 @@
 @section('main-container')
 
 <div class="expiry-page">
-    <div class="expiry-filters">
-        <!-- Any filters can go here -->
+    <div class="expiry-top">
+        <div class="expiry-category">
+            <p>All </p>
+        </div>
+        <div class="expiry-filter-search">
+            <div class="filter-payments" onclick="toggleFilterList()">
+                <img src="public/frontend/images/new-bar.png" alt="" class="barfilter">
+                <div class="filter-count">
+
+                    <p></p>
+
+                </div>
+                Filter
+            </div>
+            <div class="search-payments">
+                <div class="search-icon">
+                    <img src="public/frontend/images/search-light-color.png" alt="" class="searchi-icon">
+                </div>
+                <form action="{{ route('expiry.index') }}" method="GET" id="search-form">
+                    <div class="search-text-area">
+                        <input type="text" name="search" placeholder="search..." value="{{ request('search') }}" oninput="this.form.submit()">
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div class="expiry-table">
@@ -46,46 +69,34 @@
 
             <tbody>
                 @foreach($servicesData as $service)
-                    <tr>
-                        <td>
-                            <a href="{{ route('client.details', ['id' => $service['client_id']]) }}">
-                                {{ $service['domain_name'] }}
-                            </a>
-                        </td>
-                        <td>{{ $service['service_type'] }}</td>
-                        <td>{{ $service['days_left'] }} days</td>
-                        <td>{{ $service['amount'] ?? 'N/A' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($service['expiry_date'])->format('d-m-Y') ?? 'N/A' }}</td>
-                    </tr>
+                <tr class="
+                        {{ $service['days_left'] <= -30 ? 'expired-critical' : '' }}
+                        {{ $service['days_left'] >= 0 && $service['days_left'] <= 7 ? 'expiring-soon' : '' }}
+                        {{ $service['days_left'] >= -29 && $service['days_left'] <= 0 ? 'expiring-immediate' : '' }}
+                    ">
+
+                    <td class="client-domain">
+                        <a href="{{ route('client.details', ['id' => $service['client_id']]) }}">
+                            {{ $service['domain_name'] }}
+                        </a>
+                    </td>
+                    <td>{{ $service['service_type'] }}</td>
+                    <td>{{ $service['days_left'] }} days</td>
+                    <td>
+                        @if($service['amount'])
+                        {{ number_format($service['amount']) }}
+                        @else
+                        N/A
+                        @endif
+                    </td>
+                    <td>{{ \Carbon\Carbon::parse($service['expiry_date'])->format('d-m-Y') ?? 'N/A' }}</td>
+                </tr>
                 @endforeach
             </tbody>
+
         </table>
     </div>
 </div>
 
-<style>
-.expiry-page {
-    padding: 20px;
-}
-
-.expiry-table img {
-    width: 15px;
-}
-
-.expiry-table th {
-    background-color:rgb(235, 238, 245);
-    color: #2A2E34;
-}
-
-.client-domain a {
-    text-decoration: none;
-    color: #2A2E34;
-    font-weight: 500;
-}
-
-.client-domain a:hover {
-    text-decoration: underline;
-}
-</style>
 
 @endsection
