@@ -239,44 +239,45 @@ $expiredServicesCount = getServiceCount('expired');
           <ul class="task-dropdown">
     <li><a href="{{ url('/expiry') }}">
         <div class="days">All</div>
-        <div class="expiry-count">{{ $allServicesCount }}</div>
+        <div class="expiry-count" style="font-weight: 500;">{{ $allServicesCount }}</div>
     </a></li>
     <li><a href="{{ route('expiry.index', ['days_filter' => '35-31', 'sort' => request('sort'), 'column' => request('column')]) }}">
         <div class="days">35 Days</div>
-        <div class="expiry-count">{{ $servicesIn35To31Days }}</div>
+        <div class="expiry-count" style="font-weight: 500;">{{ $servicesIn35To31Days }}</div>
     </a></li>
     <li><a href="{{ route('expiry.index', ['days_filter' => '30-16', 'sort' => request('sort'), 'column' => request('column')]) }}">
         <div class="days">30 Days</div>
-        <div class="expiry-count">{{ $servicesIn30To16Days }}</div>
+        <div class="expiry-count" style="font-weight: 500;">{{ $servicesIn30To16Days }}</div>
     </a></li>
     <li><a href="{{ route('expiry.index', ['days_filter' => '15-8', 'sort' => request('sort'), 'column' => request('column')]) }}">
         <div class="days">15 Days</div>
-        <div class="expiry-count">{{ $servicesIn15To8Days }}</div>
+        <div class="expiry-count" style="font-weight: 500;">{{ $servicesIn15To8Days }}</div>
     </a></li>
     <li>
         <a href="{{ route('expiry.index', ['days_filter' => '7-1', 'sort' => request('sort'), 'column' => request('column')]) }}">
             <div class="days">7 Days</div>
-            <div class="expiry-count" style="color: {{ $servicesIn7To1Days > 0 ? 'orange' : 'inherit' }};">
+            <div class="expiry-count" style="color: {{ $servicesIn7To1Days > 0 ? 'orange' : 'inherit' }}; font-weight: 500;">
                 {{ $servicesIn7To1Days }}
             </div>
         </a>
     </li>
     <li> <a href="{{ route('expiry.index', ['days_filter' => 'today', 'sort' => request('sort'), 'column' => request('column')]) }}">
             <div class="days">Expiring Today</div>
-            <div class="expiry-count" style="color: {{ $servicesExpiringToday > 0 ? 'red' : 'inherit' }};">
+            <div class="expiry-count" style="color: {{ $servicesExpiringToday > 0 ? 'red' : 'inherit' }}; font-weight: 500;">
                 {{ $servicesExpiringToday }}
             </div>
         </a>
-        <li>
+    </li>
+    <li>
         <a href="{{ route('expiry.index', ['days_filter' => 'expired', 'sort' => request('sort'), 'column' => request('column')]) }}">
             <div class="days">Expired</div>
-            <div class="expiry-count" style="color: {{ $expiredServicesCount > 0 ? 'red' : 'inherit' }};">
+            <div class="expiry-count" style="color: {{ $expiredServicesCount > 0 ? 'red' : 'inherit' }}; font-weight: 500;">
                 {{ $expiredServicesCount }}
             </div>
         </a>
     </li>
-
 </ul>
+
 
 
         </li>

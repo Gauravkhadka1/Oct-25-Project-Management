@@ -312,7 +312,7 @@
             </div>
         </div>
         <div class="client-details-form">
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="add-clients-button"> <img src="<?php echo e(url('public/frontend/images/add.png')); ?>" alt=""> Add</button>
         </div>
     </form>
 </div>

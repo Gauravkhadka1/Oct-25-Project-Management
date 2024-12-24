@@ -109,7 +109,7 @@
 margin-bottom: 5px;
 }
 .first-installment input, .first-installment_amount input {
-margin-top: 10px !important;
+margin-top: 7px !important;
 }
 .first-installment-inputs {
     display: flex;
@@ -140,3 +140,11 @@ margin-top: 10px !important;
         color: #4c5258;
     }
  
+    .add-clients-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .add-clients-button img {
+        margin-right: 10px !important;
+    }

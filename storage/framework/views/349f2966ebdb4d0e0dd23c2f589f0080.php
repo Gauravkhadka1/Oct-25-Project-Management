@@ -242,24 +242,24 @@ $expiredServicesCount = getServiceCount('expired');
           <ul class="task-dropdown">
     <li><a href="<?php echo e(url('/expiry')); ?>">
         <div class="days">All</div>
-        <div class="expiry-count"><?php echo e($allServicesCount); ?></div>
+        <div class="expiry-count" style="font-weight: 500;"><?php echo e($allServicesCount); ?></div>
     </a></li>
     <li><a href="<?php echo e(route('expiry.index', ['days_filter' => '35-31', 'sort' => request('sort'), 'column' => request('column')])); ?>">
         <div class="days">35 Days</div>
-        <div class="expiry-count"><?php echo e($servicesIn35To31Days); ?></div>
+        <div class="expiry-count" style="font-weight: 500;"><?php echo e($servicesIn35To31Days); ?></div>
     </a></li>
     <li><a href="<?php echo e(route('expiry.index', ['days_filter' => '30-16', 'sort' => request('sort'), 'column' => request('column')])); ?>">
         <div class="days">30 Days</div>
-        <div class="expiry-count"><?php echo e($servicesIn30To16Days); ?></div>
+        <div class="expiry-count" style="font-weight: 500;"><?php echo e($servicesIn30To16Days); ?></div>
     </a></li>
     <li><a href="<?php echo e(route('expiry.index', ['days_filter' => '15-8', 'sort' => request('sort'), 'column' => request('column')])); ?>">
         <div class="days">15 Days</div>
-        <div class="expiry-count"><?php echo e($servicesIn15To8Days); ?></div>
+        <div class="expiry-count" style="font-weight: 500;"><?php echo e($servicesIn15To8Days); ?></div>
     </a></li>
     <li>
         <a href="<?php echo e(route('expiry.index', ['days_filter' => '7-1', 'sort' => request('sort'), 'column' => request('column')])); ?>">
             <div class="days">7 Days</div>
-            <div class="expiry-count" style="color: <?php echo e($servicesIn7To1Days > 0 ? 'orange' : 'inherit'); ?>;">
+            <div class="expiry-count" style="color: <?php echo e($servicesIn7To1Days > 0 ? 'orange' : 'inherit'); ?>; font-weight: 500;">
                 <?php echo e($servicesIn7To1Days); ?>
 
             </div>
@@ -267,22 +267,23 @@ $expiredServicesCount = getServiceCount('expired');
     </li>
     <li> <a href="<?php echo e(route('expiry.index', ['days_filter' => 'today', 'sort' => request('sort'), 'column' => request('column')])); ?>">
             <div class="days">Expiring Today</div>
-            <div class="expiry-count" style="color: <?php echo e($servicesExpiringToday > 0 ? 'red' : 'inherit'); ?>;">
+            <div class="expiry-count" style="color: <?php echo e($servicesExpiringToday > 0 ? 'red' : 'inherit'); ?>; font-weight: 500;">
                 <?php echo e($servicesExpiringToday); ?>
 
             </div>
         </a>
-        <li>
+    </li>
+    <li>
         <a href="<?php echo e(route('expiry.index', ['days_filter' => 'expired', 'sort' => request('sort'), 'column' => request('column')])); ?>">
             <div class="days">Expired</div>
-            <div class="expiry-count" style="color: <?php echo e($expiredServicesCount > 0 ? 'red' : 'inherit'); ?>;">
+            <div class="expiry-count" style="color: <?php echo e($expiredServicesCount > 0 ? 'red' : 'inherit'); ?>; font-weight: 500;">
                 <?php echo e($expiredServicesCount); ?>
 
             </div>
         </a>
     </li>
-
 </ul>
+
 
 
         </li>

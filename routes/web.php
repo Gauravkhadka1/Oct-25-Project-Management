@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/{email}', [ProfileController::class, 'show'])->name('profile.show');
 Route::get('/expiry', [ExpiryController::class, 'index'])->name('expiry.index');
-Route::resource('projects', ProjectController::class);
+
 Route::get('/projects', [ProjectController::class, 'projects'])->name('projects.index'); 
 Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store'); 
 Route::resource('tasks', TaskController::class);
@@ -49,6 +49,7 @@ Route::get('/dashboard', [ProfileController::class, 'dashboard'])->middleware(['
 Route::get('/new-user-dashboard',[NewDashboardController::class, 'newuserdashboard']);
 Route::get('/projects/{projectId}/tasks', [ProjectController::class, 'showTasks'])->name('projects.tasks');
 });
+Route::resource('projects', ProjectController::class);
 
 require __DIR__.'/auth.php';
 
@@ -159,6 +160,8 @@ Route::post('/tasks/store', [ClientTaskController::class, 'store'])->name('clien
 Route::get('/client-task/{id}/detail', [ClientTaskController::class, 'show'])->name('client_task.detail');
 Route::post('/tasks/{id}/pause-timer', [TaskController::class, 'updateElapsedTime']);
 Route::post('/projects/{id}/update-inline', [ProjectController::class, 'updateInline'])->name('projects.updateInline');
+Route::post('/send-expiry-email', [ExpiryController::class, 'sendExpiryEmail'])->name('send.expiry.email');
+
 
 
 

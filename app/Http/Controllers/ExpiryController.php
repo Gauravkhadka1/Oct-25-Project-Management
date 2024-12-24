@@ -5,17 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Clients;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class ExpiryController extends Controller
 {
     public function index(Request $request)
     {
         // Retrieve all clients
-        $clients = Clients::all();
+        $clientsQuery = Clients::query();
+
+        if ($request->has('search') && $request->input('search') != '') {
+            $searchTerm = $request->input('search');
+            $clientsQuery->where('company_name', 'like', '%' . $searchTerm . '%');
+        }
+        $clients = $clientsQuery->get();
 
         $sortBy = $request->input('sort_by', 'days_left'); // Default sort column
         $sortOrder = $request->input('sort_order', 'asc'); // Default sort order
 
+        $filterCategories = $request->input('filter_categories', []);
         // Get the 'days_filter' from the request, if present
         $daysFilter = $request->input('days_filter');
 
@@ -24,6 +32,8 @@ class ExpiryController extends Controller
 
         // Get current date and time in Nepali Time (Asia/Kathmandu)
         $nowNepalTime = Carbon::now('Asia/Kathmandu')->startOfDay();  // Set time to 00:00:00 for the current day
+
+   
 
         // Calculate services count for each range and build services data
         foreach ($clients as $client) {
@@ -100,7 +110,8 @@ class ExpiryController extends Controller
                                 'expiry_date' => $expiryDateNepalTime,
                                 'amount' => $client->{$service . '_amount'},
                                 'days_left' => $daysLeft,
-                                'client_id' => $client->id
+                                'client_id' => $client->id,
+                                'client_email' => $client->contact_person_email ?? 'N/A' 
                             ];
                         }
                     }
@@ -157,7 +168,89 @@ class ExpiryController extends Controller
                 return $sortOrder === 'asc' ? strcmp($valueA, $valueB) : strcmp($valueB, $valueA);
             }
         });
-
-        return view('frontends.expiry', compact('servicesData'));
+        if ($daysFilter !== null) {
+            $daysFilter = (int) $daysFilter;
+            $servicesData = array_filter($servicesData, function ($service) use ($daysFilter) {
+                return $service['days_left'] <= $daysFilter;
+            });
+        }
+        
+        // Handle category filters (including 'website')
+        if (!empty($filterCategories) && !in_array('all', $filterCategories)) {
+            $selectedCategories = array_map('strtolower', $filterCategories);
+        
+            // Special case for 'website'
+            if (in_array('website', $selectedCategories)) {
+                $servicesData = array_filter($servicesData, function ($service) {
+                    $installmentServices = [
+                        'web design 1st installment',
+                        'web design 2nd installment',
+                        'web design 3rd installment',
+                        'web design final installment',
+                    ];
+                    $serviceTypes = array_map('strtolower', explode(' & ', $service['service_type']));
+                    return !empty(array_intersect($installmentServices, $serviceTypes));
+                });
+            } else {
+                // Filter by other categories
+                $servicesData = array_filter($servicesData, function ($service) use ($selectedCategories) {
+                    $serviceTypes = array_map('strtolower', explode(' & ', $service['service_type']));
+                    return !empty(array_intersect($selectedCategories, $serviceTypes));
+                });
+            }
+        }
+        
+        
+        
+        
+        return view('frontends.expiry', compact('servicesData', 'daysFilter'));
     }
+   
+
+    // public function sendExpiryEmail(Request $request)
+    // {
+    //     $to = trim($request->input('client_email'));
+    //     $cc = ['testuser1@comeonnepal.com', 'testuser2@comeonnepal.com'];
+    //     $serviceType = $request->input('service_type');
+    //     $expiryDate = $request->input('expiry_date');
+    //     $daysLeft = $request->input('days_left');
+    //     $domainName = $request->input('domain_name');
+    
+    //     // Validate email address
+    //     if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+    //         return back()->with('error', 'Invalid email address provided: ' . $to);
+    //     }
+    
+    //     // Check if the email address is empty
+    //     if (empty($to)) {
+    //         return back()->with('error', 'No email address provided for this client.');
+    //     }
+    
+    //     $subject = "Service Expiry Notice";
+    //     $message = "
+    //         Dear Sir/Madam,
+    
+    //         I hope this email finds you well.
+    
+    //         The $serviceType service associated with your domain ($domainName) is going to expire on $expiryDate ($daysLeft days remaining). 
+    //         Please renew the service for uninterrupted service.
+    
+    //         Thank you.
+    //     ";
+    
+    //     try {
+    //         // Override the default 'from' email
+    //         Mail::raw($message, function ($mail) use ($to, $cc, $subject) {
+    //             $mail->from('testuser3@comeonnepal.com', 'Webtech Nepal') // Override from email
+    //                  ->to($to)
+    //                  ->cc($cc)
+    //                  ->subject($subject);
+    //         });
+    
+    //         return back()->with('success', 'Email sent successfully!');
+    //     } catch (\Exception $e) {
+    //         return back()->with('error', 'Failed to send email: ' . $e->getMessage());
+    //     }
+    // }
+    
 }
