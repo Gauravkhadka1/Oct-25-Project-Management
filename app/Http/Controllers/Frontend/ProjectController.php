@@ -14,7 +14,9 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
 {
-    $query = Project::with(['tasks.assignedTo', 'tasks.assignedBy'])->orderBy('created_at', 'desc');
+    $query = Project::with(['tasks.assignedTo', 'tasks.assignedBy'])
+    ->selectRaw('*, DATEDIFF(due_date, CURDATE()) as days_left')
+        ->orderBy('days_left', 'asc'); // Default sort by less days left
     $filterCount = 0;
 
     // Filtering by Start Date

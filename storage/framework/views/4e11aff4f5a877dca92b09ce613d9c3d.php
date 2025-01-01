@@ -52,18 +52,18 @@
                 </select>
             </div>
             <div class="project-start-date">
-                <div class="start-date-input">
-                    <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">
-                    <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
-                </div>
-            </div>
+    <div class="start-date-input">
+        <img src="<?php echo e(url('public/frontend/images/start-date.png')); ?>" alt="">
+        <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
+    </div>
+</div>
 
-            <div class="project-due-date">
-                <div class="due-date-input">
-                    <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">
-                    <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
-                </div>
-            </div>
+<div class="project-due-date">
+    <div class="due-date-input">
+        <img src="<?php echo e(url('public/frontend/images/end-date.png')); ?>" alt="">
+        <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
+    </div>
+</div>
 
             <div class="priority">
                 <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt="">
@@ -72,6 +72,10 @@
                     <option value="High">High</option>
                     <option value="Urgent">Urgent</option>
                 </select>
+            </div>
+            <div class="drive">
+            <img src="<?php echo e(url('public/frontend/images/google-drive.png')); ?>" alt="">
+            <input type="text" id="driveurl" name="driveurl" class="task-input" placeholder="Drive Link"/>
             </div>
             
             <!-- <div class="task-actions">
@@ -85,11 +89,18 @@
         <div class="task-list">
             <?php $__currentLoopData = $todoTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
-                    <div class="task-name">
-                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
-                        <p><?php echo e($task->name); ?></p>
-                    </a>
+                    <div class="task-name-new">
+                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>" class="task-name-name">
+                            <p><?php echo e($task->name); ?></p>
+                        </a>
+                        <?php if(!empty($task->driveurl)): ?>
+    <a href="<?php echo e($task->driveurl); ?>" target="_blank" class="task-icon-icon">
+        <img src="<?php echo e(url('public/frontend/images/google-drive.png')); ?>" alt="Google Drive">
+    </a>
+<?php endif; ?>
+
                     </div>
+                    
                     <div class="assigne">
                         <?php if($task->assignedTo): ?>
                             <img src="<?php echo e(url('public/frontend/images/assigned-to.png')); ?>" alt="" class="assigned-to-icon">
@@ -134,11 +145,10 @@
                                 : <?php echo e($task->priority); ?>
 
                             </div>
-                     <div class="priority">
-                    Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
+                    <!-- <div class="priority">-->
+                    <!--Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>-->
 
-
-                    </div>
+                    <!--</div>-->
                 </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
@@ -158,10 +168,13 @@
         <div class="task-list">
             <?php $__currentLoopData = $inProgressTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
-                    <div class="task-name">
-                      <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
-                        <p><?php echo e($task->name); ?></p>
-                    </a>
+                <div class="task-name-new">
+                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>" class="task-name-name">
+                            <p><?php echo e($task->name); ?></p>
+                        </a>
+                        <a href="<?php echo e($task->driveurl); ?>" target="_blank" class="task-icon-icon">
+                <img src="<?php echo e(url('public/frontend/images/google-drive.png')); ?>" alt="Google Drive">
+            </a>
                     </div>
                     <div class="assigne">
                         <?php if($task->assignedTo): ?>
@@ -204,11 +217,10 @@
                                 : <?php echo e($task->priority); ?>
 
                             </div>
-                     <div class="priority">
-                    Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
+                    <!-- <div class="priority">-->
+                    <!--Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>-->
 
-
-                    </div>
+                    <!--</div>-->
                 </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
@@ -228,10 +240,13 @@
         <div class="task-list">
             <?php $__currentLoopData = $qaTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
-                    <div class="task-name">
-                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
-                        <p><?php echo e($task->name); ?></p>
-                    </a>
+                <div class="task-name-new">
+                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>" class="task-name-name">
+                            <p><?php echo e($task->name); ?></p>
+                        </a>
+                        <a href="<?php echo e($task->driveurl); ?>" target="_blank" class="task-icon-icon">
+                <img src="<?php echo e(url('public/frontend/images/google-drive.png')); ?>" alt="Google Drive">
+            </a>
                     </div>
                     <div class="assigne">
                         <?php if($task->assignedTo): ?>
@@ -274,11 +289,10 @@
                                 : <?php echo e($task->priority); ?>
 
                             </div>
-                     <div class="priority">
-                    Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
+                    <!-- <div class="priority">-->
+                    <!--Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>-->
 
-
-                    </div>
+                    <!--</div>-->
                 </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
@@ -298,10 +312,13 @@
         <div class="task-list">
             <?php $__currentLoopData = $completedTasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="task" draggable="true">
-                    <div class="task-name">
-                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>">
-                        <p><?php echo e($task->name); ?></p>
-                    </a>
+                <div class="task-name-new">
+                       <a href="<?php echo e(route('task.detail', ['id' => $task->id])); ?>" class="task-name-name">
+                            <p><?php echo e($task->name); ?></p>
+                        </a>
+                        <a href="<?php echo e($task->driveurl); ?>" target="_blank" class="task-icon-icon">
+                <img src="<?php echo e(url('public/frontend/images/google-drive.png')); ?>" alt="Google Drive">
+            </a>
                     </div>
                     <div class="assigne">
     <?php if($task->assignedTo): ?>
@@ -314,33 +331,32 @@
     <?php endif; ?>
 </div>
 
-<div class="due-date" style="margin-top: 4px;">
-    <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt=""> :
-    <?php if(isset($task->remaining_days) || isset($task->remaining_hours) || isset($task->overdue_days) || isset($task->overdue_hours)): ?>
-        <?php if(isset($task->remaining_days) && $task->remaining_days > 0): ?>
-            <?php echo e($task->remaining_days); ?> days <?php echo e($task->remaining_hours); ?> hours left
-        <?php elseif(isset($task->remaining_hours) && $task->remaining_hours > 0): ?>
-            <?php echo e($task->remaining_hours); ?> hours left
-        <?php elseif(isset($task->overdue_days) && $task->overdue_days > 0): ?>
-            Overdue by <?php echo e($task->overdue_days); ?> days <?php echo e($task->overdue_hours); ?> hours
-        <?php elseif(isset($task->overdue_hours) && $task->overdue_hours > 0): ?>
-            Overdue by <?php echo e($task->overdue_hours); ?> hours
-        <?php else: ?>
-            Due now
-        <?php endif; ?>
-    <?php else: ?>
-        N/A
-    <?php endif; ?>
-</div>
+<!--<div class="due-date" style="margin-top: 4px;">-->
+<!--    <img src="<?php echo e(url('public/frontend/images/due-date.png')); ?>" alt=""> :-->
+<!--    <?php if(isset($task->remaining_days) || isset($task->remaining_hours) || isset($task->overdue_days) || isset($task->overdue_hours)): ?>-->
+<!--        <?php if(isset($task->remaining_days) && $task->remaining_days > 0): ?>-->
+<!--            <?php echo e($task->remaining_days); ?> days <?php echo e($task->remaining_hours); ?> hours left-->
+<!--        <?php elseif(isset($task->remaining_hours) && $task->remaining_hours > 0): ?>-->
+<!--            <?php echo e($task->remaining_hours); ?> hours left-->
+<!--        <?php elseif(isset($task->overdue_days) && $task->overdue_days > 0): ?>-->
+<!--            Overdue by <?php echo e($task->overdue_days); ?> days <?php echo e($task->overdue_hours); ?> hours-->
+<!--        <?php elseif(isset($task->overdue_hours) && $task->overdue_hours > 0): ?>-->
+<!--            Overdue by <?php echo e($task->overdue_hours); ?> hours-->
+<!--        <?php else: ?>-->
+<!--            Due now-->
+<!--        <?php endif; ?>-->
+<!--    <?php else: ?>-->
+<!--        N/A-->
+<!--    <?php endif; ?>-->
+<!--</div>-->
                     <div class="priority">
                         <img src="<?php echo e(url('public/frontend/images/priority.png')); ?>" alt=""> : <?php echo e($task->priority ?? 'Normal'); ?>
 
                     </div>
-                     <div class="priority">
-                    Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>
+                    <!-- <div class="priority">-->
+                    <!--Time spent: <?php echo e(gmdate('H:i:s', $task->elapsed_time)); ?>-->
 
-
-                    </div>
+                    <!--</div>-->
                 </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
@@ -492,62 +508,33 @@ function saveTask() {
 // Drag-and-drop functionality
 const tasks = document.querySelectorAll('.task');
 const columns = document.querySelectorAll('.task-column');
-let placeholder; // Placeholder element to indicate where the task can be dropped
 
 // Enable drag-and-drop
 tasks.forEach(task => {
     task.addEventListener('dragstart', () => {
         task.classList.add('dragging');
-
-        // Create a placeholder with the same height as the dragging task
-        placeholder = document.createElement('div');
-        placeholder.classList.add('placeholder');
-        placeholder.style.height = `${task.offsetHeight}px`;
     });
 
     task.addEventListener('dragend', () => {
         task.classList.remove('dragging');
-
-        // Remove the placeholder when drag ends
-        if (placeholder && placeholder.parentNode) {
-            placeholder.parentNode.removeChild(placeholder);
-        }
     });
 });
 
-// Handle dragover and drop in columns
+// Update task status on drop
 columns.forEach(column => {
     column.addEventListener('dragover', (e) => {
         e.preventDefault();
-
-        const draggingTask = document.querySelector('.dragging');
-        const taskList = column.querySelector('.task-list');
-        const tasksInColumn = [...taskList.querySelectorAll('.task:not(.dragging)')];
-
-        // Find the nearest task where the placeholder should be inserted
-        const afterTask = tasksInColumn.find(task => {
-            const taskRect = task.getBoundingClientRect();
-            return e.clientY < taskRect.top + taskRect.height / 2;
-        });
-
-        // Insert placeholder
-        if (afterTask) {
-            taskList.insertBefore(placeholder, afterTask);
-        } else {
-            taskList.appendChild(placeholder);
-        }
     });
 
     column.addEventListener('drop', (e) => {
         e.preventDefault();
-
         const draggingTask = document.querySelector('.dragging');
         const taskId = draggingTask.getAttribute('data-task-id');
         const taskType = draggingTask.getAttribute('data-task-type');
         const newStatus = column.getAttribute('data-status');
 
-        // Move the dragging task to the placeholder position
-        placeholder.parentNode.replaceChild(draggingTask, placeholder);
+        // Move task to new column
+        column.querySelector('.task-list').appendChild(draggingTask);
 
         // AJAX request to update task status in the database
         fetch("<?php echo e(route('tasks.updateStatusComment')); ?>", {
@@ -558,15 +545,15 @@ columns.forEach(column => {
             },
             body: JSON.stringify({ taskId, taskType, status: newStatus })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log(`Task ${taskId} status updated to ${newStatus}`);
-            } else {
-                console.error("Failed to update task status");
-            }
-        })
-        .catch(error => console.error("Error:", error));
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(`Task ${taskId} status updated to ${newStatus}`);
+                } else {
+                    console.error("Failed to update task status");
+                }
+            })
+            .catch(error => console.error("Error:", error));
     });
 });
 
@@ -625,11 +612,34 @@ margin-left: 15px !important;
         background-color: #dc3545;
         color: white;
     }
-    .placeholder {
-    background: #fff;
-    margin: 5px 0;
-    border-radius: 5px;
-}
+    .task-name-new {
+        display: flex;
+        align-items: center;
+        justify-content: space-between !important;
+        /* background-color: red; */
+    }
+    .task-name-new a {
+        text-decoration: none;
+        color: #2a2e34;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .task-name-new a:hover {
+        text-decoration: underline;
+    }
+    .task-name-new img {
+        margin-right: 10px !important;
+        width: 15px;
+    }
+  .drive {
+    display: flex;
+    align-items: center;
+
+  }
+  .drive img {
+    width: 15px;
+    margin-right: 5px;
+  }
 </style>
 <?php $__env->stopSection(); ?>
 

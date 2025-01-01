@@ -93,7 +93,9 @@
                     <th>Service Type</th>
                     <th>Days Left</th>
                     <th>Amount</th>
-                    <th>Expiry Date</th>
+                    <!-- <th>Expiry Date</th> -->
+                    <th>Email Sent On</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -126,7 +128,11 @@
                         N/A
                         @endif
                     </td>
-                    <td>{{ \Carbon\Carbon::parse($service['expiry_date'])->format('d-m-Y') ?? 'N/A' }}</td>
+                    <!-- <td>{{ \Carbon\Carbon::parse($service['expiry_date'])->format('d-m-Y') ?? 'N/A' }}</td> -->
+                    <td>Date</td>
+                    <td>
+                       send
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -210,6 +216,46 @@ document.getElementById('categories').addEventListener('change', function () {
         });
     }
 });
+
+document.querySelectorAll('.send-email-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const clientEmail = this.getAttribute('data-client-email');
+        const serviceType = this.getAttribute('data-service-type');
+        const expiryDate = this.getAttribute('data-expiry-date');
+        const daysLeft = this.getAttribute('data-days-left');
+        const domainName = this.getAttribute('data-domain-name');
+
+        fetch('{{ route("send.expiry.email") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                client_email: clientEmail,
+                service_type: serviceType,
+                expiry_date: expiryDate,
+                days_left: daysLeft,
+                domain_name: domainName
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Email sent successfully!');
+                // Optionally, update the email-sent-on column in the UI
+                this.closest('tr').querySelector('td:nth-child(5)').textContent = data.email_sent_on;
+            } else {
+                alert('Failed to send email: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while sending the email.');
+        });
+    });
+});
+
 
 </script>
 

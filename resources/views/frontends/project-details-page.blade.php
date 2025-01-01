@@ -53,18 +53,18 @@
                 </select>
             </div>
             <div class="project-start-date">
-                <div class="start-date-input">
-                    <img src="{{ url('public/frontend/images/start-date.png') }}" alt="">
-                    <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
-                </div>
-            </div>
+    <div class="start-date-input">
+        <img src="{{ url('public/frontend/images/start-date.png') }}" alt="">
+        <input type="text" id="start-date" name="start_date" class="task-input" placeholder="Start Date" readonly required />
+    </div>
+</div>
 
-            <div class="project-due-date">
-                <div class="due-date-input">
-                    <img src="{{ url('public/frontend/images/end-date.png') }}" alt="">
-                    <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
-                </div>
-            </div>
+<div class="project-due-date">
+    <div class="due-date-input">
+        <img src="{{ url('public/frontend/images/end-date.png') }}" alt="">
+        <input type="text" id="due-date" name="due_date" class="task-input" placeholder="Due Date" readonly required />
+    </div>
+</div>
 
             <div class="priority">
                 <img src="{{ url('public/frontend/images/priority.png') }}" alt="">
@@ -73,6 +73,10 @@
                     <option value="High">High</option>
                     <option value="Urgent">Urgent</option>
                 </select>
+            </div>
+            <div class="drive">
+            <img src="{{ url('public/frontend/images/google-drive.png') }}" alt="">
+            <input type="text" id="driveurl" name="driveurl" class="task-input" placeholder="Drive Link"/>
             </div>
             
             <!-- <div class="task-actions">
@@ -86,11 +90,18 @@
         <div class="task-list">
             @foreach ($todoTasks as $task)
                 <div class="task" draggable="true">
-                    <div class="task-name">
-                       <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                        <p>{{ $task->name }}</p>
-                    </a>
+                    <div class="task-name-new">
+                       <a href="{{ route('task.detail', ['id' => $task->id]) }}" class="task-name-name">
+                            <p>{{ $task->name }}</p>
+                        </a>
+                        @if (!empty($task->driveurl))
+    <a href="{{ $task->driveurl }}" target="_blank" class="task-icon-icon">
+        <img src="{{ url('public/frontend/images/google-drive.png') }}" alt="Google Drive">
+    </a>
+@endif
+
                     </div>
+                    
                     <div class="assigne">
                         @if ($task->assignedTo)
                             <img src="{{ url('public/frontend/images/assigned-to.png') }}" alt="" class="assigned-to-icon">
@@ -134,10 +145,10 @@
                                 <img src="{{ url('public/frontend/images/' . $priorityImage) }}" alt="{{ $task->priority }}">
                                 : {{ $task->priority }}
                             </div>
-                     <div class="priority">
-                    Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
+                    <!-- <div class="priority">-->
+                    <!--Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}-->
 
-                    </div>
+                    <!--</div>-->
                 </div>
             @endforeach
         </div>
@@ -157,10 +168,16 @@
         <div class="task-list">
             @foreach ($inProgressTasks as $task)
                 <div class="task" draggable="true">
-                    <div class="task-name">
-                      <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                        <p>{{ $task->name }}</p>
-                    </a>
+                <div class="task-name-new">
+                       <a href="{{ route('task.detail', ['id' => $task->id]) }}" class="task-name-name">
+                            <p>{{ $task->name }}</p>
+                        </a>
+                        @if (!empty($task->driveurl))
+    <a href="{{ $task->driveurl }}" target="_blank" class="task-icon-icon">
+        <img src="{{ url('public/frontend/images/google-drive.png') }}" alt="Google Drive">
+    </a>
+@endif
+
                     </div>
                     <div class="assigne">
                         @if ($task->assignedTo)
@@ -202,10 +219,10 @@
                                 <img src="{{ url('public/frontend/images/' . $priorityImage) }}" alt="{{ $task->priority }}">
                                 : {{ $task->priority }}
                             </div>
-                     <div class="priority">
-                    Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
+                    <!-- <div class="priority">-->
+                    <!--Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}-->
 
-                    </div>
+                    <!--</div>-->
                 </div>
             @endforeach
         </div>
@@ -225,10 +242,16 @@
         <div class="task-list">
             @foreach ($qaTasks as $task)
                 <div class="task" draggable="true">
-                    <div class="task-name">
-                       <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                        <p>{{ $task->name }}</p>
-                    </a>
+                <div class="task-name-new">
+                       <a href="{{ route('task.detail', ['id' => $task->id]) }}" class="task-name-name">
+                            <p>{{ $task->name }}</p>
+                        </a>
+                        @if (!empty($task->driveurl))
+    <a href="{{ $task->driveurl }}" target="_blank" class="task-icon-icon">
+        <img src="{{ url('public/frontend/images/google-drive.png') }}" alt="Google Drive">
+    </a>
+@endif
+
                     </div>
                     <div class="assigne">
                         @if ($task->assignedTo)
@@ -270,10 +293,10 @@
                                 <img src="{{ url('public/frontend/images/' . $priorityImage) }}" alt="{{ $task->priority }}">
                                 : {{ $task->priority }}
                             </div>
-                     <div class="priority">
-                    Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
+                    <!-- <div class="priority">-->
+                    <!--Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}-->
 
-                    </div>
+                    <!--</div>-->
                 </div>
             @endforeach
         </div>
@@ -293,10 +316,16 @@
         <div class="task-list">
             @foreach ($completedTasks as $task)
                 <div class="task" draggable="true">
-                    <div class="task-name">
-                       <a href="{{ route('task.detail', ['id' => $task->id]) }}">
-                        <p>{{ $task->name }}</p>
-                    </a>
+                <div class="task-name-new">
+                       <a href="{{ route('task.detail', ['id' => $task->id]) }}" class="task-name-name">
+                            <p>{{ $task->name }}</p>
+                        </a>
+                        @if (!empty($task->driveurl))
+    <a href="{{ $task->driveurl }}" target="_blank" class="task-icon-icon">
+        <img src="{{ url('public/frontend/images/google-drive.png') }}" alt="Google Drive">
+    </a>
+@endif
+
                     </div>
                     <div class="assigne">
     @if ($task->assignedTo)
@@ -309,31 +338,31 @@
     @endif
 </div>
 
-<div class="due-date" style="margin-top: 4px;">
-    <img src="{{ url('public/frontend/images/due-date.png') }}" alt=""> :
-    @if(isset($task->remaining_days) || isset($task->remaining_hours) || isset($task->overdue_days) || isset($task->overdue_hours))
-        @if(isset($task->remaining_days) && $task->remaining_days > 0)
-            {{ $task->remaining_days }} days {{ $task->remaining_hours }} hours left
-        @elseif(isset($task->remaining_hours) && $task->remaining_hours > 0)
-            {{ $task->remaining_hours }} hours left
-        @elseif(isset($task->overdue_days) && $task->overdue_days > 0)
-            Overdue by {{ $task->overdue_days }} days {{ $task->overdue_hours }} hours
-        @elseif(isset($task->overdue_hours) && $task->overdue_hours > 0)
-            Overdue by {{ $task->overdue_hours }} hours
-        @else
-            Due now
-        @endif
-    @else
-        N/A
-    @endif
-</div>
+<!--<div class="due-date" style="margin-top: 4px;">-->
+<!--    <img src="{{ url('public/frontend/images/due-date.png') }}" alt=""> :-->
+<!--    @if(isset($task->remaining_days) || isset($task->remaining_hours) || isset($task->overdue_days) || isset($task->overdue_hours))-->
+<!--        @if(isset($task->remaining_days) && $task->remaining_days > 0)-->
+<!--            {{ $task->remaining_days }} days {{ $task->remaining_hours }} hours left-->
+<!--        @elseif(isset($task->remaining_hours) && $task->remaining_hours > 0)-->
+<!--            {{ $task->remaining_hours }} hours left-->
+<!--        @elseif(isset($task->overdue_days) && $task->overdue_days > 0)-->
+<!--            Overdue by {{ $task->overdue_days }} days {{ $task->overdue_hours }} hours-->
+<!--        @elseif(isset($task->overdue_hours) && $task->overdue_hours > 0)-->
+<!--            Overdue by {{ $task->overdue_hours }} hours-->
+<!--        @else-->
+<!--            Due now-->
+<!--        @endif-->
+<!--    @else-->
+<!--        N/A-->
+<!--    @endif-->
+<!--</div>-->
                     <div class="priority">
                         <img src="{{ url('public/frontend/images/priority.png') }}" alt=""> : {{ $task->priority ?? 'Normal' }}
                     </div>
-                     <div class="priority">
-                    Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}
+                    <!-- <div class="priority">-->
+                    <!--Time spent: {{ gmdate('H:i:s', $task->elapsed_time) }}-->
 
-                    </div>
+                    <!--</div>-->
                 </div>
             @endforeach
         </div>
@@ -485,62 +514,33 @@ function saveTask() {
 // Drag-and-drop functionality
 const tasks = document.querySelectorAll('.task');
 const columns = document.querySelectorAll('.task-column');
-let placeholder; // Placeholder element to indicate where the task can be dropped
 
 // Enable drag-and-drop
 tasks.forEach(task => {
     task.addEventListener('dragstart', () => {
         task.classList.add('dragging');
-
-        // Create a placeholder with the same height as the dragging task
-        placeholder = document.createElement('div');
-        placeholder.classList.add('placeholder');
-        placeholder.style.height = `${task.offsetHeight}px`;
     });
 
     task.addEventListener('dragend', () => {
         task.classList.remove('dragging');
-
-        // Remove the placeholder when drag ends
-        if (placeholder && placeholder.parentNode) {
-            placeholder.parentNode.removeChild(placeholder);
-        }
     });
 });
 
-// Handle dragover and drop in columns
+// Update task status on drop
 columns.forEach(column => {
     column.addEventListener('dragover', (e) => {
         e.preventDefault();
-
-        const draggingTask = document.querySelector('.dragging');
-        const taskList = column.querySelector('.task-list');
-        const tasksInColumn = [...taskList.querySelectorAll('.task:not(.dragging)')];
-
-        // Find the nearest task where the placeholder should be inserted
-        const afterTask = tasksInColumn.find(task => {
-            const taskRect = task.getBoundingClientRect();
-            return e.clientY < taskRect.top + taskRect.height / 2;
-        });
-
-        // Insert placeholder
-        if (afterTask) {
-            taskList.insertBefore(placeholder, afterTask);
-        } else {
-            taskList.appendChild(placeholder);
-        }
     });
 
     column.addEventListener('drop', (e) => {
         e.preventDefault();
-
         const draggingTask = document.querySelector('.dragging');
         const taskId = draggingTask.getAttribute('data-task-id');
         const taskType = draggingTask.getAttribute('data-task-type');
         const newStatus = column.getAttribute('data-status');
 
-        // Move the dragging task to the placeholder position
-        placeholder.parentNode.replaceChild(draggingTask, placeholder);
+        // Move task to new column
+        column.querySelector('.task-list').appendChild(draggingTask);
 
         // AJAX request to update task status in the database
         fetch("{{ route('tasks.updateStatusComment') }}", {
@@ -551,15 +551,15 @@ columns.forEach(column => {
             },
             body: JSON.stringify({ taskId, taskType, status: newStatus })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log(`Task ${taskId} status updated to ${newStatus}`);
-            } else {
-                console.error("Failed to update task status");
-            }
-        })
-        .catch(error => console.error("Error:", error));
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(`Task ${taskId} status updated to ${newStatus}`);
+                } else {
+                    console.error("Failed to update task status");
+                }
+            })
+            .catch(error => console.error("Error:", error));
     });
 });
 
@@ -618,10 +618,33 @@ margin-left: 15px !important;
         background-color: #dc3545;
         color: white;
     }
-    .placeholder {
-    background: #fff;
-    margin: 5px 0;
-    border-radius: 5px;
-}
+    .task-name-new {
+        display: flex;
+        align-items: center;
+        justify-content: space-between !important;
+        /* background-color: red; */
+    }
+    .task-name-new a {
+        text-decoration: none;
+        color: #2a2e34;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .task-name-new a:hover {
+        text-decoration: underline;
+    }
+    .task-name-new img {
+        margin-right: 10px !important;
+        width: 15px;
+    }
+  .drive {
+    display: flex;
+    align-items: center;
+
+  }
+  .drive img {
+    width: 15px;
+    margin-right: 5px;
+  }
 </style>
 @endsection

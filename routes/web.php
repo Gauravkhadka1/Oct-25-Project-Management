@@ -121,6 +121,15 @@ Route::get('/storage-link',function(){
     $linkFolder = $_SERVER['DOCUMENT_ROOT'] . '/storage/profilepics';
     symlink($targetFolder,$linkFolder);
 });
+Route::get('/unlink-storage', function() {
+    $linkFolder = $_SERVER['DOCUMENT_ROOT'] . '/storage/profilepics';
+    if (file_exists($linkFolder)) {
+        unlink($linkFolder); // Remove the symbolic link
+        return 'Symbolic link removed successfully.';
+    }
+    return 'No symbolic link found to remove.';
+});
+
 Route::get('/storage-link-contract',function(){
     $targetFolder = storage_path('app/public/contracts');
     $linkFolder = $_SERVER['DOCUMENT_ROOT'] . '/storage/contracts';

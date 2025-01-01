@@ -43,6 +43,7 @@ class ProfileController extends Controller
         }, 'project'])
         ->where('assigned_to', $user->id)
         ->select('id', 'name', 'assigned_to', 'start_date', 'due_date', 'priority')
+        ->orderBy('due_date', 'asc') 
         ->get();
         
         $prospectTasks = ProspectTask::with(['assignedTo' => function ($query) {
@@ -50,6 +51,7 @@ class ProfileController extends Controller
         }, 'prospect'])
         ->where('assigned_to', $user->id)
         ->select('id', 'name', 'assigned_to', 'start_date', 'due_date', 'priority')
+        ->orderBy('due_date', 'asc') 
         ->get();
         
         $paymentTasks = PaymentTask::with(['assignedTo' => function ($query) {
@@ -57,6 +59,7 @@ class ProfileController extends Controller
         }, 'payment'])
         ->where('assigned_to', $user->id)
         ->select('id', 'name', 'assigned_to', 'start_date', 'due_date', 'priority')
+        ->orderBy('due_date', 'asc') 
         ->get();
         
         
@@ -264,7 +267,7 @@ class ProfileController extends Controller
         if ($request->hasFile('profilepic')) {
             $file = $request->file('profilepic');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('profile_pictures', $filename, 'public');
+            $file->storeAs('profilepics', $filename, 'public');
     
             // Update the user's profile picture in the database
             $user->profilepic = $filename;

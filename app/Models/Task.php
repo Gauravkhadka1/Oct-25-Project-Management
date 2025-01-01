@@ -10,6 +10,7 @@ class Task extends Model
 
         protected $fillable = [
             'name',
+            'driveurl',
             'assigned_to',
             'assigned_by',
             'project_id',

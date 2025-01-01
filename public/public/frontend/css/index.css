@@ -388,7 +388,13 @@
     cursor: pointer;
 }
 
-
+.username-item {
+  /* background-color: yellow; */
+  width: 63%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .username-item a {
   display: flex !important;
   align-items: center;
@@ -398,9 +404,12 @@
  display: flex;
  align-items: center;
  justify-content: flex-start;
- width: 100px;
+ width: 80px;
  /* background-color: red; */
  margin-left: 10px;
+}
+.username-item img {
+  width: 25px;
 }
 
 .days-filter-form {

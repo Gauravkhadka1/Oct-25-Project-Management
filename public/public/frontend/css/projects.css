@@ -744,3 +744,7 @@ font-weight: 520;
     margin-right: 15px;
     font-weight: 500;
 }
+
+.task-name img {
+    width: 15px;
+}

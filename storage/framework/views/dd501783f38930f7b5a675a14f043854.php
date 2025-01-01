@@ -20,6 +20,8 @@
 
         <div class="task-board">
     <?php
+    use Carbon\Carbon;
+
         $tasks = collect(); // Create an empty collection to hold all tasks
 
         // Add tasks from payments first
@@ -48,6 +50,11 @@
                 $tasks->push($task); // Add prospect tasks to the collection
             }
         }
+
+        // Sort tasks by the remaining time to due date
+        $tasks = $tasks->sortBy(function ($task) {
+        return Carbon::parse($task->due_date); // Parse and return the Carbon instance for accurate sorting
+    });
 
         // Flag to check if there are any tasks
         $hasTasks = $tasks->isNotEmpty();
@@ -96,7 +103,7 @@
         <div class="task-list">
                 <?php $__currentLoopData = $tasksCollection; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="task" draggable="true" data-task-id="<?php echo e($task->id); ?>" data-task-type="<?php echo e(strtolower($task->category)); ?>">
-                        <div class="task-name">
+                        <div class="task-name-new">
                             <?php if($task->category == 'Payment'): ?>
                                 <a href="<?php echo e(route('payment_task.detail', ['id' => $task->id])); ?>">
                             <?php elseif($task->category == 'Prospect'): ?>
@@ -106,6 +113,11 @@
                             <?php endif; ?>
                                 <p><?php echo e($task->name); ?></p>
                             </a>
+                            
+                            <a href="<?php echo e($task->driveurl); ?>" target="_blank" class="task-icon-icon">
+                                <img src="<?php echo e(url('public/frontend/images/google-drive.png')); ?>" alt="Google Drive">
+                            </a>
+                 
                         </div>
                         <div class="in-project">In <?php echo e($task->category_name); ?></div>
                         <div class="assigne">
@@ -539,7 +551,25 @@ columns.forEach(column => {
     margin-right: 15px;
     font-weight: 500;
 }
-
+.task-name-new {
+        display: flex;
+        align-items: center;
+        justify-content: space-between !important;
+        /* background-color: red; */
+    }
+    .task-name-new a {
+        text-decoration: none;
+        color: #2a2e34;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .task-name-new a:hover {
+        text-decoration: underline;
+    }
+    .task-name-new img {
+        margin-right: 10px !important;
+        width: 15px;
+    }
     </style>
 </main>
 <?php $__env->stopSection(); ?>

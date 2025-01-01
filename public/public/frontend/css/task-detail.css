@@ -5,13 +5,80 @@
     padding: 20px;
 }
 .pcomments {
-    width: 50%;
+    width: 45%;
     /* background-color: red; */
 }
 .project-task-comments {
     width: 100% !important;
     border: 1px solid rgb(192, 189, 189);
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     /* background-color: yellow; */
+}
+.ptask-name p {
+    font-weight: bold;
+    font-size: 28px;
+    color: #2a2e34;
+}
+.task-details {
+    /* background-color: blue; */
+    width: 60%;
+    padding-right: 20px;
+}
+.tasks-in-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 40px;
+    margin-top: 30px;
+    /* background-color: brown; */
+    width: 100%;
+}
+
+.task-assignedto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.task-assignedto img {
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+}
+.task-status, .task-start-date, .task-due-date {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #8d8d8d;
+    font-size: 14px;
+    width: 100%;
+    /* background-color: yellow; */
+}
+.task-assignedto {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 20px;
+    color: #8d8d8d;
+    font-size: 14px;
+    width: 100%;
+}
+.labels {
+    font-weight: bold;
+    margin-right: 5px;
+    color: #838383;
+    width: 40%;
+}
+.datas {
+    width: 100%;
+}
+.task-details-one {
+    /* background-color: green; */
+    width: 100%;
+}
+.task-details-two {
+    /* background-color: orange; */
+    width: 90%;
 }

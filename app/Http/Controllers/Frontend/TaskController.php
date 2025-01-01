@@ -42,6 +42,7 @@ class TaskController extends Controller {
        // Validate the request data
        $request->validate([
            'name' => 'required|string|max:255',
+           'name' => 'nullable|string|max:255',
            'assigned_to' => 'required|integer|exists:users,id', // Ensure the assigned user exists
            'project_id' => 'required|exists:projects,id',
            'start_date' => 'nullable|string', // Accept datetime input as string for further processing
@@ -63,6 +64,7 @@ class TaskController extends Controller {
        // Create the task
        $task = Task::create([
            'name' => $request->input('name'),
+           'driveurl' => $request->input('driveurl'),
            'assigned_to' => $request->input('assigned_to'),
            'assigned_by' => $assignedByUserId,
            'project_id' => $request->input('project_id'),

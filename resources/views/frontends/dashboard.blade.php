@@ -22,6 +22,8 @@
 
         <div class="task-board">
     @php
+    use Carbon\Carbon;
+
         $tasks = collect(); // Create an empty collection to hold all tasks
 
         // Add tasks from payments first
@@ -50,6 +52,11 @@
                 $tasks->push($task); // Add prospect tasks to the collection
             }
         }
+
+        // Sort tasks by the remaining time to due date
+        $tasks = $tasks->sortBy(function ($task) {
+        return Carbon::parse($task->due_date); // Parse and return the Carbon instance for accurate sorting
+    });
 
         // Flag to check if there are any tasks
         $hasTasks = $tasks->isNotEmpty();
@@ -97,7 +104,7 @@
         <div class="task-list">
                 @foreach ($tasksCollection as $task)
                     <div class="task" draggable="true" data-task-id="{{ $task->id }}" data-task-type="{{ strtolower($task->category) }}">
-                        <div class="task-name">
+                        <div class="task-name-new">
                             @if ($task->category == 'Payment')
                                 <a href="{{ route('payment_task.detail', ['id' => $task->id]) }}">
                             @elseif ($task->category == 'Prospect')
@@ -107,6 +114,11 @@
                             @endif
                                 <p>{{ $task->name }}</p>
                             </a>
+                            
+                            <a href="{{ $task->driveurl }}" target="_blank" class="task-icon-icon">
+                                <img src="{{ url('public/frontend/images/google-drive.png') }}" alt="Google Drive">
+                            </a>
+                 
                         </div>
                         <div class="in-project">In {{ $task->category_name }}</div>
                         <div class="assigne">
@@ -538,7 +550,25 @@ columns.forEach(column => {
     margin-right: 15px;
     font-weight: 500;
 }
-
+.task-name-new {
+        display: flex;
+        align-items: center;
+        justify-content: space-between !important;
+        /* background-color: red; */
+    }
+    .task-name-new a {
+        text-decoration: none;
+        color: #2a2e34;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .task-name-new a:hover {
+        text-decoration: underline;
+    }
+    .task-name-new img {
+        margin-right: 10px !important;
+        width: 15px;
+    }
     </style>
 </main>
 @endsection

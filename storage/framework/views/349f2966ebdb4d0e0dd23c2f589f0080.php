@@ -42,85 +42,20 @@
 
 
 
-  use App\Models\Clients;
-use Carbon\Carbon;
+
 
 // Retrieve the days filter from the request
 $daysFilter = request('days_filter', '');
 
-// Function to get service count based on filter and service expiry dates
-function getServiceCount($daysFilter) {
-    $servicesCount = 0;
-    $clients = Clients::all(); // Get all clients
+use App\Helpers\ServiceHelper;
 
-    // Get current date and time in Nepali Time (Asia/Kathmandu)
-    $nowNepalTime = Carbon::now('Asia/Kathmandu')->startOfDay();  // Set time to 00:00:00 for the current day
-
-    // Iterate over each client to check expiry dates for all services
-    foreach ($clients as $client) {
-        $services = [
-            'hosting' => $client->hosting_expiry_date,
-            'domain' => $client->domain_expiry_date,
-            'microsoft' => $client->microsoft_expiry_date,
-            'maintenance' => $client->maintenance_expiry_date,
-            'seo' => $client->seo_expiry_date,
-            'web_design_1st_installment' => $client->first_installment,
-            'web_design_2nd_installment' => $client->second_installment,
-            'web_design_3rd_installment' => $client->third_installment,
-            'web_design_Final_installment' => $client->fourth_installment
-        ];
-
-        // Create an array to store unique expiry dates for the client
-        $uniqueExpiryDates = [];
-
-        // Check the expiry date for each service and add unique expiry dates to the array
-        foreach ($services as $service => $expiryDate) {
-            if ($expiryDate) {
-                // Adjust expiry date to Nepali time and set to start of the day
-                $expiryDateNepalTime = Carbon::parse($expiryDate)->setTimezone('Asia/Kathmandu')->startOfDay();
-
-                // Add expiry date to the uniqueExpiryDates array if it's not already there
-                $uniqueExpiryDates[$expiryDateNepalTime->toDateString()] = true;
-            }
-        }
-
-        // Count the unique expiry dates for the client
-        foreach ($uniqueExpiryDates as $expiryDate => $value) {
-            // Calculate days left from current time in Nepal, ignoring time
-            $expiryDateNepalTime = Carbon::parse($expiryDate)->setTimezone('Asia/Kathmandu')->startOfDay();
-            $daysLeft = $nowNepalTime->diffInDays($expiryDateNepalTime, false);
-            $daysLeft = floor($daysLeft); // Use floor or ceil as needed
-
-            // Increment service counts based on expiry date range and filter
-            if ($daysFilter == 'all') {
-                $servicesCount++; // Count all unique expiry dates
-            } elseif ($daysFilter === 'expired' && $daysLeft < 0) {
-                $servicesCount++; // Count expired services
-            } elseif ($daysFilter === 'today' && $expiryDateNepalTime->isToday()) {
-                $servicesCount++; // Count services expiring today
-            } elseif ($daysFilter === '35-31' && $daysLeft >= 31 && $daysLeft <= 35) {
-                $servicesCount++; // Count services expiring in 35-31 days
-            } elseif ($daysFilter === '30-16' && $daysLeft >= 16 && $daysLeft <= 30) {
-                $servicesCount++; // Count services expiring in 30-16 days
-            } elseif ($daysFilter === '15-8' && $daysLeft >= 8 && $daysLeft <= 15) {
-                $servicesCount++; // Count services expiring in 15-8 days
-            } elseif ($daysFilter === '7-1' && $daysLeft >= 1 && $daysLeft <= 7) {
-                $servicesCount++; // Count services expiring in 7-1 days
-            }
-        }
-    }
-
-    return $servicesCount;
-}
-
-// Get counts for all the ranges
-$allServicesCount = getServiceCount('all');
-$servicesIn35To31Days = getServiceCount('35-31');
-$servicesIn30To16Days = getServiceCount('30-16');
-$servicesIn15To8Days = getServiceCount('15-8');
-$servicesIn7To1Days = getServiceCount('7-1');
-$servicesExpiringToday = getServiceCount('today');
-$expiredServicesCount = getServiceCount('expired');
+$allServicesCount = ServiceHelper::getServiceCount('all');
+$servicesIn35To31Days = ServiceHelper::getServiceCount('35-31');
+$servicesIn30To16Days = ServiceHelper::getServiceCount('30-16');
+$servicesIn15To8Days = ServiceHelper::getServiceCount('15-8');
+$servicesIn7To1Days = ServiceHelper::getServiceCount('7-1');
+$servicesExpiringToday = ServiceHelper::getServiceCount('today');
+$expiredServicesCount = ServiceHelper::getServiceCount('expired');
 
 ?>
 
