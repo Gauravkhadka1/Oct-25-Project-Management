@@ -134,7 +134,9 @@
                     <!-- <td><?php echo e(\Carbon\Carbon::parse($service['expiry_date'])->format('d-m-Y') ?? 'N/A'); ?></td> -->
                     <td>Date</td>
                     <td>
-                       send
+                    <button class="send-email" data-email="<?php echo e($service['client_email']); ?>" data-service-type="<?php echo e($service['service_type']); ?>" data-expiry-date="<?php echo e($service['expiry_date']); ?>" data-days-left="<?php echo e($service['days_left']); ?>" data-domain-name="<?php echo e($service['domain_name']); ?>">
+                            Send Email
+                        </button>
                     </td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -220,22 +222,22 @@ document.getElementById('categories').addEventListener('change', function () {
     }
 });
 
-document.querySelectorAll('.send-email-btn').forEach(button => {
+document.querySelectorAll('.send-email').forEach(button => {
     button.addEventListener('click', function () {
-        const clientEmail = this.getAttribute('data-client-email');
-        const serviceType = this.getAttribute('data-service-type');
-        const expiryDate = this.getAttribute('data-expiry-date');
-        const daysLeft = this.getAttribute('data-days-left');
-        const domainName = this.getAttribute('data-domain-name');
+        const email = this.dataset.email;
+        const serviceType = this.dataset.serviceType;
+        const expiryDate = this.dataset.expiryDate;
+        const daysLeft = this.dataset.daysLeft;
+        const domainName = this.dataset.domainName;
 
-        fetch('<?php echo e(route("send.expiry.email")); ?>', {
+        fetch('<?php echo e(route('send.expiry.email')); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
             },
             body: JSON.stringify({
-                client_email: clientEmail,
+                client_email: email,
                 service_type: serviceType,
                 expiry_date: expiryDate,
                 days_left: daysLeft,
@@ -243,21 +245,11 @@ document.querySelectorAll('.send-email-btn').forEach(button => {
             })
         })
         .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Email sent successfully!');
-                // Optionally, update the email-sent-on column in the UI
-                this.closest('tr').querySelector('td:nth-child(5)').textContent = data.email_sent_on;
-            } else {
-                alert('Failed to send email: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while sending the email.');
-        });
+        .then(data => alert(data.message || 'Email sent successfully!'))
+        .catch(error => console.error('Error:', error));
     });
 });
+
 
 
 </script>

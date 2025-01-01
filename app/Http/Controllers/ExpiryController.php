@@ -86,7 +86,8 @@ class ExpiryController extends Controller
                                 'expiry_date' => $expiryDateNepalTime,
                                 'amount' => $data['amount'],
                                 'days_left' => $daysLeft,
-                                'client_id' => $client->id
+                                'client_id' => $client->id,
+                             'client_email' => $client->contact_person_email ?? 'N/A'
                             ];
                         }
                     }
@@ -206,51 +207,43 @@ class ExpiryController extends Controller
         return view('frontends.expiry', compact('servicesData', 'daysFilter'));
     }
    
+    public function sendExpiryEmail(Request $request)
+{
+    $to = $request->input('client_email');
+    
+    if (!$to || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+        return response()->json(['success' => false, 'message' => 'Invalid or missing email address.']);
+    }
 
-    // public function sendExpiryEmail(Request $request)
-    // {
-    //     $to = trim($request->input('client_email'));
-    //     $cc = ['testuser1@comeonnepal.com', 'testuser2@comeonnepal.com'];
-    //     $serviceType = $request->input('service_type');
-    //     $expiryDate = $request->input('expiry_date');
-    //     $daysLeft = $request->input('days_left');
-    //     $domainName = $request->input('domain_name');
-    
-    //     // Validate email address
-    //     if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
-    //         return back()->with('error', 'Invalid email address provided: ' . $to);
-    //     }
-    
-    //     // Check if the email address is empty
-    //     if (empty($to)) {
-    //         return back()->with('error', 'No email address provided for this client.');
-    //     }
-    
-    //     $subject = "Service Expiry Notice";
-    //     $message = "
-    //         Dear Sir/Madam,
-    
-    //         I hope this email finds you well.
-    
-    //         The $serviceType service associated with your domain ($domainName) is going to expire on $expiryDate ($daysLeft days remaining). 
-    //         Please renew the service for uninterrupted service.
-    
-    //         Thank you.
-    //     ";
-    
-    //     try {
-    //         // Override the default 'from' email
-    //         Mail::raw($message, function ($mail) use ($to, $cc, $subject) {
-    //             $mail->from('testuser3@comeonnepal.com', 'Webtech Nepal') // Override from email
-    //                  ->to($to)
-    //                  ->cc($cc)
-    //                  ->subject($subject);
-    //         });
-    
-    //         return back()->with('success', 'Email sent successfully!');
-    //     } catch (\Exception $e) {
-    //         return back()->with('error', 'Failed to send email: ' . $e->getMessage());
-    //     }
-    // }
+    $cc = ['testuser1@comeonnepal.com', 'testuser2@comeonnepal.com'];
+    $serviceType = $request->input('service_type');
+    $expiryDate = $request->input('expiry_date');
+    $daysLeft = $request->input('days_left');
+    $domainName = $request->input('domain_name');
+
+    $subject = "Service Expiry Notice";
+    $message = "
+        Dear Sir/Madam,
+
+        The $serviceType service associated with your domain ($domainName) is going to expire on $expiryDate ($daysLeft days remaining). 
+        Please renew the service for uninterrupted service.
+
+        Thank you.
+    ";
+
+    try {
+        Mail::raw($message, function ($mail) use ($to, $cc, $subject) {
+            $mail->from('testuser3@comeonnepal.com', 'Webtech Nepal')
+                ->to($to)
+                ->cc($cc)
+                ->subject($subject);
+        });
+
+        return response()->json(['success' => true, 'email_sent_on' => now()->format('Y-m-d H:i:s')]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Failed to send email: ' . $e->getMessage()]);
+    }
+}
+
     
 }
